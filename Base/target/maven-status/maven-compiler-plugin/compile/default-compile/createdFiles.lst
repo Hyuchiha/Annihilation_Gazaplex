@@ -1,0 +1,14 @@
+com/hyuchiha/Annihilation/Maps/VoidGenerator.class
+com/hyuchiha/Annihilation/VirtualEntities/VirtualBrewingStand.class
+com/hyuchiha/Annihilation/Maps/Hooks/MultiverseCoreHooks.class
+com/hyuchiha/Annihilation/Maps/Hooks/Hooks.class
+com/hyuchiha/Annihilation/Base/Respawner.class
+com/hyuchiha/Annihilation/MessagesApi/ActionBar.class
+com/hyuchiha/Annihilation/MessagesApi/TitleAPI.class
+com/hyuchiha/Annihilation/VirtualEntities/FurnaceManager.class
+com/hyuchiha/Annihilation/VirtualEntities/VirtualFurnace.class
+com/hyuchiha/Annihilation/BossBar/BossBarAPI$1.class
+com/hyuchiha/Annihilation/VirtualEntities/BrewingManager.class
+com/hyuchiha/Annihilation/BossBar/BossBarAPI.class
+com/hyuchiha/Annihilation/BossBar/BossBarListener.class
+com/hyuchiha/Annihilation/Maps/MapLoader.class

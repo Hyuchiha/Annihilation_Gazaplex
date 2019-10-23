@@ -1,0 +1,115 @@
+# Locations are formatted as following:
+# "x,y,z"
+# or, if you would like to add yaw/pitch
+# "x,y,z,yaw,pitch"
+
+
+# Mandatory.
+lobby:
+  spawn: "0,0,0"
+  # Team join sign locations.
+  # Required
+  signs:
+    red:
+      - "-4,65,-3"
+      - "-3,65,-4"
+    yellow:
+      - "-4,65,3"
+      - "-3,65,4"
+    green:
+      - "4,65,3"
+      - "3,65,4"
+    blue:
+      - "4,65,-3"
+      - "3,65,-4"
+example:
+  spawns:
+    red:
+      - "0,0,0"
+      - "0,0,0"
+    yellow:
+      - "0,0,0"
+      - "0,0,0"
+    green:
+      - "0,0,0"
+      - "0,0,0"
+    blue:
+      - "0,0,0"
+      - "0,0,0"
+  # Nexuses for each team, only one nexus each.
+  # Required.
+  nexuses:
+    rojo: "-27,66,-27"
+    amarillo: "-27,66,27"
+    verde: "27,66,27"
+    azul: "27,66,-27"
+
+  # Ender furnaces for each team, only one each.
+  # Optional.
+  furnaces:
+    rojo: "-22,65,-22"
+    amarillo: "-22,65,22"
+    verde: "22,65,22"
+    azul: "22,65,-22"
+
+  # Ender brewing stands for each team, only one each.
+  # Optional.
+  brewingstands:
+    rojo: "-20,65,-20"
+    amarillo: "-20,65,20"
+    verde: "20,65,20"
+    azul: "20,65,-20"
+
+  # Ender chests for each team, only one each.
+  # Optional.
+  enderchests:
+    rojo: "-21,65,-21"
+    amarillo: "-21,65,21"
+    verde: "21,65,21"
+    azul: "21,65,-21"
+
+  # Diamond locations, can have as many as you like.
+  # Optional, but highly recommended.
+  diamonds:
+    - "0,62,0"
+    - "1,62,1"
+    - "1,62,-1"
+    - "-1,62,-1"
+    - "-1,62,1"
+
+  # Boss Configuration.
+  # Required
+  # Only one boss is configurable
+  boss:
+    # The bossSpawn location for the boss
+    boss_spawn: "0,63,-21"
+    # The players spawns for the world of the boss
+    spawns:
+      rojo: "-27,66,-27"
+      amarillo: "-27,66,27"
+      verde: "27,66,27"
+      azul: "27,66,-27"
+    # The world when the boss is going to bossSpawn
+    world_spawn: "nether_world"
+    # The chest spawns in the world when the boss spawns
+    chest: "0,63,-23"
+    # The boss can have custom health
+    hearts: 300
+    # When players want to teleport they need to stay in this location
+    teleport:
+      - "0,0,0"
+      - "0,0,0"
+    #The name of the boss in this arena
+    boss_name: "&bCelariel"
+
+  #The witches to spawn
+  #Required
+  witch:
+    witch1:
+      spawn: "0,63,-21"
+      name: ""
+      hearts: 100
+    witch2:
+      spawn: "0,63,22"
+      name: ""
+      hearts: 100
