@@ -4,12 +4,12 @@ import org.bukkit.inventory.InventoryHolder;
 
 public interface VirtualBrewingStand {
 
-    boolean canMakePotions();
+  boolean canMakePotions();
 
-    void makePotions();
+  void makePotions();
 
-    InventoryHolder getOwner();
+  InventoryHolder getOwner();
 
-    void openBrewingStand();
+  void openBrewingStand();
 
 }

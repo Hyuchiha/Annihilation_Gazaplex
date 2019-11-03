@@ -10,60 +10,60 @@ import org.bukkit.entity.Player;
 
 
 public class GameManager {
-    private static Game currentGame = null;
+  private static Game currentGame = null;
 
-    public static boolean canStartGame() {
-        int requiredToStart = Main.getInstance().getConfig("config.yml").getInt("requiredToStart");
+  public static boolean canStartGame() {
+    int requiredToStart = Main.getInstance().getConfig("config.yml").getInt("requiredToStart");
 
-        if (currentGame != null && currentGame.isInGame()) {
-            return false;
+    if (currentGame != null && currentGame.isInGame()) {
+      return false;
+    }
+
+    return (Bukkit.getOnlinePlayers().size() >= requiredToStart);
+  }
+
+  public static void initGameManager() {
+    if (currentGame == null) {
+      Output.log("Init Game and configs for games");
+      currentGame = new Game(Main.getInstance());
+    }
+  }
+
+
+  public static void startNewGame() {
+    currentGame.startPreGame();
+  }
+
+
+  public static void endCurrentGame() {
+    if (currentGame != null) {
+      currentGame.endGame();
+      currentGame = new Game(Main.getInstance());
+    }
+  }
+
+  public static void canEndGame() {
+    if (currentGame.canEndGame()) {
+      currentGame.restartingTime();
+
+      for (Player player : Bukkit.getOnlinePlayers()) {
+        if (PlayerManager.getGamePlayer(player).getTeam() == currentGame.getWinner()) {
+          Account winnerData = Main.getInstance().getMainDatabase().getAccount(player.getUniqueId().toString(), player.getName());
+          winnerData.increaseNexusDamage();
         }
+      }
 
-        return (Bukkit.getOnlinePlayers().size() >= requiredToStart);
+
+      ChatUtil.winMessage(currentGame.getWinner());
     }
-
-    public static void initGameManager() {
-        if (currentGame == null) {
-            Output.log("Init Game and configs for games");
-            currentGame = new Game(Main.getInstance());
-        }
-    }
+  }
 
 
-    public static void startNewGame() {
-        currentGame.startPreGame();
-    }
+  public static void forceStopGame() {
+  }
 
 
-    public static void endCurrentGame() {
-        if (currentGame != null) {
-            currentGame.endGame();
-            currentGame = new Game(Main.getInstance());
-        }
-    }
-
-    public static void canEndGame() {
-        if (currentGame.canEndGame()) {
-            currentGame.restartingTime();
-
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                if (PlayerManager.getGamePlayer(player).getTeam() == currentGame.getWinner()) {
-                    Account winnerData = Main.getInstance().getMainDatabase().getAccount(player.getUniqueId().toString(), player.getName());
-                    winnerData.increaseNexusDamage();
-                }
-            }
-
-
-            ChatUtil.winMessage(currentGame.getWinner());
-        }
-    }
-
-
-    public static void forceStopGame() {
-    }
-
-
-    public static Game getCurrentGame() {
-        return currentGame;
-    }
+  public static Game getCurrentGame() {
+    return currentGame;
+  }
 }

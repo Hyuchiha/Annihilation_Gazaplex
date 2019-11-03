@@ -11,47 +11,47 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 public class AnnihilationCommand implements CommandExecutor {
-    private Main plugin;
+  private Main plugin;
 
-    public AnnihilationCommand(Main plugin) {
-        this.plugin = plugin;
+  public AnnihilationCommand(Main plugin) {
+    this.plugin = plugin;
+  }
+
+
+  public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    String cyan = ChatColor.DARK_AQUA.toString();
+    String white = ChatColor.WHITE.toString();
+    String gray = ChatColor.GRAY.toString();
+    String red = ChatColor.RED.toString();
+    String gold = ChatColor.GOLD.toString();
+    String yellow = ChatColor.YELLOW.toString();
+    String dgray = ChatColor.DARK_GRAY.toString();
+    String green = ChatColor.GREEN.toString();
+    String prefix = Translator.getPrefix();
+
+    if (args.length == 0) {
+      sender.sendMessage(prefix + yellow + "Annihilation v" + this.plugin.getDescription().getVersion() + " developed by " + gold + "Hyuchiha");
+      sender.sendMessage(prefix + gray + "Command Help:");
+      sender.sendMessage(prefix + gray + "/anni " + dgray + "-" + white + " Shows plugin information.");
+      sender.sendMessage(prefix + gray + "/anni start " + dgray + "-" + white + " Starts a game.");
+      sender.sendMessage(prefix + gray + "/anni stop " + dgray + "-" + white + " Stops the current game.");
     }
 
+    if (args.length == 1 &&
+            args[0].equalsIgnoreCase("start")) {
+      if (sender.hasPermission("annihilation.command.start")) {
+        if (GameManager.getCurrentGame().isInGame()) {
+          sender.sendMessage(prefix + red + Translator.getColoredString("ERROR_GAME_STARTED"));
+        } else {
+          Bukkit.getServer().getPluginManager().callEvent(new StartGameEvent());
 
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        String cyan = ChatColor.DARK_AQUA.toString();
-        String white = ChatColor.WHITE.toString();
-        String gray = ChatColor.GRAY.toString();
-        String red = ChatColor.RED.toString();
-        String gold = ChatColor.GOLD.toString();
-        String yellow = ChatColor.YELLOW.toString();
-        String dgray = ChatColor.DARK_GRAY.toString();
-        String green = ChatColor.GREEN.toString();
-        String prefix = Translator.getPrefix();
-
-        if (args.length == 0) {
-            sender.sendMessage(prefix + yellow + "Annihilation v" + this.plugin.getDescription().getVersion() + " developed by " + gold + "Hyuchiha");
-            sender.sendMessage(prefix + gray + "Command Help:");
-            sender.sendMessage(prefix + gray + "/anni " + dgray + "-" + white + " Shows plugin information.");
-            sender.sendMessage(prefix + gray + "/anni start " + dgray + "-" + white + " Starts a game.");
-            sender.sendMessage(prefix + gray + "/anni stop " + dgray + "-" + white + " Stops the current game.");
+          sender.sendMessage(prefix + green + Translator.getColoredString("GAME_START"));
         }
-
-        if (args.length == 1 &&
-                args[0].equalsIgnoreCase("start")) {
-            if (sender.hasPermission("annihilation.command.start")) {
-                if (GameManager.getCurrentGame().isInGame()) {
-                    sender.sendMessage(prefix + red + Translator.getColoredString("ERROR_GAME_STARTED"));
-                } else {
-                    Bukkit.getServer().getPluginManager().callEvent(new StartGameEvent());
-
-                    sender.sendMessage(prefix + green + Translator.getColoredString("GAME_START"));
-                }
-            } else {
-                sender.sendMessage(prefix + red + Translator.getString("ERROR_COMMAND_NOT_PERMITED"));
-            }
-        }
-
-        return false;
+      } else {
+        sender.sendMessage(prefix + red + Translator.getString("ERROR_COMMAND_NOT_PERMITED"));
+      }
     }
+
+    return false;
+  }
 }

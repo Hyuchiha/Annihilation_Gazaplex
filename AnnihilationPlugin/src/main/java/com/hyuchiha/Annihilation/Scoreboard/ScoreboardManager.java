@@ -13,125 +13,125 @@ import org.bukkit.scoreboard.*;
 import java.util.HashMap;
 
 public class ScoreboardManager {
-    private static Scoreboard scoreboardBase;
-    private static Objective objectiveBase;
-    private static HashMap<String, Score> scores = new HashMap<>();
-    private static HashMap<String, Team> teams = new HashMap<>();
+  private static Scoreboard scoreboardBase;
+  private static Objective objectiveBase;
+  private static HashMap<String, Score> scores = new HashMap<>();
+  private static HashMap<String, Team> teams = new HashMap<>();
 
 
-    public static void initScoreboard() {
-        resetScoreboard(Translator.getColoredString("SB_LOBBY_TITLE"));
+  public static void initScoreboard() {
+    resetScoreboard(Translator.getColoredString("SB_LOBBY_TITLE"));
+  }
+
+
+  public static void resetScoreboard(String scoreboardName) {
+    scoreboardBase = null;
+
+    scores.clear();
+    teams.clear();
+
+    for (Player p : Bukkit.getOnlinePlayers()) {
+      p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
     }
 
+    scoreboardBase = Bukkit.getScoreboardManager().getNewScoreboard();
+    objectiveBase = scoreboardBase.registerNewObjective("anni", "dummy");
 
-    public static void resetScoreboard(String scoreboardName) {
-        scoreboardBase = null;
+    objectiveBase.setDisplaySlot(DisplaySlot.SIDEBAR);
+    objectiveBase.setDisplayName(scoreboardName);
 
-        scores.clear();
-        teams.clear();
+    for (GameTeam team : GameTeam.teams()) {
+      setTeam(team);
+    }
+  }
 
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
-        }
+  public static void createLobbyScoreboard() {
+    int count = 0;
+    int size = VotingManager.getMaps().size();
+    for (String map : VotingManager.getMaps().values()) {
+      count++;
+      size--;
 
-        scoreboardBase = Bukkit.getScoreboardManager().getNewScoreboard();
-        objectiveBase = scoreboardBase.registerNewObjective("anni", "dummy");
+      scores.put(map, objectiveBase.getScore(map));
+      scores.get(map).setScore(size);
 
-        objectiveBase.setDisplaySlot(DisplaySlot.SIDEBAR);
-        objectiveBase.setDisplayName(scoreboardName);
-
-        for (GameTeam team : GameTeam.teams()) {
-            setTeam(team);
-        }
+      teams.put(map, scoreboardBase.registerNewTeam(map));
+      teams.get(map).addEntry(map);
+      teams.get(map).setPrefix(ChatColor.AQUA + "[" + count + "] " + ChatColor.GRAY);
+      teams.get(map).setSuffix(ChatColor.RED + " » " + ChatColor.GREEN + "0 " + Translator.getString("VOTE") + "s");
     }
 
-    public static void createLobbyScoreboard() {
-        int count = 0;
-        int size = VotingManager.getMaps().size();
-        for (String map : VotingManager.getMaps().values()) {
-            count++;
-            size--;
+    objectiveBase.getScore(ChatColor.AQUA + "").setScore(-1);
+    objectiveBase.getScore(ChatColor.GOLD + "MC.GAZAPLEX.NET").setScore(-2);
+  }
 
-            scores.put(map, objectiveBase.getScore(map));
-            scores.get(map).setScore(size);
+  public static void updateLobbyScoreboard() {
+    for (String map : VotingManager.getMaps().values()) {
+      teams.get(map).setSuffix(ChatColor.RED + " » " + ChatColor.GREEN +
+                                   VotingManager.countVotes(map) + " " +
+                                   Translator.getString("VOTE") + ((VotingManager.countVotes(map) == 1) ? "" : "s"));
+    }
+  }
 
-            teams.put(map, scoreboardBase.registerNewTeam(map));
-            teams.get(map).addEntry(map);
-            teams.get(map).setPrefix(ChatColor.AQUA + "[" + count + "] " + ChatColor.GRAY);
-            teams.get(map).setSuffix(ChatColor.RED + " » " + ChatColor.GREEN + "0 " + Translator.getString("VOTE") + "s");
-        }
+  public static void createInGameScoreboard() {
+    scores.clear();
 
-        objectiveBase.getScore(ChatColor.AQUA + "").setScore(-1);
-        objectiveBase.getScore(ChatColor.GOLD + "MC.GAZAPLEX.NET").setScore(-2);
+    for (String score : scoreboardBase.getEntries()) {
+      scoreboardBase.resetScores(score);
     }
 
-    public static void updateLobbyScoreboard() {
-        for (String map : VotingManager.getMaps().values()) {
-            teams.get(map).setSuffix(ChatColor.RED + " » " + ChatColor.GREEN +
-                    VotingManager.countVotes(map) + " " +
-                    Translator.getString("VOTE") + ((VotingManager.countVotes(map) == 1) ? "" : "s"));
-        }
+    objectiveBase.setDisplayName(Translator.getColoredString("SB_GAME_PREFIX") + " " +
+                                     WordUtils.capitalize(VotingManager.getWinner()));
+
+    for (GameTeam t : GameTeam.teams()) {
+      scores.put(t.name(), objectiveBase.getScore(
+          WordUtils.capitalize(Translator.getString("TEAM") + " " + t.getName())));
+
+      scores.get(t.name()).setScore(t.getNexus().getHealth());
+
+      Team sbt = scoreboardBase.registerNewTeam(t.name() + "SB");
+      sbt.addEntry(
+          WordUtils.capitalize(Translator.getString("TEAM") + " " + t.getName())
+      );
+
+
+      sbt.setPrefix(t.color().toString());
     }
 
-    public static void createInGameScoreboard() {
-        scores.clear();
+    objectiveBase.getScore(ChatColor.AQUA + "").setScore(-1);
+    objectiveBase.getScore(ChatColor.GOLD + "MC.GAZAPLEX.NET").setScore(-2);
+  }
 
-        for (String score : scoreboardBase.getEntries()) {
-            scoreboardBase.resetScores(score);
-        }
-
-        objectiveBase.setDisplayName(Translator.getColoredString("SB_GAME_PREFIX") + " " +
-                WordUtils.capitalize(VotingManager.getWinner()));
-
-        for (GameTeam t : GameTeam.teams()) {
-            scores.put(t.name(), objectiveBase.getScore(
-                    WordUtils.capitalize(Translator.getString("TEAM") + " " + t.getName())));
-
-            scores.get(t.name()).setScore(t.getNexus().getHealth());
-
-            Team sbt = scoreboardBase.registerNewTeam(t.name() + "SB");
-            sbt.addEntry(
-                    WordUtils.capitalize(Translator.getString("TEAM") + " " + t.getName())
-            );
+  public static void updateInGameScoreboard(final GameTeam victim) {
+    scoreboardBase.getTeam(victim.name() + "SB").setPrefix(ChatColor.RESET.toString());
+    scores.get(victim.name()).setScore(victim.getNexus().getHealth());
+    Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> scoreboardBase.getTeam(victim.name() + "SB")
+                                                                     .setPrefix(victim.color().toString()), 2L);
+  }
 
 
-            sbt.setPrefix(t.color().toString());
-        }
+  public static void removeTeamScoreboard(GameTeam team) {
+    scoreboardBase.resetScores(scores.remove(team.name()).getEntry());
+  }
 
-        objectiveBase.getScore(ChatColor.AQUA + "").setScore(-1);
-        objectiveBase.getScore(ChatColor.GOLD + "MC.GAZAPLEX.NET").setScore(-2);
+
+  public static void updatePlayerScoreboard() {
+    for (Player player : Bukkit.getOnlinePlayers()) {
+      player.setScoreboard(scoreboardBase);
     }
+  }
 
-    public static void updateInGameScoreboard(final GameTeam victim) {
-        scoreboardBase.getTeam(victim.name() + "SB").setPrefix(ChatColor.RESET.toString());
-        scores.get(victim.name()).setScore(victim.getNexus().getHealth());
-        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> scoreboardBase.getTeam(victim.name() + "SB")
-                .setPrefix(victim.color().toString()), 2L);
-    }
-
-
-    public static void removeTeamScoreboard(GameTeam team) {
-        scoreboardBase.resetScores(scores.remove(team.name()).getEntry());
-    }
+  public static void setTeam(GameTeam team) {
+    teams.put(team.name(), scoreboardBase.registerNewTeam(team.name()));
+    Team sbt = teams.get(team.name());
+    sbt.setAllowFriendlyFire(false);
+    sbt.setCanSeeFriendlyInvisibles(false);
+    sbt.setPrefix(team.color().toString());
+    sbt.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OWN_TEAM);
+  }
 
 
-    public static void updatePlayerScoreboard() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.setScoreboard(scoreboardBase);
-        }
-    }
-
-    public static void setTeam(GameTeam team) {
-        teams.put(team.name(), scoreboardBase.registerNewTeam(team.name()));
-        Team sbt = teams.get(team.name());
-        sbt.setAllowFriendlyFire(false);
-        sbt.setCanSeeFriendlyInvisibles(false);
-        sbt.setPrefix(team.color().toString());
-        sbt.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OWN_TEAM);
-    }
-
-
-    public static HashMap<String, Team> getTeams() {
-        return teams;
-    }
+  public static HashMap<String, Team> getTeams() {
+    return teams;
+  }
 }

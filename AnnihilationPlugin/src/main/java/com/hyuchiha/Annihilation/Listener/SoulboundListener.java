@@ -15,49 +15,49 @@ import java.util.Collections;
 import java.util.Iterator;
 
 public class SoulboundListener implements Listener {
-    private static final String soulboundTag = ChatColor.GOLD + "Soulbound";
+  private static final String soulboundTag = ChatColor.GOLD + "Soulbound";
 
-    public static boolean isSoulbound(ItemStack item) {
-        try {
-            ItemMeta meta = item.getItemMeta();
-            if (item.hasItemMeta() &&
-                    meta.hasLore() &&
-                    meta.getLore().contains(soulboundTag)) {
-                return true;
+  public static boolean isSoulbound(ItemStack item) {
+    try {
+      ItemMeta meta = item.getItemMeta();
+      if (item.hasItemMeta() &&
+              meta.hasLore() &&
+              meta.getLore().contains(soulboundTag)) {
+        return true;
 
-            }
-        } catch (NullPointerException e) {
-            Output.logError(e.getLocalizedMessage());
-        }
-        return false;
+      }
+    } catch (NullPointerException e) {
+      Output.logError(e.getLocalizedMessage());
     }
+    return false;
+  }
 
-    public static void soulbind(ItemStack stack) {
-        ItemMeta meta = stack.getItemMeta();
-        if (!meta.hasLore()) {
-            meta.setLore(Collections.singletonList(soulboundTag));
-        } else {
-            meta.getLore().add(soulboundTag);
-        }
-        stack.setItemMeta(meta);
+  public static void soulbind(ItemStack stack) {
+    ItemMeta meta = stack.getItemMeta();
+    if (!meta.hasLore()) {
+      meta.setLore(Collections.singletonList(soulboundTag));
+    } else {
+      meta.getLore().add(soulboundTag);
     }
+    stack.setItemMeta(meta);
+  }
 
-    @EventHandler
-    public void onSoulboundDrop(PlayerDropItemEvent e) {
-        if (isSoulbound(e.getItemDrop().getItemStack())) {
-            Player p = e.getPlayer();
-            p.playSound(p.getLocation(), Sound.ENTITY_BLAZE_SHOOT, 1.0F, 0.25F);
-            e.getItemDrop().remove();
-        }
+  @EventHandler
+  public void onSoulboundDrop(PlayerDropItemEvent e) {
+    if (isSoulbound(e.getItemDrop().getItemStack())) {
+      Player p = e.getPlayer();
+      p.playSound(p.getLocation(), Sound.ENTITY_BLAZE_SHOOT, 1.0F, 0.25F);
+      e.getItemDrop().remove();
     }
+  }
 
-    @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent e) {
-        Iterator<ItemStack> it = e.getDrops().iterator();
-        while (it.hasNext()) {
-            if (isSoulbound(it.next())) {
-                it.remove();
-            }
-        }
+  @EventHandler
+  public void onPlayerDeath(PlayerDeathEvent e) {
+    Iterator<ItemStack> it = e.getDrops().iterator();
+    while (it.hasNext()) {
+      if (isSoulbound(it.next())) {
+        it.remove();
+      }
     }
+  }
 }

@@ -21,76 +21,76 @@ import org.bukkit.inventory.ItemStack;
 
 public class InventoryListener implements Listener {
 
-    private Main plugin;
+  private Main plugin;
 
-    public InventoryListener(Main plugin) {
-        plugin = plugin;
+  public InventoryListener(Main plugin) {
+    plugin = plugin;
+  }
+
+
+  @EventHandler
+  public void onInvClose(InventoryCloseEvent event) {
+    HumanEntity player = event.getPlayer();
+    Player p = (Player) player;
+    GameManager.getCurrentGame().getCrafting().remove(p.getName());
+  }
+
+  @EventHandler
+  public void onInventoryClick(InventoryClickEvent e) {
+    Inventory inv = e.getInventory();
+    Player player = (Player) e.getWhoClicked();
+
+    ItemStack clickedItem = e.getCurrentItem();
+
+    if (inv.getTitle().startsWith(Translator.getColoredString("CLICK_TO_VOTE_MAP"))) {
+      if (e.getCurrentItem().getType() == Material.AIR || e.getCurrentItem().getType() == null) {
+        return;
+      }
+
+      player.closeInventory();
+      e.setCancelled(true);
+
+      if (GameManager.getCurrentGame().getTimer().getGameState() != GameState.STARTING) {
+        player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getColoredString("NOT_VOTE_PHASE"));
+
+        return;
+      }
+      if (clickedItem.hasItemMeta() && clickedItem.getItemMeta().hasDisplayName()) {
+        String name = ChatColor.stripColor(clickedItem.getItemMeta().getDisplayName());
+
+        VotingManager.vote(player, name);
+      }
+
+      return;
     }
 
+    if (inv.getTitle().startsWith(Translator.getColoredString("CLICK_TO_CHOOSE_TEAM"))) {
+      if (e.getCurrentItem().getType() == Material.AIR || e.getCurrentItem().getType() == null) {
+        return;
+      }
 
-    @EventHandler
-    public void onInvClose(InventoryCloseEvent event) {
-        HumanEntity player = event.getPlayer();
-        Player p = (Player) player;
-        GameManager.getCurrentGame().getCrafting().remove(p.getName());
-    }
+      player.closeInventory();
+      e.setCancelled(true);
 
-    @EventHandler
-    public void onInventoryClick(InventoryClickEvent e) {
-        Inventory inv = e.getInventory();
-        Player player = (Player) e.getWhoClicked();
+      if (clickedItem.hasItemMeta() && clickedItem.getItemMeta().hasDisplayName()) {
+        String name = ChatColor.stripColor(clickedItem.getItemMeta().getDisplayName());
 
-        ItemStack clickedItem = e.getCurrentItem();
+        if (GameManager.getCurrentGame() != null && GameManager.getCurrentGame().isInGame()) {
+          player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("CANNOT_JOIN_TEAM"));
 
-        if (inv.getTitle().startsWith(Translator.getColoredString("CLICK_TO_VOTE_MAP"))) {
-            if (e.getCurrentItem().getType() == Material.AIR || e.getCurrentItem().getType() == null) {
-                return;
-            }
-
-            player.closeInventory();
-            e.setCancelled(true);
-
-            if (GameManager.getCurrentGame().getTimer().getGameState() != GameState.STARTING) {
-                player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getColoredString("NOT_VOTE_PHASE"));
-
-                return;
-            }
-            if (clickedItem.hasItemMeta() && clickedItem.getItemMeta().hasDisplayName()) {
-                String name = ChatColor.stripColor(clickedItem.getItemMeta().getDisplayName());
-
-                VotingManager.vote(player, name);
-            }
-
-            return;
+          return;
         }
+        GamePlayer gamePlayer = PlayerManager.getGamePlayer(player);
+        GameTeam team = GameTeam.getTeamByTranslatedName(name);
 
-        if (inv.getTitle().startsWith(Translator.getColoredString("CLICK_TO_CHOOSE_TEAM"))) {
-            if (e.getCurrentItem().getType() == Material.AIR || e.getCurrentItem().getType() == null) {
-                return;
-            }
-
-            player.closeInventory();
-            e.setCancelled(true);
-
-            if (clickedItem.hasItemMeta() && clickedItem.getItemMeta().hasDisplayName()) {
-                String name = ChatColor.stripColor(clickedItem.getItemMeta().getDisplayName());
-
-                if (GameManager.getCurrentGame() != null && GameManager.getCurrentGame().isInGame()) {
-                    player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("CANNOT_JOIN_TEAM"));
-
-                    return;
-                }
-                GamePlayer gamePlayer = PlayerManager.getGamePlayer(player);
-                GameTeam team = GameTeam.getTeamByTranslatedName(name);
-
-                if (team != null) {
-                    if (gamePlayer.getTeam() == GameTeam.NONE) {
-                        GameManager.getCurrentGame().joinTeam(player, team.name());
-                    }
-                } else {
-                    player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("CANNOT_JOIN_TEAM"));
-                }
-            }
+        if (team != null) {
+          if (gamePlayer.getTeam() == GameTeam.NONE) {
+            GameManager.getCurrentGame().joinTeam(player, team.name());
+          }
+        } else {
+          player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("CANNOT_JOIN_TEAM"));
         }
+      }
     }
+  }
 }

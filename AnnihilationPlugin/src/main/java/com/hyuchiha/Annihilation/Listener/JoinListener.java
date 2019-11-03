@@ -25,121 +25,121 @@ import org.bukkit.event.player.PlayerLoginEvent;
 
 public class JoinListener implements Listener {
 
-    private final Main plugin;
+  private final Main plugin;
 
-    public JoinListener(Main plugin) {
-        this.plugin = plugin;
+  public JoinListener(Main plugin) {
+    this.plugin = plugin;
+  }
+
+
+  @EventHandler
+  public void onPlayerJoin(PlayerJoinEvent event) {
+    event.setJoinMessage("");
+    final Player player = event.getPlayer();
+
+    GameManager.getCurrentGame().getNpcPlayers().remove(player.getName());
+
+    player.sendMessage(Translator.getPrefix() + Translator.getColoredString("PLAYER_JOIN_MESSAGE"));
+
+    TitleAPI.send(player,
+        Translator.getColoredString("SERVER_JOIN_TITLE"),
+        Translator.getColoredString("SERVER_JOIN_SUBTITLE"), 10, 30, 10);
+
+
+    GamePlayer gamePlayer = PlayerManager.getGamePlayer(player);
+    this.plugin.getMainDatabase().createAccount(player.getUniqueId().toString(), player.getName());
+
+
+    if (GameManager.getCurrentGame().getPhase() == 0) {
+      BossBarAPI.setMessage(player, Translator.getColoredString("WELCOME_TO_ANNIHILATION"), 1.0F);
+    }
+
+    gamePlayer.prepareLobbyPlayer();
+
+    SignManager.updateIndividualSign(gamePlayer.getTeam());
+
+
+    if (GameManager.canStartGame()) {
+      Bukkit.getServer().getPluginManager().callEvent(new StartGameEvent());
     }
 
 
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        event.setJoinMessage("");
-        final Player player = event.getPlayer();
-
-        GameManager.getCurrentGame().getNpcPlayers().remove(player.getName());
-
-        player.sendMessage(Translator.getPrefix() + Translator.getColoredString("PLAYER_JOIN_MESSAGE"));
-
-        TitleAPI.send(player,
-                Translator.getColoredString("SERVER_JOIN_TITLE"),
-                Translator.getColoredString("SERVER_JOIN_SUBTITLE"), 10, 30, 10);
+    Bukkit.getScheduler().scheduleSyncDelayedTask(this.plugin, () -> rejoinPlayer(player), 20L);
+  }
 
 
-        GamePlayer gamePlayer = PlayerManager.getGamePlayer(player);
-        this.plugin.getMainDatabase().createAccount(player.getUniqueId().toString(), player.getName());
+  private void rejoinPlayer(Player p) {
+    String playerName = p.getName();
 
-
-        if (GameManager.getCurrentGame().getPhase() == 0) {
-            BossBarAPI.setMessage(player, Translator.getColoredString("WELCOME_TO_ANNIHILATION"), 1.0F);
-        }
-
-        gamePlayer.prepareLobbyPlayer();
-
-        SignManager.updateIndividualSign(gamePlayer.getTeam());
-
-
-        if (GameManager.canStartGame()) {
-            Bukkit.getServer().getPluginManager().callEvent(new StartGameEvent());
-        }
-
-
-        Bukkit.getScheduler().scheduleSyncDelayedTask(this.plugin, () -> rejoinPlayer(player), 20L);
+    if (!PlayerSerializer.playerPlayed(p)) {
+      return;
     }
 
+    PlayerSerializer.RestorePlayer(p);
+    p.updateInventory();
 
-    private void rejoinPlayer(Player p) {
-        String playerName = p.getName();
+    GamePlayer meta = PlayerManager.getGamePlayer(p);
 
-        if (!PlayerSerializer.playerPlayed(p)) {
-            return;
-        }
+    if (meta == null) {
+      p.kickPlayer(Translator.getPrefix() + Translator.getColoredString("ERROR_PLAYER_DONT_EXIST"));
 
-        PlayerSerializer.RestorePlayer(p);
-        p.updateInventory();
-
-        GamePlayer meta = PlayerManager.getGamePlayer(p);
-
-        if (meta == null) {
-            p.kickPlayer(Translator.getPrefix() + Translator.getColoredString("ERROR_PLAYER_DONT_EXIST"));
-
-            return;
-        }
-        if (PlayerSerializer.isKilled(playerName)) {
+      return;
+    }
+    if (PlayerSerializer.isKilled(playerName)) {
 
 
-            meta.preparePlayerForGame();
-            p.sendMessage(Translator.getPrefix() + Translator.getColoredString("NPC_JOIN_KILLED"));
+      meta.preparePlayerForGame();
+      p.sendMessage(Translator.getPrefix() + Translator.getColoredString("NPC_JOIN_KILLED"));
 
-            return;
-        }
-        p.teleport(meta.getTeam().getRandomSpawn());
-        p.sendMessage(Translator.getPrefix() + Translator.getColoredString("NPC_JOIN_RESUMED"));
-        p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
-        SignManager.updateIndividualSign(meta.getTeam());
-        ScoreboardManager.updatePlayerScoreboard();
-        p.setGameMode(GameMode.SURVIVAL);
-        p.updateInventory();
+      return;
+    }
+    p.teleport(meta.getTeam().getRandomSpawn());
+    p.sendMessage(Translator.getPrefix() + Translator.getColoredString("NPC_JOIN_RESUMED"));
+    p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
+    SignManager.updateIndividualSign(meta.getTeam());
+    ScoreboardManager.updatePlayerScoreboard();
+    p.setGameMode(GameMode.SURVIVAL);
+    p.updateInventory();
+  }
+
+
+  @EventHandler
+  public void onPlayerPreJoin(AsyncPlayerPreLoginEvent event) {
+    if (GameManager.getCurrentGame() != null
+            && GameManager.getCurrentGame().getTimer().isGameStarted()
+            && GameManager.getCurrentGame().getPhase() > this.plugin.getConfig("config.yml").getInt("lastJoinPhase")
+    ) {
+      event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER,
+
+          Translator.getPrefix() + ChatColor.RED +
+
+              Translator.getString("ERROR_GAME_STARTED"));
+    }
+  }
+
+
+  @EventHandler
+  public void OnPlayerJoinEvent(PlayerLoginEvent event) {
+    if (event.getResult() != PlayerLoginEvent.Result.ALLOWED && event.getPlayer() == null) {
+      return;
     }
 
+    Player p = event.getPlayer();
 
-    @EventHandler
-    public void onPlayerPreJoin(AsyncPlayerPreLoginEvent event) {
-        if (GameManager.getCurrentGame() != null
-                && GameManager.getCurrentGame().getTimer().isGameStarted()
-                && GameManager.getCurrentGame().getPhase() > this.plugin.getConfig("config.yml").getInt("lastJoinPhase")
-        ) {
-            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER,
+    if (!PlayerSerializer.playerPlayed(p) &&
+            GameManager.getCurrentGame().getPhase() > this.plugin.getConfig("config.yml").getInt("lastJoinPhase") && (
+        !p.isOp() || !p.getName().equals("byHyuchiha")) &&
+            p.isOnline() && !p.hasPermission("annihilation.vip.pass")) {
+      event.disallow(PlayerLoginEvent.Result.KICK_OTHER, Translator.getColoredString("ERROR_NO_JOIN_PHASE"));
 
-                    Translator.getPrefix() + ChatColor.RED +
 
-                            Translator.getString("ERROR_GAME_STARTED"));
-        }
+      return;
     }
 
+    GamePlayer gamePlayer = PlayerManager.getGamePlayer(p);
 
-    @EventHandler
-    public void OnPlayerJoinEvent(PlayerLoginEvent event) {
-        if (event.getResult() != PlayerLoginEvent.Result.ALLOWED && event.getPlayer() == null) {
-            return;
-        }
-
-        Player p = event.getPlayer();
-
-        if (!PlayerSerializer.playerPlayed(p) &&
-                GameManager.getCurrentGame().getPhase() > this.plugin.getConfig("config.yml").getInt("lastJoinPhase") && (
-                !p.isOp() || !p.getName().equals("byHyuchiha")) &&
-                p.isOnline() && !p.hasPermission("annihilation.vip.pass")) {
-            event.disallow(PlayerLoginEvent.Result.KICK_OTHER, Translator.getColoredString("ERROR_NO_JOIN_PHASE"));
-
-
-            return;
-        }
-
-        GamePlayer gamePlayer = PlayerManager.getGamePlayer(p);
-
-        if (GameManager.getCurrentGame().getTimer().isRunning() &&
-                gamePlayer.getTeam().getNexus() != null && !gamePlayer.getTeam().getNexus().isAlive())
-            event.disallow(PlayerLoginEvent.Result.KICK_OTHER, Translator.getColoredString("ERROR_NEXUS_DESTROYED"));
-    }
+    if (GameManager.getCurrentGame().getTimer().isRunning() &&
+            gamePlayer.getTeam().getNexus() != null && !gamePlayer.getTeam().getNexus().isAlive())
+      event.disallow(PlayerLoginEvent.Result.KICK_OTHER, Translator.getColoredString("ERROR_NEXUS_DESTROYED"));
+  }
 }

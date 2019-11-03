@@ -19,73 +19,73 @@ import java.util.List;
 
 
 public class MapManager {
-    private static final ArrayList<String> maps = new ArrayList<>();
-    private static Location lobbySpawn;
-    private static GameArena currentArena = null;
+  private static final ArrayList<String> maps = new ArrayList<>();
+  private static Location lobbySpawn;
+  private static GameArena currentArena = null;
 
-    public static void initMaps() {
-        Main main = Main.getInstance();
+  public static void initMaps() {
+    Main main = Main.getInstance();
 
-        Configuration config = main.getConfig("maps.yml");
+    Configuration config = main.getConfig("maps.yml");
 
-        for (String s : config.getKeys(false)) {
-            if (!s.equalsIgnoreCase("lobby")) {
-                Output.log("Loading map " + s);
+    for (String s : config.getKeys(false)) {
+      if (!s.equalsIgnoreCase("lobby")) {
+        Output.log("Loading map " + s);
 
-                if (MapLoader.loadMap(s)) {
-                    maps.add(s);
-                }
-            }
+        if (MapLoader.loadMap(s)) {
+          maps.add(s);
         }
-
-        Output.log("Creating map lobby");
-
-        WorldCreator wc = new WorldCreator("lobby");
-        wc.generator(new VoidGenerator());
-        World world = Bukkit.createWorld(wc);
-
-        initSettingForArena(world);
-
-        Output.log("Lobby created");
-
-        lobbySpawn = LocationUtils.parseLocation(Bukkit.getWorld("lobby"), config.getString("lobby.spawn"));
+      }
     }
 
-    private static void initSettingForArena(World world) {
-        world.setGameRuleValue("doFireTick", "false");
-        world.setGameRuleValue("doDaylightCycle", "false");
-        world.setGameRuleValue("doMobSpawning", "false");
+    Output.log("Creating map lobby");
+
+    WorldCreator wc = new WorldCreator("lobby");
+    wc.generator(new VoidGenerator());
+    World world = Bukkit.createWorld(wc);
+
+    initSettingForArena(world);
+
+    Output.log("Lobby created");
+
+    lobbySpawn = LocationUtils.parseLocation(Bukkit.getWorld("lobby"), config.getString("lobby.spawn"));
+  }
+
+  private static void initSettingForArena(World world) {
+    world.setGameRuleValue("doFireTick", "false");
+    world.setGameRuleValue("doDaylightCycle", "false");
+    world.setGameRuleValue("doMobSpawning", "false");
+  }
+
+  public static Location getLobbySpawn() {
+    return lobbySpawn;
+  }
+
+
+  public static void selectMap(String mapName) {
+    currentArena = new GameArena(mapName);
+  }
+
+
+  public static boolean isMapSelected() {
+    return (currentArena != null);
+  }
+
+
+  public static GameArena getCurrentMap() {
+    return currentArena;
+  }
+
+  public static List<String> getRandomMaps() {
+    LinkedList<String> shuffledMaps = new LinkedList<>(maps);
+    Collections.shuffle(shuffledMaps);
+    return shuffledMaps.subList(0, Math.min(5, shuffledMaps.size()));
+  }
+
+  public static void resetMap() {
+    if (currentArena != null) {
+      currentArena.rollbackArena();
+      currentArena = null;
     }
-
-    public static Location getLobbySpawn() {
-        return lobbySpawn;
-    }
-
-
-    public static void selectMap(String mapName) {
-        currentArena = new GameArena(mapName);
-    }
-
-
-    public static boolean isMapSelected() {
-        return (currentArena != null);
-    }
-
-
-    public static GameArena getCurrentMap() {
-        return currentArena;
-    }
-
-    public static List<String> getRandomMaps() {
-        LinkedList<String> shuffledMaps = new LinkedList<>(maps);
-        Collections.shuffle(shuffledMaps);
-        return shuffledMaps.subList(0, Math.min(5, shuffledMaps.size()));
-    }
-
-    public static void resetMap() {
-        if (currentArena != null) {
-            currentArena.rollbackArena();
-            currentArena = null;
-        }
-    }
+  }
 }

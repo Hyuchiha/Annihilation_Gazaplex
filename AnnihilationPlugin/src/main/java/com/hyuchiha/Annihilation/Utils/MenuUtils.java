@@ -18,59 +18,59 @@ import java.util.List;
 
 
 public class MenuUtils {
-    public static void showTeamSelector(Player p) {
-        int size = (GameTeam.teams().length + 8) / 9 * 9;
-        Inventory inv = createInventory(p, size, Translator.getColoredString("CLICK_TO_CHOOSE_TEAM"));
-        for (GameTeam team : GameTeam.teams()) {
-            Wool wool = new Wool(team.getDyeColor());
-            ItemStack teamWoolColored = wool.toItemStack(1);
+  public static void showTeamSelector(Player p) {
+    int size = (GameTeam.teams().length + 8) / 9 * 9;
+    Inventory inv = createInventory(p, size, Translator.getColoredString("CLICK_TO_CHOOSE_TEAM"));
+    for (GameTeam team : GameTeam.teams()) {
+      Wool wool = new Wool(team.getDyeColor());
+      ItemStack teamWoolColored = wool.toItemStack(1);
 
-            ItemMeta im = teamWoolColored.getItemMeta();
+      ItemMeta im = teamWoolColored.getItemMeta();
 
-            List<String> players = new ArrayList<>();
+      List<String> players = new ArrayList<>();
 
-            for (Player player : team.getPlayers()) {
-                players.add("- " + team.getChatColor() + player.getName());
+      for (Player player : team.getPlayers()) {
+        players.add("- " + team.getChatColor() + player.getName());
 
-                if (players.size() > 8) {
-                    break;
-                }
-            }
-
-            im.setLore(players);
-            im.setDisplayName(team.coloredName());
-            teamWoolColored.setItemMeta(im);
-
-            inv.addItem(teamWoolColored);
+        if (players.size() > 8) {
+          break;
         }
+      }
 
-        p.openInventory(inv);
+      im.setLore(players);
+      im.setDisplayName(team.coloredName());
+      teamWoolColored.setItemMeta(im);
+
+      inv.addItem(teamWoolColored);
     }
 
-    public static void showMapSelector(Player p) {
-        Output.log("Creating Selector");
+    p.openInventory(inv);
+  }
 
-        int size = (VotingManager.getMaps().size() + 8) / 9 * 9;
+  public static void showMapSelector(Player p) {
+    Output.log("Creating Selector");
 
-        Inventory inv = createInventory(p, size, Translator.getColoredString("CLICK_TO_VOTE_MAP"));
-        for (String map : VotingManager.getMaps().values()) {
-            ItemStack i = new ItemStack(Material.MAP);
+    int size = (VotingManager.getMaps().size() + 8) / 9 * 9;
 
-            ItemMeta im = i.getItemMeta();
+    Inventory inv = createInventory(p, size, Translator.getColoredString("CLICK_TO_VOTE_MAP"));
+    for (String map : VotingManager.getMaps().values()) {
+      ItemStack i = new ItemStack(Material.MAP);
 
-            im.setDisplayName(ChatColor.GOLD + map);
-            i.setItemMeta(im);
+      ItemMeta im = i.getItemMeta();
 
-            Output.log("Loading map selector: " + map);
+      im.setDisplayName(ChatColor.GOLD + map);
+      i.setItemMeta(im);
 
-            inv.addItem(i);
-        }
+      Output.log("Loading map selector: " + map);
 
-        p.openInventory(inv);
+      inv.addItem(i);
     }
 
+    p.openInventory(inv);
+  }
 
-    private static Inventory createInventory(Player player, int slots, String name) {
-        return Bukkit.createInventory(player, slots, name);
-    }
+
+  private static Inventory createInventory(Player player, int slots, String name) {
+    return Bukkit.createInventory(player, slots, name);
+  }
 }

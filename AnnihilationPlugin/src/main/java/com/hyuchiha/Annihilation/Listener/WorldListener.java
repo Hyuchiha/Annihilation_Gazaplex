@@ -27,109 +27,109 @@ import java.util.Set;
 
 
 public class WorldListener
-        implements Listener {
-    private static final Set<EntityType> hostileEntityTypes = new HashSet<EntityType>() {
-        private static final long serialVersionUID = 42L;
-    };
+    implements Listener {
+  private static final Set<EntityType> hostileEntityTypes = new HashSet<EntityType>() {
+    private static final long serialVersionUID = 42L;
+  };
 
 
-    @EventHandler
-    public void onPistonMove(BlockPistonExtendEvent e) {
-        for (Block b : e.getBlocks()) {
-            if (GameUtils.tooClose(b.getLocation())) {
-                e.setCancelled(true);
-                b.setType(Material.AIR);
-            }
-        }
-    }
-
-    @EventHandler
-    public void onWaterFlow(BlockFromToEvent e) {
-        if (LocationUtils.isEmptyColumn(e.getToBlock().getLocation())) {
-            e.setCancelled(true);
-        }
-    }
-
-
-    @EventHandler
-    public void LeafDecay(LeavesDecayEvent e) {
+  @EventHandler
+  public void onPistonMove(BlockPistonExtendEvent e) {
+    for (Block b : e.getBlocks()) {
+      if (GameUtils.tooClose(b.getLocation())) {
         e.setCancelled(true);
+        b.setType(Material.AIR);
+      }
     }
+  }
 
-
-    @EventHandler
-    public void onBucketUse(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-
-        if (event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            ItemStack material = player.getItemInHand();
-            if (material.getType() == Material.WATER_BUCKET &&
-                    GameUtils.tooClose(event.getClickedBlock().getLocation())) {
-                event.setCancelled(true);
-
-                return;
-            }
-
-            if (material.getType() == Material.LAVA_BUCKET) {
-                event.setCancelled(true);
-            }
-        }
+  @EventHandler
+  public void onWaterFlow(BlockFromToEvent e) {
+    if (LocationUtils.isEmptyColumn(e.getToBlock().getLocation())) {
+      e.setCancelled(true);
     }
+  }
 
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onInventoryClick(InventoryClickEvent e) {
-        if (!e.isCancelled()) {
-            HumanEntity ent = e.getWhoClicked();
-
-            if (ent instanceof Player) {
-                Player player = (Player) ent;
-                Inventory inv = e.getInventory();
-
-                if (inv instanceof org.bukkit.inventory.AnvilInventory) {
-                    InventoryView view = e.getView();
-                    int rawSlot = e.getRawSlot();
-
-                    if (rawSlot == view.convertSlot(rawSlot)) {
+  @EventHandler
+  public void LeafDecay(LeavesDecayEvent e) {
+    e.setCancelled(true);
+  }
 
 
-                        if (rawSlot == 2) {
+  @EventHandler
+  public void onBucketUse(PlayerInteractEvent event) {
+    Player player = event.getPlayer();
+
+    if (event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+      ItemStack material = player.getItemInHand();
+      if (material.getType() == Material.WATER_BUCKET &&
+              GameUtils.tooClose(event.getClickedBlock().getLocation())) {
+        event.setCancelled(true);
+
+        return;
+      }
+
+      if (material.getType() == Material.LAVA_BUCKET) {
+        event.setCancelled(true);
+      }
+    }
+  }
 
 
-                            ItemStack item = e.getCurrentItem();
+  @EventHandler(priority = EventPriority.MONITOR)
+  public void onInventoryClick(InventoryClickEvent e) {
+    if (!e.isCancelled()) {
+      HumanEntity ent = e.getWhoClicked();
+
+      if (ent instanceof Player) {
+        Player player = (Player) ent;
+        Inventory inv = e.getInventory();
+
+        if (inv instanceof org.bukkit.inventory.AnvilInventory) {
+          InventoryView view = e.getView();
+          int rawSlot = e.getRawSlot();
+
+          if (rawSlot == view.convertSlot(rawSlot)) {
 
 
-                            if (item != null) {
-                                ItemMeta meta = item.getItemMeta();
+            if (rawSlot == 2) {
 
 
-                                if (meta != null) {
-                                    if (meta.hasDisplayName() &&
-                                            item.getType() == Material.GOLD_INGOT) {
-                                        e.setCancelled(true);
-                                    }
-                                }
-                            }
-                        }
-                    }
+              ItemStack item = e.getCurrentItem();
+
+
+              if (item != null) {
+                ItemMeta meta = item.getItemMeta();
+
+
+                if (meta != null) {
+                  if (meta.hasDisplayName() &&
+                          item.getType() == Material.GOLD_INGOT) {
+                    e.setCancelled(true);
+                  }
                 }
+              }
             }
+          }
         }
+      }
     }
+  }
 
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onSpawn(CreatureSpawnEvent e) {
-        if (isHostile(e.getEntityType())) {
-            if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.CUSTOM) {
-                return;
-            }
-            e.setCancelled(true);
-        }
+  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+  public void onSpawn(CreatureSpawnEvent e) {
+    if (isHostile(e.getEntityType())) {
+      if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.CUSTOM) {
+        return;
+      }
+      e.setCancelled(true);
     }
+  }
 
 
-    private boolean isHostile(EntityType entityType) {
-        return hostileEntityTypes.contains(entityType);
-    }
+  private boolean isHostile(EntityType entityType) {
+    return hostileEntityTypes.contains(entityType);
+  }
 }

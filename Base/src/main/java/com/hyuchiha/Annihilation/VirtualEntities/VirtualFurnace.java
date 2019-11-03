@@ -3,11 +3,11 @@ package com.hyuchiha.Annihilation.VirtualEntities;
 import org.bukkit.inventory.InventoryHolder;
 
 public interface VirtualFurnace {
-    boolean canCook();
+  boolean canCook();
 
-    void cook();
+  void cook();
 
-    InventoryHolder getOwner();
+  InventoryHolder getOwner();
 
-    void openFurnace();
+  void openFurnace();
 }

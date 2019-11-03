@@ -2,12 +2,12 @@ package com.hyuchiha.Annihilation.Maps.Hooks;
 
 public interface Hooks {
 
-    void preUnload(String world);
+  void preUnload(String world);
 
-    void postUnload(String world);
+  void postUnload(String world);
 
-    void preLoad(String world);
+  void preLoad(String world);
 
-    void postLoad(String world);
+  void postLoad(String world);
 
 }

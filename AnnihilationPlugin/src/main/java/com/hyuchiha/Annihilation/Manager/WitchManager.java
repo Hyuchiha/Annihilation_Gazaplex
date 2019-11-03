@@ -6,15 +6,15 @@ import java.util.HashMap;
 
 
 public class WitchManager {
-    public static HashMap<String, GameWitch> witchs = new HashMap<>();
+  public static HashMap<String, GameWitch> witchs = new HashMap<>();
 
 
-    public static void loadWitchs(HashMap<String, GameWitch> b) {
-        witchs = b;
-    }
+  public static void loadWitchs(HashMap<String, GameWitch> b) {
+    witchs = b;
+  }
 
 
-    public static void clearWitch() {
-        witchs.clear();
-    }
+  public static void clearWitch() {
+    witchs.clear();
+  }
 }

@@ -19,61 +19,61 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 
 public class SignListener implements Listener {
-    private final Main plugin;
+  private final Main plugin;
 
-    public SignListener(Main plugin) {
-        this.plugin = plugin;
-    }
+  public SignListener(Main plugin) {
+    this.plugin = plugin;
+  }
 
 
-    @EventHandler
-    public void onSignClick(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        GamePlayer gamePlayer = PlayerManager.getGamePlayer(player);
+  @EventHandler
+  public void onSignClick(PlayerInteractEvent event) {
+    Player player = event.getPlayer();
+    GamePlayer gamePlayer = PlayerManager.getGamePlayer(player);
 
-        Action action = event.getAction();
-        if ((action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) &&
-                event.getClickedBlock() != null) {
-            Material clickedType = event.getClickedBlock().getType();
-            if (clickedType == Material.SIGN_POST || clickedType == Material.WALL_SIGN) {
+    Action action = event.getAction();
+    if ((action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) &&
+            event.getClickedBlock() != null) {
+      Material clickedType = event.getClickedBlock().getType();
+      if (clickedType == Material.SIGN_POST || clickedType == Material.WALL_SIGN) {
 
-                Sign s = (Sign) event.getClickedBlock().getState();
+        Sign s = (Sign) event.getClickedBlock().getState();
 
-                Output.log(s.getLine(0));
+        Output.log(s.getLine(0));
 
-                if (s.getLine(0).contains(ChatColor.DARK_PURPLE + "[" +
-                        Translator.getString("TEAM") + ChatColor.DARK_PURPLE + "]")) {
+        if (s.getLine(0).contains(ChatColor.DARK_PURPLE + "[" +
+                                      Translator.getString("TEAM") + ChatColor.DARK_PURPLE + "]")) {
 
-                    Output.log("Sign with team name");
-                    Output.log(s.getLine(1));
+          Output.log("Sign with team name");
+          Output.log(s.getLine(1));
 
-                    String teamName = ChatColor.stripColor(s.getLine(1));
-                    GameTeam team = GameTeam.getTeamByTranslatedName(teamName);
+          String teamName = ChatColor.stripColor(s.getLine(1));
+          GameTeam team = GameTeam.getTeamByTranslatedName(teamName);
 
-                    if (team != null && GameManager.getCurrentGame() != null) {
-                        if (gamePlayer.getTeam() == GameTeam.NONE) {
-                            GameManager.getCurrentGame().joinTeam(event.getPlayer(), team.name());
-                        }
-                    } else {
-                        Output.log("The sign exist but the team no");
-                        player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("CANNOT_JOIN_TEAM"));
-                    }
-                }
+          if (team != null && GameManager.getCurrentGame() != null) {
+            if (gamePlayer.getTeam() == GameTeam.NONE) {
+              GameManager.getCurrentGame().joinTeam(event.getPlayer(), team.name());
             }
+          } else {
+            Output.log("The sign exist but the team no");
+            player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("CANNOT_JOIN_TEAM"));
+          }
         }
+      }
     }
+  }
 
 
-    @EventHandler
-    public void onSignBreak(BlockBreakEvent event) {
-        Material clickedType = event.getBlock().getType();
-        if (clickedType == Material.SIGN_POST || clickedType == Material.WALL_SIGN) {
+  @EventHandler
+  public void onSignBreak(BlockBreakEvent event) {
+    Material clickedType = event.getBlock().getType();
+    if (clickedType == Material.SIGN_POST || clickedType == Material.WALL_SIGN) {
 
-            Sign s = (Sign) event.getBlock().getState();
+      Sign s = (Sign) event.getBlock().getState();
 
-            if (s.getLine(0).contains(ChatColor.DARK_PURPLE + "[" +
-                    Translator.getString("TEAM") + ChatColor.DARK_PURPLE + "]"))
-                event.setCancelled(true);
-        }
+      if (s.getLine(0).contains(ChatColor.DARK_PURPLE + "[" +
+                                    Translator.getString("TEAM") + ChatColor.DARK_PURPLE + "]"))
+        event.setCancelled(true);
     }
+  }
 }

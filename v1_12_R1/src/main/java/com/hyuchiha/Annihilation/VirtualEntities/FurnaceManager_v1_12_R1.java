@@ -5,12 +5,12 @@ import org.bukkit.plugin.Plugin;
 
 public class FurnaceManager_v1_12_R1 extends FurnaceManager {
 
-    public FurnaceManager_v1_12_R1(Plugin plugin) {
-        super(plugin);
-    }
+  public FurnaceManager_v1_12_R1(Plugin plugin) {
+    super(plugin);
+  }
 
-    @Override
-    VirtualFurnace createFurnace(Player player) {
-        return new VirtualFurnace_v1_12_R1(player);
-    }
+  @Override
+  VirtualFurnace createFurnace(Player player) {
+    return new VirtualFurnace_v1_12_R1(player);
+  }
 }

@@ -12,75 +12,75 @@ import org.inventivetalent.reflection.minecraft.Minecraft;
 import java.util.HashMap;
 
 public class EnderFurnaceManager {
-    private static HashMap<GameTeam, Location> locations = new HashMap<>();
-    private static FurnaceManager furnaceManager;
+  private static HashMap<GameTeam, Location> locations = new HashMap<>();
+  private static FurnaceManager furnaceManager;
 
-    public static void initFurnaceManager() {
-        Output.log("Initializing furnace manager for the server version");
-        Main main = Main.getInstance();
+  public static void initFurnaceManager() {
+    Output.log("Initializing furnace manager for the server version");
+    Main main = Main.getInstance();
 
-        switch (Minecraft.Version.getVersion()) {
-            case v1_9_R1:
-                furnaceManager = new FurnaceManager_v1_9_R1(main);
-                return;
-            case v1_9_R2:
-                furnaceManager = new FurnaceManager_v1_9_R2(main);
-                return;
-            case v1_10_R1:
-                furnaceManager = new FurnaceManager_v1_10_R1(main);
-                return;
-            case v1_11_R1:
-                furnaceManager = new FurnaceManager_v1_11_R1(main);
-                return;
-            case v1_12_R1:
-                furnaceManager = new FurnaceManager_v1_12_R1(main);
-                return;
-        }
-        Output.log("Version not supported");
-        Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
+    switch (Minecraft.Version.getVersion()) {
+      case v1_9_R1:
+        furnaceManager = new FurnaceManager_v1_9_R1(main);
+        return;
+      case v1_9_R2:
+        furnaceManager = new FurnaceManager_v1_9_R2(main);
+        return;
+      case v1_10_R1:
+        furnaceManager = new FurnaceManager_v1_10_R1(main);
+        return;
+      case v1_11_R1:
+        furnaceManager = new FurnaceManager_v1_11_R1(main);
+        return;
+      case v1_12_R1:
+        furnaceManager = new FurnaceManager_v1_12_R1(main);
+        return;
     }
+    Output.log("Version not supported");
+    Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
+  }
 
 
-    public static void loadFurnaceLocationForTeam(GameTeam team, Location location) {
-        locations.put(team, location);
+  public static void loadFurnaceLocationForTeam(GameTeam team, Location location) {
+    locations.put(team, location);
 
-        location.getBlock().setType(Material.FURNACE);
-    }
-
-
-    public static void clearTeamsFurnaces() {
-        locations.clear();
-    }
+    location.getBlock().setType(Material.FURNACE);
+  }
 
 
-    public static boolean teamHasFurnaceRegistered(GameTeam team) {
-        return locations.containsKey(team);
-    }
+  public static void clearTeamsFurnaces() {
+    locations.clear();
+  }
 
 
-    public static boolean isFurnaceLocation(Location location) {
-        return locations.containsValue(location);
-    }
+  public static boolean teamHasFurnaceRegistered(GameTeam team) {
+    return locations.containsKey(team);
+  }
 
 
-    public static boolean isTeamFurnace(GameTeam team, Location location) {
-        return locations.get(team).equals(location);
-    }
+  public static boolean isFurnaceLocation(Location location) {
+    return locations.containsValue(location);
+  }
 
 
-    public static void openFurnaceForUser(Player player) {
-        VirtualFurnace furnace = furnaceManager.getFurnace(player);
-        furnace.openFurnace();
-    }
+  public static boolean isTeamFurnace(GameTeam team, Location location) {
+    return locations.get(team).equals(location);
+  }
 
 
-    public static boolean isFurnaceEnabled() {
-        return furnaceManager.isRunning();
-    }
+  public static void openFurnaceForUser(Player player) {
+    VirtualFurnace furnace = furnaceManager.getFurnace(player);
+    furnace.openFurnace();
+  }
 
 
-    public static void disableFurnaceManager() {
-        furnaceManager.clearFurnaces();
-        furnaceManager.disableFurnaces();
-    }
+  public static boolean isFurnaceEnabled() {
+    return furnaceManager.isRunning();
+  }
+
+
+  public static void disableFurnaceManager() {
+    furnaceManager.clearFurnaces();
+    furnaceManager.disableFurnaces();
+  }
 }

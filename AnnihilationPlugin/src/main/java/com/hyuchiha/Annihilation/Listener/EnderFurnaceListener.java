@@ -17,34 +17,34 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 public class EnderFurnaceListener implements Listener {
 
-    @EventHandler(ignoreCancelled = true)
-    public void onFurnaceOpen(PlayerInteractEvent e) {
-        if (e.getAction() != Action.RIGHT_CLICK_BLOCK) {
-            return;
-        }
-
-        Block b = e.getClickedBlock();
-        if (b.getType() != Material.FURNACE) {
-            return;
-        }
-
-        Location loc = b.getLocation();
-        Player player = e.getPlayer();
-        GameTeam team = PlayerManager.getGamePlayer(player).getTeam();
-        if (team == null || !EnderFurnaceManager.teamHasFurnaceRegistered(team)) {
-            return;
-        }
-
-        if (EnderFurnaceManager.isTeamFurnace(team, loc)) {
-            e.setCancelled(true);
-            EnderFurnaceManager.openFurnaceForUser(player);
-            player.sendMessage(Translator.getPrefix() + ChatColor.GRAY + Translator.getColoredString("INFO_FURNACE"));
-        }
+  @EventHandler(ignoreCancelled = true)
+  public void onFurnaceOpen(PlayerInteractEvent e) {
+    if (e.getAction() != Action.RIGHT_CLICK_BLOCK) {
+      return;
     }
 
-    @EventHandler
-    public void onFurnaceBreak(BlockBreakEvent e) {
-        if (EnderFurnaceManager.isFurnaceLocation(e.getBlock().getLocation()))
-            e.setCancelled(true);
+    Block b = e.getClickedBlock();
+    if (b.getType() != Material.FURNACE) {
+      return;
     }
+
+    Location loc = b.getLocation();
+    Player player = e.getPlayer();
+    GameTeam team = PlayerManager.getGamePlayer(player).getTeam();
+    if (team == null || !EnderFurnaceManager.teamHasFurnaceRegistered(team)) {
+      return;
+    }
+
+    if (EnderFurnaceManager.isTeamFurnace(team, loc)) {
+      e.setCancelled(true);
+      EnderFurnaceManager.openFurnaceForUser(player);
+      player.sendMessage(Translator.getPrefix() + ChatColor.GRAY + Translator.getColoredString("INFO_FURNACE"));
+    }
+  }
+
+  @EventHandler
+  public void onFurnaceBreak(BlockBreakEvent e) {
+    if (EnderFurnaceManager.isFurnaceLocation(e.getBlock().getLocation()))
+      e.setCancelled(true);
+  }
 }
