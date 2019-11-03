@@ -32,15 +32,16 @@ public class PlayerSerializer {
     ItemStack[] items = player.getInventory().getContents().clone();
     double health = player.getHealth();
     ItemStack[] armor = player.getInventory().getArmorContents().clone();
-    float satur = player.getSaturation();
+    float saturation = player.getSaturation();
     int level = player.getLevel();
     int gm = player.getGameMode().getValue();
     int food = player.getFoodLevel();
-    float exauth = player.getExhaustion();
+    float exhaustion = player.getExhaustion();
     float exp = player.getExp();
-    String wname = Bukkit.getPlayer(playerName).getWorld().getName();
+    String wName = Bukkit.getPlayer(playerName).getWorld().getName();
     GameTeam target = PlayerManager.getGamePlayer(player).getTeam();
-    PlayerToConfig(playerName, items, armor, health, satur, level, gm, food, exauth, exp, target, wname);
+
+    PlayerToConfig(playerName, items, armor, health, saturation, level, gm, food, exhaustion, exp, target, wName);
   }
 
   private static void PlayerToConfig(String playerName, ItemStack[] items, ItemStack[] armor, double health, float saturation, int level, int gm, int food, float exhaut, float exp, GameTeam team, String wName) {
@@ -122,9 +123,6 @@ public class PlayerSerializer {
   public static void ConfigToPlayer(Player p, FileConfiguration config) {
     try {
       if (!config.contains("Name") || !config.getString("Name").equals(p.getName())) {
-        return;
-      }
-      if (p == null) {
         return;
       }
 
@@ -237,11 +235,11 @@ public class PlayerSerializer {
   public static Inventory StringToInventory(String invString) {
     String[] serializedBlocks = invString.split(";");
     String invInfo = serializedBlocks[0];
-    Inventory deserializedInventory = Bukkit.getServer().createInventory(null, Integer.parseInt(invInfo));
+    Inventory deserializeInventory = Bukkit.getServer().createInventory(null, Integer.parseInt(invInfo));
     for (int i = 1; i < serializedBlocks.length; i++) {
       String[] serializedBlock = serializedBlocks[i].split("#");
       int stackPosition = Integer.parseInt(serializedBlock[0]);
-      if (stackPosition < deserializedInventory.getSize()) {
+      if (stackPosition < deserializeInventory.getSize()) {
         ItemStack is = null;
         boolean createdItemStack = false;
 
@@ -259,10 +257,10 @@ public class PlayerSerializer {
             is.addEnchantment(Enchantment.getById(Integer.parseInt(itemAttribute[1])), Integer.parseInt(itemAttribute[2]));
           }
         }
-        deserializedInventory.setItem(stackPosition, is);
+        deserializeInventory.setItem(stackPosition, is);
       }
     }
-    return deserializedInventory;
+    return deserializeInventory;
   }
 
 
@@ -274,7 +272,7 @@ public class PlayerSerializer {
   public static void clearUserData() {
     File invFile = new File(usersPath);
     if (invFile.isDirectory()) {
-      for (File f : invFile.listFiles()) {
+      for (File f : Objects.requireNonNull(invFile.listFiles())) {
         f.delete();
       }
     }
@@ -283,8 +281,8 @@ public class PlayerSerializer {
   public static boolean playerPlayed(Player p) {
     String playerName = p.getName();
     try {
-      File playerdataFile = new File(usersPath + playerName + ".yml");
-      if (playerdataFile.exists()) {
+      File playerDataFile = new File(usersPath + playerName + ".yml");
+      if (playerDataFile.exists()) {
         return true;
       }
     } catch (NullPointerException nullPointerException) {

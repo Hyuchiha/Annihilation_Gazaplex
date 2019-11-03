@@ -40,15 +40,17 @@ public class ResourceListener implements Listener {
 
       return;
     }
-    if (GameUtils.tooClose(e.getBlock().getLocation()) && e
-                                                              .getBlock().getType() != Material.MELON_BLOCK && e
-                                                                                                                   .getBlock().getType() != Material.QUARTZ_ORE && e
-                                                                                                                                                                       .getBlock().getType() != Material.LOG && e
-                                                                                                                                                                                                                    .getBlock().getType() != Material.LOG_2) {
+
+    if (GameUtils.tooClose(e.getBlock().getLocation())
+            && e.getBlock().getType() != Material.MELON_BLOCK
+            && e.getBlock().getType() != Material.QUARTZ_ORE
+            && e.getBlock().getType() != Material.LOG
+            && e.getBlock().getType() != Material.LOG_2) {
       e.setCancelled(true);
 
       return;
     }
+
     if (ResourceManager.containsResource(e.getBlock().getType())) {
       e.setCancelled(true);
       breakResource(e.getPlayer(), e.getBlock());
@@ -90,10 +92,11 @@ public class ResourceListener implements Listener {
         qty = getDropQuantity(type);
 
 
-        if ((dropType == Material.DIAMOND || dropType == Material.COAL || dropType == Material.EMERALD || dropType == Material.REDSTONE) && player
-
-
-                                                                                                                                                .getItemInHand().containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS)) {
+        if ((dropType == Material.DIAMOND
+                 || dropType == Material.COAL
+                 || dropType == Material.EMERALD
+                 || dropType == Material.REDSTONE)
+                && player.getItemInHand().containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS)) {
           player.getInventory().addItem(new ItemStack(dropType, qty * 2));
           break;
         }
@@ -106,8 +109,7 @@ public class ResourceListener implements Listener {
 
 
       player.giveExp(resource.getXp());
-      player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, this.rand
-                                                                                           .nextFloat() * 0.2F + 0.9F);
+      player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, this.rand.nextFloat() * 0.2F + 0.9F);
     }
 
     queueRespawn(block);
