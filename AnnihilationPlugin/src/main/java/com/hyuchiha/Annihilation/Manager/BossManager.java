@@ -50,12 +50,10 @@ public class BossManager {
           ChatColor.translateAlternateColorCodes('&', boss
                                                           .getBossName() + " &8» &a" + boss.getHealth() + " HP"));
 
-
       FireworkUtils.spawnFirework(boss.getBossSpawn());
       FireworkUtils.spawnFirework(boss.getBossSpawn());
       FireworkUtils.spawnFirework(boss.getBossSpawn());
     } else {
-
       Output.logError("Boss spawm location is null, not spawning the Boss");
     }
   }

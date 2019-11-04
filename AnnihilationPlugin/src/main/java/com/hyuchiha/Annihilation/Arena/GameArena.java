@@ -86,9 +86,7 @@ public class GameArena {
         }
       }
 
-
       GameBoss boss = new GameBoss(section.getInt("hearts") * 2, section.getString("boss_name"), LocationUtils.parseLocation(bossWorld, section.getString("boss_spawn")), LocationUtils.parseLocation(bossWorld, section.getString("chest")));
-
 
       BossManager.loadTeleportLocations(teleportLocations);
       BossManager.loadBoss(boss);

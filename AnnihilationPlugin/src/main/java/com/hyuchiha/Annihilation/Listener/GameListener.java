@@ -6,10 +6,7 @@ import com.hyuchiha.Annihilation.Event.*;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Main;
-import com.hyuchiha.Annihilation.Manager.GameManager;
-import com.hyuchiha.Annihilation.Manager.PlayerManager;
-import com.hyuchiha.Annihilation.Manager.ResourceManager;
-import com.hyuchiha.Annihilation.Manager.SignManager;
+import com.hyuchiha.Annihilation.Manager.*;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Scoreboard.ScoreboardManager;
@@ -119,9 +116,10 @@ public class GameListener implements Listener {
     }
 
     for (Location spawn : victim.getSpawns()) {
-      Bukkit.getScheduler().runTaskLater(this.plugin, () -> FireworkUtils.spawnFirework(spawn, attacker
-                                                                                                   .getColor(), attacker
-                                                                                                                    .getColor()), 40L);
+      Bukkit.getScheduler().runTaskLater(this.plugin, () -> FireworkUtils.spawnFirework(spawn,
+          attacker.getColor(),
+          attacker.getColor()
+      ), 40L);
     }
 
 
@@ -158,6 +156,7 @@ public class GameListener implements Listener {
 
 
       if (phase == 3) {
+        BossManager.spawnBoss();
 
         ResourceManager.spawnDiamonds();
       }

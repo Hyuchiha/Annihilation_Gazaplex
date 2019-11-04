@@ -6,6 +6,7 @@ import com.hyuchiha.Annihilation.Game.GameTimer;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
+import com.hyuchiha.Annihilation.Output.Output;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -63,6 +64,7 @@ public class MotdListener implements Listener {
         }
         e.setMotd(ChatColor.translateAlternateColorCodes('&', motd));
       } catch (Exception exception) {
+        Output.logError(exception.getLocalizedMessage());
       }
     }
   }
