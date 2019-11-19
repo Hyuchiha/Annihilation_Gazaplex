@@ -1,13 +1,13 @@
-package com.hyuchiha.Annihilation.Mobs.v1_9_R1;
+package com.hyuchiha.Annihilation.Mobs.v1_12_R1;
 
 import com.hyuchiha.Annihilation.Mobs.EntityType;
 import com.hyuchiha.Annihilation.Mobs.MobUtils;
-import com.hyuchiha.Annihilation.Mobs.v1_9_R1.NMS.CustomWither;
-import com.hyuchiha.Annihilation.Mobs.v1_9_R1.NMS.CustomZombie;
-import net.minecraft.server.v1_9_R1.Entity;
+import com.hyuchiha.Annihilation.Mobs.v1_12_R1.NMS.CustomWither;
+import com.hyuchiha.Annihilation.Mobs.v1_12_R1.NMS.CustomZombie;
+import net.minecraft.server.v1_12_R1.Entity;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 
 import java.util.Map;
@@ -32,10 +32,10 @@ public enum CustomEntityType implements EntityType {
   public void addToMaps(Class clazz, String name, int id) {
     //getPrivateField is the method from above.
     //Remove the lines with // in front of them if you want to override default entities (You'd have to remove the default entity from the map first though).
-    ((Map) MobUtils.getPrivateField("c", net.minecraft.server.v1_9_R1.EntityTypes.class, null)).put(name, clazz);
-    ((Map) MobUtils.getPrivateField("d", net.minecraft.server.v1_9_R1.EntityTypes.class, null)).put(clazz, name);
+    ((Map) MobUtils.getPrivateField("c", net.minecraft.server.v1_12_R1.EntityTypes.class, null)).put(name, clazz);
+    ((Map) MobUtils.getPrivateField("d", net.minecraft.server.v1_12_R1.EntityTypes.class, null)).put(clazz, name);
     //((Map)getPrivateField("e", net.minecraft.server.v1_7_R4.EntityTypes.class, null)).put(Integer.valueOf(id), clazz);
-    ((Map) MobUtils.getPrivateField("f", net.minecraft.server.v1_9_R1.EntityTypes.class, null)).put(clazz, id);
+    ((Map) MobUtils.getPrivateField("f", net.minecraft.server.v1_12_R1.EntityTypes.class, null)).put(clazz, id);
     //((Map)getPrivateField("g", net.minecraft.server.v1_7_R4.EntityTypes.class, null)).put(name, Integer.valueOf(id));
   }
 

@@ -39,6 +39,7 @@ public class Main extends JavaPlugin {
     configManager = new ConfigManager(this);
     configManager.loadConfigFiles("config.yml", "maps.yml", "messages.yml", "shops.yml");
 
+    BossManager.init();
     MapLoader.initMapLoader(this);
     Translator.InitMessages();
     MapManager.initMaps();
@@ -102,6 +103,8 @@ public class Main extends JavaPlugin {
     pm.registerEvents(new EnderChestListener(), this);
     pm.registerEvents(new EnderBrewingStandListener(), this);
     pm.registerEvents(new EnderFurnaceListener(), this);
+
+    pm.registerEvents(new BossListener(this), this);
   }
 
   private void registerCommands() {

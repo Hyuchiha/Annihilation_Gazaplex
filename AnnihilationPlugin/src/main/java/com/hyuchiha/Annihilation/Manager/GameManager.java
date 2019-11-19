@@ -66,4 +66,8 @@ public class GameManager {
   public static Game getCurrentGame() {
     return currentGame;
   }
+
+  public static boolean hasCurrentGame() {
+    return currentGame != null;
+  }
 }

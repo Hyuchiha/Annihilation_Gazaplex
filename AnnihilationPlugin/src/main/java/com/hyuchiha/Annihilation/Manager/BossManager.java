@@ -2,44 +2,104 @@ package com.hyuchiha.Annihilation.Manager;
 
 import com.hyuchiha.Annihilation.Game.GameBoss;
 import com.hyuchiha.Annihilation.Game.GameTeam;
+import com.hyuchiha.Annihilation.Mobs.MobCreator;
+import com.hyuchiha.Annihilation.Mobs.v1_10_R1.MobCreator_v1_10_R1;
+import com.hyuchiha.Annihilation.Mobs.v1_11_R1.MobCreator_v1_11_R1;
+import com.hyuchiha.Annihilation.Mobs.v1_12_R1.MobCreator_v1_12_R1;
+import com.hyuchiha.Annihilation.Mobs.v1_9_R1.MobCreator_v1_9_R1;
+import com.hyuchiha.Annihilation.Mobs.v1_9_R2.MobCreator_v1_9_R2;
 import com.hyuchiha.Annihilation.Output.Output;
+import com.hyuchiha.Annihilation.Tasks.BossRespawnTask;
 import com.hyuchiha.Annihilation.Utils.FireworkUtils;
+import com.hyuchiha.Annihilation.Utils.LocationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Wither;
+import org.inventivetalent.reflection.minecraft.Minecraft;
 
 import java.util.HashMap;
 import java.util.List;
 
 public class BossManager {
-  private static GameBoss boss;
-  private static HashMap<GameTeam, Location> bossTeamSpawnLocations = new HashMap<>();
+  private static MobCreator creator;
 
+  private static GameBoss boss;
+  private static BossRespawnTask task;
+  private static HashMap<GameTeam, Location> bossTeamSpawnLocations = new HashMap<>();
   private static List<Location> teleportLocations;
 
-  public static void loadTeleportLocations(List<Location> locations) {
-    teleportLocations = locations;
+  public static void init() {
+    Output.log("Initializing boss instance generator");
+
+    switch (Minecraft.Version.getVersion()){
+      case v1_9_R1:
+        creator = new MobCreator_v1_9_R1();
+        break;
+      case v1_9_R2:
+        creator = new MobCreator_v1_9_R2();
+        break;
+      case v1_10_R1:
+        creator = new MobCreator_v1_10_R1();
+        break;
+      case v1_11_R1:
+        creator = new MobCreator_v1_11_R1();
+        break;
+      case v1_12_R1:
+        creator = new MobCreator_v1_12_R1();
+        break;
+      default:
+        Output.log("Version not supported");
+        break;
+    }
+
   }
 
+  public static void loadBossConfiguration(ConfigurationSection config, World originalWorld) {
+    Output.log("Loading boss configuration");
 
-  public static void loadBossTeamSpawns(GameTeam team, Location location) {
-    bossTeamSpawnLocations.put(team, location);
+    World bossWorld = Bukkit.getWorld(config.getString("world_spawn"));
+
+    for (String teleport: config.getStringList("teleports")) {
+      teleportLocations.add(LocationUtils.parseLocation(originalWorld, teleport));
+    }
+
+    for (GameTeam team : GameTeam.teams()) {
+      String name = team.name().toLowerCase();
+      if (config.contains("spawns." + name)) {
+        String cords = config.getString("spawns." + name);
+        Location location = LocationUtils.parseLocation(bossWorld, cords);
+        bossTeamSpawnLocations.put(team, location);
+      }
+    }
+
+    int health = config.getInt("hearts") * 2;
+    String name = config.getString("boss_name");
+    Location spawnPoint = LocationUtils.parseLocation(bossWorld, config.getString("boss_spawn"));
+    Location chestPoint = LocationUtils.parseLocation(bossWorld, config.getString("chest"));
+
+    boss = new GameBoss(health, name, spawnPoint, chestPoint);
+
+    Output.log("Boss loaded");
   }
-
-
-  public static void loadBoss(GameBoss b) {
-    boss = b;
-  }
-
 
   public static void spawnBoss() {
     Location spawn = boss.getBossSpawn();
 
     if (spawn != null && spawn.getWorld() != null) {
       Bukkit.getWorld(spawn.getWorld().getName()).loadChunk(spawn.getChunk());
-      Wither witherBoss = (Wither) spawn.getWorld().spawnEntity(spawn, EntityType.WITHER);
+
+      Wither witherBoss;
+
+      if (creator != null) {
+        witherBoss = (Wither) creator.getMob("Wither").spawnEntity(spawn);
+      } else {
+        witherBoss = (Wither) spawn.getWorld().spawnEntity(spawn, EntityType.WITHER);
+      }
 
       witherBoss.setMaxHealth(boss.getHealth());
       witherBoss.setHealth(boss.getHealth());
@@ -54,19 +114,69 @@ public class BossManager {
       FireworkUtils.spawnFirework(boss.getBossSpawn());
       FireworkUtils.spawnFirework(boss.getBossSpawn());
     } else {
-      Output.logError("Boss spawm location is null, not spawning the Boss");
+      Output.logError("Boss spawn location is null, not spawning the Boss");
     }
   }
 
-
   public static void update(Wither g) {
-    g.setCustomName(ChatColor.translateAlternateColorCodes('&', boss
-                                                                    .getBossName() + " &8» &a" + g.getHealth() + " HP"));
+    g.setCustomName(ChatColor.translateAlternateColorCodes('&', boss.getBossName() + " &8» &a" + g.getHealth() + " HP"));
   }
 
+  public static boolean hasBossConfig() {
+    return boss != null;
+  }
+
+  public static World getBossSpawnWorld() {
+    if (hasBossConfig()) {
+      return boss.getBossSpawn().getWorld();
+    }
+    return null;
+  }
+
+  public static List<Location> getTeleportLocations() {
+    return teleportLocations;
+  }
+
+  public static Location getTeamSpawn(GameTeam team) {
+    return bossTeamSpawnLocations.get(team);
+  }
+
+  public static GameBoss getBoss() {
+    return boss;
+  }
+
+  public static void beginRespawnTime(int respawnTime) {
+    if (task != null) {
+      task.cancel();
+      task = null;
+    }
+
+    task = new BossRespawnTask(respawnTime);
+  }
+
+  public static void cancelRespawnTask() {
+    if (task != null) {
+      task.cancel();
+      task = null;
+    }
+  }
 
   public static void clearBossData() {
+    World bossWorld = getBossSpawnWorld();
+
+    if (bossWorld != null) {
+      for (Entity entity: bossWorld.getEntities()) {
+        if(entity.getType() == EntityType.WITHER){
+          Output.log("Removing wither");
+          entity.remove();
+        }
+      }
+    }
+
+    cancelRespawnTask();
+
     boss = null;
     bossTeamSpawnLocations.clear();
+    teleportLocations.clear();
   }
 }

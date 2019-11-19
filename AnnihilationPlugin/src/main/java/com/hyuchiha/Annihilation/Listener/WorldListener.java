@@ -83,7 +83,6 @@ public class WorldListener
       HumanEntity ent = e.getWhoClicked();
 
       if (ent instanceof Player) {
-        Player player = (Player) ent;
         Inventory inv = e.getInventory();
 
         if (inv instanceof org.bukkit.inventory.AnvilInventory) {

@@ -15,7 +15,6 @@ public class GameBoss {
     this.chest = chest;
   }
 
-
   public int getHealth() {
     return this.health;
   }

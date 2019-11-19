@@ -70,26 +70,7 @@ public class GameArena {
 
     if (config.contains("boss")) {
       ConfigurationSection section = config.getConfigurationSection("boss");
-      World bossWorld = Bukkit.getWorld(section.getString("world_spawn"));
-      List<Location> teleportLocations = new ArrayList<Location>();
-
-      for (String teleport : section.getStringList("teleport")) {
-        teleportLocations.add(LocationUtils.parseLocation(w, teleport));
-      }
-
-      for (GameTeam team : GameTeam.teams()) {
-
-        String name = team.name().toLowerCase();
-        if (section.contains("spawns." + name)) {
-          Location location = LocationUtils.parseLocation(bossWorld, section.getString("spawns." + name));
-          BossManager.loadBossTeamSpawns(team, location);
-        }
-      }
-
-      GameBoss boss = new GameBoss(section.getInt("hearts") * 2, section.getString("boss_name"), LocationUtils.parseLocation(bossWorld, section.getString("boss_spawn")), LocationUtils.parseLocation(bossWorld, section.getString("chest")));
-
-      BossManager.loadTeleportLocations(teleportLocations);
-      BossManager.loadBoss(boss);
+      BossManager.loadBossConfiguration(section, w);
     }
 
     if (config.contains("witch")) {
@@ -97,9 +78,7 @@ public class GameArena {
       ConfigurationSection sec = config.getConfigurationSection("witch");
 
       for (String witch : sec.getKeys(false)) {
-        witches.put(witch, new GameWitch(witch, sec
-
-                                                    .getString(witch + ".name"),
+        witches.put(witch, new GameWitch(witch, sec.getString(witch + ".name"),
             LocationUtils.parseLocation(w, sec.getString(witch + ".spawn")), sec
                                                                                  .getInt(witch + ".hearts") * 2));
       }
