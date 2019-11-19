@@ -66,6 +66,9 @@ WELCOME_TO_ANNIHILATION: "Welcome to Annihilation"
 # Titles Messages
 SERVER_JOIN_TITLE: "&5Annihilation"
 SERVER_JOIN_SUBTITLE: "&2Welcome"
+#Boss Messages
+BOSS_BEGIN_TELEPORT: "&9Teleport in 5 seconds, dont move from the area"
+BOSS_TELEPORT_ERROR: "&cError teleporting, you are not in the boss teleport area"
 # Chat messages %C% represents the color of a team
 NEXUS_DESTROYED:
   - "&7▒▒▒▒▒▒▒▒▒▒"

@@ -7,6 +7,7 @@ import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.BossManager;
 import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
+import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Utils.FireworkUtils;
 import org.bukkit.*;
 import org.bukkit.configuration.Configuration;
@@ -160,8 +161,7 @@ public class BossListener implements Listener {
 
     for (final Location location : locations) {
       if (closeToTeleport(location, playerLoc)) {
-        // TODO translate label
-        event.getPlayer().sendMessage(ChatColor.BLUE + "Transporte al boss en 5 seg. No te muevas");
+        event.getPlayer().sendMessage(Translator.getColoredString("BOSS_BEGIN_TELEPORT"));
         playersToTeleport.add(event.getPlayer().getName());
 
         Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
@@ -173,8 +173,7 @@ public class BossListener implements Listener {
                 Location spawnLocation = BossManager.getTeamSpawn(meta.getTeam());
                 event.getPlayer().teleport(spawnLocation);
               } else {
-                // TODO translate label
-                event.getPlayer().sendMessage(ChatColor.BLUE + "No estas en el area para teletransportarte.");
+                event.getPlayer().sendMessage(Translator.getColoredString("BOSS_TELEPORT_ERROR"));
               }
             }
             playersToTeleport.remove(event.getPlayer().getName());
