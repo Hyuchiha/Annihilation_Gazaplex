@@ -26,10 +26,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-public class WorldListener
-    implements Listener {
+public class WorldListener implements Listener {
   private static final Set<EntityType> hostileEntityTypes = new HashSet<EntityType>() {
     private static final long serialVersionUID = 42L;
+
+    {
+      add(EntityType.SKELETON);
+      add(EntityType.CREEPER);
+      add(EntityType.SPIDER);
+      add(EntityType.BAT);
+      add(EntityType.ENDERMAN);
+      add(EntityType.SLIME);
+      add(EntityType.WITCH);
+      add(EntityType.ZOMBIE);
+    }
   };
 
 
