@@ -9,21 +9,22 @@ import com.hyuchiha.Annihilation.Mobs.v1_12_R1.MobCreator_v1_12_R1;
 import com.hyuchiha.Annihilation.Mobs.v1_9_R1.MobCreator_v1_9_R1;
 import com.hyuchiha.Annihilation.Mobs.v1_9_R2.MobCreator_v1_9_R2;
 import com.hyuchiha.Annihilation.Output.Output;
+import com.hyuchiha.Annihilation.Serializers.PlayerSerializer;
 import com.hyuchiha.Annihilation.Tasks.BossRespawnTask;
+import com.hyuchiha.Annihilation.Utils.ChestUtils;
 import com.hyuchiha.Annihilation.Utils.FireworkUtils;
 import com.hyuchiha.Annihilation.Utils.LocationUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
+import org.bukkit.block.Chest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Wither;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.inventivetalent.reflection.minecraft.Minecraft;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class BossManager {
   private static MobCreator creator;
@@ -178,5 +179,53 @@ public class BossManager {
     boss = null;
     bossTeamSpawnLocations.clear();
     teleportLocations.clear();
+  }
+
+  public static void spawnLootChest() {
+    Location chest = boss.getChest();
+    chest.getBlock().setType(Material.CHEST);
+
+    double y = chest.getY() - 1;
+    Location lf = new Location(chest.getWorld(), chest.getBlockX(), y, chest.getBlockZ());
+    FireworkUtils.spawnFirework(lf);
+
+    // TODO add effect to chest spawn
+//    for (int i = 0; i < 5; i++) {
+//      EffectsManager.playEffectLoc(chest.getWorld(), Effect.ENDER_SIGNAL, chest.getBlock().getLocation());
+//    }
+
+    Chest c = (Chest) chest.getBlock().getState();
+    Inventory inv = c.getBlockInventory();
+
+    Random r = new Random();
+    for (int i = 0; i < 5; i++) {
+      ItemStack randomItem = getRandomItem();
+      inv.setItem(r.nextInt(inv.getSize()), randomItem);
+    }
+
+    int ingots = 4;
+    for (int i = 0; i < ingots; i++) {
+      int slot = r.nextInt(inv.getSize());
+      ItemStack stack = inv.getItem(slot);
+      if (ChestUtils.isEmpty(inv, slot)) {
+        inv.setItem(slot, new ItemStack(Material.IRON_INGOT));
+      } else if (stack.getType() == Material.IRON_INGOT) {
+        inv.getItem(slot).setAmount(stack.getAmount() + 1);
+      } else {
+        i--;
+      }
+    }
+  }
+
+  public static ItemStack getRandomItem() {
+    int randomIndex = new Random().nextInt(rItems().size());
+    return (ItemStack) rItems().toArray()[randomIndex];
+  }
+
+  public static Collection<ItemStack> rItems() {
+    Collection<ItemStack> items = new ArrayList<>();
+    ItemStack[] ritems = PlayerSerializer.BossLoot();
+    Collections.addAll(items, ritems);
+    return items;
   }
 }

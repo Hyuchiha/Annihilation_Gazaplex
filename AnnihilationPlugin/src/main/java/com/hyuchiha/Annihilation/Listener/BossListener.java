@@ -217,7 +217,7 @@ public class BossListener implements Listener {
       // TODO add particles
       // ParticleManager.createParticlesBossKill(event.getEntity().getLocation());
 
-      // boss.spawnLootChest();
+      BossManager.spawnLootChest();
 
       if (wither.getKiller() != null) {
         Player killer = wither.getKiller();

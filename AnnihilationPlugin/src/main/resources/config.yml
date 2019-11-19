@@ -59,3 +59,101 @@ Money-nexus-kill: 50
 Money-player-kill: 30
 Money-boss-kill: 80
 Money-win: 150
+
+#Boss loot settings
+Boss-loot:
+  Item-Nb: 6
+  Item0:
+    ==: org.bukkit.inventory.ItemStack
+    type: DIAMOND_HELMET
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        PROTECTION_ENVIRONMENTAL: 1
+        OXYGEN: 3
+      display-name: '§eOxyger'
+      lore:
+        - '§7Power of oxygen'
+        - '§eUnique Item'
+      repair-cost: 4
+  Item1:
+    ==: org.bukkit.inventory.ItemStack
+    type: DIAMOND_HELMET
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        PROTECTION_ENVIRONMENTAL: 4
+        OXYGEN: 3
+      display-name: '§6Oxyger II'
+      lore:
+        - '§7Power of oxygen II'
+        - '§5Rare Item'
+      repair-cost: 4
+  Item2:
+    ==: org.bukkit.inventory.ItemStack
+    type: DIAMOND_LEGGINGS
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        PROTECTION_ENVIRONMENTAL: 4
+      display-name: '§3Anti sharp'
+      lore:
+        - '§7Better than normal.'
+        - '§eUnique Item'
+      repair-cost: 2
+  Item3:
+    ==: org.bukkit.inventory.ItemStack
+    type: DIAMOND_BOOTS
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        PROTECTION_ENVIRONMENTAL: 2
+        PROTECTION_FALL: 4
+      display-name: '§aFly boots'
+      lore:
+        - '§7Less damage of falling.'
+        - '§5Rare Item'
+      repair-cost: 2
+  Item4:
+    ==: org.bukkit.inventory.ItemStack
+    type: BOW
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        ARROW_INFINITE: 1
+      display-name: '§aInfinite Shooter'
+      lore:
+        - '§7This bow is great.'
+        - '§eUnique Item'
+      repair-cost: 4
+  Item5:
+    ==: org.bukkit.inventory.ItemStack
+    type: DIAMOND_SWORD
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        DAMAGE_ALL: 3
+      display-name: '§aBlood finder'
+      lore:
+        - '§7Sharpness is your brother.'
+        - '§eUnique Item'
+      repair-cost: 2
+  Item6:
+    ==: org.bukkit.inventory.ItemStack
+    type: DIAMOND_CHESTPLATE
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        PROTECTION_ENVIRONMENTAL: 4
+      display-name: '§2§lTroll plate'
+      lore:
+        - '§7Defending is smarter'
+        - '§eUnique Item'
+      repair-cost: 2
