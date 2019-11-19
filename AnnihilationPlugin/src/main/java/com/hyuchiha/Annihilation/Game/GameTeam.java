@@ -198,6 +198,25 @@ public enum GameTeam {
     return ChatColor.WHITE;
   }
 
+  public static GameTeam getTeamChar(String s) {
+    if (s == null) {
+      return GameTeam.NONE;
+    }
+    if (s.contains("§c")) {
+      return GameTeam.RED;
+    }
+    if (s.contains("§9")) {
+      return GameTeam.BLUE;
+    }
+    if (s.contains("§e")) {
+      return GameTeam.YELLOW;
+    }
+    if (s.contains("§a")) {
+      return GameTeam.GREEN;
+    }
+    return GameTeam.NONE;
+  }
+
   public String getName() {
     return (this.name != null) ? this.name.toLowerCase() : "none";
   }

@@ -105,6 +105,7 @@ public class Main extends JavaPlugin {
     pm.registerEvents(new EnderFurnaceListener(), this);
 
     pm.registerEvents(new BossListener(this), this);
+    pm.registerEvents(new ZombieListener(), this);
   }
 
   private void registerCommands() {

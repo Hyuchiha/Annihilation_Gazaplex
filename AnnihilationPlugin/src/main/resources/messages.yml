@@ -61,6 +61,7 @@ ERROR_PLAYER_DONT_EXIST: "The player doen't exist"
 ERROR_DAMAGE_OWN_NEXUS: "You can't damage you own nexus"
 ERROR_CONSOLE_PLAYER_COMMAND: "Only players can use this command!"
 ERROR_STAT_NOT_FOUND: "Stat not found"
+ERROR_DAMAGE_TEAM: "You can't damage your same team"
 # BossBar messages
 WELCOME_TO_ANNIHILATION: "Welcome to Annihilation"
 # Titles Messages

@@ -5,8 +5,10 @@ import com.hyuchiha.Annihilation.Database.Base.Database;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Main;
+import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Manager.SignManager;
+import com.hyuchiha.Annihilation.Manager.ZombieManager;
 import com.hyuchiha.Annihilation.Serializers.PlayerSerializer;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
 import org.bukkit.entity.Player;
@@ -56,6 +58,10 @@ public class QuitListener implements Listener {
     }
 
     PlayerSerializer.SerializePlayer(player);
+
+    if (GameManager.getCurrentGame() != null && GameManager.getCurrentGame().getPhase() > 0 && gamePlayer.getTeam() != GameTeam.NONE) {
+      ZombieManager.createZombiePlayer(player);
+    }
   }
 
 

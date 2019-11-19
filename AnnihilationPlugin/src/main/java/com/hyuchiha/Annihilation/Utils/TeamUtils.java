@@ -65,6 +65,11 @@ public class TeamUtils {
     return team;
   }
 
+  public static String replaceTeamColor(String s) {
+    s = s.replaceAll("(§([a-fk-or0-9]))", "");
+    return s;
+  }
+
   private static boolean isBiggerThan(int i, int i2) {
     int iF = i2 + 3;
     return i >= iF;
