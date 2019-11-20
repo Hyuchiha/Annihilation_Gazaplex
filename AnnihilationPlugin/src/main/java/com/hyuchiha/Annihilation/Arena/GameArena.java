@@ -74,17 +74,8 @@ public class GameArena {
     }
 
     if (config.contains("witch")) {
-      HashMap<String, GameWitch> witches = new HashMap<>();
-      ConfigurationSection sec = config.getConfigurationSection("witch");
-
-      for (String witch : sec.getKeys(false)) {
-        witches.put(witch, new GameWitch(witch, sec.getString(witch + ".name"),
-            LocationUtils.parseLocation(w, sec.getString(witch + ".spawn")), sec
-                                                                                 .getInt(witch + ".hearts") * 2));
-      }
-
-
-      WitchManager.loadWitchs(witches);
+      ConfigurationSection section = config.getConfigurationSection("witch");
+      WitchManager.loadWitchConfig(section, w);
     }
 
     if (config.contains("diamonds")) {

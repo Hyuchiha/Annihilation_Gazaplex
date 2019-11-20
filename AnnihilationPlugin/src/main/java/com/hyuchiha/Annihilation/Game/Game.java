@@ -92,7 +92,7 @@ public class Game {
     EnderFurnaceManager.clearTeamsFurnaces();
     ResourceManager.clearDiamonds();
     BossManager.clearBossData();
-    WitchManager.clearWitch();
+    WitchManager.clearWitchData();
     FastBreakProtect.clearData();
   }
 
