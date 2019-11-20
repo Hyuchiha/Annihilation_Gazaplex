@@ -148,19 +148,20 @@ public class GameListener implements Listener {
   public void onPhaseChange(PhaseChangeEvent event) {
     final int phase = event.getNextPhase();
 
-
     GameManager.getCurrentGame().advancePhase();
 
     Bukkit.getScheduler().scheduleSyncDelayedTask(this.plugin, () -> {
       ChatUtil.phaseMessage(phase);
 
 
-      if (phase == 3) {
-        BossManager.spawnBoss();
-
-        ResourceManager.spawnDiamonds();
+      switch (phase) {
+        case 3:
+          ResourceManager.spawnDiamonds();
+          break;
+        case 4:
+          BossManager.spawnBoss();
+          break;
       }
-
 
       SignManager.updateSigns();
     }, 2L);
