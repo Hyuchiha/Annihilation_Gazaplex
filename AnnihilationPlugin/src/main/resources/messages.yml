@@ -35,6 +35,7 @@ NOT_VOTE_PHASE: "No puedes votar en hasta que inicie el juego."
 CANNOT_JOIN_TEAM: "You can't join to this team"
 CANNOT_BUILD_HERE: "You can't build here"
 NEXUS_BREAK_MESSAGE: "%PLAYER% &bhit the nexus %TEAM%!"
+COMPASS_FOCUS: "Now focusing %TEAM%"
 # Scoreboard messages
 SB_LOBBY_TITLE: "Annihilation"
 SB_GAME_PREFIX: "&c[&fGP&c]"
@@ -70,6 +71,8 @@ SERVER_JOIN_SUBTITLE: "&2Welcome"
 #Boss Messages
 BOSS_BEGIN_TELEPORT: "&9Teleport in 5 seconds, dont move from the area"
 BOSS_TELEPORT_ERROR: "&cError teleporting, you are not in the boss teleport area"
+BOSS_STAR: "Boss star"
+BOSS_SHOP: "Boss shop"
 # Chat messages %C% represents the color of a team
 NEXUS_DESTROYED:
   - "&7▒▒▒▒▒▒▒▒▒▒"

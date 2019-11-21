@@ -1,6 +1,8 @@
 package com.hyuchiha.Annihilation.Utils;
 
+import com.hyuchiha.Annihilation.Game.BossStarItem;
 import com.hyuchiha.Annihilation.Game.GameTeam;
+import com.hyuchiha.Annihilation.Manager.BossManager;
 import com.hyuchiha.Annihilation.Manager.VotingManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Output.Output;
@@ -69,6 +71,17 @@ public class MenuUtils {
     p.openInventory(inv);
   }
 
+  public static void openBossStarMenu(Player player) {
+    int size = ((46 + 8) / 9) * 9;
+    Inventory inv = createInventory(player, size, Translator.getColoredString("BOSS_SHOP"));
+
+    for (BossStarItem item: BossManager.getBossStarItems()) {
+      inv.setItem(item.getPosition(), item.getItem());
+    }
+
+    player.openInventory(inv);
+
+  }
 
   private static Inventory createInventory(Player player, int slots, String name) {
     return Bukkit.createInventory(player, slots, name);

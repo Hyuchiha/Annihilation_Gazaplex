@@ -1,0 +1,221 @@
+#This config is for the loot of mobs
+#Boss, Witches, Boss Star and in a future other things
+
+#Boss loot settings
+#For the chest after killing the boss
+Boss-loot:
+  Item-Nb: 6
+  Item0:
+    ==: org.bukkit.inventory.ItemStack
+    type: DIAMOND_HELMET
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        PROTECTION_ENVIRONMENTAL: 1
+        OXYGEN: 3
+      display-name: '§eOxyger'
+      lore:
+        - '§7Power of oxygen'
+        - '§eUnique Item'
+      repair-cost: 4
+  Item1:
+    ==: org.bukkit.inventory.ItemStack
+    type: DIAMOND_HELMET
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        PROTECTION_ENVIRONMENTAL: 4
+        OXYGEN: 3
+      display-name: '§6Oxyger II'
+      lore:
+        - '§7Power of oxygen II'
+        - '§5Rare Item'
+      repair-cost: 4
+  Item2:
+    ==: org.bukkit.inventory.ItemStack
+    type: DIAMOND_LEGGINGS
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        PROTECTION_ENVIRONMENTAL: 4
+      display-name: '§3Anti sharp'
+      lore:
+        - '§7Better than normal.'
+        - '§eUnique Item'
+      repair-cost: 2
+  Item3:
+    ==: org.bukkit.inventory.ItemStack
+    type: DIAMOND_BOOTS
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        PROTECTION_ENVIRONMENTAL: 2
+        PROTECTION_FALL: 4
+      display-name: '§aFly boots'
+      lore:
+        - '§7Less damage of falling.'
+        - '§5Rare Item'
+      repair-cost: 2
+  Item4:
+    ==: org.bukkit.inventory.ItemStack
+    type: BOW
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        ARROW_INFINITE: 1
+      display-name: '§aInfinite Shooter'
+      lore:
+        - '§7This bow is great.'
+        - '§eUnique Item'
+      repair-cost: 4
+  Item5:
+    ==: org.bukkit.inventory.ItemStack
+    type: DIAMOND_SWORD
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        DAMAGE_ALL: 3
+      display-name: '§aBlood finder'
+      lore:
+        - '§7Sharpness is your brother.'
+        - '§eUnique Item'
+      repair-cost: 2
+  Item6:
+    ==: org.bukkit.inventory.ItemStack
+    type: DIAMOND_CHESTPLATE
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        PROTECTION_ENVIRONMENTAL: 4
+      display-name: '§2§lTroll plate'
+      lore:
+        - '§7Defending is smarter'
+        - '§eUnique Item'
+      repair-cost: 2
+
+# Boss Star configuration
+# The default size of the boss star inventory is 6 * 9 (54 slots)
+# You can set the position of the items in that inventory
+# Exist 2 types of items for the Boss Star
+# Base items
+#
+#  Item0:
+#     type: DIAMOND_HELMET   -> this is the item name from minecraft material class
+#     amount: 1              -> the number of item to give to the purchaser
+#     position: 0            -> position in the inventory, dont repeat or it will disappear (0-53)
+#     hasEnchant: true       -> true or false for set enchants to the object
+#     enchants:              -> list of enchants for the item
+#       - DURABILITY: 10     -> enchant name and number of enchant
+#
+#  Potions items
+#
+#  Item0:
+#     type: POTION           -> always required for potions
+#     position: 0            -> position in the inventory, dont repeat of it will disappear (0-53)
+#     potionType: STRENGTH   -> the potion type from PotionType class of minecraft
+#     potionEffectNum: 1     -> the effect number
+#     splash: true           -> if the potion is splash
+#     extended: true         -> if the potion has extended effects
+
+Boss-Star:
+  Item0:
+    type: POTION
+    position: 0
+    potionType: STRENGTH
+    potionEffectNum: 1
+    splash: true
+    extended: true
+  Item1:
+    type: POTION
+    position: 1
+    potionType: SPEED
+    potionEffectNum: 1
+    splash: true
+    extended: true
+  Item2:
+    type: POTION
+    position: 2
+    potionType: REGEN
+    potionEffectNum: 1
+    splash: true
+    extended: true
+  Item3:
+    type: POTION
+    position: 3
+    potionType: INSTANT_HEAL
+    potionEffectNum: 1
+    splash: true
+    extended: true
+  Item4:
+    type: GOLD_HELMET
+    amount: 1
+    position: 9
+    hasEnchants: true
+    enchants:
+      - PROTECTION_ENVIRONMENTAL: 4
+      - DURABILITY: 4
+  Item5:
+    type: GOLD_CHESTPLATE
+    amount: 1
+    position: 10
+    hasEnchants: true
+    enchants:
+      - PROTECTION_ENVIRONMENTAL: 4
+      - DURABILITY: 4
+  Item6:
+    type: GOLD_LEGGINGS
+    amount: 1
+    position: 11
+    hasEnchants: true
+    enchants:
+      - PROTECTION_ENVIRONMENTAL: 4
+      - DURABILITY: 4
+  Item7:
+    type: GOLD_BOOTS
+    amount: 1
+    position: 12
+    hasEnchants: true
+    enchants:
+      - PROTECTION_ENVIRONMENTAL: 4
+      - DURABILITY: 4
+  Item8:
+    type: GOLD_SWORD
+    amount: 1
+    position: 18
+    hasEnchants: true
+    enchants:
+      - DAMAGE_ALL: 4
+      - FIRE_ASPECT: 4
+      - DURABILITY: 4
+  Item9:
+    type: BOW
+    amount: 1
+    position: 19
+    hasEnchants: true
+    enchants:
+      - ARROW_DAMAGE: 4
+      - ARROW_INFINITY: 1
+      - DURABILITY: 4
+  Item10:
+    type: GOLD_PICKAXE
+    amount: 1
+    position: 27
+    hasEnchants: true
+    enchants:
+      - LUCK: 3
+      - DURABILITY: 5
+  Item11:
+    type: GOLD_PICKAXE
+    amount: 1
+    position: 28
+    hasEnchants: true
+    enchants:
+      - DIG_SPEED: 5
+      - DURABILITY: 5

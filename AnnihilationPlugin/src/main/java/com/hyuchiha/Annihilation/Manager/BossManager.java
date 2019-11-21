@@ -1,7 +1,9 @@
 package com.hyuchiha.Annihilation.Manager;
 
+import com.hyuchiha.Annihilation.Game.BossStarItem;
 import com.hyuchiha.Annihilation.Game.GameBoss;
 import com.hyuchiha.Annihilation.Game.GameTeam;
+import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Mobs.MobCreator;
 import com.hyuchiha.Annihilation.Mobs.v1_10_R1.MobCreator_v1_10_R1;
 import com.hyuchiha.Annihilation.Mobs.v1_11_R1.MobCreator_v1_11_R1;
@@ -16,12 +18,16 @@ import com.hyuchiha.Annihilation.Utils.FireworkUtils;
 import com.hyuchiha.Annihilation.Utils.LocationUtils;
 import org.bukkit.*;
 import org.bukkit.block.Chest;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Wither;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionType;
 import org.inventivetalent.reflection.minecraft.Minecraft;
 
 import java.util.*;
@@ -32,7 +38,8 @@ public class BossManager {
   private static GameBoss boss;
   private static BossRespawnTask task;
   private static HashMap<GameTeam, Location> bossTeamSpawnLocations = new HashMap<>();
-  private static List<Location> teleportLocations;
+  private static List<Location> teleportLocations = new ArrayList<>();
+  private static List<BossStarItem> bossStarItems = new ArrayList<>();
 
   public static void init() {
     Output.log("Initializing boss instance generator");
@@ -58,6 +65,68 @@ public class BossManager {
         break;
     }
 
+    loadBossStarItems();
+
+  }
+
+  private static void loadBossStarItems() {
+    Output.log("Loading Boss star items");
+
+    Configuration config = Main.getInstance().getConfig("games.yml");
+
+    ConfigurationSection section = config.getConfigurationSection("Boss-Star");
+    for (String entry : section.getKeys(false)) {
+      BossStarItem item = loadItem(section, entry);
+      bossStarItems.add(item);
+    }
+  }
+
+  private static BossStarItem loadItem(ConfigurationSection config, String itemName) {
+    try {
+      Material type = Material.getMaterial(config.getString(itemName + ".type"));
+      int position = config.getInt(itemName + ".position");
+
+      BossStarItem item = null;
+      if (type == Material.POTION) {
+
+        String potionType   = config.getString(itemName + ".potionType");
+        int potionEffectNum = config.getInt(itemName + ".potionEffectNum");
+        boolean splash      = config.getBoolean( itemName + ".splash");
+        boolean extended    = config.getBoolean(itemName + ".extended");
+
+        Potion potion = new Potion(PotionType.valueOf(potionType), potionEffectNum);
+        potion.setSplash(splash);
+
+        if(extended){
+          potion.setHasExtendedDuration(extended);
+        }
+
+        item = new BossStarItem(potion.toItemStack(1), position);
+
+      } else {
+        int qty = config.getInt(itemName + ".amount");
+
+        ItemStack stack = new ItemStack(type, qty);
+
+        boolean hasEnchant = config.getBoolean(itemName + ".hasEnchant");
+        if (hasEnchant) {
+          ConfigurationSection section = config.getConfigurationSection(itemName + ".enchants");
+          for (String keys : section.getKeys(false)) {
+            Enchantment newEnchant = Enchantment.getByName(keys);
+            int level = section.getInt(keys);
+            stack.addEnchantment(newEnchant, level);
+          }
+        }
+
+        item = new BossStarItem(stack, position);
+      }
+
+      return item;
+    } catch (Exception e) {
+      e.printStackTrace();
+      Output.logError(e.getLocalizedMessage());
+    }
+    return null;
   }
 
   public static void loadBossConfiguration(ConfigurationSection config, World originalWorld) {
@@ -227,5 +296,9 @@ public class BossManager {
     ItemStack[] ritems = PlayerSerializer.BossLoot();
     Collections.addAll(items, ritems);
     return items;
+  }
+
+  public static List<BossStarItem> getBossStarItems() {
+    return bossStarItems;
   }
 }

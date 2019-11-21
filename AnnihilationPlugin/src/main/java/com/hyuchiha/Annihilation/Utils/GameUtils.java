@@ -149,11 +149,10 @@ public class GameUtils {
   }
 
   public static boolean isVip(Player player) {
-    return (player.hasPermission("annihilation.vip.diamond") || player
-                                                                    .hasPermission("annihilation.vip.gold") || player
-                                                                                                                   .hasPermission("annihilation.vip.iron"));
+    return (player.hasPermission("annihilation.vip.diamond")
+                || player.hasPermission("annihilation.vip.gold")
+                || player.hasPermission("annihilation.vip.iron"));
   }
-
 
   private static int getBuildDistance() {
     return Main.getInstance().getConfig("config.yml").getInt("build");

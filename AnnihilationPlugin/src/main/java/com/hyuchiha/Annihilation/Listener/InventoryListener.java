@@ -92,5 +92,20 @@ public class InventoryListener implements Listener {
         }
       }
     }
+
+    if (inv.getTitle().startsWith(Translator.getColoredString("BOSS_SHOP"))) {
+      if (e.getCurrentItem().getType() == Material.AIR || e.getCurrentItem().getType() == null) {
+        return;
+      }
+
+      e.setCancelled(true);
+
+      if (e.getClickedInventory().getTitle().contains(Translator.getColoredString("BOSS_SHOP"))) {
+        player.getInventory().addItem(clickedItem);
+        player.closeInventory();
+      }
+
+      return;
+    }
   }
 }

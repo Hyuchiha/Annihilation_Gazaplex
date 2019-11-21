@@ -106,6 +106,7 @@ public class Main extends JavaPlugin {
 
     pm.registerEvents(new BossListener(this), this);
     pm.registerEvents(new ZombieListener(), this);
+    pm.registerEvents(new InteractListener(), this);
   }
 
   private void registerCommands() {

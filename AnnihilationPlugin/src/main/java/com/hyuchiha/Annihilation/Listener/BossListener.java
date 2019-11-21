@@ -9,6 +9,7 @@ import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Utils.FireworkUtils;
+import com.hyuchiha.Annihilation.Utils.ItemSelectorUtils;
 import org.bukkit.*;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.*;
@@ -238,8 +239,7 @@ public class BossListener implements Listener {
             gPlayer.getTeam().getColor()
         );
 
-        // TODO add boss star  config and giving
-        // ItemSelectorUtils.getBossStarSelector(killer.getName());
+        ItemSelectorUtils.getBossStarSelector(killer.getName());
       }
     }
   }

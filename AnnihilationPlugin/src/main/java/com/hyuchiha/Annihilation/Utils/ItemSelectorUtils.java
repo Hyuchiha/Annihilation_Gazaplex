@@ -1,6 +1,10 @@
 package com.hyuchiha.Annihilation.Utils;
 
+import com.hyuchiha.Annihilation.Game.GamePlayer;
+import com.hyuchiha.Annihilation.Main;
+import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
+import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -31,5 +35,23 @@ public class ItemSelectorUtils {
     itemMeta.setDisplayName(Translator.getColoredString("CLICK_TO_RETURN_LOBBY"));
     lobbySelector.setItemMeta(itemMeta);
     player.getInventory().setItem(8, lobbySelector);
+  }
+
+  public static void getBossStarSelector(String player) {
+    Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+      GamePlayer gPlayer = PlayerManager.getGamePlayer(Bukkit.getPlayer(player));
+      for (Player p : Bukkit.getOnlinePlayers()) {
+        GamePlayer EquipPlayer = PlayerManager.getGamePlayer(p);
+
+        if (gPlayer.getTeam() == EquipPlayer.getTeam()) {
+          ItemStack star = new ItemStack(Material.NETHER_STAR);
+          ItemMeta meta = star.getItemMeta();
+          meta.setDisplayName(Translator.getColoredString("BOSS_STAR"));
+          star.setItemMeta(meta);
+          p.getInventory().addItem(star);
+          p.updateInventory();
+        }
+      }
+    });
   }
 }

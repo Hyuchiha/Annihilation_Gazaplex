@@ -177,7 +177,7 @@ public class PlayerSerializer {
 
 
   public static ItemStack[] BossLoot() {
-    File file = new File(pluginPath + "config.yml");
+    File file = new File(pluginPath + "games.yml");
     YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
     int nb = yamlConfiguration.getInt("Boss-loot.Item-Nb");
     ItemStack[] item = new ItemStack[nb];
