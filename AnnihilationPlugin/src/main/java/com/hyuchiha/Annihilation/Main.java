@@ -37,7 +37,7 @@ public class Main extends JavaPlugin {
     Output.log("Developed by Hyuchiha");
 
     configManager = new ConfigManager(this);
-    configManager.loadConfigFiles("config.yml", "maps.yml", "messages.yml", "shops.yml");
+    configManager.loadConfigFiles("config.yml", "maps.yml", "messages.yml", "shops.yml", "games.yml");
 
     BossManager.init();
     MapLoader.initMapLoader(this);
