@@ -26,6 +26,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Wither;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
 import org.inventivetalent.reflection.minecraft.Minecraft;
@@ -40,6 +41,7 @@ public class BossManager {
   private static HashMap<GameTeam, Location> bossTeamSpawnLocations = new HashMap<>();
   private static List<Location> teleportLocations = new ArrayList<>();
   private static List<BossStarItem> bossStarItems = new ArrayList<>();
+  private static List<ItemStack> bossChestItems = new ArrayList<>();
 
   public static void init() {
     Output.log("Initializing boss instance generator");
@@ -65,8 +67,21 @@ public class BossManager {
         break;
     }
 
+    loadBossChestItems();
     loadBossStarItems();
 
+  }
+
+  private static void loadBossChestItems() {
+    Output.log("Loading Boss chest items");
+
+    Configuration config = Main.getInstance().getConfig("games.yml");
+
+    ConfigurationSection section = config.getConfigurationSection("Boss-loot");
+    for (String entry : section.getKeys(false)) {
+      ItemStack item = loadItem(section, entry);
+      bossChestItems.add(item);
+    }
   }
 
   private static void loadBossStarItems() {
@@ -76,17 +91,18 @@ public class BossManager {
 
     ConfigurationSection section = config.getConfigurationSection("Boss-Star");
     for (String entry : section.getKeys(false)) {
-      BossStarItem item = loadItem(section, entry);
-      bossStarItems.add(item);
+      ItemStack item = loadItem(section, entry);
+      int position = config.getInt(entry + ".position");
+
+      bossStarItems.add(new BossStarItem(item, position));
     }
   }
 
-  private static BossStarItem loadItem(ConfigurationSection config, String itemName) {
+  private static ItemStack loadItem(ConfigurationSection config, String itemName) {
     try {
       Material type = Material.getMaterial(config.getString(itemName + ".type"));
-      int position = config.getInt(itemName + ".position");
 
-      BossStarItem item = null;
+      ItemStack item = null;
       if (type == Material.POTION) {
 
         String potionType   = config.getString(itemName + ".potionType");
@@ -101,12 +117,12 @@ public class BossManager {
           potion.setHasExtendedDuration(extended);
         }
 
-        item = new BossStarItem(potion.toItemStack(1), position);
+        item = potion.toItemStack(1);
 
       } else {
         int qty = config.getInt(itemName + ".amount");
 
-        ItemStack stack = new ItemStack(type, qty);
+        item = new ItemStack(type, qty);
 
         boolean hasEnchant = config.getBoolean(itemName + ".hasEnchant");
         if (hasEnchant) {
@@ -114,11 +130,18 @@ public class BossManager {
           for (String keys : section.getKeys(false)) {
             Enchantment newEnchant = Enchantment.getByName(keys);
             int level = section.getInt(keys);
-            stack.addEnchantment(newEnchant, level);
+            item.addEnchantment(newEnchant, level);
           }
         }
+      }
 
-        item = new BossStarItem(stack, position);
+      if (config.getBoolean(itemName + ".hasMeta")) {
+        ItemMeta meta = item.getItemMeta();
+        String displayName = config.getString(itemName + ".displayName");
+        List<String> lore = config.getStringList(itemName + ".lore");
+
+        meta.setDisplayName(displayName);
+        meta.setLore(lore);
       }
 
       return item;
@@ -287,14 +310,14 @@ public class BossManager {
   }
 
   public static ItemStack getRandomItem() {
-    int randomIndex = new Random().nextInt(rItems().size());
+    int randomIndex = new Random().nextInt(bossChestItems.size());
     return (ItemStack) rItems().toArray()[randomIndex];
   }
 
   public static Collection<ItemStack> rItems() {
     Collection<ItemStack> items = new ArrayList<>();
-    ItemStack[] ritems = PlayerSerializer.BossLoot();
-    Collections.addAll(items, ritems);
+    ItemStack[] rItems = (ItemStack[]) bossChestItems.toArray();
+    Collections.addAll(items, rItems);
     return items;
   }
 

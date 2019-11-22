@@ -96,7 +96,7 @@ public class GameListener implements Listener {
     final GameTeam attacker = breaker.getTeam();
 
     Location nexusLocation = victim.getNexus().getLocation();
-
+    // TODO Add particle of destroy
 
     Account data = this.plugin.getMainDatabase().getAccount(breaker.getPlayer().getUniqueId().toString(), breaker.getPlayer().getName());
     data.addMoney(this.plugin.getConfig("config.yml").getDouble("Money-nexus-kill"));
@@ -152,7 +152,6 @@ public class GameListener implements Listener {
 
     Bukkit.getScheduler().scheduleSyncDelayedTask(this.plugin, () -> {
       ChatUtil.phaseMessage(phase);
-
 
       switch (phase) {
         case 3:

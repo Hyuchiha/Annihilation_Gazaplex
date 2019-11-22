@@ -8,6 +8,7 @@ import com.hyuchiha.Annihilation.Manager.*;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Scoreboard.ScoreboardManager;
+import com.hyuchiha.Annihilation.Serializers.PlayerSerializer;
 import com.hyuchiha.Annihilation.Utils.TeamUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -94,6 +95,7 @@ public class Game {
     BossManager.clearBossData();
     WitchManager.clearWitchData();
     FastBreakProtect.clearData();
+    PlayerSerializer.restartDataOfPlayers();
   }
 
 

@@ -3,102 +3,98 @@
 
 #Boss loot settings
 #For the chest after killing the boss
+#The configuration of items is similar to boss star but without selecting the position
+#  Item0:
+#     type: DIAMOND_HELMET   -> this is the item name from minecraft material class
+#     amount: 1              -> the number of item to give to the purchaser
+#     hasEnchant: true       -> true or false for set enchants to the object
+#     enchants:              -> list of enchants for the item
+#       - DURABILITY: 10     -> enchant name and number of enchant
+#     hasMeta: true          -> to set a custom name and lore
+#     displayName: "&cHype"  -> display name
+#     lore:                  -> item lore
+#       - 'My Lore'
 Boss-loot:
-  Item-Nb: 6
   Item0:
-    ==: org.bukkit.inventory.ItemStack
     type: DIAMOND_HELMET
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      enchants:
-        PROTECTION_ENVIRONMENTAL: 1
-        OXYGEN: 3
-      display-name: '§eOxyger'
-      lore:
-        - '§7Power of oxygen'
-        - '§eUnique Item'
-      repair-cost: 4
+    amount: 1
+    hasEnchants: true
+    enchants:
+      - PROTECTION_ENVIRONMENTAL: 1
+      - OXYGEN: 3
+    hasMeta: true
+    displayName: '§eOxyger'
+    lore:
+      - '§7Power of oxygen'
+      - '§eUnique Item'
   Item1:
-    ==: org.bukkit.inventory.ItemStack
     type: DIAMOND_HELMET
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      enchants:
-        PROTECTION_ENVIRONMENTAL: 4
-        OXYGEN: 3
-      display-name: '§6Oxyger II'
-      lore:
-        - '§7Power of oxygen II'
-        - '§5Rare Item'
-      repair-cost: 4
+    amount: 1
+    hasEnchants: true
+    enchants:
+      - PROTECTION_ENVIRONMENTAL: 4
+      - OXYGEN: 2
+    hasMeta: true
+    displayName: '§6Oxyger II'
+    lore:
+      - '§7Power of oxygen II'
+      - '§5Rare Item'
   Item2:
-    ==: org.bukkit.inventory.ItemStack
     type: DIAMOND_LEGGINGS
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      enchants:
-        PROTECTION_ENVIRONMENTAL: 4
-      display-name: '§3Anti sharp'
-      lore:
-        - '§7Better than normal.'
-        - '§eUnique Item'
-      repair-cost: 2
+    amount: 1
+    hasEnchants: true
+    enchants:
+      - PROTECTION_ENVIRONMENTAL: 4
+    hasMeta: true
+    displayName: '§3Anti sharp'
+    lore:
+      - '§7Better than normal.'
+      - '§eUnique Item'
   Item3:
-    ==: org.bukkit.inventory.ItemStack
     type: DIAMOND_BOOTS
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      enchants:
-        PROTECTION_ENVIRONMENTAL: 2
-        PROTECTION_FALL: 4
-      display-name: '§aFly boots'
-      lore:
-        - '§7Less damage of falling.'
-        - '§5Rare Item'
-      repair-cost: 2
+    amount: 1
+    hasEnchants: true
+    enchants:
+      - PROTECTION_ENVIRONMENTAL: 2
+      - PROTECTION_FALL: 4
+    hasMeta: true
+    displayName: '§aFly boots'
+    lore:
+      - '§7Less damage of falling.'
+      - '§5Rare Item'
   Item4:
-    ==: org.bukkit.inventory.ItemStack
     type: BOW
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      enchants:
-        ARROW_INFINITE: 1
-      display-name: '§aInfinite Shooter'
-      lore:
-        - '§7This bow is great.'
-        - '§eUnique Item'
-      repair-cost: 4
+    amount: 1
+    hasEnchants: true
+    enchants:
+      - ARROW_INFINITE: 1
+    hasMeta: true
+    displayName: '§aInfinite Shooter'
+    lore:
+      - '§7This bow is great.'
+      - '§eUnique Item'
   Item5:
-    ==: org.bukkit.inventory.ItemStack
     type: DIAMOND_SWORD
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      enchants:
-        DAMAGE_ALL: 3
-      display-name: '§aBlood finder'
-      lore:
-        - '§7Sharpness is your brother.'
-        - '§eUnique Item'
-      repair-cost: 2
+    amount: 1
+    hasEnchants: true
+    enchants:
+      - DAMAGE_ALL: 4
+    hasMeta: true
+    displayName: '§aBlood finder'
+    lore:
+      - '§7Sharpness is your brother.'
+      - '§eUnique Item'
   Item6:
-    ==: org.bukkit.inventory.ItemStack
     type: DIAMOND_CHESTPLATE
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      enchants:
-        PROTECTION_ENVIRONMENTAL: 4
-      display-name: '§2§lTroll plate'
-      lore:
-        - '§7Defending is smarter'
-        - '§eUnique Item'
-      repair-cost: 2
+    amount: 1
+    hasEnchants: true
+    enchants:
+      - PROTECTION_ENVIRONMENTAL: 4
+    hasMeta: true
+    displayName: '§2§lTroll plate'
+    lore:
+      - '§7Defending is smarter'
+      - '§eUnique Item'
 
 # Boss Star configuration
 # The default size of the boss star inventory is 6 * 9 (54 slots)
@@ -113,6 +109,10 @@ Boss-loot:
 #     hasEnchant: true       -> true or false for set enchants to the object
 #     enchants:              -> list of enchants for the item
 #       - DURABILITY: 10     -> enchant name and number of enchant
+#     hasMeta: true          -> to set a custom name and lore
+#     displayName: "&cHype"  -> display name
+#     lore:                  -> item lore
+#       - 'My Lore'
 #
 #  Potions items
 #
