@@ -233,8 +233,11 @@ public class BossListener implements Listener {
         data.addMoney(config.getDouble("Money-boss-kill"));
         gPlayer.addXp(config.getInt("Exp-boss-kill"));
 
+        Location bossLocation = event.getEntity().getLocation();
+        bossLocation.getWorld().playSound(bossLocation, Sound.ENTITY_ENDERDRAGON_DEATH,  1.0F, 0.1F);
+
         FireworkUtils.spawnFirework(
-            event.getEntity().getLocation(),
+            bossLocation,
             gPlayer.getTeam().getColor(),
             gPlayer.getTeam().getColor()
         );

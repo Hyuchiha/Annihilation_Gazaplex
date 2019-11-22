@@ -123,7 +123,6 @@ Boss-loot:
 #     potionEffectNum: 1     -> the effect number
 #     splash: true           -> if the potion is splash
 #     extended: true         -> if the potion has extended effects
-
 Boss-Star:
   Item0:
     type: POTION
