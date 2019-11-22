@@ -60,6 +60,10 @@ public class GameManager {
 
 
   public static void forceStopGame() {
+    if (currentGame != null) {
+      currentGame.endGame();
+      currentGame = new Game(Main.getInstance());
+    }
   }
 
 
