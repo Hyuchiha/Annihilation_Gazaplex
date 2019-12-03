@@ -24,6 +24,10 @@ public class GameTimer {
   private final long phaseTime;
   private final long restartingTime;
 
+  private boolean forceEnd = false;
+  private int forceHours;
+  private int forceMinutes;
+
   private long time;
   private boolean isRunning;
   private boolean gameStarted;
@@ -44,6 +48,21 @@ public class GameTimer {
     this.startTime = start;
     this.phaseTime = phaseTime;
     this.restartingTime = restartingTime;
+  }
+
+  public GameTimer(Main plugin, int start, int phaseTime, int restartingTime, int hoursRestart, int minutesRestart) {
+    this.gameStarted = false;
+    this.forceEnd = true;
+
+    this.plugin = plugin;
+
+    this.state = GameState.WAITING;
+    this.startTime = start;
+    this.phaseTime = phaseTime;
+    this.restartingTime = restartingTime;
+
+    this.forceHours = hoursRestart;
+    this.forceMinutes = minutesRestart;
   }
 
   public static String timeString(long time) {
@@ -124,6 +143,16 @@ public class GameTimer {
   private void onSecond() {
     this.time++;
 
+    if (this.forceEnd && this.state != GameState.RESTARTING) {
+      long hours = time / 3600L;
+      long minutes = (time - hours * 3600L) / 60L;
+
+      if ((hours >= this.forceHours) && (minutes >= this.forceMinutes)) {
+        GameManager.forceStopGame();
+        return;
+      }
+    }
+
     float percent = 1.0F;
     String text = "";
 
@@ -179,7 +208,6 @@ public class GameTimer {
 
 
         if (this.time == 0L) {
-
           Bukkit.getServer().getPluginManager().callEvent(new EndGameEvent());
         }
         break;

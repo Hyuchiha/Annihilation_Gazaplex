@@ -3,6 +3,7 @@ package com.hyuchiha.Annihilation.Manager;
 import com.hyuchiha.Annihilation.Chat.ChatUtil;
 import com.hyuchiha.Annihilation.Database.Base.Account;
 import com.hyuchiha.Annihilation.Game.Game;
+import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Output.Output;
 import org.bukkit.Bukkit;
@@ -60,12 +61,23 @@ public class GameManager {
 
 
   public static void forceStopGame() {
+    Output.log("Force stop game");
     if (currentGame != null) {
-      currentGame.endGame();
-      currentGame = new Game(Main.getInstance());
+      currentGame.restartingTime();
+
+      GameTeam winner = currentGame.getForcedWinner();
+      if (winner != GameTeam.NONE) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+          if (PlayerManager.getGamePlayer(player).getTeam() == winner) {
+            Account winnerData = Main.getInstance().getMainDatabase().getAccount(player.getUniqueId().toString(), player.getName());
+            winnerData.increaseNexusDamage();
+          }
+        }
+      }
+
+      ChatUtil.winMessage(currentGame.getWinner());
     }
   }
-
 
   public static Game getCurrentGame() {
     return currentGame;

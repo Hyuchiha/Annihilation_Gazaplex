@@ -23,6 +23,7 @@ witchRespawnDelay: 5
 lastJoinPhase: 3
 #
 #Ending game
+ForceGameEnding: true
 Force-end:
   hours: 2
   minutes: 00

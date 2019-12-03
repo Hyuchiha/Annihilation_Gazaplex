@@ -29,7 +29,19 @@ public class Game {
   public Game(Main plugin) {
     this.plugin = plugin;
     Configuration config = plugin.getConfig("config.yml");
-    this.timer = new GameTimer(plugin, config.getInt("start-delay"), config.getInt("phase-period"), config.getInt("restart-delay"));
+    boolean forceEnd = config.getBoolean("ForceGameEnding", false);
+
+    int startDelay = config.getInt("start-delay");
+    int phasePeriod = config.getInt("phase-period");
+    int restartDelay = config.getInt("restart-delay");
+
+    if (forceEnd) {
+      int hours = config.getInt("Force-end.hours");
+      int minutes = config.getInt("Force-end.minutes");
+      this.timer = new GameTimer(plugin, startDelay, phasePeriod, restartDelay, hours, minutes);
+    } else {
+      this.timer = new GameTimer(plugin, startDelay, phasePeriod, restartDelay);
+    }
 
     this.crafting = new HashMap<>();
     this.npcPlayers = new HashMap<>();
@@ -98,7 +110,6 @@ public class Game {
     PlayerSerializer.restartDataOfPlayers();
   }
 
-
   public int getPhase() {
     return this.phase;
   }
@@ -117,6 +128,45 @@ public class Game {
     }
 
     return GameTeam.NONE;
+  }
+
+  public GameTeam getForcedWinner() {
+    int rnex = 0, bnex = 0, gnex = 0, ynex = 0;
+
+    for (GameTeam g : GameTeam.teams()) {
+
+      switch (g) {
+        case BLUE:
+          bnex = g.getNexus().getHealth();
+          break;
+        case GREEN:
+          gnex = g.getNexus().getHealth();
+          break;
+
+        case RED:
+          rnex = g.getNexus().getHealth();
+          break;
+
+        case YELLOW:
+          ynex = g.getNexus().getHealth();
+          break;
+      }
+    }
+
+    GameTeam gt;
+    if (rnex > bnex && rnex > gnex && rnex > ynex) {
+      gt = GameTeam.RED;
+    } else if (bnex > rnex && bnex > gnex && bnex > ynex) {
+      gt = GameTeam.BLUE;
+    } else if (gnex > bnex && gnex > rnex && gnex > ynex) {
+      gt = GameTeam.GREEN;
+    } else if (ynex > bnex && ynex > gnex && ynex > rnex) {
+      gt = GameTeam.YELLOW;
+    } else {
+      gt = GameTeam.NONE;
+    }
+
+    return gt;
   }
 
   public boolean canEndGame() {
