@@ -5,30 +5,28 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.ChunkGenerator;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
 public class VoidGenerator extends ChunkGenerator {
   @Override
-  public Location getFixedSpawnLocation(World world, Random rand) {
+  public Location getFixedSpawnLocation(@NotNull World world, @NotNull Random rand) {
     return new Location(world, 0, world.getHighestBlockYAt(0, 0), 0);
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public byte[] generate(World world, Random rand, int chunkX, int chunkZ) {
-    byte[] chunk = new byte[16 * 16 * 128];
+  public ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, @NotNull BiomeGrid biome) {
+    ChunkData chunkData = super.createChunkData(world);
 
-    if ((chunkX == 0) && (chunkZ == 0)) {
-      chunk[0] = (byte) Material.BEDROCK.getId();
-    }
-
-    for (int x = 0; x < 16; x++) {
-      for (int z = 0; z < 16; z++) {
-        world.setBiome(x, z, Biome.PLAINS);
+    // Set biome.
+    for(int x = 0; x < 16; x++) {
+      for(int z = 0; z < 16; z++) {
+        biome.setBiome(x, z, Biome.PLAINS);
       }
     }
 
-    return chunk;
+    // Return the new chunk data.
+    return chunkData;
   }
 }
