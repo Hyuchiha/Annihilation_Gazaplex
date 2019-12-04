@@ -40,6 +40,7 @@ public class Main extends JavaPlugin {
     configManager.loadConfigFiles("config.yml", "maps.yml", "messages.yml", "shops.yml", "games.yml");
 
     BossManager.init();
+    ZombieManager.init();
     MapLoader.initMapLoader(this);
     Translator.InitMessages();
     MapManager.initMaps();

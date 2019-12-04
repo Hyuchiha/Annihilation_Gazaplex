@@ -13,6 +13,7 @@ import com.hyuchiha.Annihilation.Output.Output;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
@@ -23,7 +24,7 @@ import java.util.HashMap;
 public class ZombieManager {
   private static MobCreator creator;
 
-  private static HashMap<String, Entity> zombies;
+  private static HashMap<String, Entity> zombies = new HashMap<>();
 
   public static void init() {
     Output.log("Initializing zombie creator");
@@ -83,6 +84,19 @@ public class ZombieManager {
 
   public static HashMap<String, Entity> getZombies() {
     return zombies;
+  }
+
+  public static void clearZombiesData() {
+    World world = MapManager.getCurrentMap().getWorld();
+
+    for (Entity entity: world.getEntities()) {
+      if(entity.getType() == EntityType.ZOMBIE){
+        Output.log("Removing zombie");
+        entity.remove();
+      }
+    }
+
+    zombies.clear();
   }
 
 }
