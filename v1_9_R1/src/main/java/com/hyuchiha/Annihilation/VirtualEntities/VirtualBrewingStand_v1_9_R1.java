@@ -38,7 +38,7 @@ public class VirtualBrewingStand_v1_9_R1 extends TileEntityBrewingStand implemen
 
   @Override
   public InventoryHolder getOwner() {
-    return () -> new CraftInventoryBrewer(VirtualBrewingStand_v1_9_R1.this);
+    return () -> new CraftInventoryBrewer(this);
   }
 
   @Override

@@ -66,6 +66,11 @@
             <version>v1_12_R1</version>
         </dependency>
         <dependency>
+            <groupId>com.hyuchiha</groupId>
+            <artifactId>v1_13_R2</artifactId>
+            <version>v1_13_R2</version>
+        </dependency>
+        <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver</artifactId>
             <version>3.6.0</version>

@@ -1,16 +1,16 @@
 package com.hyuchiha.Annihilation.VirtualEntities;
 
-import net.minecraft.server.v1_12_R1.*;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftInventoryBrewer;
+import net.minecraft.server.v1_13_R2.*;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftInventoryBrewer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 
-public class VirtualBrewingStand_v1_12_R1 extends TileEntityBrewingStand implements VirtualBrewingStand {
+public class VirtualBrewingStand_v1_13_R2 extends TileEntityBrewingStand implements VirtualBrewingStand {
 
   private EntityPlayer handle;
 
-  public VirtualBrewingStand_v1_12_R1(Player player) {
+  public VirtualBrewingStand_v1_13_R2(Player player) {
     this.handle = ((CraftPlayer) player).getHandle();
     this.world = handle.getWorld();
     setItem(4, new ItemStack(Items.BLAZE_POWDER, 64));
@@ -28,7 +28,7 @@ public class VirtualBrewingStand_v1_12_R1 extends TileEntityBrewingStand impleme
 
   @Override
   public void makePotions() {
-    this.e();
+    this.tick();
   }
 
   @Override
@@ -40,6 +40,7 @@ public class VirtualBrewingStand_v1_12_R1 extends TileEntityBrewingStand impleme
   public InventoryHolder getOwner() {
     return () -> new CraftInventoryBrewer(this);
   }
+
 
   @Override
   public void openBrewingStand() {

@@ -1,19 +1,18 @@
 package com.hyuchiha.Annihilation.VirtualEntities;
 
-import net.minecraft.server.v1_12_R1.EntityHuman;
-import net.minecraft.server.v1_12_R1.EntityPlayer;
-import net.minecraft.server.v1_12_R1.ItemStack;
-import net.minecraft.server.v1_12_R1.TileEntityFurnace;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftInventoryFurnace;
+import net.minecraft.server.v1_13_R2.EntityHuman;
+import net.minecraft.server.v1_13_R2.EntityPlayer;
+import net.minecraft.server.v1_13_R2.TileEntityFurnace;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftInventoryFurnace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 
-public class VirtualFurnace_v1_12_R1 extends TileEntityFurnace implements VirtualFurnace {
+public class VirtualFurnace_v1_13_R2 extends TileEntityFurnace implements VirtualFurnace {
 
-  private EntityPlayer handle;
+  public EntityPlayer handle;
 
-  public VirtualFurnace_v1_12_R1(Player player) {
+  public VirtualFurnace_v1_13_R2(Player player) {
     this.handle = ((CraftPlayer) player).getHandle();
     this.world = handle.getWorld();
   }
@@ -25,14 +24,7 @@ public class VirtualFurnace_v1_12_R1 extends TileEntityFurnace implements Virtua
 
   @Override
   public void cook() {
-    if (!isBurning()) {
-      burn();
-    }
-  }
-
-  @Override
-  public int a(ItemStack itemstack) {
-    return 100;
+    tick();
   }
 
   @Override

@@ -5,7 +5,7 @@ import net.minecraft.server.v1_10_R1.EntityPlayer;
 import net.minecraft.server.v1_10_R1.ItemStack;
 import net.minecraft.server.v1_10_R1.TileEntityFurnace;
 import org.bukkit.craftbukkit.v1_10_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_10_R1.inventory.CraftInventoryBrewer;
+import org.bukkit.craftbukkit.v1_10_R1.inventory.CraftInventoryFurnace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 
@@ -42,7 +42,7 @@ public class VirtualFurnace_v1_10_R1 extends TileEntityFurnace implements Virtua
 
   @Override
   public InventoryHolder getOwner() {
-    return () -> new CraftInventoryBrewer(VirtualFurnace_v1_10_R1.this);
+    return () -> new CraftInventoryFurnace(this);
   }
 
   @Override

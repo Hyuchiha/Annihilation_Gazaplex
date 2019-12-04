@@ -22,7 +22,6 @@ public class EnderChestManager {
     }
   }
 
-
   public static void clearTeamsEnderChests() {
     chests.clear();
   }
