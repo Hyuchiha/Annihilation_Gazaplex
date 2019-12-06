@@ -41,6 +41,9 @@ public class EnderFurnaceManager {
       case v1_13_R2:
         furnaceManager = new FurnaceManager_v1_13_R2(main);
         return;
+      case v1_14_R1:
+        furnaceManager = new FurnaceManager_v1_14_R1(main);
+        return;
       default:
         Output.log("Version not supported");
         Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
