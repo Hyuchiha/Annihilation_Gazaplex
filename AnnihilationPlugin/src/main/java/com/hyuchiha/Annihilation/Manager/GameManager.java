@@ -63,7 +63,7 @@ public class GameManager {
   public static void forceStopGame() {
     Output.log("Force stop game");
     if (currentGame != null && currentGame.getPhase() > 0) {
-      // currentGame.restartingTime();
+      currentGame.restartingTime();
 
       GameTeam winner = currentGame.getForcedWinner();
       if (winner != GameTeam.NONE) {
