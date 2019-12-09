@@ -26,7 +26,7 @@ public class VirtualFurnace_v1_12_R1 extends TileEntityFurnace implements Virtua
   @Override
   public void cook() {
     if (!isBurning()) {
-      burn();
+      this.e();
     }
   }
 
