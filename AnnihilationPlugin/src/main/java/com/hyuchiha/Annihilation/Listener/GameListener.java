@@ -66,7 +66,7 @@ public class GameListener implements Listener {
 
       float pitch = 5.5F;
       victim.getNexus().getLocation().getWorld()
-          .playSound(victim.getNexus().getLocation(), Sound.BLOCK_ANVIL_LAND, 1.0F, pitch);
+          .playSound(victim.getNexus().getLocation(), Sound.BLOCK_ANVIL_LAND, 0.5F, pitch);
 
 
       for (Player p : victim.getPlayers()) {
