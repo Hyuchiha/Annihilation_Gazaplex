@@ -83,6 +83,8 @@ public class WitchManager {
 
   public static GameWitch findGameWitch(String name) {
     for (GameWitch witch: witches.values()) {
+      Output.log(witch.getName());
+      Output.log(name);
       if (name.contains(witch.getName())) {
         return witch;
       }
@@ -98,6 +100,7 @@ public class WitchManager {
         spawnWitch(witch);
       }
     }, 20 * respawnTime * 60);
+    tasks.add(task);
   }
 
   public static void cancelRespawnTask() {
