@@ -73,7 +73,7 @@ public class Main extends JavaPlugin {
     EnderBrewingManager.disableBrewingManager();
     EnderFurnaceManager.disableFurnaceManager();
 
-    if (GameManager.getCurrentGame() != null) {
+    if (GameManager.getCurrentGame() != null && GameManager.getCurrentGame().isInGame()) {
       GameManager.forceStopGame();
     }
 

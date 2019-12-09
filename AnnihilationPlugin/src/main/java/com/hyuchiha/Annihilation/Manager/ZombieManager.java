@@ -62,7 +62,7 @@ public class ZombieManager {
     Zombie zombie;
 
     if (creator != null) {
-      zombie = (Zombie) creator.getMob("Zombie").spawnEntity(player.getLocation());
+      zombie = (Zombie) creator.getMob("CUSTOM_ZOMBIE").spawnEntity(player.getLocation());
     } else {
       zombie = world.spawn(player.getLocation(), Zombie.class);
     }

@@ -87,12 +87,13 @@ public class ChatUtil {
 
 
   public static void nexusDestroyed(GameTeam attacker, GameTeam victim, Player p) {
-    List<String> multiMessage = Translator.getMultiMessage("NEXUS_DESTROYED");
+    List<String> multiMessage = Translator.getMultiMessage("NEXUS_BREAK_MESSAGE");
 
     for (String message : multiMessage) {
-
-
-      String replacedMessage = message.replace("%TEAM%", victim.coloredName()).replace("%PLAYER%", attacker.color().toString() + p.getName());
+      String replacedMessage = message
+                                   .replace("%C%", victim.color().toString())
+                                   .replace("%TEAM%", victim.coloredName())
+                                   .replace("%PLAYER%", attacker.color().toString() + p.getName());
       broadcast(replacedMessage);
     }
   }
@@ -112,8 +113,7 @@ public class ChatUtil {
 
 
   public static void phaseMessage(int phase) {
-    String currentPhase = Translator.getColoredString("PHASE")
-                              .replace("%PHASE%", Integer.toString(phase));
+    String currentPhase = "PHASE_" + phase;
     List<String> multiMessage = Translator.getMultiMessage(currentPhase);
 
     for (String message : multiMessage) {

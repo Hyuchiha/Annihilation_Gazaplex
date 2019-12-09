@@ -99,7 +99,6 @@ public class Game {
     getNpcPlayers().clear();
     getCrafting().clear();
 
-    MapManager.resetMap();
     EnderChestManager.clearTeamsEnderChests();
     EnderBrewingManager.clearTeamsEnderBrewings();
     EnderFurnaceManager.clearTeamsFurnaces();
@@ -108,6 +107,7 @@ public class Game {
     WitchManager.clearWitchData();
     FastBreakProtect.clearData();
     PlayerSerializer.restartDataOfPlayers();
+    MapManager.resetMap();
   }
 
   public int getPhase() {
