@@ -37,7 +37,7 @@ public class Main extends JavaPlugin {
     Output.log("Developed by Hyuchiha");
 
     configManager = new ConfigManager(this);
-    configManager.loadConfigFiles("config.yml", "maps.yml", "messages.yml", "shops.yml", "games.yml");
+    configManager.loadConfigFiles("config.yml", "maps.yml", "messages.yml", "shops.yml", "games.yml", "kits.yml");
 
     BossManager.init();
     ZombieManager.init();
@@ -113,6 +113,7 @@ public class Main extends JavaPlugin {
     getCommand("vote").setExecutor(new VoteCommand());
     getCommand("stats").setExecutor(new StatsCommand(this));
     getCommand("top").setExecutor(new TopCommand(this));
+    getCommand("class").setExecutor(new KitCommand());
   }
 
 

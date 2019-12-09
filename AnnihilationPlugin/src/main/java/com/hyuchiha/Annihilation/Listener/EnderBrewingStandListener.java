@@ -16,6 +16,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
 
 public class EnderBrewingStandListener implements Listener {
 
@@ -46,8 +47,9 @@ public class EnderBrewingStandListener implements Listener {
 
   @EventHandler
   public void onBrewingInventoryClick(InventoryClickEvent e) {
-    if (e.getClickedInventory().getType() == InventoryType.BREWING &&
-            e.getSlot() == 4) {
+    Inventory inventory = e.getClickedInventory();
+
+    if (inventory != null && inventory.getType() == InventoryType.BREWING && e.getSlot() == 4) {
       e.setCancelled(true);
     }
   }

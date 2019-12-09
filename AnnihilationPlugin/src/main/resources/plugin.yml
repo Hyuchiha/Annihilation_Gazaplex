@@ -19,3 +19,6 @@ commands:
   top:
     description: Comando para listar el top de kills, deaths, etc...
     aliases: p
+  class:
+    description: Selects your kit
+    aliases: c

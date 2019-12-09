@@ -8,6 +8,7 @@ import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Manager.VotingManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
+import com.hyuchiha.Annihilation.Utils.KitUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
@@ -103,6 +104,23 @@ public class InventoryListener implements Listener {
       if (e.getClickedInventory().getTitle().contains(Translator.getColoredString("BOSS_SHOP"))) {
         player.getInventory().addItem(clickedItem);
         player.closeInventory();
+      }
+
+      return;
+    }
+
+    if (inv.getTitle().startsWith(Translator.getColoredString("CLASS_SELECT_INV_TITLE"))) {
+      if (e.getCurrentItem().getType() == Material.AIR || e.getCurrentItem().getType() == null) {
+        return;
+      }
+
+      player.closeInventory();
+      e.setCancelled(true);
+
+      if (clickedItem.hasItemMeta() && clickedItem.getItemMeta().hasDisplayName()) {
+        String name = clickedItem.getItemMeta().getDisplayName();
+
+        KitUtils.selectKit(name, player);
       }
 
       return;

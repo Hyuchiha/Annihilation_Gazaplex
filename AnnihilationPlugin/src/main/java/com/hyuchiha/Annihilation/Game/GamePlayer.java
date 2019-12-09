@@ -21,29 +21,28 @@ public class GamePlayer {
   private PlayerState state;
   private GameTeam team;
   private boolean alive;
+  private Kit kit;
 
   public GamePlayer(UUID uuid) {
     this.playerUUID = uuid;
     this.state = PlayerState.LOBBY;
     this.team = GameTeam.NONE;
     this.alive = false;
-  }
 
+    this.kit = Kit.CIVILIAN;
+  }
 
   public UUID getPlayerUUID() {
     return this.playerUUID;
   }
 
-
   public Player getPlayer() {
     return Bukkit.getPlayer(this.playerUUID);
   }
 
-
   public GameTeam getTeam() {
     return this.team;
   }
-
 
   public void setTeam(GameTeam t) {
     if (this.team != null) {
@@ -112,6 +111,7 @@ public class GamePlayer {
     ItemSelectorUtils.giveTeamSelector(player);
     ItemSelectorUtils.giveMapSelector(player);
     ItemSelectorUtils.giveLobbyReturnItem(player);
+    ItemSelectorUtils.giveKitSelectorItem(player);
 
     setTeam(GameTeam.NONE);
   }
@@ -123,6 +123,7 @@ public class GamePlayer {
     setAlive(true);
     setupPlayerData();
     getPlayer().teleport(getTeam().getRandomSpawn());
+    getKit().getKit().giveKitItems(getPlayer());
 
     this.state = PlayerState.IN_GAME;
   }
@@ -132,6 +133,7 @@ public class GamePlayer {
     getPlayer().setGameMode(GameMode.SURVIVAL);
     setupPlayerData();
     getPlayer().teleport(getTeam().getRandomSpawn());
+    getKit().getKit().giveKitItems(getPlayer());
   }
 
 
@@ -142,5 +144,13 @@ public class GamePlayer {
 
   public void setState(PlayerState state) {
     this.state = state;
+  }
+
+  public Kit getKit() {
+    return kit;
+  }
+
+  public void setKit(Kit kit){
+    this.kit = kit;
   }
 }

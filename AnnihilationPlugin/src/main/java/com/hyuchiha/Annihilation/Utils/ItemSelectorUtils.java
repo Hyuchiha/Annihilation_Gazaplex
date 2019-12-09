@@ -37,6 +37,14 @@ public class ItemSelectorUtils {
     player.getInventory().setItem(8, lobbySelector);
   }
 
+  public static void giveKitSelectorItem(Player player) {
+    ItemStack lobbySelector = new ItemStack(Material.ENCHANTED_BOOK);
+    ItemMeta itemMeta = lobbySelector.getItemMeta();
+    itemMeta.setDisplayName(Translator.getColoredString("CLICK_TO_CHOOSE_KIT"));
+    lobbySelector.setItemMeta(itemMeta);
+    player.getInventory().setItem(2, lobbySelector);
+  }
+
   public static void getBossStarSelector(String player) {
     Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
       GamePlayer gPlayer = PlayerManager.getGamePlayer(Bukkit.getPlayer(player));

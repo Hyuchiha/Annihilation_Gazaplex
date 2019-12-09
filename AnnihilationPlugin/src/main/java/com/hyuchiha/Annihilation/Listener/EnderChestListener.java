@@ -91,7 +91,13 @@ public class EnderChestListener implements Listener {
     Inventory inv = e.getInventory();
     Player player = (Player) e.getWhoClicked();
 
-    if (e.getCurrentItem().getType() == Material.STAINED_GLASS_PANE || e.getCurrentItem().getType() == null) {
+    ItemStack interactedItem = e.getCurrentItem();
+
+    if (interactedItem == null) {
+      return;
+    }
+
+    if (interactedItem.getType() == Material.STAINED_GLASS_PANE || interactedItem.getType() == null) {
       e.setCancelled(true);
 
       return;
@@ -101,13 +107,14 @@ public class EnderChestListener implements Listener {
     }
 
     if (inv.getTitle().contains("Enderchest")) {
-      ItemMeta name = e.getCurrentItem().getItemMeta();
+      ItemMeta name = interactedItem.getItemMeta();
 
+      //TODO translate
       if (name != null &&
               name.hasDisplayName()) {
-        if (name.getDisplayName().equals(ChatColor.GOLD + "Slot disponible para el rango Gold") || name
-                                                                                                       .getDisplayName().equals(ChatColor.GRAY + "Slot disponible para el rango Silver") || name
-                                                                                                                                                                                                .getDisplayName().equals(ChatColor.RED + "Slot disponible para el rango Bronze"))
+        if (name.getDisplayName().equals(ChatColor.GOLD + "Slot disponible para el rango Gold")
+                || name.getDisplayName().equals(ChatColor.GRAY + "Slot disponible para el rango Silver")
+                || name.getDisplayName().equals(ChatColor.RED + "Slot disponible para el rango Bronze"))
           e.setCancelled(true);
       }
     }

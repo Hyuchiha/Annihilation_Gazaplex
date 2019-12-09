@@ -1,0 +1,11 @@
+#This points are for all the players and are required for unlock
+# a new class if a player doesn't has permission
+# do not remove any kit
+Kits:
+  CIVILIAN:
+    lore:
+      - "&3 Clase inicial"
+      - ""
+      - "&b Este kit te da lo"
+      - "&b básico para sobrevivir."
+    price: 0

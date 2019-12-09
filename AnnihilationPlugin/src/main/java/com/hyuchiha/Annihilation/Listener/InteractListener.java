@@ -26,6 +26,10 @@ public class InteractListener implements Listener {
         switch (handItem.getType()) {
           case ENCHANTED_BOOK:
             // FOR Kits
+            if (handItem.getItemMeta().hasDisplayName()
+                    && handItem.getItemMeta().getDisplayName().equals(Translator.getColoredString("CLICK_TO_CHOOSE_KIT"))) {
+              MenuUtils.showKitSelector(player);
+            }
             break;
           case GOLD_INGOT:
             // For unlock kits

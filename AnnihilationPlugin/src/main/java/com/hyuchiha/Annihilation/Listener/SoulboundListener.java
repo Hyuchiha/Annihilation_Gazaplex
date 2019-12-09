@@ -46,7 +46,7 @@ public class SoulboundListener implements Listener {
   public void onSoulboundDrop(PlayerDropItemEvent e) {
     if (isSoulbound(e.getItemDrop().getItemStack())) {
       Player p = e.getPlayer();
-      p.playSound(p.getLocation(), Sound.ENTITY_BLAZE_SHOOT, 1.0F, 0.25F);
+      p.playSound(p.getLocation(), Sound.ENTITY_BLAZE_HURT, 1.0F, 0.25F);
       e.getItemDrop().remove();
     }
   }
