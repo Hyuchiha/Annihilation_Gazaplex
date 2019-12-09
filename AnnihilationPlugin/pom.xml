@@ -130,6 +130,9 @@
                                     <include>com.hyuchiha:v1_10_R1**</include>
                                     <include>com.hyuchiha:v1_11_R1**</include>
                                     <include>com.hyuchiha:v1_12_R1**</include>
+                                    <include>com.hyuchiha:v1_13_R1**</include>
+                                    <include>com.hyuchiha:v1_13_R2**</include>
+                                    <include>com.hyuchiha:v1_14_R1**</include>
                                     <include>org.mongodb:mongodb-driver</include>
                                     <include>org.mongodb:bson</include>
                                     <include>org.mongodb:mongodb-driver-core</include>

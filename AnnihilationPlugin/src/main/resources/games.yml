@@ -151,7 +151,7 @@ Boss-Star:
     potionType: INSTANT_HEAL
     potionEffectNum: 1
     splash: true
-    extended: true
+    extended: false
   Item4:
     type: GOLD_HELMET
     amount: 1

@@ -14,18 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class SQLDB extends Database {
-  private static final String ACCOUNTS_TABLE = "annihilation_accounts";
-  private static final String ACCOUNTS_QUERY = "CREATE TABLE IF NOT EXISTS `" + ACCOUNTS_TABLE + "` ("
-                                                   + "  `uuid` varchar(36) NOT NULL,"
-                                                   + "  `username` varchar(16) NOT NULL,"
-                                                   + "  `kills` int(16) NOT NULL,"
-                                                   + "  `deaths` int(16) NOT NULL,"
-                                                   + "  `wins` int(16) NOT NULL,"
-                                                   + "  `losses` int(16) NOT NULL, "
-                                                   + "  `nexus_damage` int(16) NOT NULL,"
-                                                   + "  PRIMARY KEY (`uuid`),"
-                                                   + "  UNIQUE KEY `uuid` (`uuid`)"
-                                                   + ") ENGINE=InnoDB;";
+  protected static final String ACCOUNTS_TABLE = "annihilation_accounts";
+
   private Main plugin;
   private Connection connection;
 
@@ -37,30 +27,29 @@ public abstract class SQLDB extends Database {
 
     plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
       try {
-        if (SQLDB.this.connection != null && !SQLDB.this.connection.isClosed()) {
-          SQLDB.this.connection.createStatement().execute("/* ping */ SELECT 1");
+        if (connection != null && !connection.isClosed()) {
+          connection.createStatement().execute("/* ping */ SELECT 1");
         }
       } catch (SQLException e) {
-        SQLDB.this.connection = SQLDB.this.getNewConnection();
+        connection = getNewConnection();
       }
     }, 60 * 20, 60 * 20);
   }
 
   public boolean init() {
-    super.init();
-
     return checkConnection();
   }
 
   public boolean checkConnection() {
     try {
-      if (this.connection == null || this.connection.isClosed()) {
-        this.connection = getNewConnection();
+      if (connection == null || connection.isClosed()) {
+        connection = getNewConnection();
 
-        if (this.connection == null || this.connection.isClosed()) {
+        if (connection == null || connection.isClosed()) {
           return false;
         }
 
+        String ACCOUNTS_QUERY = getDatabaseQuery();
         query(ACCOUNTS_QUERY);
       }
 
@@ -73,10 +62,12 @@ public abstract class SQLDB extends Database {
     return true;
   }
 
+  protected abstract String getDatabaseQuery();
+
   protected abstract Connection getNewConnection();
 
   public boolean query(String sql) throws SQLException {
-    return this.connection.createStatement().execute(sql);
+    return connection.createStatement().execute(sql);
   }
 
   public void close() {
@@ -98,7 +89,7 @@ public abstract class SQLDB extends Database {
     List<Account> topAccounts = new ArrayList<Account>();
 
     try {
-      ResultSet set = this.connection.createStatement().executeQuery(sql);
+      ResultSet set = connection.createStatement().executeQuery(sql);
 
       while (set.next()) {
         Account account = new Account(
@@ -124,20 +115,15 @@ public abstract class SQLDB extends Database {
     checkConnection();
 
     try {
-      String query = "INSERT IGNORE INTO `" + ACCOUNTS_TABLE + "` (`uuid`, `username`, `kills`, "
-                         + "`deaths`, `wins`, `losses`, `nexus_damage`) VALUES "
-                         + "('"
-                         + account.getUUID() + "', '"
-                         + account.getName()
-                         + "', '0', '0', '0', '0', '0');";
+      String query = getCreateAccountQuery(account);
 
-      PreparedStatement statement = this.connection.prepareStatement(query);
+      PreparedStatement statement = connection.prepareStatement(query);
 
       if (statement.execute()) {
         statement.close();
       }
 
-      this.cachedAccounts.put(account.getUUID(), account);
+      cachedAccounts.put(account.getUUID(), account);
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -206,4 +192,7 @@ public abstract class SQLDB extends Database {
       e.printStackTrace();
     }
   }
+
+  protected abstract String getCreateAccountQuery(Account account);
+  protected abstract String getUpdateAccountQuery(Account account);
 }
