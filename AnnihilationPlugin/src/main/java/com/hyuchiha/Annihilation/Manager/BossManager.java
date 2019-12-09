@@ -4,6 +4,7 @@ import com.hyuchiha.Annihilation.Game.BossStarItem;
 import com.hyuchiha.Annihilation.Game.GameBoss;
 import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Main;
+import com.hyuchiha.Annihilation.Maps.MapLoader;
 import com.hyuchiha.Annihilation.Mobs.MobCreator;
 import com.hyuchiha.Annihilation.Mobs.v1_10_R1.MobCreator_v1_10_R1;
 import com.hyuchiha.Annihilation.Mobs.v1_11_R1.MobCreator_v1_11_R1;
@@ -162,7 +163,10 @@ public class BossManager {
   public static void loadBossConfiguration(ConfigurationSection config, World originalWorld) {
     Output.log("Loading boss configuration");
 
-    World bossWorld = Bukkit.getWorld(config.getString("world_spawn"));
+    String bossMap = config.getString("world_spawn");
+    MapLoader.loadMap(bossMap);
+
+    World bossWorld = Bukkit.getWorld(bossMap);
 
     for (String teleport: config.getStringList("teleports")) {
       teleportLocations.add(LocationUtils.parseLocation(originalWorld, teleport));
@@ -196,7 +200,7 @@ public class BossManager {
       Wither witherBoss;
 
       if (creator != null) {
-        witherBoss = (Wither) creator.getMob("Wither").spawnEntity(spawn);
+        witherBoss = (Wither) creator.getMob("CUSTOM_WITHER").spawnEntity(spawn);
       } else {
         witherBoss = (Wither) spawn.getWorld().spawnEntity(spawn, EntityType.WITHER);
       }
@@ -271,6 +275,8 @@ public class BossManager {
           entity.remove();
         }
       }
+
+      MapLoader.loadMap(bossWorld.getName());
     }
 
     cancelRespawnTask();
