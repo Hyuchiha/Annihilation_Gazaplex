@@ -4,5 +4,6 @@
 /META-INF/
 /lib/
 *.iml
+.DS_Store
 
 dependency-reduced-pom.xml
