@@ -22,28 +22,28 @@ public class EnderBrewingManager {
     switch (Minecraft.Version.getVersion()) {
       case v1_9_R1:
         brewingManager = new BrewingManager_v1_9_R1(main);
-        return;
+        break;
       case v1_9_R2:
         brewingManager = new BrewingManager_v1_9_R2(main);
-        return;
+        break;
       case v1_10_R1:
         brewingManager = new BrewingManager_v1_10_R1(main);
-        return;
+        break;
       case v1_11_R1:
         brewingManager = new BrewingManager_v1_11_R1(main);
-        return;
+        break;
       case v1_12_R1:
         brewingManager = new BrewingManager_v1_12_R1(main);
-        return;
+        break;
       case v1_13_R1:
         brewingManager = new BrewingManager_v1_13_R1(main);
-        return;
+        break;
       case v1_13_R2:
         brewingManager = new BrewingManager_v1_13_R2(main);
-        return;
+        break;
       case v1_14_R1:
         brewingManager = new BrewingManager_v1_14_R1(main);
-        return;
+        break;
       default:
         Output.logError("Version not supported");
         Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
