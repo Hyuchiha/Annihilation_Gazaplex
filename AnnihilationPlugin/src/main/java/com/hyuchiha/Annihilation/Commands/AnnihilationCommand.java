@@ -48,7 +48,7 @@ public class AnnihilationCommand implements CommandExecutor {
           sender.sendMessage(prefix + green + Translator.getColoredString("GAME_START"));
         }
       } else {
-        sender.sendMessage(prefix + red + Translator.getString("ERROR_COMMAND_NOT_PERMITED"));
+        sender.sendMessage(prefix + red + Translator.getString("ERROR_COMMAND_NOT_PERMITTED"));
       }
     }
 
