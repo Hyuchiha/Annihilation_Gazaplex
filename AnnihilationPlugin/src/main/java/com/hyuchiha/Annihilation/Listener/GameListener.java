@@ -8,6 +8,7 @@ import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.*;
 import com.hyuchiha.Annihilation.Messages.Translator;
+import com.hyuchiha.Annihilation.MessagesApi.ActionBar;
 import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Scoreboard.ScoreboardManager;
 import com.hyuchiha.Annihilation.Utils.FireworkUtils;
@@ -60,13 +61,14 @@ public class GameListener implements Listener {
       data.increaseNexusDamage();
 
       String msg = ChatUtil.nexusBreakMessage(breaker.getPlayer(), attacker, victim);
-      ChatUtil.broadcast(msg);
+      // ChatUtil.broadcast(msg); Old broadcast
+      ActionBar.sendToAll(msg);
 
       ScoreboardManager.updateInGameScoreboard(victim);
 
       float pitch = 5.5F;
       victim.getNexus().getLocation().getWorld()
-          .playSound(victim.getNexus().getLocation(), Sound.BLOCK_ANVIL_LAND, 0.5F, pitch);
+          .playSound(victim.getNexus().getLocation(), Sound.BLOCK_ANVIL_LAND, 1F, pitch);
 
 
       for (Player p : victim.getPlayers()) {

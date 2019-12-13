@@ -83,7 +83,7 @@ public class BlockListener implements Listener {
 
       if (GameUtils.tooClose(event.getBlock().getLocation()) &&
               !event.getPlayer().hasPermission("annihilation.bypass.construction") &&
-              !permitedBreak(event.getBlock().getType())) {
+              !permittedBreak(event.getBlock().getType())) {
         event.getPlayer().sendMessage(
             Translator.getColoredString("ERROR_TOO_CLOSE_NEXUS"));
 
@@ -107,7 +107,7 @@ public class BlockListener implements Listener {
     }
   }
 
-  private boolean permitedBreak(Material material) {
+  private boolean permittedBreak(Material material) {
     switch (material) {
       case ENDER_STONE:
       case MELON_BLOCK:
