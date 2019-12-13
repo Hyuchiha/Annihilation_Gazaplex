@@ -14,6 +14,7 @@ import com.hyuchiha.Annihilation.Manager.*;
 import com.hyuchiha.Annihilation.Maps.MapLoader;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Output.Output;
+import com.hyuchiha.Annihilation.Protocol.PacketManager;
 import com.hyuchiha.Annihilation.Scoreboard.ScoreboardManager;
 import com.hyuchiha.Annihilation.Serializers.PlayerSerializer;
 import org.bukkit.Bukkit;
@@ -66,6 +67,9 @@ public class Main extends JavaPlugin {
     hookBungeeCord();
 
     initDatabase();
+
+    // Init packet listener
+    PacketManager.initHelmetListener();
   }
 
 
