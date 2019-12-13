@@ -16,21 +16,6 @@ public class MySQLDB extends SQLDB {
     this.plugin = plugin;
   }
 
-  @Override
-  protected String getDatabaseQuery() {
-    return "CREATE TABLE IF NOT EXISTS `" + ACCOUNTS_TABLE + "` (" +
-               "`uuid` varchar(36) NOT NULL, " +
-               "`username` varchar(16) NOT NULL, " +
-               "`kills` int(16) NOT NULL, " +
-               "`deaths` int(16) NOT NULL, " +
-               "`wins` int(16) NOT NULL, " +
-               "`losses` int(16) NOT NULL, " +
-               "`nexus_damage` int(16) NOT NULL, " +
-               "PRIMARY KEY (`uuid`), " +
-               "UNIQUE KEY `uuid` (`uuid`)) " +
-               "ENGINE=InnoDB;";
-  }
-
   protected Connection getNewConnection() {
     ConfigurationSection config = getConfigSection();
 
@@ -47,6 +32,21 @@ public class MySQLDB extends SQLDB {
   }
 
   @Override
+  protected String getDatabaseQuery() {
+    return "CREATE TABLE IF NOT EXISTS `" + ACCOUNTS_TABLE + "` (" +
+               "`uuid` varchar(36) NOT NULL, " +
+               "`username` varchar(16) NOT NULL, " +
+               "`kills` int(16) NOT NULL, " +
+               "`deaths` int(16) NOT NULL, " +
+               "`wins` int(16) NOT NULL, " +
+               "`losses` int(16) NOT NULL, " +
+               "`nexus_damage` int(16) NOT NULL, " +
+               "PRIMARY KEY (`uuid`), " +
+               "UNIQUE KEY `uuid` (`uuid`)) " +
+               "ENGINE=InnoDB;";
+  }
+
+  @Override
   protected String getCreateAccountQuery(Account account) {
     return "INSERT IGNORE INTO `" + ACCOUNTS_TABLE + "` (`uuid`, `username`, `kills`, "
                + "`deaths`, `wins`, `losses`, `nexus_damage`) VALUES "
@@ -58,7 +58,14 @@ public class MySQLDB extends SQLDB {
 
   @Override
   protected String getUpdateAccountQuery(Account account) {
-    return null;
+    return "UPDATE `" + ACCOUNTS_TABLE + "` SET "
+               + "`username`= '" + account.getName() + "',"
+               + "`kills`= '" + account.getKills() + "',"
+               + "`deaths`='" + account.getDeaths() + "',"
+               + "`wins`='" + account.getWins() + "',"
+               + "`losses`='" + account.getLosses() + "',"
+               + "`nexus_damage`='" + account.getNexus_damage() + "' "
+               + "WHERE `uuid`='" + account.getUUID() + "';";
   }
 
   private ConfigurationSection getConfigSection() {

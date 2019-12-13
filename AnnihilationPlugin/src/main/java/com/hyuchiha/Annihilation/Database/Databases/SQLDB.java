@@ -62,8 +62,6 @@ public abstract class SQLDB extends Database {
     return true;
   }
 
-  protected abstract String getDatabaseQuery();
-
   protected abstract Connection getNewConnection();
 
   public boolean query(String sql) throws SQLException {
@@ -174,14 +172,7 @@ public abstract class SQLDB extends Database {
 
 
     try {
-      String query = "UPDATE `" + ACCOUNTS_TABLE + "` SET "
-                         + "`username`= '" + account.getName() + "',"
-                         + "`kills`= '" + account.getKills() + "',"
-                         + "`deaths`='" + account.getDeaths() + "',"
-                         + "`wins`='" + account.getWins() + "',"
-                         + "`losses`='" + account.getLosses() + "',"
-                         + "`nexus_damage`='" + account.getNexus_damage() + "' "
-                         + "WHERE `uuid`='" + account.getUUID() + "';";
+      String query = getUpdateAccountQuery(account);
 
       PreparedStatement statement = this.connection.prepareStatement(query);
 
@@ -193,6 +184,7 @@ public abstract class SQLDB extends Database {
     }
   }
 
+  protected abstract String getDatabaseQuery();
   protected abstract String getCreateAccountQuery(Account account);
   protected abstract String getUpdateAccountQuery(Account account);
 }
