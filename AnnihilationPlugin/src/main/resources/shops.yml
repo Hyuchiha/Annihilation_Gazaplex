@@ -19,7 +19,6 @@ weapon:
   - MELON,16,5
   - CAKE,1,5
 brewing:
-  - BREWING_STAND_ITEM,1,10
   - POTION,3,1
   - NETHER_STALK,1,5
   - NEXTLINE
