@@ -39,34 +39,34 @@ example:
   # Nexuses for each team, only one nexus each.
   # Required.
   nexuses:
-    rojo: "-27,66,-27"
-    amarillo: "-27,66,27"
-    verde: "27,66,27"
-    azul: "27,66,-27"
+    red: "-27,66,-27"
+    yellow: "-27,66,27"
+    green: "27,66,27"
+    blue: "27,66,-27"
 
   # Ender furnaces for each team, only one each.
   # Optional.
   furnaces:
-    rojo: "-22,65,-22"
-    amarillo: "-22,65,22"
-    verde: "22,65,22"
-    azul: "22,65,-22"
+    red: "-22,65,-22"
+    yellow: "-22,65,22"
+    green: "22,65,22"
+    blue: "22,65,-22"
 
   # Ender brewing stands for each team, only one each.
   # Optional.
   brewingstands:
-    rojo: "-20,65,-20"
-    amarillo: "-20,65,20"
-    verde: "20,65,20"
-    azul: "20,65,-20"
+    red: "-20,65,-20"
+    yellow: "-20,65,20"
+    green: "20,65,20"
+    blue: "20,65,-20"
 
   # Ender chests for each team, only one each.
   # Optional.
   enderchests:
-    rojo: "-21,65,-21"
-    amarillo: "-21,65,21"
-    verde: "21,65,21"
-    azul: "21,65,-21"
+    red: "-21,65,-21"
+    yellow: "-21,65,21"
+    green: "21,65,21"
+    blue: "21,65,-21"
 
   # Diamond locations, can have as many as you like.
   # Optional, but highly recommended.
@@ -81,27 +81,26 @@ example:
   # Required
   # Only one boss is configurable
   boss:
-    # The bossSpawn location for the boss
-    boss_spawn: "0,63,-21"
-    # The players spawns for the world of the boss
-    spawns:
-      rojo: "-27,66,-27"
-      amarillo: "-27,66,27"
-      verde: "27,66,27"
-      azul: "27,66,-27"
     # The world when the boss is going to bossSpawn
     world_spawn: "nether_world"
-    # The chest spawns in the world when the boss spawns
-    chest: "0,63,-23"
     # The boss can have custom health
     hearts: 300
+    # The bossSpawn location for the boss
+    boss_spawn: "0,63,-21"
+    #The name of the boss in this arena
+    boss_name: "&bCelariel"
     # When players want to teleport they need to stay in this location
     teleport:
       - "0,0,0"
       - "0,0,0"
-    #The name of the boss in this arena
-    boss_name: "&bCelariel"
-
+    # The players spawns for the world of the boss
+    spawns:
+      red: "-27,66,-27"
+      yellow: "-27,66,27"
+      green: "27,66,27"
+      blue: "27,66,-27"
+    # The chest spawns in the world when the boss spawns
+    chest: "0,63,-23"
   #The witches to spawn
   #Required
   witch:
