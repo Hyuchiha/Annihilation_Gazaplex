@@ -164,7 +164,10 @@ public class BossManager {
     Output.log("Loading boss configuration");
 
     String bossMap = config.getString("world_spawn");
-    MapLoader.loadMap(bossMap);
+    String envValue = config.getString("world_env", "THE_END");
+
+    World.Environment environment = World.Environment.valueOf(envValue);
+    MapLoader.loadMap(bossMap, environment);
 
     World bossWorld = Bukkit.getWorld(bossMap);
 
@@ -276,7 +279,7 @@ public class BossManager {
         }
       }
 
-      MapLoader.loadMap(bossWorld.getName());
+      MapLoader.loadMap(bossWorld.getName(), bossWorld.getEnvironment());
     }
 
     cancelRespawnTask();

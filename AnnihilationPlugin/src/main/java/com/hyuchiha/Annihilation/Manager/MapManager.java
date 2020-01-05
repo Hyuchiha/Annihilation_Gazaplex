@@ -32,7 +32,10 @@ public class MapManager {
       if (!s.equalsIgnoreCase("lobby")) {
         Output.log("Loading map " + s);
 
-        if (MapLoader.loadMap(s)) {
+        String envValue = config.getString(s + ".env", "NORMAL");
+        World.Environment environment = World.Environment.valueOf(envValue);
+
+        if (MapLoader.loadMap(s, environment)) {
           maps.add(s);
         }
       }

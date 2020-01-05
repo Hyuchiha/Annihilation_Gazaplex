@@ -36,7 +36,7 @@ public class MapLoader {
     }
   }
 
-  public static boolean loadMap(String name) {
+  public static boolean loadMap(String name, World.Environment environment) {
     File mapsFolder = new File(plugin.getDataFolder(), "maps");
     if (!mapsFolder.exists()) {
       return false;
@@ -47,13 +47,13 @@ public class MapLoader {
       return false;
     }
 
-    Map<Player, Location> players = unloadWorld(name, false);
+    Map<Player, Location> players = unloadWorld(name, false, environment);
 
     File destination = new File(plugin.getDataFolder().getParentFile().getParentFile(), name);
     try {
       copyFolder(source, destination);
 
-      World bukkitWorld = loadWorld(name);
+      World bukkitWorld = loadWorld(name, environment);
       for (Player player : players.keySet()) {
         player.teleport(bukkitWorld.getSpawnLocation());
       }
@@ -126,7 +126,7 @@ public class MapLoader {
     }
   }
 
-  private static Map<Player, Location> unloadWorld(String world, boolean save) {
+  private static Map<Player, Location> unloadWorld(String world, boolean save, World.Environment environment) {
     Map<Player, Location> players = new HashMap<>();
     World bukkitWorld = plugin.getServer().getWorld(world);
     if (bukkitWorld != null) {
@@ -137,7 +137,7 @@ public class MapLoader {
 
       for (Hooks hook : hooks) {
         try {
-          hook.preUnload(world);
+          hook.preUnload(world, environment);
         } catch (Exception e) {
           plugin.getLogger().log(Level.WARNING, "Error calling hook", e);
         }
@@ -152,7 +152,7 @@ public class MapLoader {
 
       for (Hooks hook : hooks) {
         try {
-          hook.postUnload(world);
+          hook.postUnload(world, environment);
         } catch (Exception e) {
           plugin.getLogger().log(Level.WARNING, "Error calling hook", e);
         }
@@ -162,22 +162,23 @@ public class MapLoader {
     return players;
   }
 
-  private static World loadWorld(String world) {
+  private static World loadWorld(String world, World.Environment environment) {
     for (Hooks hook : hooks) {
       try {
-        hook.preLoad(world);
+        hook.preLoad(world, environment);
       } catch (Exception e) {
         plugin.getLogger().log(Level.WARNING, "Error calling hook", e);
       }
     }
 
     WorldCreator wc = new WorldCreator(world);
+    wc.environment(environment);
     wc.generator(new VoidGenerator());
     World result = Bukkit.createWorld(wc);
 
     for (Hooks hook : hooks) {
       try {
-        hook.postLoad(world);
+        hook.postLoad(world, environment);
       } catch (Exception e) {
         plugin.getLogger().log(Level.WARNING, "Error calling hook", e);
       }

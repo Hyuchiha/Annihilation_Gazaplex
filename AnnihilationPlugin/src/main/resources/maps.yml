@@ -23,6 +23,12 @@ lobby:
       - "4,65,-3"
       - "3,65,-4"
 example:
+  # The env represent the type of world (NORMAL, NETHER, END)
+  # Is required for load the world OK
+  # Possible values, NORMAL, NETHER, THE_END
+  env: "NORMAL"
+  # Spawn points for each team, can have as many entries as you like.
+  # At least one required.
   spawns:
     red:
       - "0,0,0"
@@ -83,6 +89,8 @@ example:
   boss:
     # The world when the boss is going to bossSpawn
     world_spawn: "nether_world"
+    # The world env, possible values, NORMAL, NETHER, THE_END
+    world_env: "THE_END"
     # The boss can have custom health
     hearts: 300
     # The bossSpawn location for the boss

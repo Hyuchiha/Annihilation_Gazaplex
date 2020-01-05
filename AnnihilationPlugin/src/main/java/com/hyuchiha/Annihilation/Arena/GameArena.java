@@ -97,7 +97,7 @@ public class GameArena {
 
 
   public void rollbackArena() {
-    MapLoader.loadMap(this.name);
+    MapLoader.loadMap(this.name, getWorld().getEnvironment());
   }
 
 

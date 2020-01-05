@@ -13,25 +13,25 @@ public class MultiverseCoreHooks implements Hooks {
   }
 
   @Override
-  public void preUnload(String world) {
+  public void preUnload(String world, World.Environment environment) {
 
   }
 
   @Override
-  public void postUnload(String world) {
+  public void postUnload(String world, World.Environment environment) {
 
   }
 
   @Override
-  public void preLoad(String world) {
+  public void preLoad(String world, World.Environment environment) {
 
   }
 
   @Override
-  public void postLoad(String world) {
+  public void postLoad(String world, World.Environment environment) {
     World bukkitWorld = plugin.getServer().getWorld(world);
-    if (getMultiverseCore().getMVWorldManager().getMVWorld(world) == null) {
-      getMultiverseCore().getMVWorldManager().addWorld(world, bukkitWorld.getEnvironment(), String.valueOf(bukkitWorld.getSeed()), bukkitWorld.getWorldType(), Boolean.TRUE, null);
+    if (bukkitWorld != null && getMultiverseCore().getMVWorldManager().getMVWorld(world) == null) {
+      getMultiverseCore().getMVWorldManager().addWorld(world, environment, String.valueOf(bukkitWorld.getSeed()), bukkitWorld.getWorldType(), Boolean.TRUE, null);
     }
   }
 
