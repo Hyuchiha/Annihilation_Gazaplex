@@ -50,7 +50,7 @@ public class WitchManager {
     Location spawn = gWitch.getSpawn();
 
     if (spawn != null && spawn.getWorld() != null) {
-      Bukkit.getWorld(spawn.getWorld().getName()).loadChunk(spawn.getChunk());
+      Bukkit.getWorld(spawn.getWorld().getName());
 
       Witch witch = (Witch) spawn.getWorld().spawnEntity(spawn, EntityType.WITCH);
 
@@ -71,8 +71,13 @@ public class WitchManager {
   public static void update(Witch witch) {
     Output.log("Updating witch name");
 
+    String currentWitch = ChatColor.stripColor(witch.getCustomName());
+
     for (GameWitch gWitch: witches.values()) {
-      if (witch.getCustomName().contains(gWitch.getName())) {
+
+      String teamWitch = ChatColor.stripColor(gWitch.getName().replaceAll("&", "§"));
+
+      if (currentWitch.contains(teamWitch)) {
         witch.setCustomName(ChatColor.translateAlternateColorCodes('&', gWitch.getName() + " &8» &a" + witch.getHealth() + " HP"));
 
         Output.log("Witch name updated");
@@ -82,10 +87,13 @@ public class WitchManager {
   }
 
   public static GameWitch findGameWitch(String name) {
+    String currentWitch = ChatColor.stripColor(name);
+
     for (GameWitch witch: witches.values()) {
-      Output.log(witch.getName());
-      Output.log(name);
-      if (name.contains(witch.getName())) {
+
+      String teamWitch = ChatColor.stripColor(witch.getName().replaceAll("&", "§"));
+
+      if (currentWitch.contains(teamWitch)) {
         return witch;
       }
     }
