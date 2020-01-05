@@ -255,7 +255,7 @@ public class BossManager {
 
   public static void beginRespawnTime(int respawnTime) {
     if (task != null) {
-      task.cancel();
+      Bukkit.getScheduler().cancelTask(task.getPID());
       task = null;
     }
 
@@ -264,7 +264,7 @@ public class BossManager {
 
   public static void cancelRespawnTask() {
     if (task != null) {
-      task.cancel();
+      Bukkit.getScheduler().cancelTask(task.getPID());
       task = null;
     }
   }

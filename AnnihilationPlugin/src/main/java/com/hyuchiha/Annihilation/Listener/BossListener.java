@@ -273,11 +273,6 @@ public class BossListener implements Listener {
       World bossWorld = BossManager.getBoss().getBossSpawn().getWorld();
 
       if (bossWorld.getName().equals(chunkWorld.getName())) {
-
-        for (Entity entity: event.getChunk().getEntities()){
-          Output.log(entity.getCustomName());
-        }
-
         event.setCancelled(true);
       }
     }

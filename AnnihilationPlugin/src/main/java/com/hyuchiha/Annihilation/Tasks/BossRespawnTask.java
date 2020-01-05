@@ -7,12 +7,13 @@ import com.hyuchiha.Annihilation.Manager.GameManager;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class BossRespawnTask extends BukkitRunnable {
+public class BossRespawnTask implements Runnable {
 
+  private int PID;
   private boolean running = false;
 
   public BossRespawnTask(int respawnTime) {
-    Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getInstance(), this,20 * respawnTime * 60 );
+    this.PID = Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), this,20 * respawnTime * 60 );
   }
 
   @Override
@@ -27,6 +28,10 @@ public class BossRespawnTask extends BukkitRunnable {
 
   public boolean isRunning() {
     return running;
+  }
+
+  public int getPID() {
+    return this.PID;
   }
 
 }
