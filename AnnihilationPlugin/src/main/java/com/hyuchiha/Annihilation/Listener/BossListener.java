@@ -8,6 +8,7 @@ import com.hyuchiha.Annihilation.Manager.BossManager;
 import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
+import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.FireworkUtils;
 import com.hyuchiha.Annihilation.Utils.ItemSelectorUtils;
 import org.bukkit.*;
@@ -21,6 +22,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -262,5 +264,26 @@ public class BossListener implements Listener {
       event.setCancelled(true);
     }
   }
+
+  @EventHandler()
+  private void onChunkUnload(ChunkUnloadEvent event) {
+    World chunkWorld = event.getWorld();
+
+    if (BossManager.hasBossConfig()) {
+      World bossWorld = BossManager.getBoss().getBossSpawn().getWorld();
+
+      if (bossWorld.getName().equals(chunkWorld.getName())) {
+
+        for (Entity entity: event.getChunk().getEntities()){
+          Output.log(entity.getCustomName());
+        }
+
+        event.setCancelled(true);
+      }
+    }
+
+  }
+
+
 
 }

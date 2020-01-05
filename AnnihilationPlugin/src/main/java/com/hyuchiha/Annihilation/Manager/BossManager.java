@@ -327,15 +327,13 @@ public class BossManager {
   }
 
   public static ItemStack getRandomItem() {
-    int randomIndex = new Random().nextInt(bossChestItems.size());
+    int randomIndex = new Random().nextInt(rItems().size());
     return (ItemStack) rItems().toArray()[randomIndex];
   }
 
   public static Collection<ItemStack> rItems() {
-    Collection<ItemStack> items = new ArrayList<>();
-    ItemStack[] rItems = (ItemStack[]) bossChestItems.toArray();
-    Collections.addAll(items, rItems);
-    return items;
+    ItemStack[] ritems = bossChestItems.toArray(new ItemStack[0]);
+    return new ArrayList<ItemStack>(Arrays.asList(ritems));
   }
 
   public static List<BossStarItem> getBossStarItems() {
