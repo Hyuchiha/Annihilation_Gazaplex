@@ -133,7 +133,7 @@ public class BossListener implements Listener {
         return;
       }
 
-      if (BossManager.hasBossConfig()) {
+      if (!BossManager.hasBossConfig()) {
         return;
       }
 
@@ -207,7 +207,7 @@ public class BossListener implements Listener {
         return;
       }
 
-      if (BossManager.hasBossConfig()) {
+      if (!BossManager.hasBossConfig()) {
         return;
       }
 

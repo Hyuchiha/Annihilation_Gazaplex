@@ -8,6 +8,8 @@ import java.util.Set;
 public class CustomZombie extends EntityZombie {
   public CustomZombie(World world) {
     super(world);
+
+    this.persistent = true;
   }
 
   @Override

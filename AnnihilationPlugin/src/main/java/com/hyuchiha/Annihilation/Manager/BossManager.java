@@ -65,7 +65,7 @@ public class BossManager {
       case v1_13_R1:
         // For now the 1.13 is nos supported
         // creator = new MobCreator_v1_13_R1();
-        return;
+        break;
       case v1_13_R2:
         // For now the 1.13 is not supported
         // creator = new MobCreator_v1_13_R2();
@@ -226,7 +226,8 @@ public class BossManager {
   }
 
   public static void update(Wither g) {
-    g.setCustomName(ChatColor.translateAlternateColorCodes('&', boss.getBossName() + " &8» &a" + g.getHealth() + " HP"));
+    int health = (int) g.getHealth();
+    g.setCustomName(ChatColor.translateAlternateColorCodes('&', boss.getBossName() + " &8» &a" + health + " HP"));
   }
 
   public static boolean hasBossConfig() {

@@ -75,6 +75,7 @@ public class ZombieManager {
     ItemStack[] armors = player.getInventory().getArmorContents();
     zombie.getEquipment().setItemInHand(hand);
     zombie.getEquipment().setArmorContents(armors);
+    zombie.setRemoveWhenFarAway(false);
 
     if (!zombies.containsKey(zombie.getCustomName())) {
       zombies.put(zombie.getCustomName(), zombie);
