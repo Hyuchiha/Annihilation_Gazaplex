@@ -90,7 +90,7 @@ example:
     #The name of the boss in this arena
     boss_name: "&bCelariel"
     # When players want to teleport they need to stay in this location
-    teleport:
+    teleports:
       - "0,0,0"
       - "0,0,0"
     # The players spawns for the world of the boss
