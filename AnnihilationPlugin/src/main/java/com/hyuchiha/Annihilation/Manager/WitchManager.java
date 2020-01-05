@@ -50,7 +50,7 @@ public class WitchManager {
     Location spawn = gWitch.getSpawn();
 
     if (spawn != null && spawn.getWorld() != null) {
-      Bukkit.getWorld(spawn.getWorld().getName());
+      Bukkit.getWorld(spawn.getWorld().getName()).loadChunk(spawn.getChunk());
 
       Witch witch = (Witch) spawn.getWorld().spawnEntity(spawn, EntityType.WITCH);
 
@@ -102,7 +102,7 @@ public class WitchManager {
   }
 
   public static void beginWitchRespawn(GameWitch witch, int respawnTime) {
-    BukkitTask task = Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getInstance(), new Runnable() {
+    BukkitTask task = Bukkit.getScheduler().runTaskLater(Main.getInstance(), new Runnable() {
       @Override
       public void run() {
         spawnWitch(witch);
