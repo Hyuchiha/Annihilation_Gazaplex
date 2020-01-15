@@ -72,7 +72,8 @@ public class InteractListener implements Listener {
               if(inventory.getItemInMainHand().getAmount() == 1){
                 player.getInventory().remove(handItem);
               }else{
-                inventory.getItemInMainHand().setAmount(handItem.getAmount() - 1);
+                int currentAmount = handItem.getAmount();
+                inventory.getItemInMainHand().setAmount(currentAmount - 1);
               }
             }
         }

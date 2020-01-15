@@ -118,6 +118,7 @@ public class Main extends JavaPlugin {
     getCommand("stats").setExecutor(new StatsCommand(this));
     getCommand("top").setExecutor(new TopCommand(this));
     getCommand("class").setExecutor(new KitCommand());
+    getCommand("star").setExecutor(new StarCommand());
   }
 
 

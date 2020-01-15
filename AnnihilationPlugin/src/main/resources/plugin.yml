@@ -22,3 +22,6 @@ commands:
   class:
     description: Selects your kit
     aliases: c
+  star:
+    description: Only for testing
+    aliases: st

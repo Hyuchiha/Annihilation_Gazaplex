@@ -46,20 +46,18 @@ public class ItemSelectorUtils {
   }
 
   public static void getBossStarSelector(String player) {
-    Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
-      GamePlayer gPlayer = PlayerManager.getGamePlayer(Bukkit.getPlayer(player));
-      for (Player p : Bukkit.getOnlinePlayers()) {
-        GamePlayer EquipPlayer = PlayerManager.getGamePlayer(p);
+    GamePlayer gPlayer = PlayerManager.getGamePlayer(Bukkit.getPlayer(player));
+    for (Player p : Bukkit.getOnlinePlayers()) {
+      GamePlayer EquipPlayer = PlayerManager.getGamePlayer(p);
 
-        if (gPlayer.getTeam() == EquipPlayer.getTeam()) {
-          ItemStack star = new ItemStack(Material.NETHER_STAR);
-          ItemMeta meta = star.getItemMeta();
-          meta.setDisplayName(Translator.getColoredString("BOSS_STAR"));
-          star.setItemMeta(meta);
-          p.getInventory().addItem(star);
-          p.updateInventory();
-        }
+      if (gPlayer.getTeam() == EquipPlayer.getTeam()) {
+        ItemStack star = new ItemStack(Material.NETHER_STAR);
+        ItemMeta meta = star.getItemMeta();
+        meta.setDisplayName(Translator.getColoredString("BOSS_STAR"));
+        star.setItemMeta(meta);
+        p.getInventory().addItem(star);
+        p.updateInventory();
       }
-    });
+    }
   }
 }
