@@ -9,7 +9,7 @@
 #     amount: 1              -> the number of item to give to the purchaser
 #     hasEnchant: true       -> true or false for set enchants to the object
 #     enchants:              -> list of enchants for the item
-#       - DURABILITY: 10     -> enchant name and number of enchant
+#       DURABILITY: 10     -> enchant name and number of enchant
 #     hasMeta: true          -> to set a custom name and lore
 #     displayName: "&cHype"  -> display name
 #     lore:                  -> item lore
@@ -20,8 +20,8 @@ Boss-loot:
     amount: 1
     hasEnchants: true
     enchants:
-      - PROTECTION_ENVIRONMENTAL: 1
-      - OXYGEN: 3
+      PROTECTION_ENVIRONMENTAL: 1
+      OXYGEN: 3
     hasMeta: true
     displayName: '§eOxyger'
     lore:
@@ -32,8 +32,8 @@ Boss-loot:
     amount: 1
     hasEnchants: true
     enchants:
-      - PROTECTION_ENVIRONMENTAL: 4
-      - OXYGEN: 2
+      PROTECTION_ENVIRONMENTAL: 4
+      OXYGEN: 2
     hasMeta: true
     displayName: '§6Oxyger II'
     lore:
@@ -44,7 +44,7 @@ Boss-loot:
     amount: 1
     hasEnchants: true
     enchants:
-      - PROTECTION_ENVIRONMENTAL: 4
+      PROTECTION_ENVIRONMENTAL: 4
     hasMeta: true
     displayName: '§3Anti sharp'
     lore:
@@ -55,8 +55,8 @@ Boss-loot:
     amount: 1
     hasEnchants: true
     enchants:
-      - PROTECTION_ENVIRONMENTAL: 2
-      - PROTECTION_FALL: 4
+      PROTECTION_ENVIRONMENTAL: 2
+      PROTECTION_FALL: 4
     hasMeta: true
     displayName: '§aFly boots'
     lore:
@@ -67,7 +67,7 @@ Boss-loot:
     amount: 1
     hasEnchants: true
     enchants:
-      - ARROW_INFINITE: 1
+      ARROW_INFINITE: 1
     hasMeta: true
     displayName: '§aInfinite Shooter'
     lore:
@@ -78,7 +78,7 @@ Boss-loot:
     amount: 1
     hasEnchants: true
     enchants:
-      - DAMAGE_ALL: 4
+      DAMAGE_ALL: 4
     hasMeta: true
     displayName: '§aBlood finder'
     lore:
@@ -89,7 +89,7 @@ Boss-loot:
     amount: 1
     hasEnchants: true
     enchants:
-      - PROTECTION_ENVIRONMENTAL: 4
+      PROTECTION_ENVIRONMENTAL: 4
     hasMeta: true
     displayName: '§2§lTroll plate'
     lore:
@@ -108,7 +108,7 @@ Boss-loot:
 #     position: 0            -> position in the inventory, dont repeat or it will disappear (0-53)
 #     hasEnchant: true       -> true or false for set enchants to the object
 #     enchants:              -> list of enchants for the item
-#       - DURABILITY: 10     -> enchant name and number of enchant
+#       DURABILITY: 10     -> enchant name and number of enchant
 #     hasMeta: true          -> to set a custom name and lore
 #     displayName: "&cHype"  -> display name
 #     lore:                  -> item lore
@@ -158,63 +158,63 @@ Boss-Star:
     position: 9
     hasEnchants: true
     enchants:
-      - PROTECTION_ENVIRONMENTAL: 4
-      - DURABILITY: 4
+      PROTECTION_ENVIRONMENTAL: 4
+      DURABILITY: 4
   Item5:
     type: GOLD_CHESTPLATE
     amount: 1
     position: 10
     hasEnchants: true
     enchants:
-      - PROTECTION_ENVIRONMENTAL: 4
-      - DURABILITY: 4
+      PROTECTION_ENVIRONMENTAL: 4
+      DURABILITY: 4
   Item6:
     type: GOLD_LEGGINGS
     amount: 1
     position: 11
     hasEnchants: true
     enchants:
-      - PROTECTION_ENVIRONMENTAL: 4
-      - DURABILITY: 4
+      PROTECTION_ENVIRONMENTAL: 4
+      DURABILITY: 4
   Item7:
     type: GOLD_BOOTS
     amount: 1
     position: 12
     hasEnchants: true
     enchants:
-      - PROTECTION_ENVIRONMENTAL: 4
-      - DURABILITY: 4
+      PROTECTION_ENVIRONMENTAL: 4
+      DURABILITY: 4
   Item8:
     type: GOLD_SWORD
     amount: 1
     position: 18
     hasEnchants: true
     enchants:
-      - DAMAGE_ALL: 4
-      - FIRE_ASPECT: 4
-      - DURABILITY: 4
+      DAMAGE_ALL: 4
+      FIRE_ASPECT: 4
+      DURABILITY: 4
   Item9:
     type: BOW
     amount: 1
     position: 19
     hasEnchants: true
     enchants:
-      - ARROW_DAMAGE: 4
-      - ARROW_INFINITY: 1
-      - DURABILITY: 4
+      ARROW_DAMAGE: 4
+      ARROW_INFINITE: 1
+      DURABILITY: 4
   Item10:
     type: GOLD_PICKAXE
     amount: 1
     position: 27
     hasEnchants: true
     enchants:
-      - LUCK: 3
-      - DURABILITY: 5
+      LUCK: 3
+      DURABILITY: 5
   Item11:
     type: GOLD_PICKAXE
     amount: 1
     position: 28
     hasEnchants: true
     enchants:
-      - DIG_SPEED: 5
-      - DURABILITY: 5
+      DIG_SPEED: 5
+      DURABILITY: 5

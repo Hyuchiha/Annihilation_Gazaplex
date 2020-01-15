@@ -100,7 +100,7 @@ public class BossManager {
     ConfigurationSection section = config.getConfigurationSection("Boss-Star");
     for (String entry : section.getKeys(false)) {
       ItemStack item = loadItem(section, entry);
-      int position = config.getInt(entry + ".position");
+      int position = section.getInt(entry + ".position");
 
       bossStarItems.add(new BossStarItem(item, position));
     }
@@ -132,13 +132,18 @@ public class BossManager {
 
         item = new ItemStack(type, qty);
 
-        boolean hasEnchant = config.getBoolean(itemName + ".hasEnchant");
+        boolean hasEnchant = config.getBoolean(itemName + ".hasEnchants");
         if (hasEnchant) {
           ConfigurationSection section = config.getConfigurationSection(itemName + ".enchants");
-          for (String keys : section.getKeys(false)) {
-            Enchantment newEnchant = Enchantment.getByName(keys);
-            int level = section.getInt(keys);
-            item.addEnchantment(newEnchant, level);
+          for (String key : section.getKeys(false)) {
+            Enchantment newEnchant = Enchantment.getByName(key);
+            int level = section.getInt(key);
+
+            if (newEnchant != null) {
+              item.addUnsafeEnchantment(newEnchant, level);
+            } else {
+              Output.log("Enchantment not found: " + key);
+            }
           }
         }
       }
