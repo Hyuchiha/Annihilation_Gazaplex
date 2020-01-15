@@ -71,9 +71,9 @@ public class ZombieManager {
     zombie.setMaxHealth(40);
     zombie.setCanPickupItems(false);
     zombie.setCustomName(gPlayer.getTeam().getChatColor() + player.getName());
-    ItemStack hand = player.getInventory().getItemInHand();
+    ItemStack hand = player.getInventory().getItemInMainHand();
     ItemStack[] armors = player.getInventory().getArmorContents();
-    zombie.getEquipment().setItemInHand(hand);
+    zombie.getEquipment().setItemInMainHand(hand);
     zombie.getEquipment().setArmorContents(armors);
     zombie.setRemoveWhenFarAway(false);
 

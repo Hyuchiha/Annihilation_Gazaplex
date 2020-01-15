@@ -15,6 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -91,12 +92,13 @@ public class ResourceListener implements Listener {
         dropType = resource.getDrop();
         qty = getDropQuantity(type);
 
+        PlayerInventory inventory = player.getInventory();
 
         if ((dropType == Material.DIAMOND
                  || dropType == Material.COAL
                  || dropType == Material.EMERALD
                  || dropType == Material.REDSTONE)
-                && player.getItemInHand().containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS)) {
+                && inventory.getItemInMainHand().containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS)) {
           player.getInventory().addItem(new ItemStack(dropType, qty * 2));
           break;
         }

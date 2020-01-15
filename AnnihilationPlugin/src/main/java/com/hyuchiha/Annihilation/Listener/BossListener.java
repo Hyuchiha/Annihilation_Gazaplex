@@ -105,7 +105,7 @@ public class BossListener implements Listener {
     World bossWorld = BossManager.getBossSpawnWorld();
 
     if (event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-      ItemStack material = player.getItemInHand();
+      ItemStack material = player.getInventory().getItemInMainHand();
       if (material.getType() == Material.WATER_BUCKET) {
 
         if (BossManager.hasBossConfig() && bossWorld != null && bossWorld == player.getWorld()) {

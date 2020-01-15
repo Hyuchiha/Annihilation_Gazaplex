@@ -72,7 +72,7 @@ public class WorldListener implements Listener {
     Player player = event.getPlayer();
 
     if (event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-      ItemStack material = player.getItemInHand();
+      ItemStack material = player.getInventory().getItemInMainHand();
       if (material.getType() == Material.WATER_BUCKET &&
               GameUtils.tooClose(event.getClickedBlock().getLocation())) {
         event.setCancelled(true);

@@ -11,6 +11,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.MainHand;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class InteractListener implements Listener {
@@ -21,7 +23,9 @@ public class InteractListener implements Listener {
     GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
     Action action = e.getAction();
     if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
-      ItemStack handItem = player.getItemInHand();
+      PlayerInventory inventory = player.getInventory();
+      ItemStack handItem = inventory.getItemInMainHand();
+
       if (handItem != null) {
         switch (handItem.getType()) {
           case ENCHANTED_BOOK:
@@ -62,11 +66,13 @@ public class InteractListener implements Listener {
           case NETHER_STAR:
             if (handItem.getItemMeta().hasDisplayName()
                     && handItem.getItemMeta().getDisplayName().equals(Translator.getColoredString("BOSS_STAR"))) {
+
               MenuUtils.openBossStarMenu(player);
-              if(player.getItemInHand().getAmount() == 1){
+
+              if(inventory.getItemInMainHand().getAmount() == 1){
                 player.getInventory().remove(handItem);
               }else{
-                player.getItemInHand().setAmount(player.getItemInHand().getAmount()-1);
+                inventory.getItemInMainHand().setAmount(handItem.getAmount() - 1);
               }
             }
         }

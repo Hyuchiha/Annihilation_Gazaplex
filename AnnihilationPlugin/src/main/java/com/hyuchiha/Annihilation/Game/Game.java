@@ -107,6 +107,7 @@ public class Game {
     WitchManager.clearWitchData();
     FastBreakProtect.clearData();
     PlayerSerializer.restartDataOfPlayers();
+    ZombieManager.clearZombiesData();
     MapManager.resetMap();
   }
 
