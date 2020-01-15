@@ -225,6 +225,8 @@ public class BossManager {
       FireworkUtils.spawnFirework(boss.getBossSpawn());
       FireworkUtils.spawnFirework(boss.getBossSpawn());
       FireworkUtils.spawnFirework(boss.getBossSpawn());
+
+      boss.getBossSpawn().getWorld().playSound(boss.getBossSpawn(), Sound.ENTITY_WITHER_SPAWN,  1.0F, 0.1F);
     } else {
       Output.logError("Boss spawn location is null, not spawning the Boss");
     }

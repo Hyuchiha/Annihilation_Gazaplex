@@ -22,12 +22,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+import java.util.Random;
+
 public class GameListener implements Listener {
 
   private Main plugin;
 
+  public Random random;
+
   public GameListener(Main plugin) {
     this.plugin = plugin;
+    this.random = new Random();
   }
 
 
@@ -66,7 +71,7 @@ public class GameListener implements Listener {
 
       ScoreboardManager.updateInGameScoreboard(victim);
 
-      float pitch = 5.5F;
+      float pitch = 0.5F + random.nextFloat() * 0.5F;
       victim.getNexus().getLocation().getWorld()
           .playSound(victim.getNexus().getLocation(), Sound.BLOCK_ANVIL_LAND, 1F, pitch);
 
