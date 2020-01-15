@@ -25,7 +25,11 @@ public abstract class FurnaceManager {
     task = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
       for (VirtualFurnace furnace : furnaces.values()) {
         if (furnace.canCook()) {
-          furnace.cook();
+          try {
+            furnace.cook();
+          } catch (IllegalArgumentException e) {
+            // Just to catch the annoying error of block face
+          }
         }
       }
 

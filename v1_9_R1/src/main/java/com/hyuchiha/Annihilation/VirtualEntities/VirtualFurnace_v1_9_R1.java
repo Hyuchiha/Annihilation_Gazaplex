@@ -25,9 +25,7 @@ public class VirtualFurnace_v1_9_R1 extends TileEntityFurnace implements Virtual
 
   @Override
   public void cook() {
-    if (!isBurning()) {
-      burn();
-    }
+    this.c();
   }
 
   @Override
