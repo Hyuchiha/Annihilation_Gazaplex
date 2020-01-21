@@ -91,7 +91,7 @@ public class EnderBrewingManager {
 
 
   public static void disableBrewingManager() {
-    brewingManager.clearBrewings();
-    brewingManager.disableBrewings();
+    brewingManager.clearBrewingStands();
+    brewingManager.disableBrewingStands();
   }
 }

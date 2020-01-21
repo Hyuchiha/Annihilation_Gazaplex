@@ -38,8 +38,10 @@ public abstract class BrewingManager {
     return isRunning;
   }
 
-  public void clearBrewings() {
-    brewingStands.clear();
+  public void clearBrewingStands() {
+    if (brewingStands != null) {
+      brewingStands.clear();
+    }
   }
 
   public boolean hasBrewingRegistered(UUID playerUUID) {
@@ -55,8 +57,10 @@ public abstract class BrewingManager {
     return brewingStands.get(playerUUID);
   }
 
-  public void disableBrewings() {
-    task.cancel();
+  public void disableBrewingStands() {
+    if (task != null) {
+      task.cancel();
+    }
 
     isRunning = false;
   }
