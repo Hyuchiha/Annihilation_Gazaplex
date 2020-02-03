@@ -126,7 +126,8 @@ public class ScoreboardManager {
     Team sbt = teams.get(team.name());
     sbt.setAllowFriendlyFire(false);
     sbt.setCanSeeFriendlyInvisibles(false);
-    sbt.setPrefix(team.color().toString());
+    String prefix = Translator.getColoredString("TEAMS_PREFIX." + team.name().toUpperCase());
+    sbt.setPrefix(team.color().toString() + prefix + " ");
     sbt.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OWN_TEAM);
   }
 

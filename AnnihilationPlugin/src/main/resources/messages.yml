@@ -6,6 +6,12 @@ TEAMS:
   BLUE: "BLUE"
   GREEN: "GREEN"
   YELLOW: "YELLOW"
+# The name showed for the team
+TEAMS_PREFIX:
+  RED: "[R]"
+  BLUE: "[B]"
+  GREEN: "[G]"
+  YELLOW: "[Y]"
 # Base translations
 COMMONS:
   TEAM: "Team"
