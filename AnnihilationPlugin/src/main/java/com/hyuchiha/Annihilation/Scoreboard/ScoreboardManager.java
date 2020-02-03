@@ -14,8 +14,10 @@ import java.util.HashMap;
 
 public class ScoreboardManager {
   private static Scoreboard scoreboardBase;
-  private static Objective objectiveBase;
+  private static Objective scoreObjective;
   private static HashMap<String, Score> scores = new HashMap<>();
+
+  private static Objective teamObjective;
   private static HashMap<String, Team> teams = new HashMap<>();
 
 
@@ -23,22 +25,32 @@ public class ScoreboardManager {
     resetScoreboard(Translator.getColoredString("SCOREBOARDS.SB_LOBBY_TITLE"));
   }
 
-
   public static void resetScoreboard(String scoreboardName) {
     scoreboardBase = null;
-
-    scores.clear();
-    teams.clear();
 
     for (Player p : Bukkit.getOnlinePlayers()) {
       p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
     }
 
     scoreboardBase = Bukkit.getScoreboardManager().getNewScoreboard();
-    objectiveBase = scoreboardBase.registerNewObjective("anni", "dummy");
 
-    objectiveBase.setDisplaySlot(DisplaySlot.SIDEBAR);
-    objectiveBase.setDisplayName(scoreboardName);
+    resetScores(scoreboardName);
+    resetTeams();
+  }
+
+  public static void resetScores(String scoreboardName) {
+    scores.clear();
+
+    scoreObjective = scoreboardBase.registerNewObjective("anni", "dummy");
+    scoreObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
+    scoreObjective.setDisplayName(scoreboardName);
+  }
+
+  public static void resetTeams() {
+    teams.clear();
+
+    teamObjective = scoreboardBase.registerNewObjective("teams", "dummy");
+    teamObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
 
     for (GameTeam team : GameTeam.teams()) {
       setTeam(team);
@@ -52,7 +64,7 @@ public class ScoreboardManager {
       count++;
       size--;
 
-      scores.put(map, objectiveBase.getScore(map));
+      scores.put(map, scoreObjective.getScore(map));
       scores.get(map).setScore(size);
 
       teams.put(map, scoreboardBase.registerNewTeam(map));
@@ -61,8 +73,8 @@ public class ScoreboardManager {
       teams.get(map).setSuffix(ChatColor.RED + " » " + ChatColor.GREEN + "0 " + Translator.getString("COMMONS.VOTE") + "s");
     }
 
-    objectiveBase.getScore(ChatColor.AQUA + "").setScore(-1);
-    objectiveBase.getScore(Translator.getColoredString("SERVER_IP")).setScore(-2);
+    scoreObjective.getScore(ChatColor.AQUA + "").setScore(-1);
+    scoreObjective.getScore(Translator.getColoredString("SERVER_IP")).setScore(-2);
   }
 
   public static void updateLobbyScoreboard() {
@@ -80,11 +92,11 @@ public class ScoreboardManager {
       scoreboardBase.resetScores(score);
     }
 
-    objectiveBase.setDisplayName(Translator.getColoredString("SCOREBOARDS.SB_GAME_PREFIX") + " " +
+    scoreObjective.setDisplayName(Translator.getColoredString("SCOREBOARDS.SB_GAME_PREFIX") + " " +
                                      WordUtils.capitalize(VotingManager.getWinner()));
 
     for (GameTeam t : GameTeam.teams()) {
-      scores.put(t.name(), objectiveBase.getScore(
+      scores.put(t.name(), scoreObjective.getScore(
           WordUtils.capitalize(Translator.getString("COMMONS.TEAM") + " " + t.getName())));
 
       scores.get(t.name()).setScore(t.getNexus().getHealth());
@@ -98,8 +110,8 @@ public class ScoreboardManager {
       sbt.setPrefix(t.color().toString());
     }
 
-    objectiveBase.getScore(ChatColor.AQUA + "").setScore(-1);
-    objectiveBase.getScore(Translator.getColoredString("SERVER_IP")).setScore(-2);
+    scoreObjective.getScore(ChatColor.AQUA + "").setScore(-1);
+    scoreObjective.getScore(Translator.getColoredString("SERVER_IP")).setScore(-2);
   }
 
   public static void updateInGameScoreboard(final GameTeam victim) {
@@ -126,6 +138,7 @@ public class ScoreboardManager {
     Team sbt = teams.get(team.name());
     sbt.setAllowFriendlyFire(false);
     sbt.setCanSeeFriendlyInvisibles(false);
+
     String prefix = Translator.getColoredString("TEAMS_PREFIX." + team.name().toUpperCase());
     sbt.setPrefix(team.color().toString() + prefix + " ");
     sbt.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OWN_TEAM);
