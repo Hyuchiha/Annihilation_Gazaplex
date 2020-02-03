@@ -62,7 +62,7 @@ public class ScoreboardManager {
     }
 
     objectiveBase.getScore(ChatColor.AQUA + "").setScore(-1);
-    objectiveBase.getScore(ChatColor.GOLD + "MC.GAZAPLEX.NET").setScore(-2);
+    objectiveBase.getScore(Translator.getColoredString("SERVER_IP")).setScore(-2);
   }
 
   public static void updateLobbyScoreboard() {
@@ -99,7 +99,7 @@ public class ScoreboardManager {
     }
 
     objectiveBase.getScore(ChatColor.AQUA + "").setScore(-1);
-    objectiveBase.getScore(ChatColor.GOLD + "MC.GAZAPLEX.NET").setScore(-2);
+    objectiveBase.getScore(Translator.getColoredString("SERVER_IP")).setScore(-2);
   }
 
   public static void updateInGameScoreboard(final GameTeam victim) {

@@ -1,4 +1,5 @@
 PREFIX: "&c[&fAnni&c]"
+SERVER_IP: "&6mc.gazaplex.net"
 # Teams
 TEAMS:
   RED: "RED"
