@@ -41,14 +41,14 @@ public class AnnihilationCommand implements CommandExecutor {
             args[0].equalsIgnoreCase("start")) {
       if (sender.hasPermission("annihilation.command.start")) {
         if (GameManager.getCurrentGame().isInGame()) {
-          sender.sendMessage(prefix + red + Translator.getColoredString("ERROR_GAME_STARTED"));
+          sender.sendMessage(prefix + red + Translator.getColoredString("ERRORS.GAME_STARTED"));
         } else {
           Bukkit.getServer().getPluginManager().callEvent(new StartGameEvent());
 
-          sender.sendMessage(prefix + green + Translator.getColoredString("GAME_START"));
+          sender.sendMessage(prefix + green + Translator.getColoredString("INFO.GAME_START"));
         }
       } else {
-        sender.sendMessage(prefix + red + Translator.getString("ERROR_COMMAND_NOT_PERMITTED"));
+        sender.sendMessage(prefix + red + Translator.getString("ERRORS.COMMAND_NOT_PERMITTED"));
       }
     }
 

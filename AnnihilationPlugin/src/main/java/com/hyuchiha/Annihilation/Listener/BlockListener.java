@@ -28,14 +28,14 @@ public class BlockListener implements Listener {
 
       if (LocationUtils.isEmptyColumn(e.getBlock().getLocation())) {
         e.setCancelled(true);
-        e.getPlayer().sendMessage(Translator.getColoredString("ERROR_CANT_BUILD_OUTSIDE"));
+        e.getPlayer().sendMessage(Translator.getColoredString("ERRORS.CANT_BUILD_OUTSIDE"));
 
         return;
       }
       if (GameUtils.tooClose(e.getBlock().getLocation()) && e
                                                                 .getPlayer().hasPermission("annihilation.bypass.construction")) {
         e.setCancelled(true);
-        e.getPlayer().sendMessage(Translator.getColoredString("ERROR_TOO_CLOSE_NEXUS"));
+        e.getPlayer().sendMessage(Translator.getColoredString("ERRORS.TOO_CLOSE_NEXUS"));
 
         return;
       }
@@ -70,7 +70,7 @@ public class BlockListener implements Listener {
           event.setCancelled(true);
 
           if (team.getNexus().isAlive() &&
-                  FastBreakProtect.LastBreakTimeisCorrect(event.getPlayer())) {
+                  FastBreakProtect.LastBreakTimeIsCorrect(event.getPlayer())) {
             Bukkit.getServer().getPluginManager().callEvent(new NexusDamageEvent(
                 PlayerManager.getGamePlayer(event.getPlayer()), team));
           }
@@ -85,7 +85,7 @@ public class BlockListener implements Listener {
               !event.getPlayer().hasPermission("annihilation.bypass.construction") &&
               !permittedBreak(event.getBlock().getType())) {
         event.getPlayer().sendMessage(
-            Translator.getColoredString("ERROR_TOO_CLOSE_NEXUS"));
+            Translator.getColoredString("ERRORS.TOO_CLOSE_NEXUS"));
 
         event.setCancelled(true);
       } else if (!event.getPlayer().hasPermission("annihilation.bypass.construction")) {

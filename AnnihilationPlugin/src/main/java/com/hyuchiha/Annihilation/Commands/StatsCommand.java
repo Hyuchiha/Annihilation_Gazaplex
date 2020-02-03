@@ -34,7 +34,7 @@ public class StatsCommand implements CommandExecutor {
           if (offlinePlayer != null && offlinePlayer.hasPlayedBefore()) {
             listStats((Player) sender, offlinePlayer.getName(), StatType.values());
           } else {
-            sender.sendMessage(Translator.getPrefix() + " " + ChatColor.RED + Translator.getString("ERROR_PLAYER_NOT_FOUND"));
+            sender.sendMessage(Translator.getPrefix() + " " + ChatColor.RED + Translator.getString("ERRORS.PLAYER_DONT_EXIST"));
           }
         }
       } else {
@@ -42,7 +42,7 @@ public class StatsCommand implements CommandExecutor {
         listStats((Player) sender);
       }
     } else {
-      sender.sendMessage(Translator.getPrefix() + " " + ChatColor.RED + Translator.getString("ERROR_CONSOLE_PLAYER_COMMAND"));
+      sender.sendMessage(Translator.getPrefix() + " " + ChatColor.RED + Translator.getString("ERRORS.CONSOLE_PLAYER_COMMAND"));
     }
 
     return true;
@@ -58,7 +58,7 @@ public class StatsCommand implements CommandExecutor {
     String GRAY = ChatColor.GRAY.toString();
     String DARK_AQUA = ChatColor.DARK_AQUA.toString();
     String AQUA = ChatColor.AQUA.toString();
-    sender.sendMessage(GRAY + "=========[ " + DARK_AQUA + Translator.getString("INFO_COMMAND_STATS") + GRAY + " ]=========");
+    sender.sendMessage(GRAY + "=========[ " + DARK_AQUA + Translator.getString("INFO.COMMAND_STATS") + GRAY + " ]=========");
 
 
     sender.sendMessage(GRAY + "=========  " + AQUA + player + GRAY + "  =========");
@@ -103,11 +103,8 @@ public class StatsCommand implements CommandExecutor {
 
     if (player != null) {
       Account onlineAccount = this.plugin
-                                  .getMainDatabase()
-                                  .getAccount(player
-                                                  .getUniqueId().toString(), player
-                                                                                 .getName()
-                                  );
+              .getMainDatabase()
+              .getAccount(player.getUniqueId().toString(), player.getName());
 
 
       if (onlineAccount != null) {
@@ -120,11 +117,8 @@ public class StatsCommand implements CommandExecutor {
 
     if (offlinePlayer != null) {
       Account offlineAccount = this.plugin
-                                   .getMainDatabase()
-                                   .getAccount(offlinePlayer
-                                                   .getUniqueId().toString(), offlinePlayer
-                                                                                  .getName()
-                                   );
+              .getMainDatabase()
+              .getAccount(offlinePlayer.getUniqueId().toString(), offlinePlayer.getName());
 
 
       return offlineAccount;

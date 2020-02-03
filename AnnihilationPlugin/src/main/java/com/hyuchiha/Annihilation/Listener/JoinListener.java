@@ -39,11 +39,11 @@ public class JoinListener implements Listener {
 
     GameManager.getCurrentGame().getNpcPlayers().remove(player.getName());
 
-    player.sendMessage(Translator.getPrefix() + Translator.getColoredString("PLAYER_JOIN_MESSAGE"));
+    player.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_JOIN_MESSAGE"));
 
     TitleAPI.send(player,
-        Translator.getColoredString("SERVER_JOIN_TITLE"),
-        Translator.getColoredString("SERVER_JOIN_SUBTITLE"), 10, 30, 10);
+        Translator.getColoredString("TITLES.SERVER_JOIN_TITLE"),
+        Translator.getColoredString("TITLES.SERVER_JOIN_SUBTITLE"), 10, 30, 10);
 
 
     GamePlayer gamePlayer = PlayerManager.getGamePlayer(player);
@@ -51,7 +51,7 @@ public class JoinListener implements Listener {
 
 
     if (GameManager.getCurrentGame().getPhase() == 0) {
-      BossBarAPI.setMessage(player, Translator.getColoredString("WELCOME_TO_ANNIHILATION"), 1.0F);
+      BossBarAPI.setMessage(player, Translator.getColoredString("BOSSBAR.WELCOME_TO_ANNIHILATION"), 1.0F);
     }
 
     gamePlayer.prepareLobbyPlayer();
@@ -81,7 +81,7 @@ public class JoinListener implements Listener {
     GamePlayer meta = PlayerManager.getGamePlayer(p);
 
     if (meta == null) {
-      p.kickPlayer(Translator.getPrefix() + Translator.getColoredString("ERROR_PLAYER_DONT_EXIST"));
+      p.kickPlayer(Translator.getPrefix() + Translator.getColoredString("ERRORS.PLAYER_DONT_EXIST"));
 
       return;
     }
@@ -89,12 +89,12 @@ public class JoinListener implements Listener {
 
 
       meta.preparePlayerForGame();
-      p.sendMessage(Translator.getPrefix() + Translator.getColoredString("NPC_JOIN_KILLED"));
+      p.sendMessage(Translator.getPrefix() + Translator.getColoredString("INFO.NPC_JOIN_KILLED"));
 
       return;
     }
     p.teleport(meta.getTeam().getRandomSpawn());
-    p.sendMessage(Translator.getPrefix() + Translator.getColoredString("NPC_JOIN_RESUMED"));
+    p.sendMessage(Translator.getPrefix() + Translator.getColoredString("INFO.NPC_JOIN_RESUMED"));
     p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
     SignManager.updateIndividualSign(meta.getTeam());
     ScoreboardManager.updatePlayerScoreboard();
@@ -113,7 +113,7 @@ public class JoinListener implements Listener {
 
           Translator.getPrefix() + ChatColor.RED +
 
-              Translator.getString("ERROR_GAME_STARTED"));
+              Translator.getString("ERRORS.GAME_STARTED"));
     }
   }
 
@@ -130,7 +130,7 @@ public class JoinListener implements Listener {
             GameManager.getCurrentGame().getPhase() > this.plugin.getConfig("config.yml").getInt("lastJoinPhase") && (
         !p.isOp() || !p.getName().equals("byHyuchiha")) &&
             p.isOnline() && !p.hasPermission("annihilation.vip.pass")) {
-      event.disallow(PlayerLoginEvent.Result.KICK_OTHER, Translator.getColoredString("ERROR_NO_JOIN_PHASE"));
+      event.disallow(PlayerLoginEvent.Result.KICK_OTHER, Translator.getColoredString("ERRORS.NO_JOIN_PHASE"));
 
 
       return;
@@ -140,6 +140,6 @@ public class JoinListener implements Listener {
 
     if (GameManager.getCurrentGame().getTimer().isRunning() &&
             gamePlayer.getTeam().getNexus() != null && !gamePlayer.getTeam().getNexus().isAlive())
-      event.disallow(PlayerLoginEvent.Result.KICK_OTHER, Translator.getColoredString("ERROR_NEXUS_DESTROYED"));
+      event.disallow(PlayerLoginEvent.Result.KICK_OTHER, Translator.getColoredString("ERRORS.NEXUS_DESTROYED"));
   }
 }

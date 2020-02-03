@@ -8,7 +8,7 @@ public class FastBreakProtect {
   private final static long MIN_TIME_BREAK = 700;
   private final static HashMap<String, Long> Delays = new HashMap<>();
 
-  public static boolean LastBreakTimeisCorrect(Player player) {
+  public static boolean LastBreakTimeIsCorrect(Player player) {
     Long timeNow = System.currentTimeMillis();
     Long timePlayer = Delays.get(player.getName());
 

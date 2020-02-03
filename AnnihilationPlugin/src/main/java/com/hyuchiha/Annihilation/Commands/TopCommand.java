@@ -30,14 +30,14 @@ public class TopCommand implements CommandExecutor {
         if (stat != null) {
           listTopStat((Player) sender, stat);
         } else {
-          sender.sendMessage(ChatColor.RED + Translator.getString("ERROR_STAT_NOT_FOUND"));
+          sender.sendMessage(ChatColor.RED + Translator.getString("ERRORS.STAT_NOT_FOUND"));
         }
       } else {
 
         sender.sendMessage(Translator.getPrefix() + " /top [KILLS, DEATHS, WINS, LOSSES, NEXUS_DAMAGE]");
       }
     } else {
-      sender.sendMessage(ChatColor.RED + Translator.getString("ERROR_CONSOLE_PLAYER_COMMAND"));
+      sender.sendMessage(ChatColor.RED + Translator.getString("ERRORS.CONSOLE_PLAYER_COMMAND"));
       return true;
     }
 
@@ -49,7 +49,7 @@ public class TopCommand implements CommandExecutor {
     String DARK_AQUA = ChatColor.DARK_AQUA.toString();
     String AQUA = ChatColor.AQUA.toString();
 
-    sender.sendMessage(GRAY + "=========[ " + DARK_AQUA + Translator.getColoredString("INFO_TOP_STATS") + stat.name() + GRAY + " ]=========");
+    sender.sendMessage(GRAY + "=========[ " + DARK_AQUA + Translator.getColoredString("INFO.TOP_STATS") + stat.name() + GRAY + " ]=========");
 
 
     List<Account> tops = new ArrayList<Account>();

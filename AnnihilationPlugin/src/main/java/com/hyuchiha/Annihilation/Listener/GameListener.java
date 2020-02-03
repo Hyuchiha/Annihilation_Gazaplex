@@ -55,9 +55,9 @@ public class GameListener implements Listener {
     GameTeam victim = event.getTeam();
     GameTeam attacker = breaker.getTeam();
     if (victim == attacker) {
-      breaker.getPlayer().sendMessage(Translator.getPrefix() + Translator.getColoredString("ERROR_DAMAGE_OWN_NEXUS"));
+      breaker.getPlayer().sendMessage(Translator.getPrefix() + Translator.getColoredString("ERRORS.DAMAGE_OWN_NEXUS"));
     } else if (GameManager.getCurrentGame().getPhase() < 2) {
-      breaker.getPlayer().sendMessage(Translator.getPrefix() + Translator.getColoredString("NO_DAMAGE_PHASE"));
+      breaker.getPlayer().sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.NO_DAMAGE_PHASE"));
     } else {
       int damage = (GameManager.getCurrentGame().getPhase() == 5) ? 2 : 1;
       victim.getNexus().damage(damage);

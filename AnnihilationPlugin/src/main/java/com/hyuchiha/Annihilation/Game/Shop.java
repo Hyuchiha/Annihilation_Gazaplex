@@ -107,10 +107,10 @@ public class Shop implements Listener {
     if (playerInventory.contains(Material.GOLD_INGOT, price)) {
       playerInventory.removeItem(new ItemStack(Material.GOLD_INGOT, price));
       playerInventory.addItem(stackToGive);
-      buyer.sendMessage(Translator.getPrefix() + Translator.getColoredString("PURCHASED") + stackName);
+      buyer.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PURCHASED") + stackName);
     } else {
 
-      buyer.sendMessage(Translator.getPrefix() + Translator.getColoredString("NOT_ENOUGH_GOLD_TO_PURCHASE") + stackName);
+      buyer.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.NOT_ENOUGH_GOLD_TO_PURCHASE") + stackName);
     }
   }
 

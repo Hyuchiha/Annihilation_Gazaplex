@@ -20,7 +20,7 @@ public class ScoreboardManager {
 
 
   public static void initScoreboard() {
-    resetScoreboard(Translator.getColoredString("SB_LOBBY_TITLE"));
+    resetScoreboard(Translator.getColoredString("SCOREBOARDS.SB_LOBBY_TITLE"));
   }
 
 
@@ -58,7 +58,7 @@ public class ScoreboardManager {
       teams.put(map, scoreboardBase.registerNewTeam(map));
       teams.get(map).addEntry(map);
       teams.get(map).setPrefix(ChatColor.AQUA + "[" + count + "] " + ChatColor.GRAY);
-      teams.get(map).setSuffix(ChatColor.RED + " » " + ChatColor.GREEN + "0 " + Translator.getString("VOTE") + "s");
+      teams.get(map).setSuffix(ChatColor.RED + " » " + ChatColor.GREEN + "0 " + Translator.getString("COMMONS.VOTE") + "s");
     }
 
     objectiveBase.getScore(ChatColor.AQUA + "").setScore(-1);
@@ -69,7 +69,7 @@ public class ScoreboardManager {
     for (String map : VotingManager.getMaps().values()) {
       teams.get(map).setSuffix(ChatColor.RED + " » " + ChatColor.GREEN +
                                    VotingManager.countVotes(map) + " " +
-                                   Translator.getString("VOTE") + ((VotingManager.countVotes(map) == 1) ? "" : "s"));
+                                   Translator.getString("COMMONS.VOTE") + ((VotingManager.countVotes(map) == 1) ? "" : "s"));
     }
   }
 
@@ -80,18 +80,18 @@ public class ScoreboardManager {
       scoreboardBase.resetScores(score);
     }
 
-    objectiveBase.setDisplayName(Translator.getColoredString("SB_GAME_PREFIX") + " " +
+    objectiveBase.setDisplayName(Translator.getColoredString("SCOREBOARDS.SB_GAME_PREFIX") + " " +
                                      WordUtils.capitalize(VotingManager.getWinner()));
 
     for (GameTeam t : GameTeam.teams()) {
       scores.put(t.name(), objectiveBase.getScore(
-          WordUtils.capitalize(Translator.getString("TEAM") + " " + t.getName())));
+          WordUtils.capitalize(Translator.getString("COMMONS.TEAM") + " " + t.getName())));
 
       scores.get(t.name()).setScore(t.getNexus().getHealth());
 
       Team sbt = scoreboardBase.registerNewTeam(t.name() + "SB");
       sbt.addEntry(
-          WordUtils.capitalize(Translator.getString("TEAM") + " " + t.getName())
+          WordUtils.capitalize(Translator.getString("COMMONS.TEAM") + " " + t.getName())
       );
 
 

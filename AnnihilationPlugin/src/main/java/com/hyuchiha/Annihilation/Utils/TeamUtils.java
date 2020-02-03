@@ -7,15 +7,15 @@ import org.bukkit.entity.Player;
 
 public class TeamUtils {
   public static void listTeams(Player player) {
-    player.sendMessage(Translator.getColoredString("TEAMS"));
+    player.sendMessage(Translator.getColoredString("COMMANDS.TEAMS"));
     for (GameTeam t : GameTeam.teams()) {
 
       int size = t.getPlayers().size();
 
       player.sendMessage(t.coloredName() + " - " + size + " " +
-                             Translator.getString("PLAYER") + ((size > 1) ? "" : "s"));
+                             Translator.getString("COMMONS.PLAYER") + ((size > 1) ? "" : "s"));
     }
-    player.sendMessage(Translator.getColoredString("TEAMS_ENDLINE"));
+    player.sendMessage(Translator.getColoredString("COMMANDS.TEAMS_ENDLINE"));
   }
 
   public static boolean getTeamAllowEnter(GameTeam t) {

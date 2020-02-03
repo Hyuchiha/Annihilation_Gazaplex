@@ -43,7 +43,7 @@ public class InventoryListener implements Listener {
 
     ItemStack clickedItem = e.getCurrentItem();
 
-    if (inv.getTitle().startsWith(Translator.getColoredString("CLICK_TO_VOTE_MAP"))) {
+    if (inv.getTitle().startsWith(Translator.getColoredString("GAME.CLICK_TO_VOTE_MAP"))) {
       if (e.getCurrentItem().getType() == Material.AIR || e.getCurrentItem().getType() == null) {
         return;
       }
@@ -52,7 +52,7 @@ public class InventoryListener implements Listener {
       e.setCancelled(true);
 
       if (GameManager.getCurrentGame().getTimer().getGameState() != GameState.STARTING) {
-        player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getColoredString("NOT_VOTE_PHASE"));
+        player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getColoredString("ERRORS.NOT_VOTE_PHASE"));
 
         return;
       }
@@ -65,7 +65,7 @@ public class InventoryListener implements Listener {
       return;
     }
 
-    if (inv.getTitle().startsWith(Translator.getColoredString("CLICK_TO_CHOOSE_TEAM"))) {
+    if (inv.getTitle().startsWith(Translator.getColoredString("GAME.CLICK_TO_CHOOSE_TEAM"))) {
       if (e.getCurrentItem().getType() == Material.AIR || e.getCurrentItem().getType() == null) {
         return;
       }
@@ -77,7 +77,7 @@ public class InventoryListener implements Listener {
         String name = ChatColor.stripColor(clickedItem.getItemMeta().getDisplayName());
 
         if (GameManager.getCurrentGame() != null && GameManager.getCurrentGame().isInGame()) {
-          player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("CANNOT_JOIN_TEAM"));
+          player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("ERRORS.CANNOT_JOIN_TEAM"));
 
           return;
         }
@@ -89,7 +89,7 @@ public class InventoryListener implements Listener {
             GameManager.getCurrentGame().joinTeam(player, team.name());
           }
         } else {
-          player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("CANNOT_JOIN_TEAM"));
+          player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("ERRORS.CANNOT_JOIN_TEAM"));
         }
       }
     }
@@ -101,7 +101,7 @@ public class InventoryListener implements Listener {
 
       e.setCancelled(true);
 
-      if (e.getClickedInventory().getTitle().contains(Translator.getColoredString("BOSS_SHOP"))) {
+      if (e.getClickedInventory().getTitle().contains(Translator.getColoredString("GAME.BOSS_SHOP"))) {
         player.getInventory().addItem(clickedItem);
         player.closeInventory();
       }
@@ -109,7 +109,7 @@ public class InventoryListener implements Listener {
       return;
     }
 
-    if (inv.getTitle().startsWith(Translator.getColoredString("CLASS_SELECT_INV_TITLE"))) {
+    if (inv.getTitle().startsWith(Translator.getColoredString("GAME.CLASS_SELECT_INV_TITLE"))) {
       if (e.getCurrentItem().getType() == Material.AIR || e.getCurrentItem().getType() == null) {
         return;
       }

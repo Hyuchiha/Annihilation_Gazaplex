@@ -31,7 +31,7 @@ public class InteractListener implements Listener {
           case ENCHANTED_BOOK:
             // FOR Kits
             if (handItem.getItemMeta().hasDisplayName()
-                    && handItem.getItemMeta().getDisplayName().equals(Translator.getColoredString("CLICK_TO_CHOOSE_KIT"))) {
+                    && handItem.getItemMeta().getDisplayName().equals(Translator.getColoredString("GAME.CLICK_TO_CHOOSE_KIT"))) {
               MenuUtils.showKitSelector(player);
             }
             break;
@@ -50,7 +50,7 @@ public class InteractListener implements Listener {
                 for (GameTeam team : GameTeam.teams()) {
                   if (setToNext) {
                     ItemMeta meta = handItem.getItemMeta();
-                    meta.setDisplayName(team.color() + Translator.getColoredString("COMPASS_FOCUS").replace("%TEAM%", team.toString()));
+                    meta.setDisplayName(team.color() + Translator.getColoredString("GAME.COMPASS_FOCUS").replace("%TEAM%", team.toString()));
                     handItem.setItemMeta(meta);
                     player.setCompassTarget(team.getNexus().getLocation());
                     setCompass = true;
@@ -65,7 +65,7 @@ public class InteractListener implements Listener {
             break;
           case NETHER_STAR:
             if (handItem.getItemMeta().hasDisplayName()
-                    && handItem.getItemMeta().getDisplayName().equals(Translator.getColoredString("BOSS_STAR"))) {
+                    && handItem.getItemMeta().getDisplayName().equals(Translator.getColoredString("GAME.BOSS_STAR"))) {
 
               MenuUtils.openBossStarMenu(player);
 

@@ -224,8 +224,8 @@ public class GameTimer {
     String text = "";
     switch (this.state) {
       case STARTING:
-        text = Translator.getColoredString("LOBBY");
-        text = text + " &7| &f" + Translator.getColoredString("TIME_TO_START") + -this.time;
+        text = Translator.getColoredString("COMMONS.LOBBY");
+        text = text + " &7| &f" + Translator.getColoredString("BOSSBAR.TIME_TO_START") + -this.time;
         text = ChatColor.translateAlternateColorCodes('&', text);
         break;
       case PHASE_1:
@@ -234,13 +234,13 @@ public class GameTimer {
       case PHASE_4:
       case PHASE_5:
         phase = GameManager.getCurrentGame().getPhase();
-        text = Translator.getColoredString("PHASE");
+        text = Translator.getColoredString("BOSSBAR.PHASE");
         text = text.replaceAll("%PHASE%", ChatUtil.translateRoman(phase));
         text = text + " &7| &f" + timeString(this.time);
         text = ChatColor.translateAlternateColorCodes('&', text);
         break;
       case RESTARTING:
-        text = Translator.getColoredString("RESTARTING");
+        text = Translator.getColoredString("BOSSBAR.RESTARTING");
         text = text + " &7| &f" + timeString(-this.time);
         text = ChatColor.translateAlternateColorCodes('&', text);
         break;
@@ -265,7 +265,7 @@ public class GameTimer {
       String winner = VotingManager.getWinner();
       MapManager.selectMap(winner);
       this.plugin.getServer().broadcastMessage(Translator.getPrefix() + ChatColor.AQUA +
-                                                   WordUtils.capitalize(winner) + Translator.getColoredString("ARENA_WAS_CHOOSEN"));
+                                                   WordUtils.capitalize(winner) + Translator.getColoredString("INFO.ARENA_WAS_CHOSEN"));
 
       VotingManager.end();
     }

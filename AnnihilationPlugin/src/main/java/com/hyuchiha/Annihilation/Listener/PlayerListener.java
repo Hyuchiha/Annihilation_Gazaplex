@@ -155,21 +155,21 @@ public class PlayerListener implements Listener {
         switch (handItem.getType()) {
           case PAPER:
             if (handItem.getItemMeta().hasDisplayName() &&
-                    handItem.getItemMeta().getDisplayName().contains(Translator.getColoredString("CLICK_TO_VOTE_MAP"))) {
+                    handItem.getItemMeta().getDisplayName().contains(Translator.getColoredString("GAME.CLICK_TO_VOTE_MAP"))) {
               e.setCancelled(true);
 
               if (VotingManager.isRunning()) {
                 MenuUtils.showMapSelector(player);
                 break;
               }
-              player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("NOT_VOTE_PHASE"));
+              player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("ERRORS.NOT_VOTE_PHASE"));
             }
             break;
 
 
           case WOOL:
             if (handItem.getItemMeta().hasDisplayName() &&
-                    handItem.getItemMeta().getDisplayName().contains(Translator.getColoredString("CLICK_TO_CHOOSE_TEAM"))) {
+                    handItem.getItemMeta().getDisplayName().contains(Translator.getColoredString("GAME.CLICK_TO_CHOOSE_TEAM"))) {
               e.setCancelled(true);
 
               MenuUtils.showTeamSelector(player);
@@ -178,7 +178,7 @@ public class PlayerListener implements Listener {
 
           case BED:
             if (handItem.getItemMeta().hasDisplayName() &&
-                    handItem.getItemMeta().getDisplayName().contains(Translator.getColoredString("CLICK_TO_RETURN_LOBBY"))) {
+                    handItem.getItemMeta().getDisplayName().contains(Translator.getColoredString("GAME.CLICK_TO_RETURN_LOBBY"))) {
               e.setCancelled(true);
             }
             break;

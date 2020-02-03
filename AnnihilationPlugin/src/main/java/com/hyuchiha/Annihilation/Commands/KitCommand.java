@@ -14,12 +14,12 @@ public class KitCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label,
                              String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + Translator.getColoredString("ERROR_CONSOLE_CLASSCOMMAND"));
+            sender.sendMessage(ChatColor.RED + Translator.getColoredString("ERRORS.CONSOLE_KIT_COMMAND"));
         } else {
             Player player = (Player) sender;
 
             if(!player.hasPermission("annihilation.switch_kit")){
-                sender.sendMessage(ChatColor.RED + Translator.getColoredString("ERROR_NO_PERMISSION"));
+                sender.sendMessage(ChatColor.RED + Translator.getColoredString("ERRORS.NO_PERMISSION"));
                 return true;
             }
 

@@ -20,13 +20,13 @@ public class TeamCommand implements CommandExecutor {
     if (args.length == 0) {
       TeamUtils.listTeams((Player) sender);
     } else if (!(sender instanceof Player)) {
-      sender.sendMessage(Translator.getString("ERROR_CONSOLE_PLAYER_COMMAND"));
+      sender.sendMessage(Translator.getString("ERRORS.CONSOLE_PLAYER_COMMAND"));
     } else {
       GamePlayer gamePlayer = PlayerManager.getGamePlayer((Player) sender);
       GameTeam team = GameTeam.getTeamByTranslatedName(args[0]);
 
       if (GameManager.getCurrentGame() == null) {
-        sender.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("CANNOT_JOIN_TEAM"));
+        sender.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("ERRORS.CANNOT_JOIN_TEAM"));
         return true;
       }
 
@@ -36,7 +36,7 @@ public class TeamCommand implements CommandExecutor {
         }
       } else {
         Output.log("The game does not exist");
-        sender.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("CANNOT_JOIN_TEAM"));
+        sender.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("ERRORS.CANNOT_JOIN_TEAM"));
       }
     }
 

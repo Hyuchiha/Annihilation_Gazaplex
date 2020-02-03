@@ -91,7 +91,7 @@ public class Game {
       gp.prepareLobbyPlayer();
     }
 
-    ScoreboardManager.resetScoreboard(Translator.getColoredString("SB_LOBBY_TITLE"));
+    ScoreboardManager.resetScoreboard(Translator.getColoredString("SCOREBOARDS.SB_LOBBY_TITLE"));
     ScoreboardManager.updatePlayerScoreboard();
 
     this.timer.stop();
@@ -191,22 +191,22 @@ public class Game {
     GamePlayer gamePlayer = PlayerManager.getGamePlayer(player);
 
     if (gamePlayer.getTeam() != GameTeam.NONE && !player.hasPermission("annihilation.bypass.team_limit")) {
-      player.sendMessage(Translator.getPrefix() + ChatColor.GRAY + Translator.getString("ERROR_PLAYER_NOSWITCHTEAM"));
+      player.sendMessage(Translator.getPrefix() + ChatColor.GRAY + Translator.getString("ERROR.PLAYER_NOSWITCHTEAM"));
     } else {
       GameTeam toJoin = (GameTeam) Enums.getIfPresent(GameTeam.class, team.toUpperCase()).orNull();
 
       if (toJoin == null) {
-        player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("ERROR_GAME_INVALIDTEAM"));
+        player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("ERRORS.GAME_INVALIDTEAM"));
         TeamUtils.listTeams(player);
 
         return;
       }
       if (TeamUtils.getTeamAllowEnter(toJoin) && !player.hasPermission("annihilation.bypass.team_limit")) {
-        player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("ERROR_GAME_TEAMFULL"));
+        player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("ERRORS.GAME_TEAMFULL"));
 
         return;
       }
-      player.sendMessage(Translator.getPrefix() + ChatColor.DARK_AQUA + Translator.getColoredString("JOINED_TEAM") + toJoin
+      player.sendMessage(Translator.getPrefix() + ChatColor.DARK_AQUA + Translator.getColoredString("GAME.JOINED_TEAM") + toJoin
                                                                                                                          .coloredName());
       gamePlayer.setTeam(toJoin);
 

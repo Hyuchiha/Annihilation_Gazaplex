@@ -26,7 +26,7 @@ import java.util.List;
 public class MenuUtils {
   public static void showTeamSelector(Player p) {
     int size = (GameTeam.teams().length + 8) / 9 * 9;
-    Inventory inv = createInventory(p, size, Translator.getColoredString("CLICK_TO_CHOOSE_TEAM"));
+    Inventory inv = createInventory(p, size, Translator.getColoredString("GAME.CLICK_TO_CHOOSE_TEAM"));
     for (GameTeam team : GameTeam.teams()) {
       Wool wool = new Wool(team.getDyeColor());
       ItemStack teamWoolColored = wool.toItemStack(1);
@@ -58,7 +58,7 @@ public class MenuUtils {
 
     int size = (VotingManager.getMaps().size() + 8) / 9 * 9;
 
-    Inventory inv = createInventory(p, size, Translator.getColoredString("CLICK_TO_VOTE_MAP"));
+    Inventory inv = createInventory(p, size, Translator.getColoredString("GAME.CLICK_TO_VOTE_MAP"));
     for (String map : VotingManager.getMaps().values()) {
       ItemStack i = new ItemStack(Material.MAP);
 
@@ -77,7 +77,7 @@ public class MenuUtils {
 
   public static void showKitSelector(Player p) {
     int size = ((46 + 8) / 9) * 9;
-    Inventory inv = Bukkit.createInventory(p, size, Translator.getColoredString("CLASS_SELECT_INV_TITLE"));
+    Inventory inv = Bukkit.createInventory(p, size, Translator.getColoredString("GAME.CLASS_SELECT_INV_TITLE"));
 
     ArrayList<Kit> notUnlocked = new ArrayList<>();
 
@@ -123,7 +123,7 @@ public class MenuUtils {
 
   public static void openBossStarMenu(Player player) {
     int size = ((46 + 8) / 9) * 9;
-    Inventory inv = createInventory(player, size, Translator.getColoredString("BOSS_SHOP"));
+    Inventory inv = createInventory(player, size, Translator.getColoredString("GAME.BOSS_SHOP"));
 
     for (BossStarItem item: BossManager.getBossStarItems()) {
       inv.setItem(item.getPosition(), item.getItem());
@@ -144,12 +144,12 @@ public class MenuUtils {
     if (isUnlocked){
       if (!hasKitSelected){
         lore.add(ChatColor.GRAY + "---------------");
-        lore.add(ChatColor.GREEN + Translator.getColoredString("KIT_UNLOCKED"));
+        lore.add(ChatColor.GREEN + Translator.getColoredString("GAME.KIT_UNLOCKED"));
         lore.add(ChatColor.GRAY + "---------------");
       }
     } else {
       lore.add(ChatColor.GRAY + "---------------");
-      lore.add(ChatColor.RED + Translator.getColoredString("KIT_LOCKED"));
+      lore.add(ChatColor.RED + Translator.getColoredString("GAME.KIT_LOCKED"));
       lore.add(ChatColor.GRAY + "---------------");
     }
 

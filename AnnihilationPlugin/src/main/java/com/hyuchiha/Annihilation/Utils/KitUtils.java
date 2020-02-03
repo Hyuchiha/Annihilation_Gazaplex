@@ -16,7 +16,7 @@ public class KitUtils {
     Kit selectedKit = Kit.valueOf(ChatColor.stripColor(className).toUpperCase());
 
     if (!selectedKit.isOwnedBy(player)) {
-      player.sendMessage(ChatColor.RED + Translator.getColoredString("KIT_NOT_PURCHASED"));
+      player.sendMessage(ChatColor.RED + Translator.getColoredString("GAME.KIT_NOT_PURCHASED"));
       return;
     }
 
@@ -24,7 +24,7 @@ public class KitUtils {
     gPlayer.getKit().getKit().removePlayer(player);
 
     gPlayer.setKit(selectedKit);
-    String message = Translator.getColoredString("KIT_SELECTED").replace("%KIT%", ChatColor.stripColor(className));
+    String message = Translator.getColoredString("GAME.KIT_SELECTED").replace("%KIT%", ChatColor.stripColor(className));
     player.sendMessage(ChatColor.DARK_AQUA + message);
 
     if (!isLobby) {

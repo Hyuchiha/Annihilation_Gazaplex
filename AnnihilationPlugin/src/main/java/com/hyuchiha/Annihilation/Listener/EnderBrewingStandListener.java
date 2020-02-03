@@ -41,7 +41,7 @@ public class EnderBrewingStandListener implements Listener {
     if (EnderBrewingManager.isTeamBrewing(team, loc)) {
       e.setCancelled(true);
       EnderBrewingManager.openBrewingForUser(player);
-      player.sendMessage(Translator.getPrefix() + ChatColor.GRAY + Translator.getColoredString("INFO_BREWING"));
+      player.sendMessage(Translator.getPrefix() + ChatColor.GRAY + Translator.getColoredString("INFO.BREWING"));
     }
   }
 

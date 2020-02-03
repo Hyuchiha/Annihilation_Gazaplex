@@ -83,7 +83,7 @@ public class GamePlayer {
 
     Bukkit.getScheduler().runTaskLater(Main.getInstance(), new Runnable() {
       public void run() {
-        BossBarAPI.setMessage(player, Translator.getColoredString("WELCOME_TO_ANNIHILATION"), 1.0F);
+        BossBarAPI.setMessage(player, Translator.getColoredString("BOSSBAR.WELCOME_TO_ANNIHILATION"), 1.0F);
       }
     }, 20L);
 

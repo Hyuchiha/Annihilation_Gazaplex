@@ -67,13 +67,13 @@ public class SignManager {
       Material m = b.getType();
       if (m == Material.SIGN_POST || m == Material.WALL_SIGN) {
         Sign s = (Sign) b.getState();
-        s.setLine(0, ChatColor.DARK_PURPLE + "[" + Translator.getString("TEAM") + ChatColor.DARK_PURPLE + "]");
+        s.setLine(0, ChatColor.DARK_PURPLE + "[" + Translator.getString("COMMONS.TEAM") + ChatColor.DARK_PURPLE + "]");
         s.setLine(1, t.coloredName());
         s.setLine(2, ChatColor.UNDERLINE.toString() + t.getPlayers().size() + (
-            (t.getPlayers().size() == 1) ? (" " + Translator.getString("PLAYER")) : (" " + Translator.getString("PLAYER") + "s")));
+            (t.getPlayers().size() == 1) ? (" " + Translator.getString("COMMONS.PLAYER")) : (" " + Translator.getString("COMMONS.PLAYER") + "s")));
 
         if (t.getNexus() != null && GameManager.getCurrentGame().getPhase() > 0) {
-          s.setLine(3, ChatColor.BOLD.toString() + Translator.getColoredString("INFO_NEXUS_HEALTH") + t
+          s.setLine(3, ChatColor.BOLD.toString() + Translator.getColoredString("INFO.NEXUS_HEALTH") + t
                                                                                                           .getNexus().getHealth());
         } else {
           s.setLine(3, " ");

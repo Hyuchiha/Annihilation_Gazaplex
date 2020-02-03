@@ -41,7 +41,7 @@ public class ChatUtil {
       String gprefix = VaultHooks.getChatManager().getGroupPrefix(w, primaryGroup);
       s = group + fixDefault(ChatColor.translateAlternateColorCodes('&', gprefix)) + team.getChatColor() + " " + playerName + DARK_AQUA + "" + BOLD + " > " + RESET;
       if (dead) {
-        group = DARK_GRAY + "[" + DARK_RED + Translator.getString("DEAD").toUpperCase() + DARK_GRAY + "] " + group;
+        group = DARK_GRAY + "[" + DARK_RED + Translator.getString("COMMONS.DEAD").toUpperCase() + DARK_GRAY + "] " + group;
 
         String primaryGroup2 = VaultHooks.getPermissionManager().getPrimaryGroup(sender);
         gprefix = VaultHooks.getChatManager().getGroupPrefix(w, primaryGroup2);
@@ -59,12 +59,12 @@ public class ChatUtil {
     if (team == GameTeam.NONE) {
       return allMessage(team, sender, false);
     }
-    String group = GRAY + "[" + team.color() + Translator.getString("TEAM") + GRAY + "] ";
+    String group = GRAY + "[" + team.color() + Translator.getString("COMMONS.TEAM") + GRAY + "] ";
     String primaryGroup0 = VaultHooks.getPermissionManager().getPrimaryGroup(Bukkit.getPlayer(playerName));
     String gprefix = VaultHooks.getChatManager().getGroupPrefix(w, primaryGroup0);
     String s = group + fixDefault(ChatColor.translateAlternateColorCodes('&', gprefix)) + team.getChatColor() + " " + playerName + DARK_AQUA + "" + BOLD + " > " + RESET;
     if (dead) {
-      group = DARK_GRAY + "[" + DARK_RED + Translator.getString("DEAD") + DARK_GRAY + "] " + group;
+      group = DARK_GRAY + "[" + DARK_RED + Translator.getString("COMMONS.DEAD") + DARK_GRAY + "] " + group;
       String primaryGroup2 = VaultHooks.getPermissionManager().getPrimaryGroup(Bukkit.getPlayer(playerName));
       gprefix = VaultHooks.getChatManager().getGroupPrefix(w, primaryGroup2);
       s = group + fixDefault(ChatColor.translateAlternateColorCodes('&', gprefix)) + team.getChatColor() + " " + playerName + DARK_AQUA + "" + BOLD + " > " + RESET;
@@ -87,7 +87,7 @@ public class ChatUtil {
 
 
   public static void nexusDestroyed(GameTeam attacker, GameTeam victim, Player p) {
-    List<String> multiMessage = Translator.getMultiMessage("NEXUS_BREAK_MESSAGE");
+    List<String> multiMessage = Translator.getMultiMessage("NEXUS_DESTROYED");
 
     for (String message : multiMessage) {
       String replacedMessage = message
@@ -100,7 +100,7 @@ public class ChatUtil {
 
 
   public static String nexusBreakMessage(Player breaker, GameTeam attacker, GameTeam victim) {
-    return Translator.getColoredString("NEXUS_BREAK_MESSAGE")
+    return Translator.getColoredString("GAME.NEXUS_BREAK")
                .replace("%C%", attacker.color().toString())
                .replace("%PLAYER%", colorizeName(breaker, attacker))
                .replace("%TEAM%", victim.coloredName());
@@ -179,7 +179,7 @@ public class ChatUtil {
       message = arr[0];
     }
 
-    return message.replace("was slain by", Translator.getString("SLAIN_BY"));
+    return message.replace("was slain by", Translator.getString("DEATHS.SLAIN_BY"));
   }
 
 

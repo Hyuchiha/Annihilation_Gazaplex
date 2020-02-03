@@ -16,7 +16,7 @@ public class ItemSelectorUtils {
   public static void giveMapSelector(Player player) {
     ItemStack mapSelector = new ItemStack(Material.PAPER);
     ItemMeta itemMeta = mapSelector.getItemMeta();
-    itemMeta.setDisplayName(Translator.getColoredString("CLICK_TO_VOTE_MAP"));
+    itemMeta.setDisplayName(Translator.getColoredString("GAME.CLICK_TO_VOTE_MAP"));
     mapSelector.setItemMeta(itemMeta);
     player.getInventory().setItem(1, mapSelector);
   }
@@ -24,7 +24,7 @@ public class ItemSelectorUtils {
   public static void giveTeamSelector(Player player) {
     ItemStack teamSelector = new ItemStack(Material.WOOL, 1, (short) 0, DyeColor.WHITE.getWoolData());
     ItemMeta itemMeta = teamSelector.getItemMeta();
-    itemMeta.setDisplayName(Translator.getColoredString("CLICK_TO_CHOOSE_TEAM"));
+    itemMeta.setDisplayName(Translator.getColoredString("GAME.CLICK_TO_CHOOSE_TEAM"));
     teamSelector.setItemMeta(itemMeta);
     player.getInventory().setItem(0, teamSelector);
   }
@@ -32,7 +32,7 @@ public class ItemSelectorUtils {
   public static void giveLobbyReturnItem(Player player) {
     ItemStack lobbySelector = new ItemStack(Material.BED);
     ItemMeta itemMeta = lobbySelector.getItemMeta();
-    itemMeta.setDisplayName(Translator.getColoredString("CLICK_TO_RETURN_LOBBY"));
+    itemMeta.setDisplayName(Translator.getColoredString("GAME.CLICK_TO_RETURN_LOBBY"));
     lobbySelector.setItemMeta(itemMeta);
     player.getInventory().setItem(8, lobbySelector);
   }
@@ -40,7 +40,7 @@ public class ItemSelectorUtils {
   public static void giveKitSelectorItem(Player player) {
     ItemStack lobbySelector = new ItemStack(Material.ENCHANTED_BOOK);
     ItemMeta itemMeta = lobbySelector.getItemMeta();
-    itemMeta.setDisplayName(Translator.getColoredString("CLICK_TO_CHOOSE_KIT"));
+    itemMeta.setDisplayName(Translator.getColoredString("GAME.CLICK_TO_CHOOSE_KIT"));
     lobbySelector.setItemMeta(itemMeta);
     player.getInventory().setItem(2, lobbySelector);
   }
@@ -53,7 +53,7 @@ public class ItemSelectorUtils {
       if (gPlayer.getTeam() == EquipPlayer.getTeam()) {
         ItemStack star = new ItemStack(Material.NETHER_STAR);
         ItemMeta meta = star.getItemMeta();
-        meta.setDisplayName(Translator.getColoredString("BOSS_STAR"));
+        meta.setDisplayName(Translator.getColoredString("GAME.BOSS_STAR"));
         star.setItemMeta(meta);
         p.getInventory().addItem(star);
         p.updateInventory();

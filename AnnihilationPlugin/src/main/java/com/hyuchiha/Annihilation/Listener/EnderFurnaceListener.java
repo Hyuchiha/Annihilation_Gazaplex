@@ -38,7 +38,7 @@ public class EnderFurnaceListener implements Listener {
     if (EnderFurnaceManager.isTeamFurnace(team, loc)) {
       e.setCancelled(true);
       EnderFurnaceManager.openFurnaceForUser(player);
-      player.sendMessage(Translator.getPrefix() + ChatColor.GRAY + Translator.getColoredString("INFO_FURNACE"));
+      player.sendMessage(Translator.getPrefix() + ChatColor.GRAY + Translator.getColoredString("INFO.FURNACE"));
     }
   }
 
