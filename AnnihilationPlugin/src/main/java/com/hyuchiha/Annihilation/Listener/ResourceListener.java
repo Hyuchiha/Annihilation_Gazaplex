@@ -8,7 +8,6 @@ import com.hyuchiha.Annihilation.Manager.ResourceManager;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -68,9 +67,9 @@ public class ResourceListener implements Listener {
   }
 
   private void breakResource(Player player, Block block) {
-    int qty;
-    Material dropType;
-    ItemStack sack;
+    PlayerInventory inventory = player.getInventory();
+    ItemStack itemInHand = inventory.getItemInMainHand();
+
     ItemStack[] drops;
     Material type = block.getType();
     Resource resource = ResourceManager.getResource(type);
@@ -85,24 +84,15 @@ public class ResourceListener implements Listener {
         }
         break;
       case LAPIS_ORE:
-        sack = new ItemStack(Material.INK_SACK.getId(), 5, (short) 0, (byte) 4);
+        ItemStack sack = new ItemStack(Material.INK_SACK, 5, (short) 0, (byte) 4);
         player.getInventory().addItem(sack);
         break;
       default:
-        dropType = resource.getDrop();
-        qty = getDropQuantity(type);
+        drops = (ItemStack[]) block.getDrops(itemInHand).toArray();
 
-        PlayerInventory inventory = player.getInventory();
-
-        if ((dropType == Material.DIAMOND
-                 || dropType == Material.COAL
-                 || dropType == Material.EMERALD
-                 || dropType == Material.REDSTONE)
-                && inventory.getItemInMainHand().containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS)) {
-          player.getInventory().addItem(new ItemStack(dropType, qty * 2));
-          break;
+        for (ItemStack stack: drops) {
+          inventory.addItem(stack);
         }
-        player.getInventory().addItem(new ItemStack(dropType, qty));
         break;
     }
 
@@ -154,16 +144,5 @@ public class ResourceListener implements Listener {
     ItemStack bones = new ItemStack(Material.BONE, Math.max(this.rand
                                                                 .nextInt(4) - 2, 0));
     return new ItemStack[]{arrows, flint, feathers, string, bones};
-  }
-
-  private int getDropQuantity(Material type) {
-    switch (type) {
-      case MELON_BLOCK:
-        return 3 + this.rand.nextInt(5);
-      case REDSTONE_ORE:
-      case GLOWING_REDSTONE_ORE:
-        return 4 + (this.rand.nextBoolean() ? 1 : 0);
-    }
-    return 1;
   }
 }

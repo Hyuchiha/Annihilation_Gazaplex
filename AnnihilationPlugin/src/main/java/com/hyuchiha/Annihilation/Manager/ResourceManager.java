@@ -13,18 +13,18 @@ public class ResourceManager {
   private static final List<Location> diamonds = new ArrayList<>();
 
   public static void initializeResources() {
-    addResource(Material.COAL_ORE, 8, 10);
-    addResource(Material.IRON_ORE, 10, 20);
-    addResource(Material.GOLD_ORE, 10, 20);
-    addResource(Material.DIAMOND_ORE, 12, 30);
-    addResource(Material.EMERALD_ORE, 18, 40);
-    addResource(Material.REDSTONE_ORE, 10, 20);
-    addResource(Material.GLOWING_REDSTONE_ORE, 10, 20);
+    addResource(Material.COAL_ORE, 4, 10);
+    addResource(Material.IRON_ORE, 5, 20);
+    addResource(Material.GOLD_ORE, 5, 20);
+    addResource(Material.DIAMOND_ORE, 8, 30);
+    addResource(Material.EMERALD_ORE, 8, 40);
+    addResource(Material.REDSTONE_ORE, 5, 20);
+    addResource(Material.GLOWING_REDSTONE_ORE, 5, 20);
     addResource(Material.LOG, 2, 10);
     addResource(Material.LOG_2, 2, 10);
     addResource(Material.GRAVEL, 2, 20);
     addResource(Material.MELON_BLOCK, 0, 10);
-    addResource(Material.LAPIS_ORE, 7, 10);
+    addResource(Material.LAPIS_ORE, 3, 10);
     addResource(Material.PUMPKIN, 1, 10);
   }
 
