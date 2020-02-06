@@ -4,15 +4,18 @@ import com.hyuchiha.Annihilation.BossBar.BossBarAPI;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.MapManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
+import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Scoreboard.ScoreboardManager;
 import com.hyuchiha.Annihilation.Utils.ItemSelectorUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 
+import java.util.Random;
 import java.util.UUID;
 
 
@@ -137,10 +140,27 @@ public class GamePlayer {
   }
 
 
+  public void giveOreXP(int xp) {
+    if (xp > 0) {
+      getPlayer().giveExp(xp);
+      getPlayer().playSound(getPlayer().getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, new Random().nextFloat() * 0.2F + 0.9F);
+    }
+  }
+
+  public void giveOreDrops(ItemStack[] drops) {
+    for (ItemStack stack : drops) {
+      Output.log("DROP TYPE:" + stack.getType().name());
+      Output.log("DROP AMOUNT:" + stack.getAmount());
+
+      if (stack.getAmount() > 0) {
+        getPlayer().getInventory().addItem(stack);
+      }
+    }
+  }
+
   public PlayerState getState() {
     return this.state;
   }
-
 
   public void setState(PlayerState state) {
     this.state = state;

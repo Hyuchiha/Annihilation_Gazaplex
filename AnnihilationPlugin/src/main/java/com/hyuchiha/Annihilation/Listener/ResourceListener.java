@@ -6,7 +6,10 @@ import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Manager.ResourceManager;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
-import org.bukkit.*;
+import org.bukkit.Effect;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -70,39 +73,27 @@ public class ResourceListener implements Listener {
     PlayerInventory inventory = player.getInventory();
     ItemStack itemInHand = inventory.getItemInMainHand();
 
-    ItemStack[] drops;
     Material type = block.getType();
     Resource resource = ResourceManager.getResource(type);
+    GamePlayer gamePlayer = PlayerManager.getGamePlayer(player);
+
+    ItemStack[] drops;
 
     switch (type) {
       case GRAVEL:
         drops = getGravelDrops();
-        for (ItemStack stack : drops) {
-          if (stack.getAmount() > 0) {
-            player.getInventory().addItem(stack);
-          }
-        }
         break;
       case LAPIS_ORE:
         ItemStack sack = new ItemStack(Material.INK_SACK, 5, (short) 0, (byte) 4);
-        player.getInventory().addItem(sack);
+        drops = new ItemStack[]{sack};
         break;
       default:
         drops = (ItemStack[]) block.getDrops(itemInHand).toArray();
-
-        for (ItemStack stack: drops) {
-          inventory.addItem(stack);
-        }
         break;
     }
 
-    if (resource.getXp() > 0) {
-      GamePlayer gamePlayer = PlayerManager.getGamePlayer(player);
-
-
-      player.giveExp(resource.getXp());
-      player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, this.rand.nextFloat() * 0.2F + 0.9F);
-    }
+    gamePlayer.giveOreDrops(drops);
+    gamePlayer.giveOreXP(resource.getXp());
 
     queueRespawn(block);
   }
