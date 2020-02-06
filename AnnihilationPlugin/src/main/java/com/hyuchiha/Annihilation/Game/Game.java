@@ -108,6 +108,7 @@ public class Game {
     FastBreakProtect.clearData();
     PlayerSerializer.restartDataOfPlayers();
     ZombieManager.clearZombiesData();
+    ParticleManager.endGameParticles();
     MapManager.resetMap();
   }
 

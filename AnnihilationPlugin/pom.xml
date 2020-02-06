@@ -99,6 +99,11 @@
             <artifactId>ProtocolLib-API</artifactId>
             <version>4.4.0</version>
         </dependency>
+        <dependency>
+            <groupId>xyz.xenondevs</groupId>
+            <artifactId>particle</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -145,6 +150,7 @@
                                     <include>org.mongodb:mongodb-driver</include>
                                     <include>org.mongodb:bson</include>
                                     <include>org.mongodb:mongodb-driver-core</include>
+                                    <include>xyz.xenondevs:particle</include>
                                 </includes>
                             </artifactSet>
                         </configuration>

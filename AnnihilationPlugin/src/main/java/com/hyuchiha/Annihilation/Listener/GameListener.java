@@ -82,7 +82,7 @@ public class GameListener implements Listener {
 
       Location nexus = victim.getNexus().getLocation().clone();
       nexus.add(0.5D, 0.0D, 0.5D);
-
+      ParticleManager.createNexusBreakParticle(nexus);
 
       data.addMoney(this.plugin.getConfig("config.yml").getDouble("Money-nexus-hit"));
 
@@ -103,7 +103,7 @@ public class GameListener implements Listener {
     final GameTeam attacker = breaker.getTeam();
 
     Location nexusLocation = victim.getNexus().getLocation();
-    // TODO Add particle of destroy
+    ParticleManager.createParticleNexusDestroy(nexusLocation);
 
     Account data = this.plugin.getMainDatabase().getAccount(breaker.getPlayer().getUniqueId().toString(), breaker.getPlayer().getName());
     data.addMoney(this.plugin.getConfig("config.yml").getDouble("Money-nexus-kill"));
@@ -161,6 +161,8 @@ public class GameListener implements Listener {
       ChatUtil.phaseMessage(phase);
 
       switch (phase) {
+        case 1:
+          ParticleManager.initGameParticles();
         case 3:
           WitchManager.spawnWitches();
           ResourceManager.spawnDiamonds();
