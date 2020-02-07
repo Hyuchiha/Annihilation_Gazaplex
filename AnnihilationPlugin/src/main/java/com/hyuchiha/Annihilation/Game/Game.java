@@ -2,7 +2,7 @@ package com.hyuchiha.Annihilation.Game;
 
 import com.google.common.base.Enums;
 import com.hyuchiha.Annihilation.Anticheat.FastBreakProtect;
-import com.hyuchiha.Annihilation.Chat.ChatUtil;
+import com.hyuchiha.Annihilation.Event.PhaseChangeEvent;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.*;
 import com.hyuchiha.Annihilation.Messages.Translator;
@@ -24,7 +24,7 @@ public class Game {
 
   private Main plugin;
   private GameTimer timer;
-  private int phase;
+  private int phase = 0;
 
   public Game(Main plugin) {
     this.plugin = plugin;
@@ -57,10 +57,12 @@ public class Game {
   public void startGame() {
     Output.log("Starting the game");
 
+    Bukkit.getServer().getPluginManager().callEvent(new PhaseChangeEvent(0, 1));
+
     ScoreboardManager.createInGameScoreboard();
     ScoreboardManager.updatePlayerScoreboard();
 
-    this.phase = 1;
+    // this.phase = 1;
 
     for (Player player : Bukkit.getOnlinePlayers()) {
       GamePlayer gp = PlayerManager.getGamePlayer(player);
@@ -72,9 +74,6 @@ public class Game {
       joinTeam(player, team.getName());
       gp.preparePlayerForGame();
     }
-
-
-    ChatUtil.phaseMessage(this.phase);
   }
 
 
