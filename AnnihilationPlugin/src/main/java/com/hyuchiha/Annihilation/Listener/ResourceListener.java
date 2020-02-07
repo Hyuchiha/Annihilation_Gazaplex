@@ -11,6 +11,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,6 +20,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Random;
 
@@ -88,7 +90,22 @@ public class ResourceListener implements Listener {
         drops = new ItemStack[]{sack};
         break;
       default:
-        drops = (ItemStack[]) block.getDrops(itemInHand).toArray();
+        Material dropType = resource.getDrop();
+        int qty = getDropQuantity(type);
+
+
+        if ((dropType == Material.DIAMOND
+                || dropType == Material.COAL
+                || dropType == Material.EMERALD
+                || dropType == Material.REDSTONE)
+                && itemInHand.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS)) {
+
+          qty = quantityDroppedWithBonus(type, itemInHand);
+        }
+
+        drops = new ItemStack[]{
+                new ItemStack(dropType, qty)
+        };
         break;
     }
 
@@ -135,5 +152,32 @@ public class ResourceListener implements Listener {
     ItemStack bones = new ItemStack(Material.BONE, Math.max(this.rand
                                                                 .nextInt(4) - 2, 0));
     return new ItemStack[]{arrows, flint, feathers, string, bones};
+  }
+
+  private int getDropQuantity(Material type) {
+    switch (type) {
+      case MELON_BLOCK:
+        return 3 + rand.nextInt(5);
+      case REDSTONE_ORE:
+      case GLOWING_REDSTONE_ORE:
+        return 4 + (rand.nextBoolean() ? 1 : 0);
+      default:
+        return 1;
+    }
+  }
+
+  private int quantityDroppedWithBonus(Material type, ItemStack itemInHand) {
+    int fortune = itemInHand.getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS);
+    Random random = new Random();
+
+    if (fortune < 1) {
+      return getDropQuantity(type);
+    }
+
+    int i = random.nextInt(fortune + 2) - 1;
+    if (i < 0) {
+      i = 0;
+    }
+    return getDropQuantity(type) * (i + 1);
   }
 }

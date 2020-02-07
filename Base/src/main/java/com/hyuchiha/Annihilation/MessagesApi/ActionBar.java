@@ -18,6 +18,7 @@ public class ActionBar {
 
   static Class<?> IChatBaseComponent = nmsClassResolver.resolveSilent("IChatBaseComponent");
   static Class<?> ChatSerializer = nmsClassResolver.resolveSilent("ChatSerializer", "IChatBaseComponent$ChatSerializer");
+  static Class<?> ChatMessageType = nmsClassResolver.resolveSilent("ChatMessageType");
   static Class<?> PlayerConnection = nmsClassResolver.resolveSilent("PlayerConnection");
   static Class<?> EntityPlayer = nmsClassResolver.resolveSilent("EntityPlayer");
   static Class<?> PacketPlayOutChat = classResolver.resolveSilent("net.minecraft.server." + Minecraft.getVersion() + "PacketPlayOutChat");
@@ -26,7 +27,7 @@ public class ActionBar {
 
   static FieldResolver EntityPlayerFieldResolver = new FieldResolver(EntityPlayer);
 
-  static MethodResolver ChatSerailizerMethodResolver = new MethodResolver(ChatSerializer);
+  static MethodResolver ChatSerializerMethodResolver = new MethodResolver(ChatSerializer);
   static MethodResolver PlayerConnectionMethodResolver = new MethodResolver(PlayerConnection);
 
   public static void send(Player player, String message) {
@@ -52,10 +53,20 @@ public class ActionBar {
 
     try {
       Object serialized = serialize(json);
-      Object packetChat = PacketChatConstructorResolver.resolve(new Class[]{
-          IChatBaseComponent,
-          byte.class
-      }).newInstance(serialized, (byte) 2);
+      Object packetChat;
+
+      if (Minecraft.Version.getVersion().olderThan(Minecraft.Version.v1_12_R1)) {
+        packetChat = PacketChatConstructorResolver.resolve(new Class[]{
+                IChatBaseComponent,
+                byte.class
+        }).newInstance(serialized, (byte) 2);
+      } else {
+        packetChat = PacketChatConstructorResolver.resolve(new Class[]{
+                IChatBaseComponent,
+                ChatMessageType
+        }).newInstance(serialized, ChatMessageType.getEnumConstants()[0]);
+      }
+
       sendPacket(player, packetChat);
     } catch (Exception e) {
       throw new RuntimeException("Failed to send ActionBar " + json + " to " + player, e);
@@ -76,7 +87,7 @@ public class ActionBar {
   //Helper methods
 
   static Object serialize(String json) throws ReflectiveOperationException {
-    return ChatSerailizerMethodResolver.resolve(new ResolverQuery("a", String.class)).invoke(null, json);
+    return ChatSerializerMethodResolver.resolve(new ResolverQuery("a", String.class)).invoke(null, json);
   }
 
   static void sendPacket(Player receiver, Object packet) throws ReflectiveOperationException {

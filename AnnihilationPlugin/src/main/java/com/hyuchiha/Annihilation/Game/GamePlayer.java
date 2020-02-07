@@ -149,9 +149,6 @@ public class GamePlayer {
 
   public void giveOreDrops(ItemStack[] drops) {
     for (ItemStack stack : drops) {
-      Output.log("DROP TYPE:" + stack.getType().name());
-      Output.log("DROP AMOUNT:" + stack.getAmount());
-
       if (stack.getAmount() > 0) {
         getPlayer().getInventory().addItem(stack);
       }

@@ -17,17 +17,6 @@ public class Translator {
 
   public static void InitMessages() {
     Output.log("Registering messages");
-//    Configuration yml = plugin.getConfig("old_messages.yml");
-//    for (String s : yml.getKeys(false)) {
-//      if (yml.isList(s)) {
-//        Output.log("Message of type list");
-//        Output.log(s);
-//        listMessages.put(s, yml.getStringList(s));
-//        continue;
-//      }
-//      messages.put(s, yml.getString(s));
-//    }
-
     ConfigurationSection section = plugin.getConfig("messages.yml");
     Map<String, Object> map = section.getValues(false);
 
@@ -36,7 +25,6 @@ public class Translator {
         for (String subKey: section.getConfigurationSection(key).getKeys(false)) {
           String concatKey = key + '.' + subKey;
           messages.put(concatKey, section.getString(concatKey));
-          Output.log(concatKey);
         }
       }
 
@@ -48,11 +36,6 @@ public class Translator {
         listMessages.put(key, section.getStringList(key));
       }
     }
-
-    for (String key: listMessages.keySet()) {
-      Output.log(key);
-    }
-
   }
 
 
