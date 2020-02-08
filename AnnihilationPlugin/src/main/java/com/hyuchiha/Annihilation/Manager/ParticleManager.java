@@ -23,8 +23,6 @@ public class ParticleManager {
           teamNexus.add(0.5D, 0.0D, 0.5D);
           ParticleEffect.TOWN_AURA.display(teamNexus, 1F, 1F, 1F, 0, 20, null, Bukkit.getOnlinePlayers());
           ParticleEffect.ENCHANTMENT_TABLE.display(teamNexus, 1F, 1F, 1F, 0, 20, null, Bukkit.getOnlinePlayers());
-
-          Output.log("particle");
         }
       }
     }, 100L, 5L);
