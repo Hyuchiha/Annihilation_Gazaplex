@@ -19,7 +19,7 @@ public class ParticleManager {
     BukkitTask nexusParticles = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
       for (GameTeam team: GameTeam.teams()) {
         if (team.isTeamAlive()) {
-          Location teamNexus = team.getNexus().getLocation();
+          Location teamNexus = team.getNexus().getLocation().clone();
           teamNexus.add(0.5D, 0.0D, 0.5D);
           ParticleEffect.TOWN_AURA.display(teamNexus, 1F, 1F, 1F, 0, 20, null, Bukkit.getOnlinePlayers());
           ParticleEffect.ENCHANTMENT_TABLE.display(teamNexus, 1F, 1F, 1F, 0, 20, null, Bukkit.getOnlinePlayers());
