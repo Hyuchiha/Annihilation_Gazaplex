@@ -7,6 +7,7 @@ import com.hyuchiha.Annihilation.Messages.Translator;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
@@ -139,8 +140,12 @@ public class ScoreboardManager {
     sbt.setAllowFriendlyFire(false);
     sbt.setCanSeeFriendlyInvisibles(false);
 
-    String prefix = Translator.getColoredString("TEAMS_PREFIX." + team.name().toUpperCase());
-    sbt.setPrefix(team.color().toString() + prefix + " ");
+    Configuration config = Main.getInstance().getConfig("config.yml");
+    if (config.getBoolean("useTeamPrefix")) {
+      String prefix = Translator.getColoredString("TEAMS_PREFIX." + team.name().toUpperCase());
+      sbt.setPrefix(team.color().toString() + prefix + " ");
+    }
+
     sbt.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OWN_TEAM);
   }
 

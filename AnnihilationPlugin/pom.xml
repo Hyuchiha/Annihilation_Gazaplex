@@ -9,7 +9,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <version>0.8.0-Beta</version>
+    <version>0.8.5-Beta</version>
 
     <repositories>
         <repository>

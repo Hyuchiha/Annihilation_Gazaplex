@@ -22,11 +22,15 @@ witchRespawnDelay: 5
 # The last phase players can join a team
 lastJoinPhase: 3
 #
-#Ending game
+# Ending game
 ForceGameEnding: true
 Force-end:
   hours: 2
   minutes: 00
+#
+# Team prefix
+# With this the TEAMS_PREFIX translations should appear before the player name
+useTeamPrefix: true
 
 #
 # El uso de BD es obligatorio
