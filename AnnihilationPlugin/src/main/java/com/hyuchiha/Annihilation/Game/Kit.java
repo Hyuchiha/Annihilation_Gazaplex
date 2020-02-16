@@ -2,6 +2,7 @@ package com.hyuchiha.Annihilation.Game;
 
 import com.hyuchiha.Annihilation.Database.Base.Account;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
+import com.hyuchiha.Annihilation.Kits.Implementations.Archer;
 import com.hyuchiha.Annihilation.Kits.Implementations.Civilian;
 import com.hyuchiha.Annihilation.Main;
 import org.bukkit.Material;
@@ -14,7 +15,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.HashMap;
 
 public enum Kit {
-  CIVILIAN("CIVILIAN", Material.WORKBENCH);
+  CIVILIAN("CIVILIAN", Material.WORKBENCH),
+  ARCHER("ARCHER", Material.BOW);
 
   private HashMap<String, BaseKit> kits = new HashMap<>();
 
@@ -34,6 +36,8 @@ public enum Kit {
     switch (name) {
       case "CIVILIAN":
         kits.put(name, new Civilian(name, icon, configurationSection));
+      case "ARCHER":
+        kits.put(name, new Archer(name, icon, configurationSection));
         break;
     }
   }
