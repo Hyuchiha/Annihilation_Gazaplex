@@ -1,9 +1,13 @@
 package com.hyuchiha.Annihilation.Database.Base;
 
+import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Account {
@@ -15,6 +19,8 @@ public class Account {
   private int losses;
   private int nexus_damage;
   private double money;
+
+  private List<Kit> kits = new ArrayList<>();
 
   public Account(String uuid, String name, int kills, int deaths, int wins, int losses, int nexus_damage) {
     this.money = 0.0D;
@@ -176,5 +182,23 @@ public class Account {
 
       this.money += money;
     }
+  }
+
+  public List<Kit> getKits() {
+    return kits;
+  }
+
+  public void setKits(List<Kit> kits) {
+    this.kits = kits;
+  }
+
+  public boolean hasKit(Kit kitToVerify) {
+    for(Kit kit : kits){
+      if(kit == kitToVerify){
+        return true;
+      }
+    }
+
+    return false;
   }
 }

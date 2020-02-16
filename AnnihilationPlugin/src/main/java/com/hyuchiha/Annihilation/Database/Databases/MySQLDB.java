@@ -1,6 +1,7 @@
 package com.hyuchiha.Annihilation.Database.Databases;
 
 import com.hyuchiha.Annihilation.Database.Base.Account;
+import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Main;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
@@ -44,6 +45,33 @@ public class MySQLDB extends SQLDB {
                "PRIMARY KEY (`uuid`), " +
                "UNIQUE KEY `uuid` (`uuid`)) " +
                "ENGINE=InnoDB;";
+  }
+
+  @Override
+  protected String getDatabaseKitsQuery() {
+    return  "CREATE TABLE IF NOT EXISTS `"+ KITS_TABLE +"` ( "
+            + "`clv_kit` int(6) NOT NULL AUTO_INCREMENT,"
+            + "`name` varchar(45) NOT NULL,"
+            + "PRIMARY KEY (`clv_kit`), "
+            + "UNIQUE KEY `clv_kit` (`clv_kit`) ) "
+            + "ENGINE=InnoDB AUTO_INCREMENT=1";
+  }
+
+  @Override
+  protected String getDatabaseKitsUnlockedQuery() {
+    return "CREATE TABLE IF NOT EXISTS `"+ KITS_UNLOCKED_TABLE +"` "
+            + "(`clv_kit` int(6) NOT NULL,"
+            + "`player` varchar(36) NOT NULL, "
+            + "PRIMARY KEY (`clv_kit` , `player` ) ,"
+            + "FOREIGN KEY (`clv_kit`) REFERENCES "+ KITS_TABLE +"(`clv_kit`), "
+            + "FOREIGN KEY (`player`) REFERENCES "+ ACCOUNTS_TABLE +"(`uuid`) )  "
+            + "ENGINE=InnoDB;";
+  }
+
+  @Override
+  protected String getInsertKitQuery(Kit kit) {
+    return "INSERT IGNORE INTO `" + KITS_TABLE + "`(`name`)  VALUES "
+            + "('" + kit.name().toUpperCase() + "');";
   }
 
   @Override

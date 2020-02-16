@@ -9,3 +9,12 @@ Kits:
       - "&b Este kit te da lo"
       - "&b básico para sobrevivir."
     price: 0
+  ARCHER:
+    lore:
+      - "&3 Arquero"
+      - ""
+      - "&b Tu eres la flecha"
+      - "&b Con tu arco inflinges +1 de daño"
+      - "&b Tienes la habilidad de crafter"
+      - "&b flechas a un bajo costo"
+    price: 75000

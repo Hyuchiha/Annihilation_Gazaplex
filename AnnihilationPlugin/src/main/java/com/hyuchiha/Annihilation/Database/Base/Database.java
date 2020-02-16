@@ -96,6 +96,7 @@ public abstract class Database {
 
   public abstract void saveAccount(Account paramAccount);
 
+  public abstract void addUnlockedKit(String uuid, String kit);
 
   public Account getAccount(String uuid, String name) {
     Account account = getCachedAccount(uuid, name);

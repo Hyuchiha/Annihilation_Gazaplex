@@ -55,7 +55,7 @@ public enum Kit {
 
     return p.isOp()
                || this == CIVILIAN
-               || p.hasPermission("annihilation.class." + getName().toLowerCase());
-               // || (account != null && account.hasKit(this));
+               || p.hasPermission("annihilation.class." + getName().toLowerCase())
+               || (account != null && account.hasKit(this));
   }
 }

@@ -48,7 +48,7 @@ public class Archer extends BaseKit {
 
         ItemStack potion = new ItemStack(Material.POTION, 1);
         PotionMeta meta = (PotionMeta) potion.getItemMeta();
-        meta.setBasePotionData(new PotionData(PotionType.INSTANT_HEAL, true, false));
+        meta.setBasePotionData(new PotionData(PotionType.INSTANT_HEAL, false, false));
         potion.setItemMeta(meta);
         spawnItems.add(potion);
 

@@ -3,6 +3,7 @@ package com.hyuchiha.Annihilation.Database.Databases;
 import com.hyuchiha.Annihilation.Database.Base.Account;
 import com.hyuchiha.Annihilation.Database.Base.Database;
 import com.hyuchiha.Annihilation.Database.StatType;
+import com.hyuchiha.Annihilation.Game.Kit;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoCredential;
@@ -19,6 +20,8 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.mongodb.client.model.Filters.eq;
 
 
 public class MongoDB extends Database {
@@ -128,20 +131,49 @@ public class MongoDB extends Database {
     }
   }
 
+  @Override
+  public void addUnlockedKit(String uuid, String kit) {
+    MongoDatabase database = getDatabase();
+
+    MongoCollection<Document> collection = database.getCollection(ACCOUNTS_COLLECTION);
+    Document document = collection.find(eq("uuid", uuid)).first();
+
+    Account account = getAccountFromDocument(document);
+
+    account.getKits().add(Kit.valueOf(kit.toUpperCase()));
+
+    collection.replaceOne(
+            eq("_id", document.get("_id")),
+            getDocument(account)
+    );
+
+    cachedAccounts.put(uuid, account);
+  }
+
 
   private Document getDocument(Account account) {
-    return new Document("uuid", account.getUUID())
+    Document document = new Document("uuid", account.getUUID())
                .append("username", account.getName())
                .append("kills", account.getKills())
                .append("deaths", account.getDeaths())
                .append("wins", account.getWins())
                .append("losses", account.getLosses())
                .append("nexus_damage", account.getNexus_damage());
+
+    List<String> kits = new ArrayList<>();
+
+    for(Kit kit : account.getKits()){
+      kits.add(kit.name());
+    }
+
+    document.append("kits", kits);
+
+    return document;
   }
 
 
   private Account getAccountFromDocument(Document document) {
-    return new Account(
+    Account account = new Account(
         document.getString("uuid"),
         document.getString("username"),
         document.getInteger("kills"),
@@ -150,6 +182,19 @@ public class MongoDB extends Database {
         document.getInteger("losses"),
         document.getInteger("nexus_damage")
     );
+
+    ArrayList<String> kitsDB = (ArrayList<String>) document.get("kits");
+
+    List<Kit> kits = new ArrayList<>();
+
+    for(String kitToFind : kitsDB){
+      Kit loadedKit = Kit.valueOf(kitToFind);
+      kits.add(loadedKit);
+    }
+
+    account.setKits(kits);
+
+    return account;
   }
 
 

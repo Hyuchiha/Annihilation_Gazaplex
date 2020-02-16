@@ -3,8 +3,12 @@ package com.hyuchiha.Annihilation.Database.Databases;
 import com.hyuchiha.Annihilation.Database.Base.Account;
 import com.hyuchiha.Annihilation.Database.Base.Database;
 import com.hyuchiha.Annihilation.Database.StatType;
+import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Output.Output;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,8 +17,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mongodb.client.model.Filters.eq;
+
 public abstract class SQLDB extends Database {
-  protected static final String ACCOUNTS_TABLE = "annihilation_accounts";
+  protected static final String ACCOUNTS_TABLE        = "annihilation_accounts";
+  protected static final String KITS_TABLE            = "annihilation_kits";
+  protected static final String KITS_UNLOCKED_TABLE   = "annihilation_kits_unlocked";
 
   private Main plugin;
   private Connection connection;
@@ -51,6 +59,20 @@ public abstract class SQLDB extends Database {
 
         String ACCOUNTS_QUERY = getDatabaseQuery();
         query(ACCOUNTS_QUERY);
+
+        String KITS_QUERY = getDatabaseKitsQuery();
+        query(KITS_QUERY);
+
+        String KITS_UNLOCKED_QUERY = getDatabaseKitsUnlockedQuery();
+        query(KITS_UNLOCKED_QUERY);
+
+
+        for (Kit kit: Kit.values()) {
+          String query = getInsertKitQuery(kit);
+
+          query(query);
+        }
+
       }
 
     } catch (SQLException e) {
@@ -157,6 +179,11 @@ public abstract class SQLDB extends Database {
 
       set.close();
 
+      if (account != null){
+        List<Kit> kits = getKitsFromAccount(uuid);
+        account.setKits(kits);
+      }
+
       this.cachedAccounts.put(uuid, account);
 
       return account;
@@ -184,7 +211,96 @@ public abstract class SQLDB extends Database {
     }
   }
 
+  @Override
+  public void addUnlockedKit(String uuid, String kit) {
+    checkConnection();
+
+    try {
+      int idKit = getIdOfElement(kit);
+
+      String query = "INSERT INTO `" + KITS_UNLOCKED_TABLE + "`(`clv_kit`,`player`)  VALUES "
+              + "('" + idKit + "', '"+ uuid +"');";
+
+      PreparedStatement statement = connection.prepareStatement(query);
+
+      if(statement.execute()){
+        statement.close();
+      }
+
+      Account account = null;
+
+      for (Account cache: cachedAccounts.values()){
+        if(cache.getUUID().equalsIgnoreCase(uuid)){
+          account = cache;
+        }
+      }
+
+      if(account != null){
+        account.getKits().add(Kit.valueOf(kit.toUpperCase()));
+
+        cachedAccounts.put(uuid, account);
+      }
+
+    }catch (SQLException e){
+      e.printStackTrace();
+    }
+  }
+
+  private int getIdOfElement(String name) {
+    checkConnection();
+
+    try {
+      String query = "SELECT * FROM " + KITS_TABLE + " WHERE `name` = '" + name + "'";
+
+      PreparedStatement statement = connection.prepareStatement(query);
+
+      ResultSet set = statement.executeQuery();
+
+      int id = -1;
+
+      while (set.next()) {
+        id = set.getInt("clv_kit");
+      }
+
+      return id;
+
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    }
+    return -1;
+  }
+
+  private List<Kit> getKitsFromAccount(String uuid){
+    checkConnection();
+
+    List<Kit> kits = new ArrayList<>();
+
+    try {
+      String query = "SELECT "+ KITS_TABLE + ".name from " + KITS_UNLOCKED_TABLE
+              + " JOIN " + KITS_TABLE + " where "+ KITS_TABLE +".clv_kit = "+ KITS_UNLOCKED_TABLE +".clv_kit " +
+              "AND player = '" + uuid + "';";
+
+      ResultSet set = connection.createStatement().executeQuery(query);
+
+      while (set.next()) {
+        String kitName = set.getString("name");
+
+        kits.add(Kit.valueOf(kitName));
+      }
+
+    }catch (SQLException ex){
+      ex.printStackTrace();
+    }
+
+    return kits;
+  }
+
   protected abstract String getDatabaseQuery();
+  protected abstract String getDatabaseKitsQuery();
+  protected abstract String getDatabaseKitsUnlockedQuery();
+
+  protected abstract String getInsertKitQuery(Kit kit);
+
   protected abstract String getCreateAccountQuery(Account account);
   protected abstract String getUpdateAccountQuery(Account account);
 }
