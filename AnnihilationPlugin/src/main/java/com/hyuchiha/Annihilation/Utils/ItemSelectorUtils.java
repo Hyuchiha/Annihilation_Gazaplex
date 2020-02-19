@@ -1,7 +1,6 @@
 package com.hyuchiha.Annihilation.Utils;
 
 import com.hyuchiha.Annihilation.Game.GamePlayer;
-import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import org.bukkit.Bukkit;
@@ -43,6 +42,14 @@ public class ItemSelectorUtils {
     itemMeta.setDisplayName(Translator.getColoredString("GAME.CLICK_TO_CHOOSE_KIT"));
     lobbySelector.setItemMeta(itemMeta);
     player.getInventory().setItem(2, lobbySelector);
+  }
+
+  public static void giveKitUnlockerItem(Player player) {
+    ItemStack lobbySelector = new ItemStack(Material.GOLD_INGOT);
+    ItemMeta itemMeta = lobbySelector.getItemMeta();
+    itemMeta.setDisplayName(Translator.getColoredString("GAME.CLICK_TO_UNLOCK_KIT"));
+    lobbySelector.setItemMeta(itemMeta);
+    player.getInventory().setItem(3, lobbySelector);
   }
 
   public static void getBossStarSelector(String player) {

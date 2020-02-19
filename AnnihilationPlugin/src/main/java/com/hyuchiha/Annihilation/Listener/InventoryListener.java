@@ -1,14 +1,17 @@
 package com.hyuchiha.Annihilation.Listener;
 
+import com.google.common.base.Enums;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.GameState;
 import com.hyuchiha.Annihilation.Game.GameTeam;
+import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Manager.VotingManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Utils.KitUtils;
+import com.hyuchiha.Annihilation.Utils.MenuUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
@@ -125,5 +128,52 @@ public class InventoryListener implements Listener {
 
       return;
     }
+
+    if (inv.getTitle().startsWith(Translator.getColoredString("GAME.CLASS_UNLOCK_INV_TITLE"))) {
+      if (e.getCurrentItem().getType() == Material.AIR || e.getCurrentItem().getType() == null) {
+        return;
+      }
+
+      String name = e.getCurrentItem().getItemMeta().getDisplayName();
+
+      Kit toChoose = Enums.getIfPresent(Kit.class, ChatColor.stripColor(name).toUpperCase()).orNull();
+
+      player.closeInventory();;
+      e.setCancelled(true);
+
+      if (toChoose != null && !toChoose.isOwnedBy(player)) {
+        MenuUtils.showConfirmUnlockClass(player, toChoose);
+
+      } else {
+        player.sendMessage(Translator.getPrefix() + " "+ Translator.getColoredString("GAME.PLAYER_ALREADY_HAVE_CLASS"));
+      }
+
+      return;
+    }
+
+    if (inv.getTitle().startsWith(Translator.getColoredString("GAME.CONFIRM_UNLOCK"))
+            && e.getCurrentItem().getType() == Material.EMERALD_BLOCK
+            || e.getCurrentItem().getType() == Material.REDSTONE_BLOCK) {
+
+      player.closeInventory();
+      e.setCancelled(true);
+
+      String name = e.getClickedInventory().getItem(4).getItemMeta().getDisplayName();
+
+      double money = Main.getInstance().getConfig("kits.yml").getInt("Kits." + name.toUpperCase() + ".price");
+      double userMoney = PlayerManager.getMoney(player);
+
+      if (userMoney >= money) {
+        plugin.getMainDatabase().addUnlockedKit(player.getUniqueId().toString(), name.toUpperCase());
+
+        PlayerManager.withdrawMoney(player, money);
+
+        String classUnlocked = Translator.getColoredString("GAME.PLAYER_UNLOCK_CLASS");
+        player.sendMessage(Translator.getPrefix() + " " + classUnlocked.replace("%CLASS%", name));
+      } else {
+        player.sendMessage(Translator.getPrefix()+ " " + Translator.getColoredString("GAME.PLAYER_DONT_HAVE_REQUIRED_MONEY"));
+      }
+    }
+
   }
 }

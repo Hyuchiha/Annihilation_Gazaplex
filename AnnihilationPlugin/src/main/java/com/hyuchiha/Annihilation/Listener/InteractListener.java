@@ -11,7 +11,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.MainHand;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -37,6 +36,10 @@ public class InteractListener implements Listener {
             break;
           case GOLD_INGOT:
             // For unlock kits
+            if (handItem.getItemMeta().hasDisplayName()
+                    && handItem.getItemMeta().getDisplayName().equals(Translator.getColoredString("GAME.CLICK_TO_UNLOCK_KIT"))) {
+              MenuUtils.showUnlockerSelector(player);
+            }
             break;
           case COMPASS:
             boolean setCompass = false;

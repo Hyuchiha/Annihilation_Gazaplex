@@ -121,6 +121,52 @@ public class MenuUtils {
     p.openInventory(inv);
   }
 
+  public static void showUnlockerSelector(Player p) {
+    int size = ((46 + 8) / 9) * 9;
+    Inventory inv = Bukkit.createInventory(p, size, Translator.getColoredString("GAME.CLASS_UNLOCK_INV_TITLE"));
+
+    int kitsCount = 0;
+
+    //Build the inventory with the kits unlocked
+    for (Kit kit : Kit.values()) {
+      if (!kit.isOwnedBy(p)) {
+        ItemStack restantKits = buildItemForSelector(false,kit,false);
+        inv.addItem(restantKits);
+        kitsCount++;
+      }
+    }
+
+    //Make the restant Slots from glass
+    fillInventoryWithGlass(kitsCount, inv.getSize(), inv);
+
+    p.openInventory(inv);
+  }
+
+  public static void showConfirmUnlockClass(Player p, Kit kit) {
+    Inventory inv = createInventory(p, 9, Translator.getColoredString("GAME.CONFIRM_UNLOCK"));
+
+    ItemStack item = kit.getKit().getIcon().clone();
+    ItemMeta meta = item.getItemMeta();
+    meta.setDisplayName(ChatColor.GOLD + kit.getName());
+    item.setItemMeta(meta);
+
+    ItemStack yes = new ItemStack(Material.EMERALD_BLOCK);
+    ItemMeta yesMeta = yes.getItemMeta();
+    yesMeta.setDisplayName(ChatColor.GREEN + Translator.getString("COMMONS.YES"));
+    yes.setItemMeta(yesMeta);
+
+    ItemStack no = new ItemStack(Material.REDSTONE_BLOCK);
+    ItemMeta noMeta = no.getItemMeta();
+    noMeta.setDisplayName(ChatColor.RED + Translator.getString("COMMONS.NO"));
+    no.setItemMeta(noMeta);
+
+    inv.setItem(2, yes);
+    inv.setItem(4, item);
+    inv.setItem(6, no);
+
+    p.openInventory(inv);
+  }
+
   public static void openBossStarMenu(Player player) {
     int size = ((46 + 8) / 9) * 9;
     Inventory inv = createInventory(player, size, Translator.getColoredString("GAME.BOSS_SHOP"));

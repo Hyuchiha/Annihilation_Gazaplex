@@ -4,7 +4,6 @@ import com.hyuchiha.Annihilation.BossBar.BossBarAPI;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.MapManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
-import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Scoreboard.ScoreboardManager;
 import com.hyuchiha.Annihilation.Utils.ItemSelectorUtils;
 import org.bukkit.Bukkit;
@@ -115,6 +114,7 @@ public class GamePlayer {
     ItemSelectorUtils.giveMapSelector(player);
     ItemSelectorUtils.giveLobbyReturnItem(player);
     ItemSelectorUtils.giveKitSelectorItem(player);
+    ItemSelectorUtils.giveKitUnlockerItem(player);
 
     setTeam(GameTeam.NONE);
   }
