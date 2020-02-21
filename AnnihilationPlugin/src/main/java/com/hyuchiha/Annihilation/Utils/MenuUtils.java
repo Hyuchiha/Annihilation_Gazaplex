@@ -152,12 +152,12 @@ public class MenuUtils {
 
     ItemStack yes = new ItemStack(Material.EMERALD_BLOCK);
     ItemMeta yesMeta = yes.getItemMeta();
-    yesMeta.setDisplayName(ChatColor.GREEN + Translator.getString("COMMONS.YES"));
+    yesMeta.setDisplayName(ChatColor.GREEN + Translator.getString("COMMONS.TOTALLY"));
     yes.setItemMeta(yesMeta);
 
     ItemStack no = new ItemStack(Material.REDSTONE_BLOCK);
     ItemMeta noMeta = no.getItemMeta();
-    noMeta.setDisplayName(ChatColor.RED + Translator.getString("COMMONS.NO"));
+    noMeta.setDisplayName(ChatColor.RED + Translator.getString("COMMONS.NOPE"));
     no.setItemMeta(noMeta);
 
     inv.setItem(2, yes);

@@ -94,7 +94,7 @@ public class Main extends JavaPlugin {
     pm.registerEvents(new GameListener(this), this);
     pm.registerEvents(new PlayerListener(this), this);
     pm.registerEvents(new ChatListener(), this);
-    pm.registerEvents(new InventoryListener(this), this);
+    pm.registerEvents(new InventoryListener(), this);
     pm.registerEvents(new WorldListener(), this);
     pm.registerEvents(new BlockListener(), this);
     pm.registerEvents(new QuitListener(this), this);

@@ -40,7 +40,8 @@ public class Translator {
 
 
   public static String getString(String id) {
-    return ChatColor.stripColor(findMessageWithId(id));
+    String ss = findMessageWithId(id);
+    return ChatColor.stripColor(ss);
   }
 
 

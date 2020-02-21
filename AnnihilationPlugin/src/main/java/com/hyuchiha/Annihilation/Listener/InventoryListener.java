@@ -10,6 +10,7 @@ import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Manager.VotingManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
+import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.KitUtils;
 import com.hyuchiha.Annihilation.Utils.MenuUtils;
 import org.bukkit.ChatColor;
@@ -24,13 +25,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class InventoryListener implements Listener {
-
-  private Main plugin;
-
-  public InventoryListener(Main plugin) {
-    plugin = plugin;
-  }
-
 
   @EventHandler
   public void onInvClose(InventoryCloseEvent event) {
@@ -98,7 +92,7 @@ public class InventoryListener implements Listener {
     }
 
     if (inv.getTitle().startsWith(Translator.getColoredString("BOSS_SHOP"))) {
-      if (e.getCurrentItem().getType() == Material.AIR || e.getCurrentItem().getType() == null) {
+      if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR || e.getCurrentItem().getType() == null) {
         return;
       }
 
@@ -113,7 +107,7 @@ public class InventoryListener implements Listener {
     }
 
     if (inv.getTitle().startsWith(Translator.getColoredString("GAME.CLASS_SELECT_INV_TITLE"))) {
-      if (e.getCurrentItem().getType() == Material.AIR || e.getCurrentItem().getType() == null) {
+      if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR || e.getCurrentItem().getType() == null) {
         return;
       }
 
@@ -130,7 +124,7 @@ public class InventoryListener implements Listener {
     }
 
     if (inv.getTitle().startsWith(Translator.getColoredString("GAME.CLASS_UNLOCK_INV_TITLE"))) {
-      if (e.getCurrentItem().getType() == Material.AIR || e.getCurrentItem().getType() == null) {
+      if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR || e.getCurrentItem().getType() == null) {
         return;
       }
 
@@ -152,11 +146,9 @@ public class InventoryListener implements Listener {
     }
 
     if (inv.getTitle().startsWith(Translator.getColoredString("GAME.CONFIRM_UNLOCK"))
-            && e.getCurrentItem().getType() == Material.EMERALD_BLOCK
-            || e.getCurrentItem().getType() == Material.REDSTONE_BLOCK) {
-
-      player.closeInventory();
-      e.setCancelled(true);
+            && e.getCurrentItem() != null
+            && (e.getCurrentItem().getType() == Material.EMERALD_BLOCK
+            || e.getCurrentItem().getType() == Material.REDSTONE_BLOCK)) {
 
       String name = e.getClickedInventory().getItem(4).getItemMeta().getDisplayName();
 
@@ -164,7 +156,7 @@ public class InventoryListener implements Listener {
       double userMoney = PlayerManager.getMoney(player);
 
       if (userMoney >= money) {
-        plugin.getMainDatabase().addUnlockedKit(player.getUniqueId().toString(), name.toUpperCase());
+        Main.getInstance().getMainDatabase().addUnlockedKit(player.getUniqueId().toString(), ChatColor.stripColor(name).toUpperCase());
 
         PlayerManager.withdrawMoney(player, money);
 
@@ -173,6 +165,9 @@ public class InventoryListener implements Listener {
       } else {
         player.sendMessage(Translator.getPrefix()+ " " + Translator.getColoredString("GAME.PLAYER_DONT_HAVE_REQUIRED_MONEY"));
       }
+
+      player.closeInventory();
+      e.setCancelled(true);
     }
 
   }
