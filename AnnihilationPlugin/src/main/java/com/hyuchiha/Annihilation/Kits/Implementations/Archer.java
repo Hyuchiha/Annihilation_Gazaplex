@@ -3,7 +3,11 @@ package com.hyuchiha.Annihilation.Kits.Implementations;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
+import com.hyuchiha.Annihilation.Listener.SoulboundListener;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
+import com.hyuchiha.Annihilation.Messages.Translator;
+import com.hyuchiha.Annihilation.Utils.KitUtils;
+import com.hyuchiha.Annihilation.Utils.TimersUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -13,10 +17,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
@@ -52,7 +60,11 @@ public class Archer extends BaseKit {
         potion.setItemMeta(meta);
         spawnItems.add(potion);
 
-
+        ItemStack book = new ItemStack(Material.BOOK, 1);
+        ItemMeta bookMeta = book.getItemMeta();
+        bookMeta.setDisplayName(Translator.getColoredString("KITS.ARCHER_BOOK"));
+        book.setItemMeta(bookMeta);
+        spawnItems.add(book);
     }
 
     @Override
@@ -68,6 +80,15 @@ public class Archer extends BaseKit {
     @Override
     public void removePlayer(Player recipient) {
         // I dont thing this is needed, come back later
+    }
+
+    private void getAdditionalArrows(Player player) {
+        PlayerInventory inventory = player.getInventory();
+
+        ItemStack arrows = new ItemStack(Material.ARROW, 32);
+        SoulboundListener.soulbind(arrows);
+
+        inventory.addItem(arrows);
     }
 
     //Stops non-archers from crafting arrows using the archer recipe
@@ -96,6 +117,27 @@ public class Archer extends BaseKit {
                 GamePlayer shooter = PlayerManager.getGamePlayer((Player) s);
                 if (shooter.getKit() == Kit.ARCHER) {
                     event.setDamage(event.getDamage() + 1);
+                }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onArcherBookInteract(PlayerInteractEvent e) {
+        Player player = e.getPlayer();
+        GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
+        Action action = e.getAction();
+
+        if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
+            PlayerInventory inventory = player.getInventory();
+            ItemStack handItem = inventory.getItemInMainHand();
+
+            if (handItem != null && KitUtils.isKitItem(handItem, "KITS.ARCHER_BOOK")) {
+
+                if (TimersUtils.hasExpired(player.getUniqueId().toString(), gPlayer.getKit())) {
+                    getAdditionalArrows(player);
+                } else {
+                    KitUtils.showKitItemDelay(player, gPlayer.getKit());
                 }
             }
         }

@@ -55,6 +55,9 @@ GAME:
   BOSS_STAR: "Boss star"
   BOSS_SHOP: "Boss shop"
   PURCHASED: '&7Purchased &e'
+  DELAY: '&bYou can use this ability in %TIME%s'
+KITS:
+  ARCHER_BOOK: "Arrow Drop"
 # Info messages
 INFO:
   TOP_STATS: "Top "
