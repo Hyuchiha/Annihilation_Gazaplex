@@ -20,6 +20,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
+import org.bukkit.event.player.PlayerToggleSprintEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.concurrent.TimeUnit;
@@ -134,6 +135,17 @@ public class Acrobat extends BaseKit {
       if (gPlayer.getKit() == Kit.ACROBAT) {
         event.setCancelled(true);
       }
+    }
+  }
+
+  // This is experimental, need to test things
+  @EventHandler(priority = EventPriority.HIGH)
+  public void onPlayerSprint(PlayerToggleSprintEvent event) {
+    Player player = event.getPlayer();
+    GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
+
+    if (event.isSprinting() && gPlayer.getKit() == Kit.ACROBAT && TimersUtils.hasExpired(player.getUniqueId().toString(), Kit.ACROBAT)) {
+      player.setSprinting(true);
     }
   }
 
