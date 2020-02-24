@@ -33,8 +33,9 @@ Force-end:
 useTeamPrefix: true
 
 #
-# El uso de BD es obligatorio
-# El tipo puede ser MySQL, SQLite, MongoDB
+# The DB usage is mandatory
+# The available types are MySQL, SQLite, MongoDB
+# MySQL Configuration
 Database:
   type: "MySQL"
   host: "localhost"
@@ -42,6 +43,19 @@ Database:
   name: "anni"
   user: "root"
   pass: "root"
+
+# SQLite Configuration
+#Database:
+#  type: "SQLite"
+
+# MongoDB Configuration
+#Database:
+#  type: "MongoDB"
+#  host: "localhost"
+#  port: 3306
+#  name: "anni"
+#  user: "root"
+#  pass: "root"
 
 # Enable the custom MOTD
 enableMotd: true
