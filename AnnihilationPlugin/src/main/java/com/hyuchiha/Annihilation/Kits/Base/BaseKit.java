@@ -101,6 +101,7 @@ public abstract class BaseKit implements Listener{
 
         giveSpecialPotions(recipient);
         giveExtraHearts(recipient);
+        extraConfiguration(recipient);
     }
 
     private void colorizeArmor(Color color, ItemStack[] armor) {
@@ -115,6 +116,7 @@ public abstract class BaseKit implements Listener{
 
     protected abstract void giveSpecialPotions(Player recipient);
     protected abstract void giveExtraHearts(Player recipient);
+    protected abstract void extraConfiguration(Player recipient);
     public abstract void removePlayer(Player recipient);
 
     public ItemStack getIcon(){

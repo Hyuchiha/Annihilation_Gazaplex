@@ -2,6 +2,7 @@ package com.hyuchiha.Annihilation.Game;
 
 import com.hyuchiha.Annihilation.Database.Base.Account;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
+import com.hyuchiha.Annihilation.Kits.Implementations.Acrobat;
 import com.hyuchiha.Annihilation.Kits.Implementations.Archer;
 import com.hyuchiha.Annihilation.Kits.Implementations.Civilian;
 import com.hyuchiha.Annihilation.Main;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 
 public enum Kit {
   CIVILIAN("CIVILIAN", Material.WORKBENCH),
+  ACROBAT("ACROBAT", Material.FEATHER),
   ARCHER("ARCHER", Material.BOW);
 
   private HashMap<String, BaseKit> kits = new HashMap<>();
@@ -33,11 +35,14 @@ public enum Kit {
   }
 
   private void loadKit(String name, ItemStack icon, ConfigurationSection configurationSection) {
+    String kitName = configurationSection.getString("name");
     switch (name) {
       case "CIVILIAN":
-        kits.put(name, new Civilian(name, icon, configurationSection));
+        kits.put(name, new Civilian(kitName, icon, configurationSection));
+      case "ACROBAT":
+        kits.put(name, new Acrobat(kitName, icon, configurationSection));
       case "ARCHER":
-        kits.put(name, new Archer(name, icon, configurationSection));
+        kits.put(name, new Archer(kitName, icon, configurationSection));
         break;
     }
   }

@@ -30,16 +30,16 @@ import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 import org.bukkit.projectiles.ProjectileSource;
 
+import java.util.concurrent.TimeUnit;
+
 public class Archer extends BaseKit {
+    // https://shotbow.net/forum/wiki/anni-archer/
     public Archer(String name, ItemStack icon, ConfigurationSection section) {
         super(name, icon, section);
 
         ShapelessRecipe recipe = new ShapelessRecipe(new ItemStack(Material.ARROW,3)).addIngredient(Material.FLINT).addIngredient(Material.STICK);
         Bukkit.addRecipe(recipe);
     }
-
-    // TODO add item for clain arrows after 45 sec
-    // https://shotbow.net/forum/wiki/anni-archer/
 
     @Override
     protected void setupSpawnItems() {
@@ -75,6 +75,11 @@ public class Archer extends BaseKit {
     @Override
     protected void giveExtraHearts(Player recipient) {
         // Noup
+    }
+
+    @Override
+    protected void extraConfiguration(Player recipient) {
+
     }
 
     @Override
@@ -136,6 +141,7 @@ public class Archer extends BaseKit {
 
                 if (TimersUtils.hasExpired(player.getUniqueId().toString(), gPlayer.getKit())) {
                     getAdditionalArrows(player);
+                    TimersUtils.addDelay(player.getUniqueId().toString(), Kit.ARCHER, 45, TimeUnit.SECONDS);
                 } else {
                     KitUtils.showKitItemDelay(player, gPlayer.getKit());
                 }

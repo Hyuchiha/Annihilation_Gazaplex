@@ -3,17 +3,28 @@
 # do not remove any kit
 Kits:
   CIVILIAN:
+    name: "&3 Civil"
     lore:
       - "&3 Clase inicial"
       - ""
       - "&b Este kit te da lo"
       - "&b básico para sobrevivir."
     price: 0
-  ARCHER:
+  ACROBAT:
+    name: "&3 Acrobata"
     lore:
-      - "&3 Arquero"
+      - "&b Tu eres la pluma"
       - ""
+      - "&b Recorre el mundo con tu doble salto"
+      - "&b Dispara desde el cielo con tu arco"
+      - "&b Y corre por mas tiempo que otros jugadores"
+      - "&b Gracias a tu gran estamina"
+    price: 75000
+  ARCHER:
+    name: "&3 Arquero"
+    lore:
       - "&b Tu eres la flecha"
+      - ""
       - "&b Con tu arco inflinges +1 de daño"
       - "&b Tienes la habilidad de crafter"
       - "&b flechas a un bajo costo"

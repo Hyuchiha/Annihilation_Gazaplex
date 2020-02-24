@@ -32,6 +32,11 @@ public class Civilian extends BaseKit {
   }
 
   @Override
+  protected void extraConfiguration(Player recipient) {
+
+  }
+
+  @Override
   public void removePlayer(Player recipient) {
     /// Nothing to remove from the noobs
   }
