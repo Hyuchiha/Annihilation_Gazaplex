@@ -5,15 +5,15 @@ import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.material.Dye;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -156,5 +156,23 @@ public class GameUtils {
 
   private static int getBuildDistance() {
     return Main.getInstance().getConfig("config.yml").getInt("build");
+  }
+
+  public static ItemStack getDyeColor(DyeColor color) {
+    ItemStack stack = new ItemStack(Material.INK_SACK);
+    Dye dye = new Dye();
+    dye.setColor(color);
+    ItemStack tempStack = dye.toItemStack();
+    stack.setDurability(tempStack.getDurability());
+    stack.setData(dye);
+    return stack;
+  }
+
+  public static ItemStack getPlayerHead(String playerName) {
+    ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
+    SkullMeta meta = (SkullMeta) head.getItemMeta();
+    meta.setOwner(playerName);
+    head.setItemMeta(meta);
+    return head;
   }
 }

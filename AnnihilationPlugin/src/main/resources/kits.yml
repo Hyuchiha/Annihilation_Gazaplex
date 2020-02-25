@@ -11,7 +11,7 @@ Kits:
       - "&b básico para sobrevivir."
     price: 0
   ACROBAT:
-    name: "&3 Acrobata"
+    name: "&3 Acróbata"
     lore:
       - "&b Tu eres la pluma"
       - ""
@@ -26,6 +26,6 @@ Kits:
       - "&b Tu eres la flecha"
       - ""
       - "&b Con tu arco inflinges +1 de daño"
-      - "&b Tienes la habilidad de crafter"
+      - "&b Tienes la habilidad de craftear"
       - "&b flechas a un bajo costo"
     price: 75000

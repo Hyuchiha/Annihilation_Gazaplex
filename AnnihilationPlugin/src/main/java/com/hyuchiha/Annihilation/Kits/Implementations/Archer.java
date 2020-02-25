@@ -23,7 +23,7 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
@@ -37,8 +37,11 @@ public class Archer extends BaseKit {
     public Archer(String name, ItemStack icon, ConfigurationSection section) {
         super(name, icon, section);
 
-        ShapelessRecipe recipe = new ShapelessRecipe(new ItemStack(Material.ARROW,3)).addIngredient(Material.FLINT).addIngredient(Material.STICK);
-        Bukkit.addRecipe(recipe);
+        ShapedRecipe arrowRecipe = new ShapedRecipe(new ItemStack(Material.ARROW,3));
+        arrowRecipe.shape("F", "S");
+        arrowRecipe.setIngredient('F', Material.FLINT);
+        arrowRecipe.setIngredient('S', Material.STICK);
+        Bukkit.addRecipe(arrowRecipe);
     }
 
     @Override

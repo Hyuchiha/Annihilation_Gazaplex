@@ -17,8 +17,13 @@ import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Protocol.PacketManager;
 import com.hyuchiha.Annihilation.Scoreboard.ScoreboardManager;
 import com.hyuchiha.Annihilation.Serializers.PlayerSerializer;
+import com.hyuchiha.Annihilation.Utils.GameUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -70,6 +75,9 @@ public class Main extends JavaPlugin {
 
     // Init packet listener
     PacketManager.initHelmetListener();
+
+    // Just for the lol
+    this.easterEgg();
   }
 
 
@@ -80,6 +88,22 @@ public class Main extends JavaPlugin {
     this.database.close();
   }
 
+  private void easterEgg() {
+    // byHyuchiha Head
+    ItemStack byHyuchihaHead = GameUtils.getPlayerHead("byHyuchiha");
+
+    ShapedRecipe byHyuchihaRecipe = new ShapedRecipe(byHyuchihaHead);
+    byHyuchihaRecipe.shape("PIB", "DRE", " G ");
+    byHyuchihaRecipe.setIngredient('P', GameUtils.getDyeColor(DyeColor.PINK).getData());
+    byHyuchihaRecipe.setIngredient('I', Material.IRON_INGOT);
+    byHyuchihaRecipe.setIngredient('B', GameUtils.getDyeColor(DyeColor.BLUE).getData());
+    byHyuchihaRecipe.setIngredient('D', Material.DIAMOND);
+    byHyuchihaRecipe.setIngredient('R', Material.REDSTONE);
+    byHyuchihaRecipe.setIngredient('E', Material.EMERALD);
+    byHyuchihaRecipe.setIngredient('G', Material.GOLD_INGOT);
+
+    Bukkit.addRecipe(byHyuchihaRecipe);
+  }
 
   public Configuration getConfig(String config) {
     return configManager.getConfig(config);
