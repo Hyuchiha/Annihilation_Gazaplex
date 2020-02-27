@@ -6,6 +6,7 @@ import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
+import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.TimersUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -48,15 +49,15 @@ public class Acrobat extends BaseKit {
         if (gPlayer.getKit() == Kit.ACROBAT
                 && GameManager.hasCurrentGame()
                 && GameManager.getCurrentGame().isInGame()
-                && TimersUtils.hasExpired(player.getUniqueId().toString(), Kit.ACROBAT)) {
-          player.playSound(player.getLocation(), Sound.ENTITY_WITHER_SHOOT, 1.0F, 2.0F);
+                && TimersUtils.getRemainingMiliseconds(player, Kit.ACROBAT) == 0) {
+
+          // player.playSound(player.getLocation(), Sound.ENTITY_WITHER_SHOOT, 1.0F, 2.0F);
           player.setAllowFlight(true);
         }
 
       }
 
     }, 20L, 20L);
-
   }
 
   @Override
@@ -71,7 +72,7 @@ public class Acrobat extends BaseKit {
 
   @Override
   protected void extraConfiguration(Player recipient) {
-    recipient.setSaturation(40);
+    // Noupe
   }
 
   @Override
@@ -85,11 +86,13 @@ public class Acrobat extends BaseKit {
     Player player = event.getPlayer();
     if (player.getGameMode() != GameMode.CREATIVE) {
       GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
+
       if (GameManager.hasCurrentGame()
              && GameManager.getCurrentGame().isInGame()
-             && gPlayer.getKit() == Kit.ACROBAT) {
+             && gPlayer.getKit() == Kit.ACROBAT
+             && TimersUtils.hasExpired(player, Kit.ACROBAT)) {
 
-        TimersUtils.addDelay(player.getUniqueId().toString(), Kit.ACROBAT, 10, TimeUnit.SECONDS);
+        TimersUtils.addDelay(player, Kit.ACROBAT, 10, TimeUnit.SECONDS);
 
         event.setCancelled(true);
         player.setAllowFlight(false);
@@ -117,7 +120,7 @@ public class Acrobat extends BaseKit {
         if (!player.getAllowFlight()) {
           GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
           if (gPlayer.getKit() == Kit.ACROBAT) {
-            if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR && !TimersUtils.hasExpired(player.getUniqueId().toString(), Kit.ACROBAT)) {
+            if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR && !TimersUtils.hasExpired(player, Kit.ACROBAT)) {
               player.setAllowFlight(true);
             }
           }
@@ -139,14 +142,23 @@ public class Acrobat extends BaseKit {
   }
 
   // This is experimental, need to test things
-  @EventHandler(priority = EventPriority.HIGH)
-  public void onPlayerSprint(PlayerToggleSprintEvent event) {
-    Player player = event.getPlayer();
-    GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
-
-    if (event.isSprinting() && gPlayer.getKit() == Kit.ACROBAT && TimersUtils.hasExpired(player.getUniqueId().toString(), Kit.ACROBAT)) {
-      player.setSprinting(true);
-    }
-  }
+//  @EventHandler(priority = EventPriority.HIGH)
+//  public void onPlayerSprint(PlayerToggleSprintEvent event) {
+//    Player player = event.getPlayer();
+//    GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
+//
+//    if (event.isSprinting()
+//            && gPlayer.getKit() == Kit.ACROBAT
+//            && TimersUtils.hasDelay(player, Kit.ACROBAT)
+//            && TimersUtils.hasExpired(player.getUniqueId().toString(), Kit.ACROBAT)) {
+//
+//      if (player.getFoodLevel() <= 6) {
+//        Output.log("Can sprint");
+//        player.setSprinting(true);
+//      } else {
+//        event.setCancelled(true);
+//      }
+//    }
+//  }
 
 }

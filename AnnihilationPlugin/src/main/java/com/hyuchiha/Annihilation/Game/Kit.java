@@ -39,8 +39,10 @@ public enum Kit {
     switch (name) {
       case "CIVILIAN":
         kits.put(name, new Civilian(kitName, icon, configurationSection));
+        break;
       case "ACROBAT":
         kits.put(name, new Acrobat(kitName, icon, configurationSection));
+        break;
       case "ARCHER":
         kits.put(name, new Archer(kitName, icon, configurationSection));
         break;

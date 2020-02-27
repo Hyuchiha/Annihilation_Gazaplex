@@ -142,9 +142,9 @@ public class Archer extends BaseKit {
 
             if (handItem != null && KitUtils.isKitItem(handItem, "KITS.ARCHER_BOOK")) {
 
-                if (TimersUtils.hasExpired(player.getUniqueId().toString(), gPlayer.getKit())) {
+                if (TimersUtils.hasExpired(player, gPlayer.getKit())) {
                     getAdditionalArrows(player);
-                    TimersUtils.addDelay(player.getUniqueId().toString(), Kit.ARCHER, 45, TimeUnit.SECONDS);
+                    TimersUtils.addDelay(player, Kit.ARCHER, 45, TimeUnit.SECONDS);
                 } else {
                     KitUtils.showKitItemDelay(player, gPlayer.getKit());
                 }

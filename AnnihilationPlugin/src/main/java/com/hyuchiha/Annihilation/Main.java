@@ -96,7 +96,7 @@ public class Main extends JavaPlugin {
     byHyuchihaRecipe.shape("PIB", "DRE", " G ");
     byHyuchihaRecipe.setIngredient('P', GameUtils.getDyeColor(DyeColor.PINK).getData());
     byHyuchihaRecipe.setIngredient('I', Material.IRON_INGOT);
-    byHyuchihaRecipe.setIngredient('B', GameUtils.getDyeColor(DyeColor.BLUE).getData());
+    byHyuchihaRecipe.setIngredient('B', GameUtils.getDyeColor(DyeColor.LIGHT_BLUE).getData());
     byHyuchihaRecipe.setIngredient('D', Material.DIAMOND);
     byHyuchihaRecipe.setIngredient('R', Material.REDSTONE);
     byHyuchihaRecipe.setIngredient('E', Material.EMERALD);
