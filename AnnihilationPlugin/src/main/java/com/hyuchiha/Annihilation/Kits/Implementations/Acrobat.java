@@ -6,7 +6,6 @@ import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
-import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.TimersUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -21,7 +20,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
-import org.bukkit.event.player.PlayerToggleSprintEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.concurrent.TimeUnit;
@@ -79,6 +77,11 @@ public class Acrobat extends BaseKit {
   public void removePlayer(Player recipient) {
     recipient.setAllowFlight(false);
     recipient.setFlying(false);
+  }
+
+  @Override
+  public void resetData() {
+    // This kit dont store anything soo, dont worry
   }
 
   @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)

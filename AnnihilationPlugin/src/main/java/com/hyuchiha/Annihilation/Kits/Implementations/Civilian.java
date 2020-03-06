@@ -40,4 +40,9 @@ public class Civilian extends BaseKit {
   public void removePlayer(Player recipient) {
     /// Nothing to remove from the noobs
   }
+
+  @Override
+  public void resetData() {
+    // We dont needed, the noobs dont have additional items to remove
+  }
 }

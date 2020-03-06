@@ -20,7 +20,7 @@ import org.bukkit.plugin.Plugin;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseKit implements Listener{
+public abstract class BaseKit implements Listener {
 
     private String name;
     private final ItemStack icon;
@@ -118,6 +118,7 @@ public abstract class BaseKit implements Listener{
     protected abstract void giveExtraHearts(Player recipient);
     protected abstract void extraConfiguration(Player recipient);
     public abstract void removePlayer(Player recipient);
+    public abstract void resetData();
 
     public ItemStack getIcon(){
         return icon;

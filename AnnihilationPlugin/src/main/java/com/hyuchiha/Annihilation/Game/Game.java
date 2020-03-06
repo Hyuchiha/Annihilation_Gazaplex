@@ -90,6 +90,10 @@ public class Game {
       gp.prepareLobbyPlayer();
     }
 
+    for (Kit kit: Kit.values()) {
+      kit.resetKit();
+    }
+
     ScoreboardManager.resetScoreboard(Translator.getColoredString("SCOREBOARDS.SB_LOBBY_TITLE"));
     ScoreboardManager.updatePlayerScoreboard();
 

@@ -18,6 +18,7 @@ import java.util.HashMap;
 public enum Kit {
   CIVILIAN("CIVILIAN", Material.WORKBENCH),
   ACROBAT("ACROBAT", Material.FEATHER),
+  ALCHEMIST("ALCHEMIST", Material.BREWING_STAND_ITEM),
   ARCHER("ARCHER", Material.BOW);
 
   private HashMap<String, BaseKit> kits = new HashMap<>();
@@ -64,5 +65,9 @@ public enum Kit {
                || this == CIVILIAN
                || p.hasPermission("annihilation.class." + getName().toLowerCase())
                || (account != null && account.hasKit(this));
+  }
+
+  public void resetKit() {
+
   }
 }

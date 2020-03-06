@@ -117,6 +117,7 @@ public class GamePlayer {
     ItemSelectorUtils.giveKitUnlockerItem(player);
 
     setTeam(GameTeam.NONE);
+    setKit(Kit.CIVILIAN);
   }
 
 

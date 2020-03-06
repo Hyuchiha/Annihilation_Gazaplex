@@ -58,6 +58,7 @@ GAME:
   DELAY: '&bYou can use this ability in %TIME%s'
 KITS:
   ARCHER_BOOK: "Arrow Drop"
+  ALCHESMITS_BOOK: "Alchemist Drop"
 # Info messages
 INFO:
   TOP_STATS: "Top "
@@ -95,6 +96,7 @@ ERRORS:
   CANNOT_JOIN_TEAM: "You can't join to this team"
   CANNOT_BUILD_HERE: "You can't build here"
   NOT_ENOUGHT_GOLD_TO_PURCHASE: '&cInsufficient gold to purchase &e'
+  DONT_OWN_BREWING: "You are not the owner of this Brewing Stand"
 # Scoreboard messages
 SCOREBOARDS:
   SB_LOBBY_TITLE: "Annihilation"

@@ -90,6 +90,11 @@ public class Archer extends BaseKit {
         // I dont thing this is needed, come back later
     }
 
+    @Override
+    public void resetData() {
+        // Nope
+    }
+
     private void getAdditionalArrows(Player player) {
         PlayerInventory inventory = player.getInventory();
 
