@@ -39,3 +39,15 @@ Kits:
       - "&b Tienes la habilidad de craftear"
       - "&b flechas a un bajo costo"
     price: 75000
+  BERSERKER:
+    name: "&2 Berserker"
+    lore:
+      - "&b Tu eres la autentica ira"
+      - ""
+      - "&b Con tu espada, eres capaz de"
+      - "&b aplicar mas daño a los oponentes"
+      - "&b con mejor armadura que la tuya."
+      - ""
+      - "&b Cada muerte te suma un corazon"
+      - "&b para un maximo de 20 corazones"
+    price: 75000
