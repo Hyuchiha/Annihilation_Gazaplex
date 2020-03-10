@@ -69,8 +69,6 @@ public class WitchManager {
   }
 
   public static void update(Witch witch) {
-    Output.log("Updating witch name");
-
     String currentWitch = ChatColor.stripColor(witch.getCustomName());
 
     for (GameWitch gWitch: witches.values()) {
@@ -78,9 +76,8 @@ public class WitchManager {
       String teamWitch = ChatColor.stripColor(gWitch.getName().replaceAll("&", "§"));
 
       if (currentWitch.contains(teamWitch)) {
-        witch.setCustomName(ChatColor.translateAlternateColorCodes('&', gWitch.getName() + " &8» &a" + witch.getHealth() + " HP"));
-
-        Output.log("Witch name updated");
+        int health = (int) witch.getHealth();
+        witch.setCustomName(ChatColor.translateAlternateColorCodes('&', gWitch.getName() + " &8» &a" + health + " HP"));
         break;
       }
     }
