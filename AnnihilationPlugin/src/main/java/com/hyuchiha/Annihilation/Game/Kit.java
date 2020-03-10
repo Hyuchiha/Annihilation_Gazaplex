@@ -3,6 +3,7 @@ package com.hyuchiha.Annihilation.Game;
 import com.hyuchiha.Annihilation.Database.Base.Account;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
 import com.hyuchiha.Annihilation.Kits.Implementations.Acrobat;
+import com.hyuchiha.Annihilation.Kits.Implementations.Alchemist;
 import com.hyuchiha.Annihilation.Kits.Implementations.Archer;
 import com.hyuchiha.Annihilation.Kits.Implementations.Civilian;
 import com.hyuchiha.Annihilation.Main;
@@ -43,6 +44,9 @@ public enum Kit {
         break;
       case "ACROBAT":
         kits.put(name, new Acrobat(kitName, icon, configurationSection));
+        break;
+      case "ALCHEMIST":
+        kits.put(name, new Alchemist(kitName, icon, configurationSection));
         break;
       case "ARCHER":
         kits.put(name, new Archer(kitName, icon, configurationSection));

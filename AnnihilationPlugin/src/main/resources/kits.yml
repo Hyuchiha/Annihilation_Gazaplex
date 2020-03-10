@@ -20,6 +20,16 @@ Kits:
       - "&b Y corre por mas tiempo que otros jugadores"
       - "&b Gracias a tu gran estamina"
     price: 75000
+  ALCHEMIST:
+    name: "&3 Alquimista"
+    lore:
+      - "&b Tu eres el autentico alquimista"
+      - ""
+      - "&b Con tu libro obten"
+      - "&b ingredientes para tus pociones"
+      - "&b cada 90 segundos"
+      - "&b cuidado que puede tocarte algo malo"
+    price: 75000
   ARCHER:
     name: "&3 Arquero"
     lore:
