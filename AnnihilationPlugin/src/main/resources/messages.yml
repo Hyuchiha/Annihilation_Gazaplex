@@ -59,6 +59,7 @@ GAME:
 KITS:
   ARCHER_BOOK: "Arrow Drop"
   ALCHESMITS_BOOK: "Alchemist Drop"
+  BLOODMAGE_ITEM: "Corrupt"
 # Info messages
 INFO:
   TOP_STATS: "Top "

@@ -18,7 +18,8 @@ public enum Kit {
   ACROBAT("ACROBAT", Material.FEATHER),
   ALCHEMIST("ALCHEMIST", Material.BREWING_STAND_ITEM),
   ARCHER("ARCHER", Material.BOW),
-  BERSERKER("BERSERKER", Material.CHAINMAIL_CHESTPLATE);
+  BERSERKER("BERSERKER", Material.CHAINMAIL_CHESTPLATE),
+  BLOODMAGE("BLOODMAGE", Material.RECORD_3);
 
   private HashMap<String, BaseKit> kits = new HashMap<>();
 
@@ -51,6 +52,9 @@ public enum Kit {
         break;
       case "BERSERKER":
         kits.put(name, new Berserker(kitName, icon, configurationSection));
+        break;
+      case "BLOODMAGE":
+        kits.put(name, new Bloodmage(kitName, icon, configurationSection));
         break;
     }
   }

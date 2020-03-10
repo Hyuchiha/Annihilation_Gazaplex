@@ -51,3 +51,15 @@ Kits:
       - "&b Cada muerte te suma un corazon"
       - "&b para un maximo de 20 corazones"
     price: 75000
+  BLOODMAGE:
+    name: "&2 Bloodmage"
+    lore:
+      - "&b Tu eres el peligro"
+      - ""
+      - "&b Puede que no golpees a la gente"
+      - "&b asta la muerte, pero eso no te hace"
+      - "&b menos potente."
+      - ""
+      - "&b Ayuda a tus compañeros envenenando a"
+      - "&b tus enemigos y reduciendo su vida maxima"
+    price: 75000
