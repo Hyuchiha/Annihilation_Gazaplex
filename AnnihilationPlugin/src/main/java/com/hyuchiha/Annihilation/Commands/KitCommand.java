@@ -18,7 +18,7 @@ public class KitCommand implements CommandExecutor {
         } else {
             Player player = (Player) sender;
 
-            if(!player.hasPermission("annihilation.switch_kit")){
+            if(!player.hasPermission("annihilation.command.switch_kit")){
                 sender.sendMessage(ChatColor.RED + Translator.getColoredString("ERRORS.NO_PERMISSION"));
                 return true;
             }

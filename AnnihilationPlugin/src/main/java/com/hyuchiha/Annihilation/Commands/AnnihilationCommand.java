@@ -37,20 +37,39 @@ public class AnnihilationCommand implements CommandExecutor {
       sender.sendMessage(prefix + gray + "/anni stop " + dgray + "-" + white + " Stops the current game.");
     }
 
-    if (args.length == 1 &&
-            args[0].equalsIgnoreCase("start")) {
-      if (sender.hasPermission("annihilation.command.start")) {
-        if (GameManager.getCurrentGame().isInGame()) {
-          sender.sendMessage(prefix + red + Translator.getColoredString("ERRORS.GAME_STARTED"));
-        } else {
-          Bukkit.getServer().getPluginManager().callEvent(new StartGameEvent());
+    if (args.length == 1) {
 
-          sender.sendMessage(prefix + green + Translator.getColoredString("INFO.GAME_START"));
-        }
-      } else {
-        sender.sendMessage(prefix + red + Translator.getString("ERRORS.COMMAND_NOT_PERMITTED"));
+
+      switch (args[0]) {
+        case "start":
+          if (sender.hasPermission("annihilation.command.start")) {
+            if (GameManager.getCurrentGame().isInGame()) {
+              sender.sendMessage(prefix + red + Translator.getColoredString("ERRORS.GAME_STARTED"));
+            } else {
+              Bukkit.getServer().getPluginManager().callEvent(new StartGameEvent());
+
+              sender.sendMessage(prefix + green + Translator.getColoredString("INFO.GAME_START"));
+            }
+          } else {
+            sender.sendMessage(prefix + red + Translator.getString("ERRORS.COMMAND_NOT_PERMITTED"));
+          }
+          break;
+        case "stop":
+          if (sender.hasPermission("annihilation.command.stop")) {
+            if (GameManager.getCurrentGame().isInGame()) {
+              GameManager.endCurrentGame();
+
+              sender.sendMessage(prefix + red + Translator.getColoredString("INFO.GAME_ENDED"));
+            } else {
+              sender.sendMessage(prefix + green + Translator.getColoredString("ERRORS.NO_GAME_FOUND"));
+            }
+          } else {
+            sender.sendMessage(prefix + red + Translator.getString("ERRORS.COMMAND_NOT_PERMITTED"));
+          }
+          break;
       }
     }
+
 
     return false;
   }
