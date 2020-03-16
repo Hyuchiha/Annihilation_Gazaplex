@@ -1,6 +1,7 @@
 # Annihilation!
 
 This plugins is inspired by **Annihilation Plugin** from **ShowBow**.
+
 This repo contains the base plugin for **Annihilation** and it was designed for be used in **Gazaplex Network** now becomes an open source hoping it can be used in another servers and be maintained by the community.
 
 # Features
@@ -17,6 +18,7 @@ This repo contains the base plugin for **Annihilation** and it was designed for 
 - Antinuker protection
 - Stats commands
 - Custom Wither Boss and Witches
+- Scoreboards
 
 ## Permissions
 
