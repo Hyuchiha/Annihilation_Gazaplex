@@ -60,6 +60,9 @@ KITS:
   ARCHER_BOOK: "Arrow Drop"
   ALCHESMITS_BOOK: "Alchemist Drop"
   BLOODMAGE_ITEM: "Corrupt"
+  BUILDER_BOOK: "Resource Drop"
+  BUILDER_DELAYING_BLOCK: "Delaying block"
+  BUILDER_ITEM_MENU: "Resources"
 # Info messages
 INFO:
   TOP_STATS: "Top "

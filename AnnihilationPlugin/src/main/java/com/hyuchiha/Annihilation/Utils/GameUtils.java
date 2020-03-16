@@ -175,4 +175,16 @@ public class GameUtils {
     head.setItemMeta(meta);
     return head;
   }
+
+  public static boolean blockNearBlock(Block a, Block b, double distance) {
+    Location aLoc = a.getLocation();
+    Location bLoc = b.getLocation();
+
+    double ax = aLoc.getX(), ay = aLoc.getY(), az = aLoc.getZ();
+    double bx = bLoc.getX(), by = bLoc.getY(), bz = bLoc.getZ();
+
+    return Math.abs(ax - bx) < distance
+            && Math.abs(ay - by) < distance
+            && Math.abs(az - bz) < distance;
+  }
 }

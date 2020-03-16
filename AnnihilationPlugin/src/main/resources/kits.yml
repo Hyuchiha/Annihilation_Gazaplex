@@ -63,3 +63,17 @@ Kits:
       - "&b Ayuda a tus compañeros envenenando a"
       - "&b tus enemigos y reduciendo su vida maxima"
     price: 75000
+  BUILDER:
+    name: "&2 Builder"
+    lore:
+      - "&b Tu eres la piedra"
+      - ""
+      - "&b Tu eres el constructor de nuestra primera defensa"
+      - "&b Con tu habilidad, obtienes los objetos"
+      - "&b para construir la mejor base creada"
+      - ""
+      - "&b Utiliza tus &cDelaying blocks"
+      - "&b Para apoyar en la defensa de tu equipo"
+      - "&b y quien sabe, quizas algun enemigo muera"
+      - "&b cruzando tu muro"
+    price: 25000

@@ -226,13 +226,16 @@ public class Alchemist extends BaseKit {
       PlayerInventory inventory = player.getInventory();
       ItemStack handItem = inventory.getItemInMainHand();
 
-      if (handItem != null && KitUtils.isKitItem(handItem, "KITS.ALCHEMIST_BOOK")) {
-        if (TimersUtils.hasExpired(player, gPlayer.getKit())) {
+      if (handItem != null && KitUtils.isKitItem(handItem, "KITS.ALCHEMIST_BOOK")
+              && gPlayer.getKit() == Kit.ALCHEMIST) {
+
+        if (TimersUtils.hasExpired(player, Kit.ALCHEMIST)) {
           giveRandomDrop(player);
           TimersUtils.addDelay(player, Kit.ALCHEMIST, 90, TimeUnit.SECONDS);
         } else {
           KitUtils.showKitItemDelay(player, gPlayer.getKit());
         }
+
       }
     }
 

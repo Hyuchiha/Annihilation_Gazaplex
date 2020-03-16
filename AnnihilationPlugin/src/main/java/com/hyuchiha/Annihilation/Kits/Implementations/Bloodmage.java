@@ -119,9 +119,10 @@ public class Bloodmage extends BaseKit {
       ItemStack handItem = inventory.getItemInMainHand();
 
 
-      if (handItem != null && KitUtils.isKitItem(handItem, "KITS.BLOODMAGE_ITEM")) {
+      if (handItem != null && KitUtils.isKitItem(handItem, "KITS.BLOODMAGE_ITEM")
+              && gPlayer.getKit() == Kit.BLOODMAGE) {
 
-        if (TimersUtils.hasExpired(player, gPlayer.getKit())) {
+        if (TimersUtils.hasExpired(player, Kit.BLOODMAGE)) {
           Player target = KitUtils.getTarget(player, 6, true);
 
           if (target != null) {

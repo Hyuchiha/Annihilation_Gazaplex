@@ -82,7 +82,7 @@ public class Archer extends BaseKit {
 
     @Override
     protected void extraConfiguration(Player recipient) {
-
+        // Maybe, but no today
     }
 
     @Override
@@ -145,9 +145,10 @@ public class Archer extends BaseKit {
             PlayerInventory inventory = player.getInventory();
             ItemStack handItem = inventory.getItemInMainHand();
 
-            if (handItem != null && KitUtils.isKitItem(handItem, "KITS.ARCHER_BOOK")) {
+            if (handItem != null && KitUtils.isKitItem(handItem, "KITS.ARCHER_BOOK")
+                    && gPlayer.getKit() == Kit.ARCHER) {
 
-                if (TimersUtils.hasExpired(player, gPlayer.getKit())) {
+                if (TimersUtils.hasExpired(player, Kit.ARCHER)) {
                     getAdditionalArrows(player);
                     TimersUtils.addDelay(player, Kit.ARCHER, 45, TimeUnit.SECONDS);
                 } else {
