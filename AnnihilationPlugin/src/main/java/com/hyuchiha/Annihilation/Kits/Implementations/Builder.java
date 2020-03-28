@@ -19,11 +19,15 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -90,11 +94,18 @@ public class Builder extends BaseKit {
     @Override
     public void removePlayer(Player recipient) {
         // We remove delaying blocks
+        List<Block> playerBlocks = delayBlocks.get(recipient.getUniqueId());
+        for (Block block: playerBlocks) {
+            block.setType(Material.STONE);
+        }
+
+        delayBlocks.remove(recipient.getUniqueId());
     }
 
     @Override
     public void resetData() {
         // Reset delaying blocks
+        delayBlocks.clear();
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -162,18 +173,63 @@ public class Builder extends BaseKit {
 
         Block block = event.getBlock();
 
-        for (List<Block> blocks: delayBlocks.values()) {
+        // Get all players with builder class
+        for (UUID uuid: delayBlocks.keySet()) {
+            Player blockPlayer = Bukkit.getPlayer(uuid);
+            GamePlayer gpBlock = PlayerManager.getGamePlayer(blockPlayer);
 
-            for (Block delayBlock: blocks) {
-                if (LocationUtils.isSameBlock(delayBlock, block)) {
+            // Here store a delaying block if near to one
+            Block blockFound = null;
 
-                } else if (GameUtils.blockNearBlock(block, delayBlock, 5)) {
-
+            // Get the list of block from player
+            List<Block> blocks = delayBlocks.get(uuid);
+            // Iterate over the player blocks
+            for (Block playerBlock: blocks) {
+                // Check if the block destroyed is near to a player block
+                if (GameUtils.blockNearBlock(block, playerBlock, 5)) {
+                    blockFound = playerBlock;
+                    break;
                 }
+            }
+
+            // After iterate if the variable has some value we check other things
+            if (blockFound != null) {
+
+                // Check if the breaker and the block owner are from same team
+                if (gpBlock.getTeam() == gPlayer.getTeam()) {
+                    // if the breaker is different from the owner of the block, the event is cancelled
+                    if (player.getUniqueId() != blockPlayer.getUniqueId()) {
+                        event.setCancelled(true);
+                    }
+
+                    // if is from other team, we play the delaying block effect
+                } else {
+                    playDelayingBlockEffect(player);
+                }
+
+                break;
             }
 
         }
 
+    }
+
+    @EventHandler()
+    public void onInventoryMoveEvent(InventoryMoveItemEvent event) {
+        Inventory source = event.getSource();
+        Inventory destination =  event.getDestination();
+
+        ItemStack item = event.getItem();
+        if (source.getType() == InventoryType.PLAYER
+                && destination.getType() != InventoryType.PLAYER
+                && KitUtils.isKitItem(item, "KITS.BUILDER_BOOK")) {
+            event.setCancelled(true);
+        }
+    }
+
+    private void playDelayingBlockEffect(Player player) {
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 10, 1));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 20 * 10, 2));
     }
 
     private List<ItemStack> getRandomDrops() {

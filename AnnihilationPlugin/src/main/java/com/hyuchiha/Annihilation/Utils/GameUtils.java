@@ -183,8 +183,8 @@ public class GameUtils {
     double ax = aLoc.getX(), ay = aLoc.getY(), az = aLoc.getZ();
     double bx = bLoc.getX(), by = bLoc.getY(), bz = bLoc.getZ();
 
-    return Math.abs(ax - bx) < distance
-            && Math.abs(ay - by) < distance
-            && Math.abs(az - bz) < distance;
+    return Math.abs(ax - bx) <= distance
+            && Math.abs(ay - by) <= distance
+            && Math.abs(az - bz) <= distance;
   }
 }
