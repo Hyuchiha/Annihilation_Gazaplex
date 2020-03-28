@@ -58,7 +58,7 @@ public enum Kit {
         kits.put(name, new Bloodmage(kitName, icon, configurationSection));
         break;
       case "BUILDER":
-
+        kits.put(name, new Builder(kitName, icon, configurationSection));
         break;
     }
   }
