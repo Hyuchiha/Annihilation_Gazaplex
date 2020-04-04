@@ -130,47 +130,9 @@ public class Defender extends BaseKit {
 
         if (GameUtils.nearLocation(nexus.getLocation(), player.getLocation(), 50)) {
             int health = nexus.getHealth();
-            int position = health / 10;
+            double additionalHealth = Math.ceil((75 - health) / 10.0);
 
-            double playerMaxHealth = player.getMaxHealth();
-            double playerHealth = player.getHealth();
-
-            switch (position) {
-                case 7:
-                    player.setMaxHealth(playerMaxHealth + 1);
-                    player.setHealth(playerHealth + 1);
-                    break;
-                case 6:
-                    player.setMaxHealth(playerMaxHealth + 2);
-                    player.setHealth(playerHealth + 2);
-                    break;
-                case 5:
-                    player.setMaxHealth(playerMaxHealth + 3);
-                    player.setHealth(playerHealth + 3);
-                    break;
-                case 4:
-                    player.setMaxHealth(playerMaxHealth + 4);
-                    player.setHealth(playerHealth + 4);
-                    break;
-                case 3:
-                    player.setMaxHealth(playerMaxHealth + 5);
-                    player.setHealth(playerHealth + 5);
-                    break;
-                case 2:
-                    player.setMaxHealth(playerMaxHealth + 6);
-                    player.setHealth(playerHealth + 6);
-                    break;
-                case 1:
-                    player.setMaxHealth(playerMaxHealth + 7);
-                    player.setHealth(playerHealth + 7);
-                    break;
-                case 0:
-                    player.setMaxHealth(playerMaxHealth + 8);
-                    player.setHealth(playerHealth + 8);
-                    break;
-
-            }
-
+            player.setMaxHealth(20 + additionalHealth);
 
             player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20, 3));
         }
