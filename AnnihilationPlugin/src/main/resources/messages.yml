@@ -63,6 +63,7 @@ KITS:
   BUILDER_BOOK: "Resource Drop"
   BUILDER_DELAYING_BLOCK: "Delaying block"
   BUILDER_ITEM_MENU: "Resources"
+  DEFENDER_ITEM: "Guardian Warp"
 # Info messages
 INFO:
   TOP_STATS: "Top "

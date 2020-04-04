@@ -187,4 +187,14 @@ public class GameUtils {
             && Math.abs(ay - by) <= distance
             && Math.abs(az - bz) <= distance;
   }
+
+  public static boolean nearLocation(Location a, Location b, double distance) {
+    double ax = a.getX(), ay = a.getY(), az = a.getZ();
+    double bx = b.getX(), by = b.getY(), bz = b.getZ();
+
+    return Math.abs(ax - bx) <= distance
+            && Math.abs(ay - by) <= distance
+            && Math.abs(az - bz) <= distance;
+  }
+
 }

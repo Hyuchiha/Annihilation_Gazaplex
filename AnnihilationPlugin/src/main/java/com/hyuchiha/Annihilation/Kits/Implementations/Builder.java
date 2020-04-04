@@ -9,8 +9,7 @@ import com.hyuchiha.Annihilation.Utils.GameUtils;
 import com.hyuchiha.Annihilation.Utils.KitUtils;
 import com.hyuchiha.Annihilation.Utils.LocationUtils;
 import com.hyuchiha.Annihilation.Utils.TimersUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -228,6 +227,10 @@ public class Builder extends BaseKit {
     }
 
     private void playDelayingBlockEffect(Player player) {
+        Location location = player.getLocation();
+        World world = player.getWorld();
+        world.playSound(location, Sound.ENTITY_GHAST_HURT, 10, 1);
+
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 10, 1));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 20 * 10, 2));
     }

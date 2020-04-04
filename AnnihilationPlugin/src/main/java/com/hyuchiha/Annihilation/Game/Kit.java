@@ -20,7 +20,8 @@ public enum Kit {
   ARCHER("ARCHER", Material.BOW),
   BERSERKER("BERSERKER", Material.CHAINMAIL_CHESTPLATE),
   BLOODMAGE("BLOODMAGE", Material.RECORD_3),
-  BUILDER("BUILDER", Material.CLAY_BRICK);
+  BUILDER("BUILDER", Material.CLAY_BRICK),
+  DEFENDER("DEFENDER", Material.SHIELD);
 
   private HashMap<String, BaseKit> kits = new HashMap<>();
 
@@ -59,6 +60,9 @@ public enum Kit {
         break;
       case "BUILDER":
         kits.put(name, new Builder(kitName, icon, configurationSection));
+        break;
+      case "DEFENDER":
+        kits.put(name, new Defender(kitName, icon, configurationSection));
         break;
     }
   }

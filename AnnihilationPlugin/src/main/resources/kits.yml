@@ -77,3 +77,15 @@ Kits:
       - "&b y quien sabe, quizas algun enemigo muera"
       - "&b cruzando tu muro"
     price: 25000
+  DEFENDER:
+    name: "&2 Defender"
+    lore:
+      - "&b Tu eres nuestra ultima defensa"
+      - ""
+      - "&b Tu eres el encargado de poner tu cuerpo"
+      - "&b y tu espiritu en la defensa"
+      - "&b de nuestro equipo"
+      - ""
+      - "&b Mientras permanescas cerca del nexus"
+      - "&b Tendras corazones y regeneracion extra"
+    price: 25000
