@@ -134,7 +134,7 @@ public class Defender extends BaseKit {
 
             player.setMaxHealth(20 + additionalHealth);
 
-            player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20, 3));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 3, 1));
         }
 
     }

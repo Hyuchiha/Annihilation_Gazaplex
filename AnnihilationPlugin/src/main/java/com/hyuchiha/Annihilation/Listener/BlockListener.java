@@ -39,7 +39,7 @@ public class BlockListener implements Listener {
 
         return;
       }
-      if (e.getBlock().getType() == Material.STONE || e.getBlock().getType() == Material.COBBLESTONE || e.getBlock().getType() == Material.CLAY) {
+      if (e.getBlock().getType() == Material.COBBLESTONE || e.getBlock().getType() == Material.CLAY) {
         e.setCancelled(true);
       }
     } else if (!e.getPlayer().hasPermission("annihilation.bypass.construction")) {
