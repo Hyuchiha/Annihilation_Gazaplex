@@ -19,6 +19,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -153,6 +154,15 @@ public class Pyro extends BaseKit {
             if (gpDamager.getKit() == Kit.PYRO && random.nextInt(100) <= 40) {
                 attacked.setFireTicks(50);
             }
+        }
+    }
+
+    @EventHandler
+    public void onArrowDamageByPyro(EntityShootBowEvent e) {
+        Player player = (Player) e.getEntity();
+        GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
+        if (gPlayer.getKit() == Kit.PYRO) {
+            e.getProjectile().setFireTicks(60);
         }
     }
 }
