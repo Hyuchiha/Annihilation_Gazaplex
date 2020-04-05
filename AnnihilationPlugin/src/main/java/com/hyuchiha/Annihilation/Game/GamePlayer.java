@@ -143,7 +143,9 @@ public class GamePlayer {
 
   public void giveOreXP(int xp) {
     if (xp > 0) {
-      getPlayer().giveExp(xp);
+      int xpMultiplier = getKit().getKit().getXpMultiplier();
+
+      getPlayer().giveExp(xp * xpMultiplier);
       getPlayer().playSound(getPlayer().getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, new Random().nextFloat() * 0.2F + 0.9F);
     }
   }

@@ -89,3 +89,14 @@ Kits:
       - "&b Mientras permanescas cerca del nexus"
       - "&b Tendras corazones y regeneracion extra"
     price: 25000
+  ENCHANTER:
+    name: "&2 Enchanter"
+    lore:
+      - "&b El encantador"
+      - ""
+      - "&b Con tu habilidad"
+      - "&b por cada bloque de recursos"
+      - "&b que destruyas"
+      - "&b recibiras el doble"
+      - "&b de experiencia"
+    price: 25000

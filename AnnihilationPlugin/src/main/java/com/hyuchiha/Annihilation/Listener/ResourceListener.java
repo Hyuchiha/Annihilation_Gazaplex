@@ -14,6 +14,7 @@ import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -38,7 +39,7 @@ public class ResourceListener implements Listener {
     this.plugin = plugin;
   }
 
-  @EventHandler(ignoreCancelled = true)
+  @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
   public void onResourceBreak(BlockBreakEvent e) {
     if (e.getPlayer().getWorld().getName().equalsIgnoreCase("lobby") && e.getPlayer().getGameMode() != GameMode.CREATIVE) {
       e.setCancelled(true);
@@ -92,7 +93,7 @@ public class ResourceListener implements Listener {
       default:
         Material dropType = resource.getDrop();
         int qty = getDropQuantity(type);
-
+        int dropMultiplier = gamePlayer.getKit().getKit().getMaterialDropMultiplier();
 
         if ((dropType == Material.DIAMOND
                 || dropType == Material.COAL
@@ -104,7 +105,7 @@ public class ResourceListener implements Listener {
         }
 
         drops = new ItemStack[]{
-                new ItemStack(dropType, qty)
+                new ItemStack(dropType, qty * dropMultiplier)
         };
         break;
     }

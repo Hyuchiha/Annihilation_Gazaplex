@@ -127,4 +127,13 @@ public abstract class BaseKit implements Listener {
     public String getName() {
         return name.substring(0, 1) + name.substring(1).toLowerCase();
     }
+
+    // This depends on kit, some kits may give more xp
+    public int getXpMultiplier() {
+        return 1;
+    }
+
+    public int getMaterialDropMultiplier() {
+        return 1;
+    }
 }

@@ -23,7 +23,7 @@ public class ResourceManager {
     addResource(Material.LOG, 2, 10);
     addResource(Material.LOG_2, 2, 10);
     addResource(Material.GRAVEL, 2, 20);
-    addResource(Material.MELON_BLOCK, 0, 10);
+    addResource(Material.MELON_BLOCK, 1, 10);
     addResource(Material.LAPIS_ORE, 3, 10);
     addResource(Material.PUMPKIN, 1, 10);
   }
