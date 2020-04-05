@@ -111,3 +111,13 @@ Kits:
       - ""
       - "&b Arma a tu equipo"
     price: 10000
+  PYRO:
+    name: "&2 Pyromaniatico"
+    lore:
+      - "&b Tu eres la llama"
+      - ""
+      - "&b Utiliza tus armas para dañar"
+      - "&b a tus rivales con tu fuego"
+      - "&b y no te preocupes"
+      - "&b el fuego no te puede hacer daño"
+    price: 25000

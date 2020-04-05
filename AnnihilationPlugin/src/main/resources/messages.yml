@@ -64,6 +64,7 @@ KITS:
   BUILDER_DELAYING_BLOCK: "Delaying block"
   BUILDER_ITEM_MENU: "Resources"
   DEFENDER_ITEM: "Guardian Warp"
+  PYRO_ITEM: "Fire wave"
 # Info messages
 INFO:
   TOP_STATS: "Top "
