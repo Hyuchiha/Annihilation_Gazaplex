@@ -22,7 +22,8 @@ public enum Kit {
   BLOODMAGE("BLOODMAGE", Material.RECORD_3),
   BUILDER("BUILDER", Material.CLAY_BRICK),
   DEFENDER("DEFENDER", Material.SHIELD),
-  ENCHANTER("ENCHANTER", Material.ENCHANTMENT_TABLE);
+  ENCHANTER("ENCHANTER", Material.ENCHANTMENT_TABLE),
+  MINER("MINER", Material.STONE_PICKAXE);
 
   private HashMap<String, BaseKit> kits = new HashMap<>();
 
@@ -67,6 +68,9 @@ public enum Kit {
         break;
       case "ENCHANTER":
         kits.put(name, new Enchanter(kitName, icon, configurationSection));
+        break;
+      case "MINER":
+        kits.put(name, new Miner(kitName, icon, configurationSection));
         break;
     }
   }

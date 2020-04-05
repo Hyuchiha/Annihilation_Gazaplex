@@ -100,3 +100,14 @@ Kits:
       - "&b recibiras el doble"
       - "&b de experiencia"
     price: 25000
+  MINER:
+    name: "&2 Minero"
+    lore:
+      - "&b Tu eres el obrero"
+      - ""
+      - "&b Con tu set de herramientas"
+      - "&b consigues el doble de"
+      - "&b materiales minados"
+      - ""
+      - "&b Arma a tu equipo"
+    price: 10000
