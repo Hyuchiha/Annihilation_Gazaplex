@@ -121,3 +121,16 @@ Kits:
       - "&b y no te preocupes"
       - "&b el fuego no te puede hacer daño"
     price: 25000
+  VAMPIRE:
+    name: "&2 Vampiro"
+    lore:
+      - "&b Tu eres el miedo"
+      - ""
+      - "&b De noche, tu progreso en batalla"
+      - "&b es inalcanzable, con cada golpe que"
+      - "&b propines a tu adversario, tiene un 20%"
+      - "&b de probabilidad de absorber la vida"
+      - "&b de tu contrincante"
+      - ""
+      - "&b Funciona solo de noche."
+    price: 25000
