@@ -25,7 +25,8 @@ public enum Kit {
   ENCHANTER("ENCHANTER", Material.ENCHANTMENT_TABLE),
   MINER("MINER", Material.STONE_PICKAXE),
   PYRO("PYRO", Material.FLINT_AND_STEEL),
-  VAMPIRE("VAMPIRE", Material.REDSTONE);
+  VAMPIRE("VAMPIRE", Material.REDSTONE),
+  WARRIOR("WARRIOR", Material.STONE_SWORD);
 
   private HashMap<String, BaseKit> kits = new HashMap<>();
 
@@ -79,6 +80,9 @@ public enum Kit {
         break;
       case "VAMPIRE":
         kits.put(name, new Vampire(kitName, icon, configurationSection));
+        break;
+      case "WARRIOR":
+        kits.put(name, new Warrior(kitName, icon, configurationSection));
         break;
     }
   }

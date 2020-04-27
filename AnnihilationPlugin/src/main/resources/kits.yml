@@ -134,3 +134,13 @@ Kits:
       - ""
       - "&b Funciona solo de noche."
     price: 25000
+  WARRIOR:
+    name: "&2 Guerrero"
+    lore:
+      - "&b Eres un guerrero"
+      - ""
+      - "&b Haces daño extra (+1)"
+      - "&b con cualquier arna"
+      - ""
+      - "&b Nadie te derribara"
+    price: 50000
