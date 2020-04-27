@@ -65,6 +65,9 @@ KITS:
   BUILDER_ITEM_MENU: "Resources"
   DEFENDER_ITEM: "Guardian Warp"
   PYRO_ITEM: "Fire wave"
+  TRANSPORTER_ITEM: "Portal maker"
+  TELEPORT_HELP: "This is a teleport owner by %OWNER%, Sneak to go through it"
+  TELEPORT_DESTROY: "Your portal has been destroyed by %PLAYER%"
 # Info messages
 INFO:
   TOP_STATS: "Top "
@@ -105,6 +108,7 @@ ERRORS:
   CANNOT_BUILD_HERE: "You can't build here"
   NOT_ENOUGHT_GOLD_TO_PURCHASE: '&cInsufficient gold to purchase &e'
   DONT_OWN_BREWING: "You are not the owner of this Brewing Stand"
+  PORTAL_NEXUS: "You can't place a portal in a nexus"
 # Scoreboard messages
 SCOREBOARDS:
   SB_LOBBY_TITLE: "Annihilation"

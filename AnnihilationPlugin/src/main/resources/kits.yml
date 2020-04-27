@@ -121,6 +121,18 @@ Kits:
       - "&b y no te preocupes"
       - "&b el fuego no te puede hacer daño"
     price: 25000
+  TRANSPORTER:
+    name: "&2 Transporter"
+    lore:
+      - "&b Eres el puente"
+      - ""
+      - "&b Une dos partes del mapa con portales"
+      - "&b Que puedes crear para ti y tu equipo"
+      - "&b se muevan con facilidad"
+      - ""
+      - "&b Tus portales permanecerán en tanto"
+      - "&b sigas con vida o los destruyan"
+    price: 75000
   VAMPIRE:
     name: "&2 Vampiro"
     lore:

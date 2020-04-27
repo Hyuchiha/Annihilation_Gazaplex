@@ -25,6 +25,7 @@ public enum Kit {
   ENCHANTER("ENCHANTER", Material.ENCHANTMENT_TABLE),
   MINER("MINER", Material.STONE_PICKAXE),
   PYRO("PYRO", Material.FLINT_AND_STEEL),
+  TRANSPORTER("TRANSPORTER", Material.QUARTZ),
   VAMPIRE("VAMPIRE", Material.REDSTONE),
   WARRIOR("WARRIOR", Material.STONE_SWORD);
 
@@ -77,6 +78,9 @@ public enum Kit {
         break;
       case "PYRO":
         kits.put(name, new Pyro(kitName, icon, configurationSection));
+        break;
+      case "TRANSPORTER":
+        kits.put(name, new Transporter(kitName, icon, configurationSection));
         break;
       case "VAMPIRE":
         kits.put(name, new Vampire(kitName, icon, configurationSection));
