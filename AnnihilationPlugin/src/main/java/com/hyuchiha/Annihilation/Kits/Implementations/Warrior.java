@@ -64,11 +64,10 @@ public class Warrior extends BaseKit {
   @EventHandler(priority = EventPriority.HIGHEST,ignoreCancelled = true)
   public void damageListener(final EntityDamageByEntityEvent event) {
     Entity one = event.getDamager();
-    if(one.getType() == EntityType.PLAYER)
-    {
+    if (one.getType() == EntityType.PLAYER) {
       Player damager = (Player)one;
       GamePlayer gPlayer = PlayerManager.getGamePlayer(damager);
-      if(gPlayer.getKit() == Kit.WARRIOR){
+      if (gPlayer.getKit() == Kit.WARRIOR){
         event.setDamage(event.getDamage()+1);
       }
     }
