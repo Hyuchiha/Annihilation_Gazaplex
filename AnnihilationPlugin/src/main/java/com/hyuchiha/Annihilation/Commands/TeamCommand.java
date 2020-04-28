@@ -31,9 +31,7 @@ public class TeamCommand implements CommandExecutor {
       }
 
       if (team != null) {
-        if (gamePlayer.getTeam() == GameTeam.NONE) {
-          GameManager.getCurrentGame().joinTeam((Player) sender, team.name());
-        }
+        GameManager.getCurrentGame().joinTeam((Player) sender, team.name());
       } else {
         Output.log("The game does not exist");
         sender.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("ERRORS.CANNOT_JOIN_TEAM"));

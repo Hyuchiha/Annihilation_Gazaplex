@@ -195,7 +195,7 @@ public class Game {
   public void joinTeam(Player player, String team) {
     GamePlayer gamePlayer = PlayerManager.getGamePlayer(player);
 
-    if (gamePlayer.getTeam() != GameTeam.NONE && !player.hasPermission("annihilation.bypass.team_limit")) {
+    if (gamePlayer.getTeam() != GameTeam.NONE && !player.hasPermission("annihilation.bypass.switch_team")) {
       player.sendMessage(Translator.getPrefix() + ChatColor.GRAY + Translator.getString("ERROR.PLAYER_NOSWITCHTEAM"));
     } else {
       GameTeam toJoin = (GameTeam) Enums.getIfPresent(GameTeam.class, team.toUpperCase()).orNull();
