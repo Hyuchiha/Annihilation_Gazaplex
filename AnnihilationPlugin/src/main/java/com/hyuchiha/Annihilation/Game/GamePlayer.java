@@ -133,13 +133,11 @@ public class GamePlayer {
   }
 
   public void regamePlayer() {
-    getPlayer().getInventory().clear();
     getPlayer().setGameMode(GameMode.SURVIVAL);
     setupPlayerData();
     getPlayer().teleport(getTeam().getRandomSpawn());
     getKit().getKit().giveKitItems(getPlayer());
   }
-
 
   public void giveOreXP(int xp) {
     if (xp > 0) {
