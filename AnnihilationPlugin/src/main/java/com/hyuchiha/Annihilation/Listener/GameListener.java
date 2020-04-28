@@ -163,6 +163,7 @@ public class GameListener implements Listener {
       switch (phase) {
         case 1:
           ParticleManager.initGameParticles();
+          break;
         case 3:
           WitchManager.spawnWitches();
           ResourceManager.spawnDiamonds();

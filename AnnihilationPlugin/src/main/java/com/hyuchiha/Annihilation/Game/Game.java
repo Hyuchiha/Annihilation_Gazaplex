@@ -113,6 +113,7 @@ public class Game {
     ZombieManager.clearZombiesData();
     ParticleManager.endGameParticles();
     MapManager.resetMap();
+    VotingManager.start();
   }
 
   public int getPhase() {

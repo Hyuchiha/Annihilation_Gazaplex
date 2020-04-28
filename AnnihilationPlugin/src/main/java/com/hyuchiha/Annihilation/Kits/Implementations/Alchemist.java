@@ -5,6 +5,7 @@ import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
+import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.KitUtils;
 import com.hyuchiha.Annihilation.Utils.TimersUtils;
 import org.bukkit.Bukkit;
@@ -269,7 +270,9 @@ public class Alchemist extends BaseKit {
   private void giveRandomDrop(Player player) {
     int position = random.nextInt(99);
 
-    List<ItemStack> percentDrops = drops.get(position);
+    int probability = probs.get(position);
+
+    List<ItemStack> percentDrops = drops.get(probability);
     int dropPosition = random.nextInt(percentDrops.size() - 1);
     player.getInventory().addItem(percentDrops.get(dropPosition));
   }

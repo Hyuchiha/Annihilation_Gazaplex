@@ -20,6 +20,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -144,34 +145,45 @@ public class InventoryListener implements Listener {
       return;
     }
 
-    if (inv.getTitle().startsWith(Translator.getColoredString("GAME.CONFIRM_UNLOCK"))
-            && e.getCurrentItem() != null
-            && (e.getCurrentItem().getType() == Material.EMERALD_BLOCK
-            || e.getCurrentItem().getType() == Material.REDSTONE_BLOCK)) {
-
-      player.closeInventory();
-      e.setCancelled(true);
-
-      String name = e.getClickedInventory().getItem(4).getItemMeta().getDisplayName();
-
-      if (e.getCurrentItem().getType() == Material.REDSTONE_BLOCK) {
+    if (inv.getTitle().startsWith(Translator.getColoredString("GAME.CONFIRM_UNLOCK"))) {
+      if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR || e.getCurrentItem().getType() == null) {
         return;
       }
+      e.setCancelled(true);
 
-      double money = Main.getInstance().getConfig("kits.yml").getInt("Kits." + name.toUpperCase() + ".price");
-      double userMoney = PlayerManager.getMoney(player);
+      if (e.getCurrentItem().getType() == Material.EMERALD_BLOCK || e.getCurrentItem().getType() == Material.REDSTONE_BLOCK) {
 
-      if (userMoney >= money) {
-        Main.getInstance().getMainDatabase().addUnlockedKit(player.getUniqueId().toString(), ChatColor.stripColor(name).toUpperCase());
+        player.closeInventory();
 
-        PlayerManager.withdrawMoney(player, money);
+        String name = e.getClickedInventory().getItem(4).getItemMeta().getDisplayName();
 
-        String classUnlocked = Translator.getColoredString("GAME.PLAYER_UNLOCK_CLASS");
-        player.sendMessage(Translator.getPrefix() + " " + classUnlocked.replace("%CLASS%", name));
-      } else {
-        player.sendMessage(Translator.getPrefix()+ " " + Translator.getColoredString("GAME.PLAYER_DONT_HAVE_REQUIRED_MONEY"));
+        if (e.getCurrentItem().getType() == Material.REDSTONE_BLOCK) {
+          return;
+        }
+
+        double money = Main.getInstance().getConfig("kits.yml").getInt("Kits." + name.toUpperCase() + ".price");
+        double userMoney = PlayerManager.getMoney(player);
+
+        if (userMoney >= money) {
+          Main.getInstance().getMainDatabase().addUnlockedKit(player.getUniqueId().toString(), ChatColor.stripColor(name).toUpperCase());
+
+          PlayerManager.withdrawMoney(player, money);
+
+          String classUnlocked = Translator.getColoredString("GAME.PLAYER_UNLOCK_CLASS");
+          player.sendMessage(Translator.getPrefix() + " " + classUnlocked.replace("%CLASS%", name));
+        } else {
+          player.sendMessage(Translator.getPrefix()+ " " + Translator.getColoredString("GAME.PLAYER_DONT_HAVE_REQUIRED_MONEY"));
+        }
+
       }
     }
 
+  }
+
+  @EventHandler
+  public void ItemMoveEvent(InventoryMoveItemEvent event) {
+    if (event.getInitiator().getName().startsWith(Translator.getColoredString("GAME.CONFIRM_UNLOCK"))) {
+      event.setCancelled(true);
+    }
   }
 }

@@ -6,6 +6,7 @@ import com.hyuchiha.Annihilation.Game.Game;
 import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Output.Output;
+import com.hyuchiha.Annihilation.Scoreboard.ScoreboardManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

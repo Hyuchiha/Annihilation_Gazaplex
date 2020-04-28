@@ -6,6 +6,7 @@ import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
+import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.TimersUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -18,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.inventory.ItemStack;
@@ -82,6 +84,21 @@ public class Acrobat extends BaseKit {
   @Override
   public void resetData() {
     // This kit dont store anything soo, dont worry
+  }
+
+  @EventHandler
+  public void onGameModeChange(PlayerGameModeChangeEvent event) {
+    Player player = event.getPlayer();
+
+    if (event.getNewGameMode() == GameMode.SURVIVAL) {
+      GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
+
+      if (gPlayer.getKit() == Kit.ACROBAT
+              && GameManager.hasCurrentGame()
+              && GameManager.getCurrentGame().isInGame()) {
+        player.setAllowFlight(true);
+      }
+    }
   }
 
   @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)

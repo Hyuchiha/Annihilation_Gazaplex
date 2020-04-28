@@ -58,7 +58,7 @@ GAME:
   DELAY: '&bYou can use this ability in %TIME%s'
 KITS:
   ARCHER_BOOK: "Arrow Drop"
-  ALCHESMITS_BOOK: "Alchemist Drop"
+  ALCHEMIST_BOOK: "Alchemist Drop"
   BLOODMAGE_ITEM: "Corrupt"
   BUILDER_BOOK: "Resource Drop"
   BUILDER_DELAYING_BLOCK: "Delaying block"
