@@ -158,7 +158,7 @@ public class Transporter extends BaseKit {
           player.playSound(block.getLocation(), Sound.ENTITY_BLAZE_SHOOT, 1.0F, 1.9F);
           e.setCancelled(true);
         } else {
-          player.sendMessage(ChatColor.RED + "No puedes poner esto aqui.");
+          player.sendMessage(ChatColor.RED + Translator.getColoredString("ERRORS.CANNOT_DO_ACTION"));
         }
 
       }
