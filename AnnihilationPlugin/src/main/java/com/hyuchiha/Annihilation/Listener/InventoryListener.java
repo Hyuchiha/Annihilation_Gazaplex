@@ -10,7 +10,6 @@ import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Manager.VotingManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
-import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.KitUtils;
 import com.hyuchiha.Annihilation.Utils.MenuUtils;
 import org.bukkit.ChatColor;
@@ -150,7 +149,14 @@ public class InventoryListener implements Listener {
             && (e.getCurrentItem().getType() == Material.EMERALD_BLOCK
             || e.getCurrentItem().getType() == Material.REDSTONE_BLOCK)) {
 
+      player.closeInventory();
+      e.setCancelled(true);
+
       String name = e.getClickedInventory().getItem(4).getItemMeta().getDisplayName();
+
+      if (e.getCurrentItem().getType() == Material.REDSTONE_BLOCK) {
+        return;
+      }
 
       double money = Main.getInstance().getConfig("kits.yml").getInt("Kits." + name.toUpperCase() + ".price");
       double userMoney = PlayerManager.getMoney(player);
@@ -165,9 +171,6 @@ public class InventoryListener implements Listener {
       } else {
         player.sendMessage(Translator.getPrefix()+ " " + Translator.getColoredString("GAME.PLAYER_DONT_HAVE_REQUIRED_MONEY"));
       }
-
-      player.closeInventory();
-      e.setCancelled(true);
     }
 
   }
