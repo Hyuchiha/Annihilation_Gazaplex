@@ -199,7 +199,7 @@ public class PlayerListener implements Listener {
 
       Bukkit.getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable() {
         public void run() {
-
+          MenuUtils.showKitSelector(player);
         }
       }, 20L);
 

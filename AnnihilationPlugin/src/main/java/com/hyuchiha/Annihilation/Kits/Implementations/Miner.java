@@ -22,7 +22,7 @@ public class Miner extends BaseKit {
         spawnItems.add(pickaxe);
 
         spawnItems.add(new ItemStack(Material.WOOD_AXE));
-        spawnItems.add(new ItemStack(Material.WOOD_PLATE));
+        spawnItems.add(new ItemStack(Material.WOOD_SPADE));
         spawnItems.add(new ItemStack(Material.FURNACE));
         spawnItems.add(new ItemStack(Material.COAL, 5));
     }
