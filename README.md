@@ -27,6 +27,7 @@ All the permissions required for running this plugin are listed here:
  - **annihilation.command.start** command to force a game to start
  - **annihilation.command.stop** command to force a game to stop
  - **annihilation.command.switch_kit** command to  switch kit
+ - **annihilation.bypass.switch_team** needed if one player can switch team
  - **annihilation.bypass.team_limit** needed if one player can join to a full team
  - **annihilation.bypass.construction** needed if one player can construct and destroy inside the nexus
  - **annihilation.vip.diamond** for unlock enderchest diamond slots
