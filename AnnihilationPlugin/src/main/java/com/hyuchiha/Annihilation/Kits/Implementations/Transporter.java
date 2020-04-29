@@ -5,10 +5,12 @@ import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
+import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Object.Loc;
 import com.hyuchiha.Annihilation.Object.Teleporter;
+import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
 import com.hyuchiha.Annihilation.Utils.KitUtils;
 import org.bukkit.*;
@@ -32,221 +34,252 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class Transporter extends BaseKit {
-  private HashMap<UUID, Teleporter> teleports;
+    private HashMap<UUID, Teleporter> teleports;
 
-  public Transporter(String name, ItemStack icon, ConfigurationSection section) {
-    super(name, icon, section);
+    public Transporter(String name, ItemStack icon, ConfigurationSection section) {
+        super(name, icon, section);
 
-    teleports = new HashMap<>();
-  }
-
-  @Override
-  protected void setupSpawnItems() {
-    spawnItems.add(new ItemStack(Material.STONE_SWORD));
-    spawnItems.add(new ItemStack(Material.WOOD_PICKAXE));
-    spawnItems.add(new ItemStack(Material.WOOD_AXE));
-
-    ItemStack portal = new ItemStack(Material.QUARTZ);
-    ItemMeta m = portal.getItemMeta();
-    m.setDisplayName(Translator.getColoredString("KITS.TRANSPORTER_ITEM"));
-    portal.setItemMeta(m);
-    spawnItems.add(portal);
-  }
-
-  @Override
-  protected void giveSpecialPotions(Player recipient) {
-    // Not needed
-  }
-
-  @Override
-  protected void giveExtraHearts(Player recipient) {
-    // Not needed
-  }
-
-  @Override
-  protected void extraConfiguration(Player recipient) {
-    // Not for now
-  }
-
-  @Override
-  public void removePlayer(Player recipient) {
-    removeTeleport(recipient);
-  }
-
-  @Override
-  public void resetData() {
-
-  }
-
-  @EventHandler
-  public void onPlayerDeath(PlayerDeathEvent event) {
-    Player player = event.getEntity();
-    GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
-
-    if (gPlayer.getKit() == Kit.TRANSPORTER) {
-      removeTeleport(player);
+        teleports = new HashMap<>();
     }
-  }
 
-  @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-  public void onTeleportItemUsage(PlayerInteractEvent e) {
-    Player player = e.getPlayer();
-    GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
-    Action action = e.getAction();
-    Block block = e.getClickedBlock();
+    @Override
+    protected void setupSpawnItems() {
+        spawnItems.add(new ItemStack(Material.STONE_SWORD));
+        spawnItems.add(new ItemStack(Material.WOOD_PICKAXE));
+        spawnItems.add(new ItemStack(Material.WOOD_AXE));
 
-    if (action == Action.RIGHT_CLICK_BLOCK) {
+        ItemStack portal = new ItemStack(Material.QUARTZ);
+        ItemMeta m = portal.getItemMeta();
+        m.setDisplayName(Translator.getColoredString("KITS.TRANSPORTER_ITEM"));
+        portal.setItemMeta(m);
+        spawnItems.add(portal);
+    }
 
-      // Try to remove current portal
-      if (block.getType() == Material.QUARTZ_ORE) {
-        e.setCancelled(true);
-        UUID owner = KitUtils.getBlockOwner(block);
-        if (owner != null) {
-          Teleporter tele = teleports.get(owner);
-          if (tele != null) {
-            tele.clear();
-            return;
-          }
-        }
-      }
+    @Override
+    protected void giveSpecialPotions(Player recipient) {
+        // Not needed
+    }
 
-      PlayerInventory inventory = player.getInventory();
-      ItemStack handItem = inventory.getItemInMainHand();
+    @Override
+    protected void giveExtraHearts(Player recipient) {
+        // Not needed
+    }
 
-      if (gPlayer.getKit() == Kit.TRANSPORTER && handItem != null && KitUtils.isKitItem(handItem, "KITS.TRANSPORTER_ITEM")) {
-        Block clickedBlock = block.getRelative(BlockFace.UP);
-        Block other2 = clickedBlock.getRelative(BlockFace.UP);
+    @Override
+    protected void extraConfiguration(Player recipient) {
+        // Not for now
+    }
 
-        if (clickedBlock.getType() == Material.AIR && other2.getType() == Material.AIR) {
-          for (GameTeam team : GameTeam.teams()) {
-            Loc loc = new Loc(block.getLocation());
-            Nexus nexus = team.getNexus();
-            if (nexus != null) {
-              if (loc.isEqual(new Loc(nexus.getLocation()))) {
-                player.sendMessage(ChatColor.RED + Translator.getColoredString("ERRORS.PORTAL_NEXUS"));
-                e.setCancelled(true);
-                return;
-              }
-            }
-          }
+    @Override
+    public void removePlayer(Player recipient) {
+        removeTeleport(recipient);
+    }
 
-          if (GameUtils.tooClose(block.getLocation())) {
-            player.sendMessage(ChatColor.RED + Translator.getColoredString("ERRORS.CANNOT_BUILD_HERE"));
-            e.setCancelled(true);
-            return;
-          }
-
-          Teleporter tele = teleports.get(player.getUniqueId());
-          if (tele == null) {
-            teleports.put(player.getUniqueId(), new Teleporter(player));
-            tele = teleports.get(player.getUniqueId());
-          }
-
-          if (tele.isLinked()) {
-            tele.clear();
-            tele.setLoc1(block.getLocation(), block.getState());
-          } else if (tele.hasLoc1()) {
-            tele.setLoc2(block.getLocation(), block.getState());
-          } else {
-            tele.setLoc1(block.getLocation(), block.getState());
-          }
-
-          block.setType(Material.QUARTZ_ORE);
-          block.getChunk().unload();
-          block.getChunk().load();
-          KitUtils.setBlockOwner(block, player.getUniqueId());
-          player.playSound(block.getLocation(), Sound.ENTITY_BLAZE_SHOOT, 1.0F, 1.9F);
-          e.setCancelled(true);
-        } else {
-          player.sendMessage(ChatColor.RED + Translator.getColoredString("ERRORS.CANNOT_DO_ACTION"));
-        }
-
-      }
+    @Override
+    public void resetData() {
 
     }
-  }
 
-  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-  public void onTeleport(PlayerToggleSneakEvent event) {
-    if (event.isSneaking()) {
-      Player player = event.getPlayer();
-      Block block = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
-      if (block.getType() == Material.QUARTZ_ORE) {
-        UUID owner = KitUtils.getBlockOwner(block);
-        if (owner != null) {
-          GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        Player player = event.getEntity();
+        GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
 
-          Teleporter tele = teleports.get(owner);
-          if (tele.isLinked() && tele.getOwner().getTeam() == gPlayer.getTeam() && tele.canUse()) {
-            Location loc;
-            if (new Loc(block.getLocation()).isEqual(tele.getLoc1())) {
-              loc = tele.getLoc2().toLocation();
-            } else {
-              loc = tele.getLoc1().toLocation();
+        if (gPlayer.getKit() == Kit.TRANSPORTER) {
+            removeTeleport(player);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onTeleportItemUsage(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        GamePlayer eventPlayer = PlayerManager.getGamePlayer(player);
+        Block block = event.getClickedBlock();
+
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && player.getGameMode() != GameMode.CREATIVE) {
+
+            if (block.getType() == Material.QUARTZ_ORE) {
+                event.setCancelled(true);
+                UUID owner = KitUtils.getBlockOwner(block);
+                if (owner != null) {
+                    Teleporter tele = teleports.get(owner);
+                    if (tele != null) {
+                        if (player.getUniqueId().equals(owner)) {
+                            tele.clear();
+                            return;
+                        }
+                    }
+                }
             }
-            loc.setY(loc.getY() + 1.0D);
-            player.teleport(Loc.getMiddle(loc));
-            loc.getWorld().playEffect(loc, Effect.MOBSPAWNER_FLAMES, 1);
-            tele.getLoc1().toLocation().getWorld().playSound(tele.getLoc1().toLocation(), Sound.ENTITY_ENDERMEN_TELEPORT, 1.0F, (float) Math.random());
-            tele.getLoc2().toLocation().getWorld().playSound(tele.getLoc2().toLocation(), Sound.ENTITY_ENDERMEN_TELEPORT, 1.0F, (float) Math.random());
-            tele.delay();
+
+            PlayerInventory inventory = player.getInventory();
+            ItemStack handItem = inventory.getItemInMainHand();
+
+            if (eventPlayer.getKit() == Kit.TRANSPORTER && handItem != null && KitUtils.isKitItem(handItem, "KITS.TRANSPORTER_ITEM")) {
+
+                Block clickedBlock = block.getRelative(BlockFace.UP);
+                Block other2 = clickedBlock.getRelative(BlockFace.UP);
+
+                if (clickedBlock.getType() == Material.AIR && other2.getType() == Material.AIR && canPlace(block.getType())) {
+                    for (GameTeam team : GameTeam.teams()) {
+                        Loc loc = new Loc(block.getLocation());
+                        Nexus nexus = team.getNexus();
+                        if (nexus != null) {
+                            if (loc.isEqual(new Loc(nexus.getLocation()))) {
+                                player.sendMessage(ChatColor.RED + Translator.getColoredString("ERRORS.PORTAL_NEXUS"));
+                                event.setCancelled(true);
+                                return;
+                            }
+                        }
+                    }
+
+                    if (GameUtils.tooClose(block.getLocation())) {
+                        player.sendMessage(ChatColor.RED + Translator.getColoredString("ERRORS.CANNOT_BUILD_HERE"));
+                        event.setCancelled(true);
+                        return;
+                    }
+
+                    Teleporter tele = teleports.get(player.getUniqueId());
+                    if (tele == null) {
+                        teleports.put(player.getUniqueId(), new Teleporter(player));
+                        tele = teleports.get(player.getUniqueId());
+                    }
+
+                    if (tele.isLinked()) {
+                        tele.clear();
+                        tele.setLoc1(block.getLocation(), block.getState());
+                    } else if (tele.hasLoc1()) {
+                        tele.setLoc2(block.getLocation(), block.getState());
+                    } else {
+                        tele.setLoc1(block.getLocation(), block.getState());
+                    }
+
+                    Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
+                        block.setType(Material.QUARTZ_ORE);
+                        block.getChunk().unload();
+                        block.getChunk().load();
+                        KitUtils.setBlockOwner(block, player.getUniqueId());
+                        player.playSound(block.getLocation(), Sound.ENTITY_BLAZE_SHOOT, 1.0F, 1.9F);
+                    });
+
+                    event.setCancelled(true);
+                } else {
+                    player.sendMessage(ChatColor.RED + Translator.getColoredString("ERRORS.CANNOT_DO_ACTION"));
+                }
+
+            }
+
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onTeleport(PlayerToggleSneakEvent event) {
+        if (event.isSneaking()) {
+            Player player = event.getPlayer();
+            Block block = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
+            if (block.getType() == Material.QUARTZ_ORE) {
+                UUID owner = KitUtils.getBlockOwner(block);
+                if (owner != null) {
+                    GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
+
+                    Teleporter tele = teleports.get(owner);
+                    if (tele.isLinked() && tele.getOwner().getTeam() == gPlayer.getTeam() && tele.canUse()) {
+                        Location loc;
+                        if (new Loc(block.getLocation()).isEqual(tele.getLoc1())) {
+                            loc = tele.getLoc2().toLocation();
+                        } else {
+                            loc = tele.getLoc1().toLocation();
+                        }
+                        loc.setY(loc.getY() + 1.0D);
+                        player.teleport(Loc.getMiddle(loc));
+                        loc.getWorld().playEffect(loc, Effect.MOBSPAWNER_FLAMES, 1);
+                        tele.getLoc1().toLocation().getWorld().playSound(tele.getLoc1().toLocation(), Sound.ENTITY_ENDERMEN_TELEPORT, 1.0F, (float) Math.random());
+                        tele.getLoc2().toLocation().getWorld().playSound(tele.getLoc2().toLocation(), Sound.ENTITY_ENDERMEN_TELEPORT, 1.0F, (float) Math.random());
+                        tele.delay();
+                        event.setCancelled(true);
+                    }
+
+                }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void MoveListeners(PlayerMoveEvent event) {
+        ///block under your feet
+        Block to = event.getTo().getBlock().getRelative(BlockFace.DOWN);
+        if (to.getType() == Material.QUARTZ_ORE) {
+            Location x = event.getTo();
+            Location y = event.getFrom();
+            if (x.getBlockX() != y.getBlockX() || x.getBlockY() != y.getBlockY() || x.getBlockZ() != y.getBlockZ()) {
+                GamePlayer user = PlayerManager.getGamePlayer(event.getPlayer());
+                UUID owner = KitUtils.getBlockOwner(to);
+                if (owner != null) {
+                    Teleporter tele = teleports.get(owner);
+                    if (tele != null && tele.isLinked() && tele.getOwner().getTeam() == user.getTeam()) {
+                        String message = Translator.getColoredString("KITS.TELEPORT_HELP").replace("%OWNER%", ChatColor.WHITE + tele.getOwner().getPlayer().getName());
+                        event.getPlayer().sendMessage(message);
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void TeleporterProtect(BlockBreakEvent event) {
+        Player player = event.getPlayer();
+        Block block = event.getBlock();
+        if (block.getType() == Material.QUARTZ_ORE) {
             event.setCancelled(true);
-          }
+            GamePlayer eventPlayer = PlayerManager.getGamePlayer(player);
+
+            UUID owner = KitUtils.getBlockOwner(block);
+            if (owner == null) {
+                return;
+            }
+            Teleporter tele = teleports.get(owner);
+            if (player.getName().equalsIgnoreCase(tele.getOwner().getPlayer().getName())) {
+                tele.clear();
+            } else if (eventPlayer.getTeam() != tele.getOwner().getTeam()) {
+                tele.clear();
+                String message = Translator.getColoredString("KITS.TELEPORT_DESTROY").replace("%PLAYER%", player.getName());
+                tele.getOwner().getPlayer().sendMessage(message);
+            }
 
         }
-      }
     }
-  }
 
-  @EventHandler(priority = EventPriority.HIGHEST,ignoreCancelled = true)
-  public void MoveListeners(PlayerMoveEvent event) {
-    ///block under your feet
-    Block to = event.getTo().getBlock().getRelative(BlockFace.DOWN);
-    if(to.getType() == Material.QUARTZ_ORE) {
-      Location x = event.getTo();
-      Location y = event.getFrom();
-      if(x.getBlockX() != y.getBlockX() || x.getBlockY() != y.getBlockY() || x.getBlockZ() != y.getBlockZ()) {
-        GamePlayer user = PlayerManager.getGamePlayer(event.getPlayer());
-        UUID owner = KitUtils.getBlockOwner(to);
-        if(owner != null) {
-          Teleporter tele = teleports.get(owner);
-          if(tele != null && tele.isLinked() && tele.getOwner().getTeam() == user.getTeam()) {
-            String message = Translator.getColoredString("KITS.TELEPORT_HELP").replace("%OWNER%", ChatColor.WHITE + tele.getOwner().getPlayer().getName());
-            event.getPlayer().sendMessage(message);
-          }
+    private void removeTeleport(Player recipient) {
+        Teleporter teleport = teleports.get(recipient.getUniqueId());
+        if (teleport != null) {
+            teleport.clear();
         }
-      }
     }
-  }
 
-  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-  public void TeleporterProtect(BlockBreakEvent event) {
-    Player player = event.getPlayer();
-    Block block = event.getBlock();
-    if (block.getType() == Material.QUARTZ_ORE) {
-      event.setCancelled(true);
-      GamePlayer eventPlayer = PlayerManager.getGamePlayer(player);
+    private boolean canPlace(Material type) {
+        //This tells if a transporter block can be placed at this type of block
+        switch(type)
+        {
+            default:
+                return true;
 
-      UUID owner = KitUtils.getBlockOwner(block);
-      if (owner == null) {
-        return;
-      }
-      Teleporter tele = teleports.get(owner);
-      if (player.getName().equalsIgnoreCase(tele.getOwner().getPlayer().getName())) {
-        tele.clear();
-      } else if (eventPlayer.getTeam() != tele.getOwner().getTeam()) {
-        tele.clear();
-        String message = Translator.getColoredString("KITS.TELEPORT_DESTROY").replace("%PLAYER%", player.getName());
-        tele.getOwner().getPlayer().sendMessage(message);
-      }
-
+            case BEDROCK:
+            case OBSIDIAN:
+            case CHEST:
+            case TRAPPED_CHEST:
+            case FURNACE:
+            case DISPENSER:
+            case DROPPER:
+            case WORKBENCH:
+            case BURNING_FURNACE:
+            case HOPPER:
+            case BEACON:
+            case ANVIL:
+            case SIGN_POST:
+            case WALL_SIGN:
+            case ENDER_PORTAL:
+            case QUARTZ_ORE:
+                return false;
+        }
     }
-  }
-
-  private void removeTeleport(Player recipient) {
-    Teleporter teleport = teleports.get(recipient.getUniqueId());
-    if (teleport != null) {
-      teleport.clear();
-    }
-  }
 }

@@ -61,7 +61,7 @@ public class Teleporter {
   }
 
   public void delay() {
-    this.nextUse = (System.currentTimeMillis() + TimeUnit.MILLISECONDS.convert(5000, TimeUnit.MILLISECONDS));
+    this.nextUse = (System.currentTimeMillis() + TimeUnit.MILLISECONDS.convert(1500L, TimeUnit.MILLISECONDS));
   }
 
   public boolean canUse() {
