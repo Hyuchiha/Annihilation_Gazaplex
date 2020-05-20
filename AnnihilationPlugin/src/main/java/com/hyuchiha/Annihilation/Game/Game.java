@@ -6,6 +6,7 @@ import com.hyuchiha.Annihilation.Event.PhaseChangeEvent;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.*;
 import com.hyuchiha.Annihilation.Messages.Translator;
+import com.hyuchiha.Annihilation.Object.DamageControl;
 import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Scoreboard.ScoreboardManager;
 import com.hyuchiha.Annihilation.Serializers.PlayerSerializer;
@@ -42,6 +43,8 @@ public class Game {
     } else {
       this.timer = new GameTimer(plugin, startDelay, phasePeriod, restartDelay);
     }
+
+    DamageControl.register(plugin);
 
     this.crafting = new HashMap<>();
     this.npcPlayers = new HashMap<>();
@@ -114,6 +117,8 @@ public class Game {
     ParticleManager.endGameParticles();
     MapManager.resetMap();
     VotingManager.start();
+
+    DamageControl.clearImmunities();
   }
 
   public int getPhase() {

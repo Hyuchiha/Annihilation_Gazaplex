@@ -65,6 +65,7 @@ KITS:
   BUILDER_ITEM_MENU: "Resources"
   DEFENDER_ITEM: "Guardian Warp"
   PYRO_ITEM: "Fire wave"
+  SCORPIO_ITEM: "Scorpio item"
   TRANSPORTER_ITEM: "Portal maker"
   TELEPORT_HELP: "This is a teleport owner by %OWNER%, Sneak to go through it"
   TELEPORT_DESTROY: "Your portal has been destroyed by %PLAYER%"
