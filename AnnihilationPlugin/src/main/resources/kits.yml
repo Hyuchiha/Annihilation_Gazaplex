@@ -121,6 +121,15 @@ Kits:
       - "&b y no te preocupes"
       - "&b el fuego no te puede hacer daño"
     price: 25000
+  SCORPIO:
+    name: "&2 Escorpio"
+    lore:
+      - "&b Eres el gancho"
+      - ""
+      - "&2 Utiliza tu gancho especial"
+      - "&2 para atrapar a tus enemigos"
+      - "&2 hacia donde este"
+      - "&2 y asesinarlos de forma veloz"
   TRANSPORTER:
     name: "&2 Transporter"
     lore:
