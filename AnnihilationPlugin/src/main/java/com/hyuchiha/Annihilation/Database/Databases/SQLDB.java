@@ -27,7 +27,6 @@ public abstract class SQLDB extends Database {
   private Main plugin;
   private Connection connection;
 
-
   public SQLDB(Main plugin) {
     super(plugin);
 
