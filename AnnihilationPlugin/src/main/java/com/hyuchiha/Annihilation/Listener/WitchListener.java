@@ -108,23 +108,23 @@ public class WitchListener implements Listener {
     }
   }
 
-  private ItemStack getLoot(){
-    switch (new Random().nextInt(10)){
+  private ItemStack getLoot() {
+    switch (new Random().nextInt(10)) {
       case 1:
-        return new ItemStack(Material.GLOWSTONE_DUST,2);
+        return new ItemStack(Material.GLOWSTONE_DUST, 2);
       case 2:
       case 9:
       case 10:
-        return new ItemStack(Material.REDSTONE,5);
+        return new ItemStack(Material.REDSTONE, 5);
       case 3:
-        return new ItemStack(Material.SPIDER_EYE,10);
+        return new ItemStack(Material.SPIDER_EYE, 10);
       case 4:
       case 5:
       case 6:
       case 7:
         return new ItemStack(Material.BLAZE_POWDER, 3);
       case 8:
-        return new ItemStack(Material.DIAMOND,5);
+        return new ItemStack(Material.DIAMOND, 5);
     }
 
     return new ItemStack(Material.COOKIE, 64);

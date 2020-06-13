@@ -81,8 +81,8 @@ public class ScoreboardManager {
   public static void updateLobbyScoreboard() {
     for (String map : VotingManager.getMaps().values()) {
       teams.get(map).setSuffix(ChatColor.RED + " » " + ChatColor.GREEN +
-                                   VotingManager.countVotes(map) + " " +
-                                   Translator.getString("COMMONS.VOTE") + ((VotingManager.countVotes(map) == 1) ? "" : "s"));
+          VotingManager.countVotes(map) + " " +
+          Translator.getString("COMMONS.VOTE") + ((VotingManager.countVotes(map) == 1) ? "" : "s"));
     }
   }
 
@@ -94,7 +94,7 @@ public class ScoreboardManager {
     }
 
     scoreObjective.setDisplayName(Translator.getColoredString("SCOREBOARDS.SB_GAME_PREFIX") + " " +
-                                     WordUtils.capitalize(VotingManager.getWinner()));
+        WordUtils.capitalize(VotingManager.getWinner()));
 
     for (GameTeam t : GameTeam.teams()) {
       scores.put(t.name(), scoreObjective.getScore(
@@ -119,7 +119,7 @@ public class ScoreboardManager {
     scoreboardBase.getTeam(victim.name() + "SB").setPrefix(ChatColor.RESET.toString());
     scores.get(victim.name()).setScore(victim.getNexus().getHealth());
     Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> scoreboardBase.getTeam(victim.name() + "SB")
-                                                                     .setPrefix(victim.color().toString()), 2L);
+        .setPrefix(victim.color().toString()), 2L);
   }
 
 

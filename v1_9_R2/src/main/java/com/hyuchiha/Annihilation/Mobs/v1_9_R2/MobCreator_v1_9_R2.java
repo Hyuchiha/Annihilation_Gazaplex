@@ -6,6 +6,8 @@ import com.hyuchiha.Annihilation.Mobs.MobCreator;
 public class MobCreator_v1_9_R2 implements MobCreator {
 
   @Override
-  public EntityType getMob(String type) { return CustomEntityType.valueOf(type); }
+  public EntityType getMob(String type) {
+    return CustomEntityType.valueOf(type);
+  }
 
 }

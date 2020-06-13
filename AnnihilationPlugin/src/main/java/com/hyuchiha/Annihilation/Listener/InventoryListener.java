@@ -132,14 +132,15 @@ public class InventoryListener implements Listener {
 
       Kit toChoose = Enums.getIfPresent(Kit.class, ChatColor.stripColor(name).toUpperCase()).orNull();
 
-      player.closeInventory();;
+      player.closeInventory();
+      ;
       e.setCancelled(true);
 
       if (toChoose != null && !toChoose.isOwnedBy(player)) {
         MenuUtils.showConfirmUnlockClass(player, toChoose);
 
       } else {
-        player.sendMessage(Translator.getPrefix() + " "+ Translator.getColoredString("GAME.PLAYER_ALREADY_HAVE_CLASS"));
+        player.sendMessage(Translator.getPrefix() + " " + Translator.getColoredString("GAME.PLAYER_ALREADY_HAVE_CLASS"));
       }
 
       return;
@@ -172,7 +173,7 @@ public class InventoryListener implements Listener {
           String classUnlocked = Translator.getColoredString("GAME.PLAYER_UNLOCK_CLASS");
           player.sendMessage(Translator.getPrefix() + " " + classUnlocked.replace("%CLASS%", name));
         } else {
-          player.sendMessage(Translator.getPrefix()+ " " + Translator.getColoredString("GAME.PLAYER_DONT_HAVE_REQUIRED_MONEY"));
+          player.sendMessage(Translator.getPrefix() + " " + Translator.getColoredString("GAME.PLAYER_DONT_HAVE_REQUIRED_MONEY"));
         }
 
       }

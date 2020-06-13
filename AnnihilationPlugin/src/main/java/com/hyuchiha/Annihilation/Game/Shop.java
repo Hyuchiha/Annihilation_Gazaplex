@@ -45,7 +45,7 @@ public class Shop implements Listener {
         String line0 = sign.getLine(0);
         String line1 = sign.getLine(1);
         if (line0.contains("Shop") && line1
-                                          .equalsIgnoreCase(this.name)) {
+            .equalsIgnoreCase(this.name)) {
           openShop(e.getPlayer());
         }
       }

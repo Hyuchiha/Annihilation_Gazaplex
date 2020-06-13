@@ -20,9 +20,9 @@ public class Translator {
     ConfigurationSection section = plugin.getConfig("messages.yml");
     Map<String, Object> map = section.getValues(false);
 
-    for (String key: map.keySet()) {
+    for (String key : map.keySet()) {
       if (section.isConfigurationSection(key)) {
-        for (String subKey: section.getConfigurationSection(key).getKeys(false)) {
+        for (String subKey : section.getConfigurationSection(key).getKeys(false)) {
           String concatKey = key + '.' + subKey;
           messages.put(concatKey, section.getString(concatKey));
         }

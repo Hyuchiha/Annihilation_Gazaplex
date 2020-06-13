@@ -46,19 +46,19 @@ public class GameArena {
 
       if (config.contains("nexuses." + name)) {
         Location loc = LocationUtils.parseLocation(w, config
-                                                          .getString("nexuses." + name));
+            .getString("nexuses." + name));
         team.loadNexus(loc, 75);
       }
 
       if (config.contains("furnaces." + name)) {
         Location location = LocationUtils.parseLocation(w, config
-                                                               .getString("furnaces." + name));
+            .getString("furnaces." + name));
         EnderFurnaceManager.loadFurnaceLocationForTeam(team, location);
       }
 
       if (config.contains("brewingstands." + name)) {
         Location location = LocationUtils.parseLocation(w, config
-                                                               .getString("brewingstands." + name));
+            .getString("brewingstands." + name));
         EnderBrewingManager.loadBrewingLocationForTeam(team, location);
       }
 

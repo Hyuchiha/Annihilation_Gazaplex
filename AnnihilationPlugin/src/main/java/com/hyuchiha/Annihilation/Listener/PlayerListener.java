@@ -51,7 +51,7 @@ public class PlayerListener implements Listener {
     Entity entity = event.getEntity();
 
     if (entity instanceof Player &&
-            GameManager.getCurrentGame() != null) {
+        GameManager.getCurrentGame() != null) {
       switch (GameManager.getCurrentGame().getTimer().getGameState()) {
         case WAITING:
         case STARTING:
@@ -155,7 +155,7 @@ public class PlayerListener implements Listener {
         switch (handItem.getType()) {
           case PAPER:
             if (handItem.getItemMeta().hasDisplayName() &&
-                    handItem.getItemMeta().getDisplayName().contains(Translator.getColoredString("GAME.CLICK_TO_VOTE_MAP"))) {
+                handItem.getItemMeta().getDisplayName().contains(Translator.getColoredString("GAME.CLICK_TO_VOTE_MAP"))) {
               e.setCancelled(true);
 
               if (VotingManager.isRunning()) {
@@ -169,7 +169,7 @@ public class PlayerListener implements Listener {
 
           case WOOL:
             if (handItem.getItemMeta().hasDisplayName() &&
-                    handItem.getItemMeta().getDisplayName().contains(Translator.getColoredString("GAME.CLICK_TO_CHOOSE_TEAM"))) {
+                handItem.getItemMeta().getDisplayName().contains(Translator.getColoredString("GAME.CLICK_TO_CHOOSE_TEAM"))) {
               e.setCancelled(true);
 
               MenuUtils.showTeamSelector(player);
@@ -178,7 +178,7 @@ public class PlayerListener implements Listener {
 
           case BED:
             if (handItem.getItemMeta().hasDisplayName() &&
-                    handItem.getItemMeta().getDisplayName().contains(Translator.getColoredString("GAME.CLICK_TO_RETURN_LOBBY"))) {
+                handItem.getItemMeta().getDisplayName().contains(Translator.getColoredString("GAME.CLICK_TO_RETURN_LOBBY"))) {
               e.setCancelled(true);
             }
             break;
@@ -260,7 +260,7 @@ public class PlayerListener implements Listener {
       return;
     }
     if ((b.getType() == Material.WORKBENCH || b.getType() == Material.ANVIL) && b.getType().isBlock() &&
-            GameManager.getCurrentGame().isInGame() && !GameManager.getCurrentGame().getCrafting().containsKey(((Player) player1).getName())) {
+        GameManager.getCurrentGame().isInGame() && !GameManager.getCurrentGame().getCrafting().containsKey(((Player) player1).getName())) {
       GameManager.getCurrentGame().getCrafting().put(((Player) player1).getName(), b);
     }
   }

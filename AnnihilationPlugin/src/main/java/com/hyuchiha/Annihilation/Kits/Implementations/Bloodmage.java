@@ -37,7 +37,7 @@ public class Bloodmage extends BaseKit {
 
     Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {
 
-      for (List<Integer> delays: delaysHearts.values()) {
+      for (List<Integer> delays : delaysHearts.values()) {
 
         // Check if the PID is running, if not then we need to remove the PID
         List<Integer> expired = new ArrayList<>();
@@ -120,7 +120,7 @@ public class Bloodmage extends BaseKit {
 
 
       if (handItem != null && KitUtils.isKitItem(handItem, "KITS.BLOODMAGE_ITEM")
-              && gPlayer.getKit() == Kit.BLOODMAGE) {
+          && gPlayer.getKit() == Kit.BLOODMAGE) {
 
         if (TimersUtils.hasExpired(player, Kit.BLOODMAGE)) {
           Player target = KitUtils.getTarget(player, 6, true);

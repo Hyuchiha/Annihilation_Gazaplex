@@ -48,10 +48,10 @@ public class ResourceListener implements Listener {
     }
 
     if (GameUtils.tooClose(e.getBlock().getLocation())
-            && e.getBlock().getType() != Material.MELON_BLOCK
-            && e.getBlock().getType() != Material.QUARTZ_ORE
-            && e.getBlock().getType() != Material.LOG
-            && e.getBlock().getType() != Material.LOG_2) {
+        && e.getBlock().getType() != Material.MELON_BLOCK
+        && e.getBlock().getType() != Material.QUARTZ_ORE
+        && e.getBlock().getType() != Material.LOG
+        && e.getBlock().getType() != Material.LOG_2) {
       e.setCancelled(true);
 
       return;
@@ -96,16 +96,16 @@ public class ResourceListener implements Listener {
         int dropMultiplier = gamePlayer.getKit().getKit().getMaterialDropMultiplier();
 
         if ((dropType == Material.DIAMOND
-                || dropType == Material.COAL
-                || dropType == Material.EMERALD
-                || dropType == Material.REDSTONE)
-                && itemInHand.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS)) {
+            || dropType == Material.COAL
+            || dropType == Material.EMERALD
+            || dropType == Material.REDSTONE)
+            && itemInHand.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS)) {
 
           qty = quantityDroppedWithBonus(type, itemInHand);
         }
 
         drops = new ItemStack[]{
-                new ItemStack(dropType, qty * dropMultiplier)
+            new ItemStack(dropType, qty * dropMultiplier)
         };
         break;
     }
@@ -143,15 +143,15 @@ public class ResourceListener implements Listener {
 
   private ItemStack[] getGravelDrops() {
     ItemStack arrows = new ItemStack(Material.ARROW, Math.max(this.rand
-                                                                  .nextInt(5) - 2, 0));
+        .nextInt(5) - 2, 0));
     ItemStack flint = new ItemStack(Material.FLINT, Math.max(this.rand
-                                                                 .nextInt(4) - 2, 0));
+        .nextInt(4) - 2, 0));
     ItemStack feathers = new ItemStack(Material.FEATHER, Math.max(this.rand
-                                                                      .nextInt(4) - 2, 0));
+        .nextInt(4) - 2, 0));
     ItemStack string = new ItemStack(Material.STRING, Math.max(this.rand
-                                                                   .nextInt(5) - 3, 0));
+        .nextInt(5) - 3, 0));
     ItemStack bones = new ItemStack(Material.BONE, Math.max(this.rand
-                                                                .nextInt(4) - 2, 0));
+        .nextInt(4) - 2, 0));
     return new ItemStack[]{arrows, flint, feathers, string, bones};
   }
 

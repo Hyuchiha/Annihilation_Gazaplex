@@ -29,7 +29,7 @@ public class PacketManager {
               ItemStack helmet = new ItemStack(Material.LEATHER_HELMET);
 
               boolean isInvisible = false;
-              for (PotionEffect effect: player.getActivePotionEffects()) {
+              for (PotionEffect effect : player.getActivePotionEffects()) {
                 if (effect.getType() == PotionEffectType.INVISIBILITY) {
                   isInvisible = true;
                 }
@@ -65,7 +65,7 @@ public class PacketManager {
     }
   }
 
-  private static boolean checkProtocolEnabled(){
+  private static boolean checkProtocolEnabled() {
     return Bukkit.getServer().getPluginManager().isPluginEnabled("ProtocolLib");
   }
 }

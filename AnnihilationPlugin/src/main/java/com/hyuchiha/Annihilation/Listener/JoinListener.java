@@ -106,8 +106,8 @@ public class JoinListener implements Listener {
   @EventHandler
   public void onPlayerPreJoin(AsyncPlayerPreLoginEvent event) {
     if (GameManager.getCurrentGame() != null
-            && GameManager.getCurrentGame().getTimer().isGameStarted()
-            && GameManager.getCurrentGame().getPhase() > this.plugin.getConfig("config.yml").getInt("lastJoinPhase")
+        && GameManager.getCurrentGame().getTimer().isGameStarted()
+        && GameManager.getCurrentGame().getPhase() > this.plugin.getConfig("config.yml").getInt("lastJoinPhase")
     ) {
       event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER,
 
@@ -127,9 +127,9 @@ public class JoinListener implements Listener {
     Player p = event.getPlayer();
 
     if (!PlayerSerializer.playerPlayed(p) &&
-            GameManager.getCurrentGame().getPhase() > this.plugin.getConfig("config.yml").getInt("lastJoinPhase") && (
+        GameManager.getCurrentGame().getPhase() > this.plugin.getConfig("config.yml").getInt("lastJoinPhase") && (
         !p.isOp() || !p.getName().equals("byHyuchiha")) &&
-            p.isOnline() && !p.hasPermission("annihilation.vip.pass")) {
+        p.isOnline() && !p.hasPermission("annihilation.vip.pass")) {
       event.disallow(PlayerLoginEvent.Result.KICK_OTHER, Translator.getColoredString("ERRORS.NO_JOIN_PHASE"));
 
 
@@ -139,7 +139,7 @@ public class JoinListener implements Listener {
     GamePlayer gamePlayer = PlayerManager.getGamePlayer(p);
 
     if (GameManager.getCurrentGame().getTimer().isRunning() &&
-            gamePlayer.getTeam().getNexus() != null && !gamePlayer.getTeam().getNexus().isAlive())
+        gamePlayer.getTeam().getNexus() != null && !gamePlayer.getTeam().getNexus().isAlive())
       event.disallow(PlayerLoginEvent.Result.KICK_OTHER, Translator.getColoredString("ERRORS.NEXUS_DESTROYED"));
   }
 }

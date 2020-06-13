@@ -17,7 +17,7 @@ public class ParticleManager {
 
   public static void initGameParticles() {
     BukkitTask nexusParticles = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
-      for (GameTeam team: GameTeam.teams()) {
+      for (GameTeam team : GameTeam.teams()) {
         if (team.isTeamAlive()) {
           Location teamNexus = team.getNexus().getLocation().clone();
           teamNexus.add(0.5D, 0.0D, 0.5D);
@@ -31,16 +31,16 @@ public class ParticleManager {
   }
 
   public static void createNexusBreakParticle(Location nexus) {
-    ParticleEffect.LAVA.display(nexus,1F, 1F, 1F, 1F, 20, null, Bukkit.getOnlinePlayers());
-    ParticleEffect.SMOKE_LARGE.display(nexus,1F, 1F, 1F, 1F, 20, null, Bukkit.getOnlinePlayers());
+    ParticleEffect.LAVA.display(nexus, 1F, 1F, 1F, 1F, 20, null, Bukkit.getOnlinePlayers());
+    ParticleEffect.SMOKE_LARGE.display(nexus, 1F, 1F, 1F, 1F, 20, null, Bukkit.getOnlinePlayers());
   }
 
   public static void createParticleNexusDestroy(Location nexus) {
-    ParticleEffect.EXPLOSION_LARGE.display(nexus,1F, 1F, 1F, 1F, 20, null, Bukkit.getOnlinePlayers());
+    ParticleEffect.EXPLOSION_LARGE.display(nexus, 1F, 1F, 1F, 1F, 20, null, Bukkit.getOnlinePlayers());
   }
 
   public static void endGameParticles() {
-    for (BukkitTask task: particles) {
+    for (BukkitTask task : particles) {
       task.cancel();
     }
 

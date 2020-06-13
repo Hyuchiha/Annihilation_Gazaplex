@@ -71,8 +71,8 @@ public class EnderChestListener implements Listener {
 
 
       if (displayName.equals(ChatColor.GOLD + "Slot disponible para el rango Gold") || displayName
-                                                                                           .equals(ChatColor.GRAY + "Slot disponible para el rango Silver") || displayName
-                                                                                                                                                                   .equals(ChatColor.RED + "Slot disponible para el rango Bronze")) {
+          .equals(ChatColor.GRAY + "Slot disponible para el rango Silver") || displayName
+          .equals(ChatColor.RED + "Slot disponible para el rango Bronze")) {
         event.setCancelled(true);
       }
     }
@@ -111,10 +111,10 @@ public class EnderChestListener implements Listener {
 
       //TODO translate
       if (name != null &&
-              name.hasDisplayName()) {
+          name.hasDisplayName()) {
         if (name.getDisplayName().equals(ChatColor.GOLD + "Slot disponible para el rango Gold")
-                || name.getDisplayName().equals(ChatColor.GRAY + "Slot disponible para el rango Silver")
-                || name.getDisplayName().equals(ChatColor.RED + "Slot disponible para el rango Bronze"))
+            || name.getDisplayName().equals(ChatColor.GRAY + "Slot disponible para el rango Silver")
+            || name.getDisplayName().equals(ChatColor.RED + "Slot disponible para el rango Bronze"))
           e.setCancelled(true);
       }
     }

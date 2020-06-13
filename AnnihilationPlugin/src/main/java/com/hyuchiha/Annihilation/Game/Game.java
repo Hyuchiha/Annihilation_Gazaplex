@@ -93,7 +93,7 @@ public class Game {
       gp.prepareLobbyPlayer();
     }
 
-    for (Kit kit: Kit.values()) {
+    for (Kit kit : Kit.values()) {
       kit.resetKit();
     }
 
@@ -217,7 +217,7 @@ public class Game {
         return;
       }
       player.sendMessage(Translator.getPrefix() + ChatColor.DARK_AQUA + Translator.getColoredString("GAME.JOINED_TEAM") + toJoin
-                                                                                                                         .coloredName());
+          .coloredName());
       gamePlayer.setTeam(toJoin);
 
       ScoreboardManager.getTeams().get(team.toUpperCase()).addPlayer(player);

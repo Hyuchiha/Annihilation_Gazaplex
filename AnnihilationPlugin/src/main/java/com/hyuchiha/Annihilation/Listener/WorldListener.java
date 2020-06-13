@@ -74,7 +74,7 @@ public class WorldListener implements Listener {
     if (event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
       ItemStack material = player.getInventory().getItemInMainHand();
       if (material.getType() == Material.WATER_BUCKET &&
-              GameUtils.tooClose(event.getClickedBlock().getLocation())) {
+          GameUtils.tooClose(event.getClickedBlock().getLocation())) {
         event.setCancelled(true);
 
         return;
@@ -114,7 +114,7 @@ public class WorldListener implements Listener {
 
                 if (meta != null) {
                   if (meta.hasDisplayName() &&
-                          item.getType() == Material.GOLD_INGOT) {
+                      item.getType() == Material.GOLD_INGOT) {
                     e.setCancelled(true);
                   }
                 }

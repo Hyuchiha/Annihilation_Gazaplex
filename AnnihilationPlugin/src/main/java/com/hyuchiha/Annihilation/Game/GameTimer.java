@@ -265,7 +265,7 @@ public class GameTimer {
       String winner = VotingManager.getWinner();
       MapManager.selectMap(winner);
       this.plugin.getServer().broadcastMessage(Translator.getPrefix() + ChatColor.AQUA +
-                                                   WordUtils.capitalize(winner) + Translator.getColoredString("INFO.ARENA_WAS_CHOSEN"));
+          WordUtils.capitalize(winner) + Translator.getColoredString("INFO.ARENA_WAS_CHOSEN"));
 
       VotingManager.end();
     }

@@ -91,9 +91,9 @@ public class ChatUtil {
 
     for (String message : multiMessage) {
       String replacedMessage = message
-                                   .replace("%C%", victim.color().toString())
-                                   .replace("%TEAM%", victim.coloredName())
-                                   .replace("%PLAYER%", attacker.color().toString() + p.getName());
+          .replace("%C%", victim.color().toString())
+          .replace("%TEAM%", victim.coloredName())
+          .replace("%PLAYER%", attacker.color().toString() + p.getName());
       broadcast(replacedMessage);
     }
   }
@@ -101,9 +101,9 @@ public class ChatUtil {
 
   public static String nexusBreakMessage(Player breaker, GameTeam attacker, GameTeam victim) {
     return Translator.getColoredString("GAME.NEXUS_BREAK")
-               .replace("%C%", attacker.color().toString())
-               .replace("%PLAYER%", colorizeName(breaker, attacker))
-               .replace("%TEAM%", victim.coloredName());
+        .replace("%C%", attacker.color().toString())
+        .replace("%PLAYER%", colorizeName(breaker, attacker))
+        .replace("%TEAM%", victim.coloredName());
   }
 
 

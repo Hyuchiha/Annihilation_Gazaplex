@@ -46,7 +46,7 @@ public class BossManager {
   public static void init() {
     Output.log("Initializing boss instance generator");
 
-    switch (Minecraft.Version.getVersion()){
+    switch (Minecraft.Version.getVersion()) {
       case v1_9_R1:
         creator = new MobCreator_v1_9_R1();
         break;
@@ -113,15 +113,15 @@ public class BossManager {
       ItemStack item = null;
       if (type == Material.POTION) {
 
-        String potionType   = config.getString(itemName + ".potionType");
+        String potionType = config.getString(itemName + ".potionType");
         int potionEffectNum = config.getInt(itemName + ".potionEffectNum");
-        boolean splash      = config.getBoolean( itemName + ".splash");
-        boolean extended    = config.getBoolean(itemName + ".extended");
+        boolean splash = config.getBoolean(itemName + ".splash");
+        boolean extended = config.getBoolean(itemName + ".extended");
 
         Potion potion = new Potion(PotionType.valueOf(potionType), potionEffectNum);
         potion.setSplash(splash);
 
-        if(extended){
+        if (extended) {
           potion.setHasExtendedDuration(extended);
         }
 
@@ -176,7 +176,7 @@ public class BossManager {
 
     World bossWorld = Bukkit.getWorld(bossMap);
 
-    for (String teleport: config.getStringList("teleports")) {
+    for (String teleport : config.getStringList("teleports")) {
       teleportLocations.add(LocationUtils.parseLocation(originalWorld, teleport));
     }
 
@@ -220,13 +220,13 @@ public class BossManager {
       witherBoss.setCustomNameVisible(true);
       witherBoss.setCustomName(
           ChatColor.translateAlternateColorCodes('&', boss
-                                                          .getBossName() + " &8» &a" + boss.getHealth() + " HP"));
+              .getBossName() + " &8» &a" + boss.getHealth() + " HP"));
 
       FireworkUtils.spawnFirework(boss.getBossSpawn());
       FireworkUtils.spawnFirework(boss.getBossSpawn());
       FireworkUtils.spawnFirework(boss.getBossSpawn());
 
-      boss.getBossSpawn().getWorld().playSound(boss.getBossSpawn(), Sound.ENTITY_WITHER_SPAWN,  1.0F, 0.1F);
+      boss.getBossSpawn().getWorld().playSound(boss.getBossSpawn(), Sound.ENTITY_WITHER_SPAWN, 1.0F, 0.1F);
     } else {
       Output.logError("Boss spawn location is null, not spawning the Boss");
     }
@@ -280,8 +280,8 @@ public class BossManager {
     World bossWorld = getBossSpawnWorld();
 
     if (bossWorld != null) {
-      for (Entity entity: bossWorld.getEntities()) {
-        if(entity.getType() == EntityType.WITHER){
+      for (Entity entity : bossWorld.getEntities()) {
+        if (entity.getType() == EntityType.WITHER) {
           Output.log("Removing wither");
           entity.remove();
         }

@@ -33,7 +33,7 @@ public class BlockListener implements Listener {
         return;
       }
       if (GameUtils.tooClose(e.getBlock().getLocation()) && e
-                                                                .getPlayer().hasPermission("annihilation.bypass.construction")) {
+          .getPlayer().hasPermission("annihilation.bypass.construction")) {
         e.setCancelled(true);
         e.getPlayer().sendMessage(Translator.getColoredString("ERRORS.TOO_CLOSE_NEXUS"));
 
@@ -52,7 +52,7 @@ public class BlockListener implements Listener {
   public void onBreak(BlockBreakEvent e) {
     Block b = e.getBlock();
     if (GameUtils.hasSignAttached(b) &&
-            GameUtils.isShopSignAttached(b)) {
+        GameUtils.isShopSignAttached(b)) {
       e.setCancelled(true);
     }
 
@@ -70,7 +70,7 @@ public class BlockListener implements Listener {
           event.setCancelled(true);
 
           if (team.getNexus().isAlive() &&
-                  FastBreakProtect.LastBreakTimeIsCorrect(event.getPlayer())) {
+              FastBreakProtect.LastBreakTimeIsCorrect(event.getPlayer())) {
             Bukkit.getServer().getPluginManager().callEvent(new NexusDamageEvent(
                 PlayerManager.getGamePlayer(event.getPlayer()), team));
           }
@@ -82,8 +82,8 @@ public class BlockListener implements Listener {
 
 
       if (GameUtils.tooClose(event.getBlock().getLocation()) &&
-              !event.getPlayer().hasPermission("annihilation.bypass.construction") &&
-              !permittedBreak(event.getBlock().getType())) {
+          !event.getPlayer().hasPermission("annihilation.bypass.construction") &&
+          !permittedBreak(event.getBlock().getType())) {
         event.getPlayer().sendMessage(
             Translator.getColoredString("ERRORS.TOO_CLOSE_NEXUS"));
 

@@ -168,7 +168,7 @@ public class GamePlayer {
     return kit;
   }
 
-  public void setKit(Kit kit){
+  public void setKit(Kit kit) {
     this.kit = kit;
   }
 }

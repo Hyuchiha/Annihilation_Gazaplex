@@ -73,7 +73,7 @@ public class LocationUtils {
 
   public static double pointToLineDistance(Location A, Location B, Location P) {
     double normalLength = Math.sqrt((B.getX() - A.getX()) * (B.getX() - A.getX()) + (B
-                                                                                         .getZ() - A.getZ()) * (B.getZ() - A.getZ()));
+        .getZ() - A.getZ()) * (B.getZ() - A.getZ()));
     return Math.abs((P.getX() - A.getX()) * (B.getZ() - A.getZ()) - (P.getZ() - A.getZ()) * (B.getX() - A.getX())) / normalLength;
   }
 }

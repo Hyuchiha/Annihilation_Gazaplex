@@ -33,136 +33,136 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class Pyro extends BaseKit {
-    private Random random = new Random();
+  private Random random = new Random();
 
-    // https://wiki.shotbow.net/Pyro
-    public Pyro(String name, ItemStack icon, ConfigurationSection section) {
-        super(name, icon, section);
+  // https://wiki.shotbow.net/Pyro
+  public Pyro(String name, ItemStack icon, ConfigurationSection section) {
+    super(name, icon, section);
+  }
+
+  @Override
+  protected void setupSpawnItems() {
+    spawnItems.add(new ItemStack(Material.STONE_SWORD));
+    spawnItems.add(new ItemStack(Material.WOOD_PICKAXE));
+    spawnItems.add(new ItemStack(Material.WOOD_AXE));
+
+    ItemStack potion = new ItemStack(Material.POTION, 1);
+    PotionMeta meta = (PotionMeta) potion.getItemMeta();
+    meta.setBasePotionData(new PotionData(PotionType.INSTANT_HEAL, false, false));
+    potion.setItemMeta(meta);
+    spawnItems.add(potion);
+
+    ItemStack flameItem = new ItemStack(Material.FIREBALL);
+    ItemMeta itemMeta = flameItem.getItemMeta();
+    itemMeta.setDisplayName(Translator.getColoredString("KITS.PYRO_ITEM"));
+    flameItem.setItemMeta(itemMeta);
+    spawnItems.add(flameItem);
+  }
+
+  @Override
+  protected void giveSpecialPotions(Player recipient) {
+    // Nope
+  }
+
+  @Override
+  protected void giveExtraHearts(Player recipient) {
+    // Nope
+  }
+
+  @Override
+  protected void extraConfiguration(Player recipient) {
+    // Nope
+  }
+
+  @Override
+  public void removePlayer(Player recipient) {
+    // Nope
+  }
+
+  @Override
+  public void resetData() {
+    // Nope
+  }
+
+  @EventHandler()
+  public void onFireDamage(EntityDamageEvent e) {
+    if (!(e.getEntity() instanceof Player)) {
+      return;
     }
 
-    @Override
-    protected void setupSpawnItems() {
-        spawnItems.add(new ItemStack(Material.STONE_SWORD));
-        spawnItems.add(new ItemStack(Material.WOOD_PICKAXE));
-        spawnItems.add(new ItemStack(Material.WOOD_AXE));
+    Player player = (Player) e.getEntity();
+    GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
 
-        ItemStack potion = new ItemStack(Material.POTION, 1);
-        PotionMeta meta = (PotionMeta) potion.getItemMeta();
-        meta.setBasePotionData(new PotionData(PotionType.INSTANT_HEAL, false, false));
-        potion.setItemMeta(meta);
-        spawnItems.add(potion);
-
-        ItemStack flameItem = new ItemStack(Material.FIREBALL);
-        ItemMeta itemMeta = flameItem.getItemMeta();
-        itemMeta.setDisplayName(Translator.getColoredString("KITS.PYRO_ITEM"));
-        flameItem.setItemMeta(itemMeta);
-        spawnItems.add(flameItem);
+    if (gPlayer.getKit() == Kit.PYRO &&
+        (
+            e.getCause() == EntityDamageEvent.DamageCause.FIRE ||
+                e.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK ||
+                e.getCause() == EntityDamageEvent.DamageCause.LAVA
+        )
+    ) {
+      e.setCancelled(true);
     }
+  }
 
-    @Override
-    protected void giveSpecialPotions(Player recipient) {
-        // Nope
-    }
+  @EventHandler()
+  public void onPyroItemInteract(PlayerInteractEvent e) {
+    Player player = e.getPlayer();
+    GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
+    Action action = e.getAction();
 
-    @Override
-    protected void giveExtraHearts(Player recipient) {
-        // Nope
-    }
+    if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
+      PlayerInventory inventory = player.getInventory();
+      ItemStack handItem = inventory.getItemInMainHand();
 
-    @Override
-    protected void extraConfiguration(Player recipient) {
-        // Nope
-    }
+      if (handItem != null && KitUtils.isKitItem(handItem, "KITS.PYRO_ITEM")
+          && gPlayer.getKit() == Kit.PYRO) {
 
-    @Override
-    public void removePlayer(Player recipient) {
-        // Nope
-    }
+        if (TimersUtils.hasExpired(player, Kit.PYRO)) {
+          List<Entity> entities = player.getNearbyEntities(10, 10, 10);
 
-    @Override
-    public void resetData() {
-        // Nope
-    }
-
-    @EventHandler()
-    public void onFireDamage(EntityDamageEvent e) {
-        if (!(e.getEntity() instanceof Player)) {
-            return;
-        }
-
-        Player player = (Player) e.getEntity();
-        GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
-
-        if (gPlayer.getKit() == Kit.PYRO &&
-                (
-                    e.getCause() == EntityDamageEvent.DamageCause.FIRE ||
-                    e.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK ||
-                    e.getCause() == EntityDamageEvent.DamageCause.LAVA
-                )
-        ) {
-            e.setCancelled(true);
-        }
-    }
-
-    @EventHandler()
-    public void onPyroItemInteract(PlayerInteractEvent e) {
-        Player player = e.getPlayer();
-        GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
-        Action action = e.getAction();
-
-        if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
-            PlayerInventory inventory = player.getInventory();
-            ItemStack handItem = inventory.getItemInMainHand();
-
-            if (handItem != null && KitUtils.isKitItem(handItem, "KITS.PYRO_ITEM")
-                    && gPlayer.getKit() == Kit.PYRO) {
-
-                if (TimersUtils.hasExpired(player, Kit.PYRO)) {
-                    List<Entity> entities = player.getNearbyEntities(10, 10, 10);
-
-                    if (entities != null) {
-                        for (Entity attack : entities) {
-                            if (attack.getType() == EntityType.PLAYER) {
-                                Player attacked = (Player) attack;
-                                GamePlayer meta = PlayerManager.getGamePlayer(attacked);
-                                if (meta.getTeam() != gPlayer.getTeam()) {
-                                    attack.setFireTicks(30);
-                                }
-                            }
-                        }
-                    }
-
-                    TimersUtils.addDelay(player, Kit.PYRO, 40, TimeUnit.SECONDS);
-                } else {
-                    KitUtils.showKitItemDelay(player, gPlayer.getKit());
+          if (entities != null) {
+            for (Entity attack : entities) {
+              if (attack.getType() == EntityType.PLAYER) {
+                Player attacked = (Player) attack;
+                GamePlayer meta = PlayerManager.getGamePlayer(attacked);
+                if (meta.getTeam() != gPlayer.getTeam()) {
+                  attack.setFireTicks(30);
                 }
+              }
             }
+          }
+
+          TimersUtils.addDelay(player, Kit.PYRO, 40, TimeUnit.SECONDS);
+        } else {
+          KitUtils.showKitItemDelay(player, gPlayer.getKit());
         }
+      }
     }
+  }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onPyroDamage(EntityDamageByEntityEvent event) {
-        Entity entityAttacker = event.getDamager();
-        Entity entityAttacked = event.getEntity();
+  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+  public void onPyroDamage(EntityDamageByEntityEvent event) {
+    Entity entityAttacker = event.getDamager();
+    Entity entityAttacked = event.getEntity();
 
-        if ((entityAttacker.getType() == EntityType.PLAYER) && (entityAttacked.getType() == EntityType.PLAYER)) {
-            Player damager = (Player) entityAttacker;
-            Player attacked = (Player) entityAttacked;
+    if ((entityAttacker.getType() == EntityType.PLAYER) && (entityAttacked.getType() == EntityType.PLAYER)) {
+      Player damager = (Player) entityAttacker;
+      Player attacked = (Player) entityAttacked;
 
-            GamePlayer gpDamager = PlayerManager.getGamePlayer(damager);
+      GamePlayer gpDamager = PlayerManager.getGamePlayer(damager);
 
-            if (gpDamager.getKit() == Kit.PYRO && random.nextInt(100) <= 40) {
-                attacked.setFireTicks(50);
-            }
-        }
+      if (gpDamager.getKit() == Kit.PYRO && random.nextInt(100) <= 40) {
+        attacked.setFireTicks(50);
+      }
     }
+  }
 
-    @EventHandler
-    public void onArrowDamageByPyro(EntityShootBowEvent e) {
-        Player player = (Player) e.getEntity();
-        GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
-        if (gPlayer.getKit() == Kit.PYRO) {
-            e.getProjectile().setFireTicks(60);
-        }
+  @EventHandler
+  public void onArrowDamageByPyro(EntityShootBowEvent e) {
+    Player player = (Player) e.getEntity();
+    GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
+    if (gPlayer.getKit() == Kit.PYRO) {
+      e.getProjectile().setFireTicks(60);
     }
+  }
 }

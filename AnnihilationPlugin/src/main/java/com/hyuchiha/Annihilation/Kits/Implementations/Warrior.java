@@ -61,14 +61,14 @@ public class Warrior extends BaseKit {
   }
 
   //Adds the +1 melee damage. May need to be changed to work just for melee WEAPONS and not every melee attack. idk.
-  @EventHandler(priority = EventPriority.HIGHEST,ignoreCancelled = true)
+  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void damageListener(final EntityDamageByEntityEvent event) {
     Entity one = event.getDamager();
     if (one.getType() == EntityType.PLAYER) {
-      Player damager = (Player)one;
+      Player damager = (Player) one;
       GamePlayer gPlayer = PlayerManager.getGamePlayer(damager);
-      if (gPlayer.getKit() == Kit.WARRIOR){
-        event.setDamage(event.getDamage()+1);
+      if (gPlayer.getKit() == Kit.WARRIOR) {
+        event.setDamage(event.getDamage() + 1);
       }
     }
   }

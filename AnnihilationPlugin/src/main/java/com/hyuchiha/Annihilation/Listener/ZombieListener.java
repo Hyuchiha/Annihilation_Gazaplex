@@ -155,18 +155,18 @@ public class ZombieListener implements Listener {
   @EventHandler
   public void onTarget(EntityTargetEvent e) {
     if (e.getEntity() instanceof Zombie) {
-        Zombie z = (Zombie) e.getEntity();
-        if (e.getTarget() instanceof Player) {
-          Player p = (Player) e.getTarget();
-          GamePlayer meta = PlayerManager.getGamePlayer(p);
-          if (z.getCustomName() == null) {
-            z.remove();
-            return;
-          }
-          if (GameTeam.getTeamChar(z.getCustomName()).equals(meta.getTeam().getNexus().getTeam())) {
-            e.setCancelled(true);
-          }
+      Zombie z = (Zombie) e.getEntity();
+      if (e.getTarget() instanceof Player) {
+        Player p = (Player) e.getTarget();
+        GamePlayer meta = PlayerManager.getGamePlayer(p);
+        if (z.getCustomName() == null) {
+          z.remove();
+          return;
+        }
+        if (GameTeam.getTeamChar(z.getCustomName()).equals(meta.getTeam().getNexus().getTeam())) {
+          e.setCancelled(true);
         }
       }
+    }
   }
 }

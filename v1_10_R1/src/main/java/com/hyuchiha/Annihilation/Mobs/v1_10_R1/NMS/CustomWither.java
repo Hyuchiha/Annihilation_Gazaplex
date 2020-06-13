@@ -8,14 +8,20 @@ import java.util.List;
 
 public class CustomWither extends EntityWither {
 
-  public CustomWither(World world) { super(world); }
+  public CustomWither(World world) {
+    super(world);
+  }
 
   @Override
   protected void r() {
-    List goalB = (List) MobUtils.getPrivateField("b", PathfinderGoalSelector.class, goalSelector); goalB.clear();
-    List goalC = (List)MobUtils.getPrivateField("c", PathfinderGoalSelector.class, goalSelector); goalC.clear();
-    List targetB = (List)MobUtils.getPrivateField("b", PathfinderGoalSelector.class, targetSelector); targetB.clear();
-    List targetC = (List)MobUtils.getPrivateField("c", PathfinderGoalSelector.class, targetSelector); targetC.clear();
+    List goalB = (List) MobUtils.getPrivateField("b", PathfinderGoalSelector.class, goalSelector);
+    goalB.clear();
+    List goalC = (List) MobUtils.getPrivateField("c", PathfinderGoalSelector.class, goalSelector);
+    goalC.clear();
+    List targetB = (List) MobUtils.getPrivateField("b", PathfinderGoalSelector.class, targetSelector);
+    targetB.clear();
+    List targetC = (List) MobUtils.getPrivateField("c", PathfinderGoalSelector.class, targetSelector);
+    targetC.clear();
 
 
     this.goalSelector.a(0, new PathfinderGoalFloat(this));

@@ -11,7 +11,7 @@ public class Loc {
   private double pitch;
   private double yaw;
   private String world;
-  
+
   public Loc(Location loc) {
     this.x = loc.getX();
     this.y = loc.getY();
@@ -20,11 +20,11 @@ public class Loc {
     this.yaw = loc.getY();
     this.world = loc.getWorld().getName();
   }
-  
+
   public Location toLocation() {
-    return new Location(Bukkit.getWorld(this.world), this.x, this.y, this.z, (float)this.yaw, (float)this.pitch);
+    return new Location(Bukkit.getWorld(this.world), this.x, this.y, this.z, (float) this.yaw, (float) this.pitch);
   }
-  
+
   public boolean isEqual(Loc loc) {
     return (loc.x == this.x) && (loc.y == this.y) && (loc.z == this.z) && (loc.world.equalsIgnoreCase(this.world));
   }

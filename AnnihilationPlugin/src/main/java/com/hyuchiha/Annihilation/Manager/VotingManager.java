@@ -48,7 +48,7 @@ public class VotingManager {
 
 
     voter.sendMessage(Translator.getPrefix() + ChatColor.YELLOW + vote + ChatColor.RED +
-                          Translator.getString("GAME.MAP_INVALID"));
+        Translator.getString("GAME.MAP_INVALID"));
     return false;
   }
 

@@ -150,8 +150,8 @@ public class GameUtils {
 
   public static boolean isVip(Player player) {
     return (player.hasPermission("annihilation.vip.diamond")
-                || player.hasPermission("annihilation.vip.gold")
-                || player.hasPermission("annihilation.vip.iron"));
+        || player.hasPermission("annihilation.vip.gold")
+        || player.hasPermission("annihilation.vip.iron"));
   }
 
   private static int getBuildDistance() {
@@ -184,8 +184,8 @@ public class GameUtils {
     double bx = bLoc.getX(), by = bLoc.getY(), bz = bLoc.getZ();
 
     return Math.abs(ax - bx) <= distance
-            && Math.abs(ay - by) <= distance
-            && Math.abs(az - bz) <= distance;
+        && Math.abs(ay - by) <= distance
+        && Math.abs(az - bz) <= distance;
   }
 
   public static boolean nearLocation(Location a, Location b, double distance) {
@@ -193,8 +193,8 @@ public class GameUtils {
     double bx = b.getX(), by = b.getY(), bz = b.getZ();
 
     return Math.abs(ax - bx) <= distance
-            && Math.abs(ay - by) <= distance
-            && Math.abs(az - bz) <= distance;
+        && Math.abs(ay - by) <= distance
+        && Math.abs(az - bz) <= distance;
   }
 
 }

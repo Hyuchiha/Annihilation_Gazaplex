@@ -143,8 +143,8 @@ public class MongoDB extends Database {
     account.getKits().add(Kit.valueOf(kit.toUpperCase()));
 
     collection.replaceOne(
-            eq("_id", document.get("_id")),
-            getDocument(account)
+        eq("_id", document.get("_id")),
+        getDocument(account)
     );
 
     cachedAccounts.put(uuid, account);
@@ -153,16 +153,16 @@ public class MongoDB extends Database {
 
   private Document getDocument(Account account) {
     Document document = new Document("uuid", account.getUUID())
-               .append("username", account.getName())
-               .append("kills", account.getKills())
-               .append("deaths", account.getDeaths())
-               .append("wins", account.getWins())
-               .append("losses", account.getLosses())
-               .append("nexus_damage", account.getNexus_damage());
+        .append("username", account.getName())
+        .append("kills", account.getKills())
+        .append("deaths", account.getDeaths())
+        .append("wins", account.getWins())
+        .append("losses", account.getLosses())
+        .append("nexus_damage", account.getNexus_damage());
 
     List<String> kits = new ArrayList<>();
 
-    for(Kit kit : account.getKits()){
+    for (Kit kit : account.getKits()) {
       kits.add(kit.name());
     }
 
@@ -187,7 +187,7 @@ public class MongoDB extends Database {
 
     List<Kit> kits = new ArrayList<>();
 
-    for(String kitToFind : kitsDB){
+    for (String kitToFind : kitsDB) {
       Kit loadedKit = Kit.valueOf(kitToFind);
       kits.add(loadedKit);
     }

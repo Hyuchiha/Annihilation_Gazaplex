@@ -91,7 +91,7 @@ public class PlayerManager {
     }
 
     p.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
-                                               .replace("%MONEY%", Double.toString(money)));
+        .replace("%MONEY%", Double.toString(money)));
     VaultHooks.getEconomyManager().depositPlayer(p, money);
   }
 
@@ -111,7 +111,7 @@ public class PlayerManager {
 
   public static boolean withdrawMoney(Player p, double money) {
     if (VaultHooks.vault &&
-            VaultHooks.getEconomyManager().has(p, money)) {
+        VaultHooks.getEconomyManager().has(p, money)) {
       VaultHooks.getEconomyManager().withdrawPlayer(p, money);
       return true;
     }

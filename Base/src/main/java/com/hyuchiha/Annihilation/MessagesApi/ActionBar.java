@@ -57,13 +57,13 @@ public class ActionBar {
 
       if (Minecraft.Version.getVersion().olderThan(Minecraft.Version.v1_12_R1)) {
         packetChat = PacketChatConstructorResolver.resolve(new Class[]{
-                IChatBaseComponent,
-                byte.class
+            IChatBaseComponent,
+            byte.class
         }).newInstance(serialized, (byte) 2);
       } else {
         packetChat = PacketChatConstructorResolver.resolve(new Class[]{
-                IChatBaseComponent,
-                ChatMessageType
+            IChatBaseComponent,
+            ChatMessageType
         }).newInstance(serialized, ChatMessageType.getEnumConstants()[0]);
       }
 

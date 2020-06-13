@@ -21,8 +21,8 @@ public class SoulboundListener implements Listener {
     try {
       ItemMeta meta = item.getItemMeta();
       if (item.hasItemMeta() &&
-              meta.hasLore() &&
-              meta.getLore().contains(soulboundTag)) {
+          meta.hasLore() &&
+          meta.getLore().contains(soulboundTag)) {
         return true;
 
       }

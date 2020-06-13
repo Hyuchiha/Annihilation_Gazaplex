@@ -33,7 +33,7 @@ public class SignListener implements Listener {
 
     Action action = event.getAction();
     if ((action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) &&
-            event.getClickedBlock() != null) {
+        event.getClickedBlock() != null) {
       Material clickedType = event.getClickedBlock().getType();
       if (clickedType == Material.SIGN_POST || clickedType == Material.WALL_SIGN) {
 
@@ -42,7 +42,7 @@ public class SignListener implements Listener {
         Output.log(s.getLine(0));
 
         if (s.getLine(0).contains(ChatColor.DARK_PURPLE + "[" +
-                                      Translator.getString("COMMONS.TEAM") + ChatColor.DARK_PURPLE + "]")) {
+            Translator.getString("COMMONS.TEAM") + ChatColor.DARK_PURPLE + "]")) {
 
           Output.log("Sign with team name");
           Output.log(s.getLine(1));
@@ -72,7 +72,7 @@ public class SignListener implements Listener {
       Sign s = (Sign) event.getBlock().getState();
 
       if (s.getLine(0).contains(ChatColor.DARK_PURPLE + "[" +
-                                    Translator.getString("COMMONS.TEAM") + ChatColor.DARK_PURPLE + "]"))
+          Translator.getString("COMMONS.TEAM") + ChatColor.DARK_PURPLE + "]"))
         event.setCancelled(true);
     }
   }

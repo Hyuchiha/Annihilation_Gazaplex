@@ -65,10 +65,10 @@ public class StatsCommand implements CommandExecutor {
 
     for (StatType stat : stats) {
       String name = WordUtils.capitalize(stat.name().toLowerCase()
-                                             .replace('_', ' '));
+          .replace('_', ' '));
 
       sender.sendMessage(DARK_AQUA + name + ": " + AQUA +
-                             getStat(stat, player));
+          getStat(stat, player));
     }
 
     sender.sendMessage(GRAY + "=========================");
@@ -103,8 +103,8 @@ public class StatsCommand implements CommandExecutor {
 
     if (player != null) {
       Account onlineAccount = this.plugin
-              .getMainDatabase()
-              .getAccount(player.getUniqueId().toString(), player.getName());
+          .getMainDatabase()
+          .getAccount(player.getUniqueId().toString(), player.getName());
 
 
       if (onlineAccount != null) {
@@ -117,8 +117,8 @@ public class StatsCommand implements CommandExecutor {
 
     if (offlinePlayer != null) {
       Account offlineAccount = this.plugin
-              .getMainDatabase()
-              .getAccount(offlinePlayer.getUniqueId().toString(), offlinePlayer.getName());
+          .getMainDatabase()
+          .getAccount(offlinePlayer.getUniqueId().toString(), offlinePlayer.getName());
 
 
       return offlineAccount;

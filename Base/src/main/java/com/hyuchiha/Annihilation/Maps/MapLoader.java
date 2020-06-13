@@ -91,7 +91,7 @@ public class MapLoader {
   private static void copyFolder(File src, File dest) throws IOException {
     if (!src.exists()) {
       plugin.getLogger().severe("File " + src.toString()
-                                    + " does not exist, cannot copy");
+          + " does not exist, cannot copy");
       return;
     }
 

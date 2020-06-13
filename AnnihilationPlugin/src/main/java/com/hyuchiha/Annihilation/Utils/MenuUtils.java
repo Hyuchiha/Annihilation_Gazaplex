@@ -85,14 +85,14 @@ public class MenuUtils {
 
     int kitsCount = 0;
     Kit selectedKit = null;
-    if(gPlayer.getKit() != Kit.CIVILIAN){
+    if (gPlayer.getKit() != Kit.CIVILIAN) {
       selectedKit = gPlayer.getKit();
     }
 
     //Build the inventory with the kits unlocked
     for (Kit kit : Kit.values()) {
       if (kit.isOwnedBy(p)) {
-        ItemStack kitItem = buildItemForSelector(true, kit,selectedKit == kit);
+        ItemStack kitItem = buildItemForSelector(true, kit, selectedKit == kit);
         inv.addItem(kitItem);
 
         kitsCount++;
@@ -110,7 +110,7 @@ public class MenuUtils {
 
     //Fill the remaining kits
     for (Kit kit : notUnlocked) {
-      ItemStack restantKits = buildItemForSelector(false,kit,false);
+      ItemStack restantKits = buildItemForSelector(false, kit, false);
       inv.addItem(restantKits);
       kitsCount++;
     }
@@ -130,7 +130,7 @@ public class MenuUtils {
     //Build the inventory with the kits unlocked
     for (Kit kit : Kit.values()) {
       if (!kit.isOwnedBy(p)) {
-        ItemStack restantKits = buildItemForSelector(false,kit,false);
+        ItemStack restantKits = buildItemForSelector(false, kit, false);
         inv.addItem(restantKits);
         kitsCount++;
       }
@@ -171,7 +171,7 @@ public class MenuUtils {
     int size = ((46 + 8) / 9) * 9;
     Inventory inv = createInventory(player, size, Translator.getColoredString("GAME.BOSS_SHOP"));
 
-    for (BossStarItem item: BossManager.getBossStarItems()) {
+    for (BossStarItem item : BossManager.getBossStarItems()) {
       inv.setItem(item.getPosition(), item.getItem());
     }
 
@@ -183,12 +183,12 @@ public class MenuUtils {
     return Bukkit.createInventory(player, slots, name);
   }
 
-  private static ItemStack buildItemForSelector(boolean isUnlocked, Kit kit, boolean hasKitSelected){
+  private static ItemStack buildItemForSelector(boolean isUnlocked, Kit kit, boolean hasKitSelected) {
     ItemStack kitLogo = kit.getKit().getIcon().clone();
     ItemMeta meta = kitLogo.getItemMeta();
     List<String> lore = meta.getLore();
-    if (isUnlocked){
-      if (!hasKitSelected){
+    if (isUnlocked) {
+      if (!hasKitSelected) {
         lore.add(ChatColor.GRAY + "---------------");
         lore.add(ChatColor.GREEN + Translator.getColoredString("GAME.KIT_UNLOCKED"));
         lore.add(ChatColor.GRAY + "---------------");
@@ -202,10 +202,10 @@ public class MenuUtils {
     meta.setLore(lore);
     kitLogo.setItemMeta(meta);
 
-    return  kitLogo;
+    return kitLogo;
   }
 
-  private static void fillInventoryWithGlass(int start, int end, Inventory inv){
+  private static void fillInventoryWithGlass(int start, int end, Inventory inv) {
     ItemStack glass = new ItemStack(Material.STAINED_GLASS_PANE, 1, DyeColor.BLACK.getDyeData());
     ItemMeta metaglass = glass.getItemMeta();
     metaglass.setDisplayName(ChatColor.BLACK + "");

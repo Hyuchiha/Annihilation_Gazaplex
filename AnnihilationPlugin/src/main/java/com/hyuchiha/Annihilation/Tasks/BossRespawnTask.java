@@ -13,12 +13,12 @@ public class BossRespawnTask implements Runnable {
   private boolean running = false;
 
   public BossRespawnTask(int respawnTime) {
-    this.PID = Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), this,20 * respawnTime * 60 );
+    this.PID = Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), this, 20 * respawnTime * 60);
   }
 
   @Override
   public void run() {
-    if(GameManager.getCurrentGame() != null && GameManager.getCurrentGame().getPhase() >= 3 ){
+    if (GameManager.getCurrentGame() != null && GameManager.getCurrentGame().getPhase() >= 3) {
       ChatUtil.bossRespawn(BossManager.getBoss());
       BossManager.spawnBoss();
     }

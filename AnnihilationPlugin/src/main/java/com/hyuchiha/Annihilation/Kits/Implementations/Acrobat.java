@@ -43,13 +43,13 @@ public class Acrobat extends BaseKit {
 
     Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {
 
-      for (Player player: Bukkit.getOnlinePlayers()) {
+      for (Player player : Bukkit.getOnlinePlayers()) {
         GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
 
         if (gPlayer.getKit() == Kit.ACROBAT
-                && GameManager.hasCurrentGame()
-                && GameManager.getCurrentGame().isInGame()
-                && TimersUtils.getRemainingMiliseconds(player, Kit.ACROBAT) == 0) {
+            && GameManager.hasCurrentGame()
+            && GameManager.getCurrentGame().isInGame()
+            && TimersUtils.getRemainingMiliseconds(player, Kit.ACROBAT) == 0) {
 
           // player.playSound(player.getLocation(), Sound.ENTITY_WITHER_SHOOT, 1.0F, 2.0F);
           player.setAllowFlight(true);
@@ -94,8 +94,8 @@ public class Acrobat extends BaseKit {
       GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
 
       if (gPlayer.getKit() == Kit.ACROBAT
-              && GameManager.hasCurrentGame()
-              && GameManager.getCurrentGame().isInGame()) {
+          && GameManager.hasCurrentGame()
+          && GameManager.getCurrentGame().isInGame()) {
         player.setAllowFlight(true);
       }
     }
@@ -108,9 +108,9 @@ public class Acrobat extends BaseKit {
       GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
 
       if (GameManager.hasCurrentGame()
-             && GameManager.getCurrentGame().isInGame()
-             && gPlayer.getKit() == Kit.ACROBAT
-             && TimersUtils.hasExpired(player, Kit.ACROBAT)) {
+          && GameManager.getCurrentGame().isInGame()
+          && gPlayer.getKit() == Kit.ACROBAT
+          && TimersUtils.hasExpired(player, Kit.ACROBAT)) {
 
         TimersUtils.addDelay(player, Kit.ACROBAT, 10, TimeUnit.SECONDS);
 
@@ -136,7 +136,7 @@ public class Acrobat extends BaseKit {
         return;
       }
 
-      if(GameManager.hasCurrentGame() && GameManager.getCurrentGame().isInGame()) {
+      if (GameManager.hasCurrentGame() && GameManager.getCurrentGame().isInGame()) {
         if (!player.getAllowFlight()) {
           GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
           if (gPlayer.getKit() == Kit.ACROBAT) {
@@ -152,7 +152,7 @@ public class Acrobat extends BaseKit {
   @EventHandler(priority = EventPriority.HIGH)
   public void fallDamage(EntityDamageEvent event) {
     if (event.getEntity().getType() == EntityType.PLAYER && event.getCause() == EntityDamageEvent.DamageCause.FALL) {
-      Player p = (Player)event.getEntity();
+      Player p = (Player) event.getEntity();
       GamePlayer gPlayer = PlayerManager.getGamePlayer(p);
 
       if (gPlayer.getKit() == Kit.ACROBAT) {

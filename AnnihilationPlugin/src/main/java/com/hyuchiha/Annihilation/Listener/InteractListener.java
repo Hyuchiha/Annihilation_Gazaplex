@@ -30,21 +30,21 @@ public class InteractListener implements Listener {
           case ENCHANTED_BOOK:
             // FOR Kits
             if (handItem.getItemMeta().hasDisplayName()
-                    && handItem.getItemMeta().getDisplayName().equals(Translator.getColoredString("GAME.CLICK_TO_CHOOSE_KIT"))) {
+                && handItem.getItemMeta().getDisplayName().equals(Translator.getColoredString("GAME.CLICK_TO_CHOOSE_KIT"))) {
               MenuUtils.showKitSelector(player);
             }
             break;
           case GOLD_INGOT:
             // For unlock kits
             if (handItem.getItemMeta().hasDisplayName()
-                    && handItem.getItemMeta().getDisplayName().equals(Translator.getColoredString("GAME.CLICK_TO_UNLOCK_KIT"))) {
+                && handItem.getItemMeta().getDisplayName().equals(Translator.getColoredString("GAME.CLICK_TO_UNLOCK_KIT"))) {
               MenuUtils.showUnlockerSelector(player);
             }
             break;
           case COMPASS:
             boolean setCompass = false;
             boolean setToNext = false;
-            int count =0;
+            int count = 0;
             while (!setCompass || count > 6) {
               if (!handItem.getItemMeta().hasDisplayName() || player.getWorld().getName().equals("lobby")) {
                 setCompass = true;
@@ -68,13 +68,13 @@ public class InteractListener implements Listener {
             break;
           case NETHER_STAR:
             if (handItem.getItemMeta().hasDisplayName()
-                    && handItem.getItemMeta().getDisplayName().equals(Translator.getColoredString("GAME.BOSS_STAR"))) {
+                && handItem.getItemMeta().getDisplayName().equals(Translator.getColoredString("GAME.BOSS_STAR"))) {
 
               MenuUtils.openBossStarMenu(player);
 
-              if(inventory.getItemInMainHand().getAmount() == 1){
+              if (inventory.getItemInMainHand().getAmount() == 1) {
                 player.getInventory().remove(handItem);
-              }else{
+              } else {
                 int currentAmount = handItem.getAmount();
                 inventory.getItemInMainHand().setAmount(currentAmount - 1);
               }

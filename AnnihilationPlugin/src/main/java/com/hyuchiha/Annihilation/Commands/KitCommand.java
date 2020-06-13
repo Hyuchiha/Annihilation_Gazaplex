@@ -10,24 +10,24 @@ import org.bukkit.entity.Player;
 
 public class KitCommand implements CommandExecutor {
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label,
-                             String[] args) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + Translator.getColoredString("ERRORS.CONSOLE_KIT_COMMAND"));
-        } else {
-            Player player = (Player) sender;
+  @Override
+  public boolean onCommand(CommandSender sender, Command cmd, String label,
+                           String[] args) {
+    if (!(sender instanceof Player)) {
+      sender.sendMessage(ChatColor.RED + Translator.getColoredString("ERRORS.CONSOLE_KIT_COMMAND"));
+    } else {
+      Player player = (Player) sender;
 
-            if(!player.hasPermission("annihilation.command.switch_kit")){
-                sender.sendMessage(ChatColor.RED + Translator.getColoredString("ERRORS.NO_PERMISSION"));
-                return true;
-            }
+      if (!player.hasPermission("annihilation.command.switch_kit")) {
+        sender.sendMessage(ChatColor.RED + Translator.getColoredString("ERRORS.NO_PERMISSION"));
+        return true;
+      }
 
-            // TODO add delay for this command
-            MenuUtils.showKitSelector(player);
-           
-            return true;
-        }
-        return false;
+      // TODO add delay for this command
+      MenuUtils.showKitSelector(player);
+
+      return true;
     }
+    return false;
+  }
 }

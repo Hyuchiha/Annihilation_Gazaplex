@@ -26,7 +26,7 @@ public class ZombieManager {
 
   public static void init() {
     Output.log("Initializing zombie creator");
-    switch (Minecraft.Version.getVersion()){
+    switch (Minecraft.Version.getVersion()) {
       case v1_9_R1:
         creator = new MobCreator_v1_9_R1();
         break;
@@ -90,8 +90,8 @@ public class ZombieManager {
   public static void clearZombiesData() {
     World world = MapManager.getCurrentMap().getWorld();
 
-    for (Entity entity: world.getEntities()) {
-      if(entity.getType() == EntityType.ZOMBIE){
+    for (Entity entity : world.getEntities()) {
+      if (entity.getType() == EntityType.ZOMBIE) {
         Output.log("Removing zombie");
         entity.remove();
       }

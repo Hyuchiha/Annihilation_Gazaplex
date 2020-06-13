@@ -107,9 +107,9 @@ public enum Kit {
     Account account = Main.getInstance().getMainDatabase().getAccount(p.getUniqueId().toString(), p.getName());
 
     return p.isOp()
-               || this == CIVILIAN
-               || p.hasPermission("annihilation.class." + getName().toLowerCase())
-               || (account != null && account.hasKit(this));
+        || this == CIVILIAN
+        || p.hasPermission("annihilation.class." + getName().toLowerCase())
+        || (account != null && account.hasKit(this));
   }
 
   public void resetKit() {

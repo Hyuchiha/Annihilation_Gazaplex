@@ -74,7 +74,7 @@ public class SignManager {
 
         if (t.getNexus() != null && GameManager.getCurrentGame().getPhase() > 0) {
           s.setLine(3, ChatColor.BOLD.toString() + Translator.getColoredString("INFO.NEXUS_HEALTH") + t
-                                                                                                          .getNexus().getHealth());
+              .getNexus().getHealth());
         } else {
           s.setLine(3, " ");
         }

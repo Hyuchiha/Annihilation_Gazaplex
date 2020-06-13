@@ -7,14 +7,20 @@ import java.util.List;
 
 public class CustomZombie extends EntityZombie {
 
-  public CustomZombie(World world) { super(world); }
+  public CustomZombie(World world) {
+    super(world);
+  }
 
   @Override
   protected void r() {
-    List goalB = (List) MobUtils.getPrivateField("b", PathfinderGoalSelector.class, goalSelector); goalB.clear();
-    List goalC = (List)MobUtils.getPrivateField("c", PathfinderGoalSelector.class, goalSelector); goalC.clear();
-    List targetB = (List)MobUtils.getPrivateField("b", PathfinderGoalSelector.class, targetSelector); targetB.clear();
-    List targetC = (List)MobUtils.getPrivateField("c", PathfinderGoalSelector.class, targetSelector); targetC.clear();
+    List goalB = (List) MobUtils.getPrivateField("b", PathfinderGoalSelector.class, goalSelector);
+    goalB.clear();
+    List goalC = (List) MobUtils.getPrivateField("c", PathfinderGoalSelector.class, goalSelector);
+    goalC.clear();
+    List targetB = (List) MobUtils.getPrivateField("b", PathfinderGoalSelector.class, targetSelector);
+    targetB.clear();
+    List targetC = (List) MobUtils.getPrivateField("c", PathfinderGoalSelector.class, targetSelector);
+    targetC.clear();
 
     this.goalSelector.a(0, new PathfinderGoalFloat(this));
     this.goalSelector.a(2, new PathfinderGoalMeleeAttack(this, 1.0D, false));

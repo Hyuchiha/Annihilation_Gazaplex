@@ -20,9 +20,9 @@ import java.util.List;
 import static com.mongodb.client.model.Filters.eq;
 
 public abstract class SQLDB extends Database {
-  protected static final String ACCOUNTS_TABLE        = "annihilation_accounts";
-  protected static final String KITS_TABLE            = "annihilation_kits";
-  protected static final String KITS_UNLOCKED_TABLE   = "annihilation_kits_unlocked";
+  protected static final String ACCOUNTS_TABLE = "annihilation_accounts";
+  protected static final String KITS_TABLE = "annihilation_kits";
+  protected static final String KITS_UNLOCKED_TABLE = "annihilation_kits_unlocked";
 
   private Main plugin;
   private Connection connection;
@@ -67,7 +67,7 @@ public abstract class SQLDB extends Database {
         query(KITS_UNLOCKED_QUERY);
 
 
-        for (Kit kit: Kit.values()) {
+        for (Kit kit : Kit.values()) {
           String query = getInsertKitQuery(kit);
 
           query(query);
@@ -179,7 +179,7 @@ public abstract class SQLDB extends Database {
 
       set.close();
 
-      if (account != null){
+      if (account != null) {
         List<Kit> kits = getKitsFromAccount(uuid);
         account.setKits(kits);
       }
@@ -219,29 +219,29 @@ public abstract class SQLDB extends Database {
       int idKit = getIdOfElement(kit);
 
       String query = "INSERT INTO `" + KITS_UNLOCKED_TABLE + "`(`clv_kit`,`player`)  VALUES "
-              + "('" + idKit + "', '"+ uuid +"');";
+          + "('" + idKit + "', '" + uuid + "');";
 
       PreparedStatement statement = connection.prepareStatement(query);
 
-      if(statement.execute()){
+      if (statement.execute()) {
         statement.close();
       }
 
       Account account = null;
 
-      for (Account cache: cachedAccounts.values()){
-        if(cache.getUUID().equalsIgnoreCase(uuid)){
+      for (Account cache : cachedAccounts.values()) {
+        if (cache.getUUID().equalsIgnoreCase(uuid)) {
           account = cache;
         }
       }
 
-      if(account != null){
+      if (account != null) {
         account.getKits().add(Kit.valueOf(kit.toUpperCase()));
 
         cachedAccounts.put(uuid, account);
       }
 
-    }catch (SQLException e){
+    } catch (SQLException e) {
       e.printStackTrace();
     }
   }
@@ -270,15 +270,15 @@ public abstract class SQLDB extends Database {
     return -1;
   }
 
-  private List<Kit> getKitsFromAccount(String uuid){
+  private List<Kit> getKitsFromAccount(String uuid) {
     checkConnection();
 
     List<Kit> kits = new ArrayList<>();
 
     try {
-      String query = "SELECT "+ KITS_TABLE + ".name from " + KITS_UNLOCKED_TABLE
-              + " JOIN " + KITS_TABLE + " where "+ KITS_TABLE +".clv_kit = "+ KITS_UNLOCKED_TABLE +".clv_kit " +
-              "AND player = '" + uuid + "';";
+      String query = "SELECT " + KITS_TABLE + ".name from " + KITS_UNLOCKED_TABLE
+          + " JOIN " + KITS_TABLE + " where " + KITS_TABLE + ".clv_kit = " + KITS_UNLOCKED_TABLE + ".clv_kit " +
+          "AND player = '" + uuid + "';";
 
       ResultSet set = connection.createStatement().executeQuery(query);
 
@@ -288,7 +288,7 @@ public abstract class SQLDB extends Database {
         kits.add(Kit.valueOf(kitName));
       }
 
-    }catch (SQLException ex){
+    } catch (SQLException ex) {
       ex.printStackTrace();
     }
 
@@ -296,11 +296,14 @@ public abstract class SQLDB extends Database {
   }
 
   protected abstract String getDatabaseQuery();
+
   protected abstract String getDatabaseKitsQuery();
+
   protected abstract String getDatabaseKitsUnlockedQuery();
 
   protected abstract String getInsertKitQuery(Kit kit);
 
   protected abstract String getCreateAccountQuery(Account account);
+
   protected abstract String getUpdateAccountQuery(Account account);
 }

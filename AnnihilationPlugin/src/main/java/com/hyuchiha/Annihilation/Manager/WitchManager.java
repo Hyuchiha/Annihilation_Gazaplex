@@ -41,7 +41,7 @@ public class WitchManager {
   }
 
   public static void spawnWitches() {
-    for (GameWitch witch: witches.values()) {
+    for (GameWitch witch : witches.values()) {
       spawnWitch(witch);
     }
   }
@@ -56,7 +56,7 @@ public class WitchManager {
 
       witch.setMaxHealth(gWitch.getHealth());
       witch.setHealth(gWitch.getHealth());
-      witch.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE,5));
+      witch.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 5));
       witch.setCanPickupItems(false);
       witch.setRemoveWhenFarAway(false);
       witch.setCustomNameVisible(true);
@@ -71,7 +71,7 @@ public class WitchManager {
   public static void update(Witch witch) {
     String currentWitch = ChatColor.stripColor(witch.getCustomName());
 
-    for (GameWitch gWitch: witches.values()) {
+    for (GameWitch gWitch : witches.values()) {
 
       String teamWitch = ChatColor.stripColor(gWitch.getName().replaceAll("&", "§"));
 
@@ -86,7 +86,7 @@ public class WitchManager {
   public static GameWitch findGameWitch(String name) {
     String currentWitch = ChatColor.stripColor(name);
 
-    for (GameWitch witch: witches.values()) {
+    for (GameWitch witch : witches.values()) {
 
       String teamWitch = ChatColor.stripColor(witch.getName().replaceAll("&", "§"));
 
@@ -109,7 +109,7 @@ public class WitchManager {
   }
 
   public static void cancelRespawnTask() {
-    for (BukkitTask task: tasks) {
+    for (BukkitTask task : tasks) {
       task.cancel();
     }
   }
@@ -117,8 +117,8 @@ public class WitchManager {
   public static void clearWitchData() {
     World world = MapManager.getCurrentMap().getWorld();
 
-    for (Entity entity: world.getEntities()) {
-      if(entity.getType() == EntityType.WITCH){
+    for (Entity entity : world.getEntities()) {
+      if (entity.getType() == EntityType.WITCH) {
         Output.log("Removing witch");
         entity.remove();
       }

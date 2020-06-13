@@ -78,7 +78,7 @@ public class BossListener implements Listener {
 
   @EventHandler
   public void onBreakBossMap(BlockBreakEvent event) {
-    if(BossManager.hasBossConfig()){
+    if (BossManager.hasBossConfig()) {
       World bossWorld = BossManager.getBossSpawnWorld();
 
       if (bossWorld != null && Objects.equals(event.getBlock().getWorld().getName(), bossWorld.getName())) {
@@ -196,8 +196,8 @@ public class BossListener implements Listener {
     double nZ = loc.getZ();
     double nY = loc.getY();
     return Math.abs(nX - x) <= 3
-               && Math.abs(nZ - z) <= 3
-               && Math.abs(nY - y) <= 3;
+        && Math.abs(nZ - z) <= 3
+        && Math.abs(nY - y) <= 3;
 
   }
 
@@ -236,7 +236,7 @@ public class BossListener implements Listener {
         gPlayer.addXp(config.getInt("Exp-boss-kill"));
 
         Location bossLocation = event.getEntity().getLocation();
-        bossLocation.getWorld().playSound(bossLocation, Sound.ENTITY_ENDERDRAGON_DEATH,  1.0F, 0.1F);
+        bossLocation.getWorld().playSound(bossLocation, Sound.ENTITY_ENDERDRAGON_DEATH, 1.0F, 0.1F);
 
         FireworkUtils.spawnFirework(
             bossLocation,
@@ -278,7 +278,6 @@ public class BossListener implements Listener {
     }
 
   }
-
 
 
 }

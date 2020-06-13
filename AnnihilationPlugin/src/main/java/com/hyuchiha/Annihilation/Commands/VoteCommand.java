@@ -14,12 +14,12 @@ public class VoteCommand implements CommandExecutor {
     Player player = (Player) sender;
     if (!VotingManager.isRunning()) {
       player.sendMessage(Translator.getPrefix() + ChatColor.RED +
-                             Translator.getString("INFO.COMMAND_VOTING_ENDED"));
+          Translator.getString("INFO.COMMAND_VOTING_ENDED"));
     } else if (args.length == 0) {
       listMaps(player);
     } else if (!VotingManager.vote(sender, args[0])) {
       player.sendMessage(Translator.getPrefix() + ChatColor.RED +
-                             Translator.getString("INFO.COMMAND_VOTING_INVALID"));
+          Translator.getString("INFO.COMMAND_VOTING_INVALID"));
       listMaps(player);
     }
     return true;

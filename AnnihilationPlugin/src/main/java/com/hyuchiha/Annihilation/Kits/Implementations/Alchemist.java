@@ -90,7 +90,7 @@ public class Alchemist extends BaseKit {
   }
 
   private void fillProbs() {
-    for (int key: drops.keySet()) {
+    for (int key : drops.keySet()) {
       int percent = Math.abs(key);
 
       for (int i = 0; i < percent; i++) {
@@ -228,7 +228,7 @@ public class Alchemist extends BaseKit {
       ItemStack handItem = inventory.getItemInMainHand();
 
       if (handItem != null && KitUtils.isKitItem(handItem, "KITS.ALCHEMIST_BOOK")
-              && gPlayer.getKit() == Kit.ALCHEMIST) {
+          && gPlayer.getKit() == Kit.ALCHEMIST) {
 
         if (TimersUtils.hasExpired(player, Kit.ALCHEMIST)) {
           giveRandomDrop(player);
@@ -243,7 +243,7 @@ public class Alchemist extends BaseKit {
   }
 
   private boolean isBrewingFromAlchemist(Location location) {
-    for (Location brewing: this.personalBrewingLocations.values()) {
+    for (Location brewing : this.personalBrewingLocations.values()) {
       if (brewing.equals(location)) {
         return true;
       }

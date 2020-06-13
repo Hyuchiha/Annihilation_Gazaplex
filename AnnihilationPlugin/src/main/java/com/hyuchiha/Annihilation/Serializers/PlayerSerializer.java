@@ -149,8 +149,8 @@ public class PlayerSerializer {
       GamePlayer meta = PlayerManager.getGamePlayer(p);
       GameTeam team = GameTeam.getTeam(config.getString("Team"));
       if (team == GameTeam.NONE &&
-              GameManager.getCurrentGame().getPhase() > Main.getInstance()
-                                                            .getConfig("config.yml").getInt("lastJoinPhase")) {
+          GameManager.getCurrentGame().getPhase() > Main.getInstance()
+              .getConfig("config.yml").getInt("lastJoinPhase")) {
 
         p.kickPlayer(Translator.getPrefix() + ChatColor.RED + "Your team is invalid.");
         return;

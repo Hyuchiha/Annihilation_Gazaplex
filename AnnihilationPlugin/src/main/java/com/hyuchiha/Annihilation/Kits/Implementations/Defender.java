@@ -31,112 +31,112 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class Defender extends BaseKit {
-    // https://wiki.shotbow.net/Defender
-    public Defender(String name, ItemStack icon, ConfigurationSection section) {
-        super(name, icon, section);
+  // https://wiki.shotbow.net/Defender
+  public Defender(String name, ItemStack icon, ConfigurationSection section) {
+    super(name, icon, section);
 
 
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {
+    Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {
 
-            if (GameManager.hasCurrentGame() && GameManager.getCurrentGame().isInGame()) {
+      if (GameManager.hasCurrentGame() && GameManager.getCurrentGame().isInGame()) {
 
-                for (Player player: Bukkit.getOnlinePlayers()) {
-                    GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
+        for (Player player : Bukkit.getOnlinePlayers()) {
+          GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
 
-                    if (gPlayer.getKit() == Kit.DEFENDER) {
-                        applyHearts(player);
-                    }
-                }
-
-            }
-
-        }, 20, 20);
-    }
-
-    @Override
-    protected void setupSpawnItems() {
-        spawnItems.add(new ItemStack(Material.WOOD_SWORD));
-        spawnItems.add(new ItemStack(Material.WOOD_PICKAXE));
-        spawnItems.add(new ItemStack(Material.WOOD_AXE));
-        spawnItems.add(new ItemStack(Material.WOOD_SPADE));
-
-        ItemStack dye = GameUtils.getDyeColor(DyeColor.LIME);
-        ItemMeta dyeMeta = dye.getItemMeta();
-        dyeMeta.setDisplayName(Translator.getColoredString("KITS.DEFENDER_ITEM"));
-        dye.setItemMeta(dyeMeta);
-        spawnItems.add(dye);
-    }
-
-    @Override
-    protected void giveSpecialPotions(Player recipient) {
-        // Not needed
-    }
-
-    @Override
-    protected void giveExtraHearts(Player recipient) {
-        // Here comes the defender
-        applyHearts(recipient);
-    }
-
-    @Override
-    protected void extraConfiguration(Player recipient) {
-        ItemStack chest = new ItemStack(Material.CHAINMAIL_CHESTPLATE);
-        SoulboundListener.soulbind(chest);
-
-        PlayerInventory inventory = recipient.getInventory();
-        inventory.setChestplate(chest);
-    }
-
-    @Override
-    public void removePlayer(Player recipient) {
-        // Nothing to do here
-    }
-
-    @Override
-    public void resetData() {
-
-    }
-
-    @EventHandler()
-    public void onDefenderWaspInteract(PlayerInteractEvent e) {
-        Player player = e.getPlayer();
-        GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
-        Action action = e.getAction();
-
-        if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
-            PlayerInventory inventory = player.getInventory();
-            ItemStack handItem = inventory.getItemInMainHand();
-
-            if (handItem != null && KitUtils.isKitItem(handItem, "KITS.DEFENDER_ITEM")
-                    && gPlayer.getKit() == Kit.DEFENDER) {
-
-                if (TimersUtils.hasExpired(player, Kit.DEFENDER)) {
-                    Nexus nexus = gPlayer.getTeam().getNexus();
-                    Location nexusLocation = nexus.getLocation().clone();
-                    nexusLocation.add(1,0, 1);
-                    player.teleport(nexusLocation);
-
-                    TimersUtils.addDelay(player, Kit.DEFENDER, 20, TimeUnit.SECONDS);
-                } else {
-                    KitUtils.showKitItemDelay(player, gPlayer.getKit());
-                }
-            }
-        }
-    }
-
-    private void applyHearts(Player player) {
-        GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
-        Nexus nexus = gPlayer.getTeam().getNexus();
-
-        if (GameUtils.nearLocation(nexus.getLocation(), player.getLocation(), 50)) {
-            int health = nexus.getHealth();
-            double additionalHealth = Math.ceil((75 - health) / 10.0);
-
-            player.setMaxHealth(20 + additionalHealth);
-
-            player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 3, 1));
+          if (gPlayer.getKit() == Kit.DEFENDER) {
+            applyHearts(player);
+          }
         }
 
+      }
+
+    }, 20, 20);
+  }
+
+  @Override
+  protected void setupSpawnItems() {
+    spawnItems.add(new ItemStack(Material.WOOD_SWORD));
+    spawnItems.add(new ItemStack(Material.WOOD_PICKAXE));
+    spawnItems.add(new ItemStack(Material.WOOD_AXE));
+    spawnItems.add(new ItemStack(Material.WOOD_SPADE));
+
+    ItemStack dye = GameUtils.getDyeColor(DyeColor.LIME);
+    ItemMeta dyeMeta = dye.getItemMeta();
+    dyeMeta.setDisplayName(Translator.getColoredString("KITS.DEFENDER_ITEM"));
+    dye.setItemMeta(dyeMeta);
+    spawnItems.add(dye);
+  }
+
+  @Override
+  protected void giveSpecialPotions(Player recipient) {
+    // Not needed
+  }
+
+  @Override
+  protected void giveExtraHearts(Player recipient) {
+    // Here comes the defender
+    applyHearts(recipient);
+  }
+
+  @Override
+  protected void extraConfiguration(Player recipient) {
+    ItemStack chest = new ItemStack(Material.CHAINMAIL_CHESTPLATE);
+    SoulboundListener.soulbind(chest);
+
+    PlayerInventory inventory = recipient.getInventory();
+    inventory.setChestplate(chest);
+  }
+
+  @Override
+  public void removePlayer(Player recipient) {
+    // Nothing to do here
+  }
+
+  @Override
+  public void resetData() {
+
+  }
+
+  @EventHandler()
+  public void onDefenderWaspInteract(PlayerInteractEvent e) {
+    Player player = e.getPlayer();
+    GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
+    Action action = e.getAction();
+
+    if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
+      PlayerInventory inventory = player.getInventory();
+      ItemStack handItem = inventory.getItemInMainHand();
+
+      if (handItem != null && KitUtils.isKitItem(handItem, "KITS.DEFENDER_ITEM")
+          && gPlayer.getKit() == Kit.DEFENDER) {
+
+        if (TimersUtils.hasExpired(player, Kit.DEFENDER)) {
+          Nexus nexus = gPlayer.getTeam().getNexus();
+          Location nexusLocation = nexus.getLocation().clone();
+          nexusLocation.add(1, 0, 1);
+          player.teleport(nexusLocation);
+
+          TimersUtils.addDelay(player, Kit.DEFENDER, 20, TimeUnit.SECONDS);
+        } else {
+          KitUtils.showKitItemDelay(player, gPlayer.getKit());
+        }
+      }
     }
+  }
+
+  private void applyHearts(Player player) {
+    GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
+    Nexus nexus = gPlayer.getTeam().getNexus();
+
+    if (GameUtils.nearLocation(nexus.getLocation(), player.getLocation(), 50)) {
+      int health = nexus.getHealth();
+      double additionalHealth = Math.ceil((75 - health) / 10.0);
+
+      player.setMaxHealth(20 + additionalHealth);
+
+      player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 3, 1));
+    }
+
+  }
 
 }

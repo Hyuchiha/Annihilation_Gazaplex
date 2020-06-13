@@ -33,128 +33,124 @@ import org.bukkit.projectiles.ProjectileSource;
 import java.util.concurrent.TimeUnit;
 
 public class Archer extends BaseKit {
-    // https://shotbow.net/forum/wiki/anni-archer/
-    public Archer(String name, ItemStack icon, ConfigurationSection section) {
-        super(name, icon, section);
+  // https://shotbow.net/forum/wiki/anni-archer/
+  public Archer(String name, ItemStack icon, ConfigurationSection section) {
+    super(name, icon, section);
 
-        ShapedRecipe arrowRecipe = new ShapedRecipe(new ItemStack(Material.ARROW,3));
-        arrowRecipe.shape("F", "S");
-        arrowRecipe.setIngredient('F', Material.FLINT);
-        arrowRecipe.setIngredient('S', Material.STICK);
-        Bukkit.addRecipe(arrowRecipe);
+    ShapedRecipe arrowRecipe = new ShapedRecipe(new ItemStack(Material.ARROW, 3));
+    arrowRecipe.shape("F", "S");
+    arrowRecipe.setIngredient('F', Material.FLINT);
+    arrowRecipe.setIngredient('S', Material.STICK);
+    Bukkit.addRecipe(arrowRecipe);
+  }
+
+  @Override
+  protected void setupSpawnItems() {
+    spawnItems.add(new ItemStack(Material.WOOD_SWORD));
+    spawnItems.add(new ItemStack(Material.WOOD_PICKAXE));
+    spawnItems.add(new ItemStack(Material.WOOD_AXE));
+    spawnItems.add(new ItemStack(Material.WOOD_SPADE));
+
+    ItemStack bow = new ItemStack(Material.BOW);
+    bow.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
+    spawnItems.add(bow);
+
+    spawnItems.add(new ItemStack(Material.ARROW, 16));
+
+    ItemStack potion = new ItemStack(Material.POTION, 1);
+    PotionMeta meta = (PotionMeta) potion.getItemMeta();
+    meta.setBasePotionData(new PotionData(PotionType.INSTANT_HEAL, false, false));
+    potion.setItemMeta(meta);
+    spawnItems.add(potion);
+
+    ItemStack book = new ItemStack(Material.BOOK, 1);
+    ItemMeta bookMeta = book.getItemMeta();
+    bookMeta.setDisplayName(Translator.getColoredString("KITS.ARCHER_BOOK"));
+    book.setItemMeta(bookMeta);
+    spawnItems.add(book);
+  }
+
+  @Override
+  protected void giveSpecialPotions(Player recipient) {
+    // Noup this kits doesn't have special potions
+  }
+
+  @Override
+  protected void giveExtraHearts(Player recipient) {
+    // Noup
+  }
+
+  @Override
+  protected void extraConfiguration(Player recipient) {
+    // Maybe, but no today
+  }
+
+  @Override
+  public void removePlayer(Player recipient) {
+    // I dont thing this is needed, come back later
+  }
+
+  @Override
+  public void resetData() {
+    // Nope
+  }
+
+  private void getAdditionalArrows(Player player) {
+    PlayerInventory inventory = player.getInventory();
+
+    ItemStack arrows = new ItemStack(Material.ARROW, 32);
+    SoulboundListener.soulbind(arrows);
+
+    inventory.addItem(arrows);
+  }
+
+  //Stops non-archers from crafting arrows using the archer recipe
+  @EventHandler(priority = EventPriority.HIGHEST)
+  public void arrowCraftingStopper(CraftItemEvent event) {
+    if (event.getRecipe().getResult().getType() == Material.ARROW && event.getRecipe().getResult().getAmount() == 3) {
+      Player player = (Player) event.getWhoClicked();
+      GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
+
+      if (gPlayer.getKit() != Kit.ARCHER) {
+        event.setCancelled(true);
+      }
     }
+  }
 
-    @Override
-    protected void setupSpawnItems() {
-        spawnItems.add(new ItemStack(Material.WOOD_SWORD));
-        spawnItems.add(new ItemStack(Material.WOOD_PICKAXE));
-        spawnItems.add(new ItemStack(Material.WOOD_AXE));
-        spawnItems.add(new ItemStack(Material.WOOD_SPADE));
-
-        ItemStack bow = new ItemStack(Material.BOW);
-        bow.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
-        spawnItems.add(bow);
-
-        spawnItems.add(new ItemStack(Material.ARROW, 16));
-
-        ItemStack potion = new ItemStack(Material.POTION, 1);
-        PotionMeta meta = (PotionMeta) potion.getItemMeta();
-        meta.setBasePotionData(new PotionData(PotionType.INSTANT_HEAL, false, false));
-        potion.setItemMeta(meta);
-        spawnItems.add(potion);
-
-        ItemStack book = new ItemStack(Material.BOOK, 1);
-        ItemMeta bookMeta = book.getItemMeta();
-        bookMeta.setDisplayName(Translator.getColoredString("KITS.ARCHER_BOOK"));
-        book.setItemMeta(bookMeta);
-        spawnItems.add(book);
-    }
-
-    @Override
-    protected void giveSpecialPotions(Player recipient) {
-        // Noup this kits doesn't have special potions
-    }
-
-    @Override
-    protected void giveExtraHearts(Player recipient) {
-        // Noup
-    }
-
-    @Override
-    protected void extraConfiguration(Player recipient) {
-        // Maybe, but no today
-    }
-
-    @Override
-    public void removePlayer(Player recipient) {
-        // I dont thing this is needed, come back later
-    }
-
-    @Override
-    public void resetData() {
-        // Nope
-    }
-
-    private void getAdditionalArrows(Player player) {
-        PlayerInventory inventory = player.getInventory();
-
-        ItemStack arrows = new ItemStack(Material.ARROW, 32);
-        SoulboundListener.soulbind(arrows);
-
-        inventory.addItem(arrows);
-    }
-
-    //Stops non-archers from crafting arrows using the archer recipe
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void arrowCraftingStopper(CraftItemEvent event)
-    {
-        if(event.getRecipe().getResult().getType() == Material.ARROW && event.getRecipe().getResult().getAmount() == 3) {
-            Player player = (Player) event.getWhoClicked();
-            GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
-
-            if (gPlayer.getKit() != Kit.ARCHER) {
-                event.setCancelled(true);
-            }
+  //Adds the +1 arrow damage
+  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+  public void damageListener(final EntityDamageByEntityEvent event) {
+    if (event.getDamager().getType() == EntityType.ARROW) {
+      ProjectileSource s = ((Projectile) event.getDamager()).getShooter();
+      if (s instanceof Player) {
+        GamePlayer shooter = PlayerManager.getGamePlayer((Player) s);
+        if (shooter.getKit() == Kit.ARCHER) {
+          event.setDamage(event.getDamage() + 1);
         }
+      }
     }
+  }
 
-    //Adds the +1 arrow damage
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void damageListener(final EntityDamageByEntityEvent event)
-    {
-        if(event.getDamager().getType() == EntityType.ARROW)
-        {
-            ProjectileSource s = ((Projectile)event.getDamager()).getShooter();
-            if(s instanceof Player)
-            {
-                GamePlayer shooter = PlayerManager.getGamePlayer((Player) s);
-                if (shooter.getKit() == Kit.ARCHER) {
-                    event.setDamage(event.getDamage() + 1);
-                }
-            }
+  @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+  public void onArcherBookInteract(PlayerInteractEvent e) {
+    Player player = e.getPlayer();
+    GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
+    Action action = e.getAction();
+
+    if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
+      PlayerInventory inventory = player.getInventory();
+      ItemStack handItem = inventory.getItemInMainHand();
+
+      if (handItem != null && KitUtils.isKitItem(handItem, "KITS.ARCHER_BOOK")
+          && gPlayer.getKit() == Kit.ARCHER) {
+
+        if (TimersUtils.hasExpired(player, Kit.ARCHER)) {
+          getAdditionalArrows(player);
+          TimersUtils.addDelay(player, Kit.ARCHER, 45, TimeUnit.SECONDS);
+        } else {
+          KitUtils.showKitItemDelay(player, gPlayer.getKit());
         }
+      }
     }
-
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onArcherBookInteract(PlayerInteractEvent e) {
-        Player player = e.getPlayer();
-        GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
-        Action action = e.getAction();
-
-        if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
-            PlayerInventory inventory = player.getInventory();
-            ItemStack handItem = inventory.getItemInMainHand();
-
-            if (handItem != null && KitUtils.isKitItem(handItem, "KITS.ARCHER_BOOK")
-                    && gPlayer.getKit() == Kit.ARCHER) {
-
-                if (TimersUtils.hasExpired(player, Kit.ARCHER)) {
-                    getAdditionalArrows(player);
-                    TimersUtils.addDelay(player, Kit.ARCHER, 45, TimeUnit.SECONDS);
-                } else {
-                    KitUtils.showKitItemDelay(player, gPlayer.getKit());
-                }
-            }
-        }
-    }
+  }
 }

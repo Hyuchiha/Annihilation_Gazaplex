@@ -22,118 +22,122 @@ import java.util.List;
 
 public abstract class BaseKit implements Listener {
 
-    private String name;
-    private final ItemStack icon;
-    protected ItemStack[] armorItems;
-    protected final List<ItemStack> spawnItems = new ArrayList<>();
+  private String name;
+  private final ItemStack icon;
+  protected ItemStack[] armorItems;
+  protected final List<ItemStack> spawnItems = new ArrayList<>();
 
-    public BaseKit(String name, ItemStack icon, ConfigurationSection section){
-        this.name = name;
-        this.icon = icon;
+  public BaseKit(String name, ItemStack icon, ConfigurationSection section) {
+    this.name = name;
+    this.icon = icon;
 
-        setupLore(section);
-        setupArmorItems();
-        setupSpawnItems();
+    setupLore(section);
+    setupArmorItems();
+    setupSpawnItems();
 
-        registerListener();
+    registerListener();
+  }
+
+  private void registerListener() {
+    Plugin plugin = Main.getInstance();
+    plugin.getServer().getPluginManager().registerEvents(this, plugin);
+  }
+
+  private void setupLore(ConfigurationSection section) {
+    List<String> lore = new ArrayList<>();
+
+    for (String line : section.getStringList("lore")) {
+      line = line.replaceAll("(&([a-fk-or0-9]))", "§$2");
+      lore.add(line);
     }
 
-    private void registerListener() {
-        Plugin plugin = Main.getInstance();
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    ItemMeta meta = icon.getItemMeta();
+    meta.setLore(lore);
+    icon.setItemMeta(meta);
+  }
+
+  protected void setupArmorItems() {
+    ItemStack[] spawnArmor = new ItemStack[]{
+        new ItemStack(Material.LEATHER_BOOTS),
+        new ItemStack(Material.LEATHER_LEGGINGS),
+        new ItemStack(Material.LEATHER_CHESTPLATE),
+        new ItemStack(Material.LEATHER_HELMET)
+    };
+
+    for (ItemStack stack : spawnArmor) {
+      SoulboundListener.soulbind(stack);
     }
 
-    private void setupLore(ConfigurationSection section) {
-        List<String> lore = new ArrayList<>();
+    this.armorItems = spawnArmor;
+  }
 
-        for(String line: section.getStringList("lore")){
-            line = line.replaceAll("(&([a-fk-or0-9]))", "§$2");
-            lore.add(line);
-        }
+  protected abstract void setupSpawnItems();
 
-        ItemMeta meta = icon.getItemMeta();
-        meta.setLore(lore);
-        icon.setItemMeta(meta);
+  public void giveKitItems(Player recipient) {
+    GamePlayer gPlayer = PlayerManager.getGamePlayer(recipient);
+    PlayerInventory inv = recipient.getInventory();
+    inv.clear();
+
+    for (ItemStack item : spawnItems) {
+      ItemStack toGive = item.clone();
+      SoulboundListener.soulbind(toGive);
+      inv.addItem(toGive);
     }
 
-    protected void setupArmorItems() {
-        ItemStack[] spawnArmor = new ItemStack[]{
-            new ItemStack(Material.LEATHER_BOOTS),
-            new ItemStack(Material.LEATHER_LEGGINGS),
-            new ItemStack(Material.LEATHER_CHESTPLATE),
-            new ItemStack(Material.LEATHER_HELMET)
-        };
+    GameTeam team = gPlayer.getTeam();
 
-        for(ItemStack stack: spawnArmor){
-            SoulboundListener.soulbind(stack);
-        }
+    ItemStack compass = new ItemStack(Material.COMPASS);
+    ItemMeta compassMeta = compass.getItemMeta();
+    compassMeta.setDisplayName(team.color() + Translator.getColoredString("GAME.COMPASS_FOCUS").replace("%TEAM%", team.toString()));
+    compass.setItemMeta(compassMeta);
+    SoulboundListener.soulbind(compass);
 
-        this.armorItems = spawnArmor;
+    inv.addItem(compass);
+    recipient.setCompassTarget(team.getNexus().getLocation());
+
+    ItemStack[] armor = armorItems.clone();
+    colorizeArmor(team.getColor(), armor);
+    inv.setArmorContents(armor);
+
+    giveSpecialPotions(recipient);
+    giveExtraHearts(recipient);
+    extraConfiguration(recipient);
+  }
+
+  private void colorizeArmor(Color color, ItemStack[] armor) {
+    for (ItemStack item : armor) {
+      if (item.getItemMeta() instanceof LeatherArmorMeta) {
+        LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
+        meta.setColor(color);
+        item.setItemMeta(meta);
+      }
     }
+  }
 
-    protected abstract void setupSpawnItems();
+  protected abstract void giveSpecialPotions(Player recipient);
 
-    public void giveKitItems(Player recipient){
-        GamePlayer gPlayer = PlayerManager.getGamePlayer(recipient);
-        PlayerInventory inv = recipient.getInventory();
-        inv.clear();
+  protected abstract void giveExtraHearts(Player recipient);
 
-        for (ItemStack item : spawnItems) {
-            ItemStack toGive = item.clone();
-            SoulboundListener.soulbind(toGive);
-            inv.addItem(toGive);
-        }
+  protected abstract void extraConfiguration(Player recipient);
 
-        GameTeam team = gPlayer.getTeam();
+  public abstract void removePlayer(Player recipient);
 
-        ItemStack compass = new ItemStack(Material.COMPASS);
-        ItemMeta compassMeta = compass.getItemMeta();
-        compassMeta.setDisplayName(team.color() + Translator.getColoredString("GAME.COMPASS_FOCUS").replace("%TEAM%", team.toString()));
-        compass.setItemMeta(compassMeta);
-        SoulboundListener.soulbind(compass);
+  public abstract void resetData();
 
-        inv.addItem(compass);
-        recipient.setCompassTarget(team.getNexus().getLocation());
+  public ItemStack getIcon() {
+    return icon;
+  }
 
-        ItemStack[] armor = armorItems.clone();
-        colorizeArmor(team.getColor(), armor);
-        inv.setArmorContents(armor);
+  public String getName() {
+    return name.substring(0, 1) + name.substring(1).toLowerCase();
+  }
 
-        giveSpecialPotions(recipient);
-        giveExtraHearts(recipient);
-        extraConfiguration(recipient);
-    }
+  // This depends on kit, some kits may give more xp
+  public int getXpMultiplier() {
+    return 1;
+  }
 
-    private void colorizeArmor(Color color, ItemStack[] armor) {
-        for (ItemStack item : armor) {
-            if (item.getItemMeta() instanceof LeatherArmorMeta) {
-                LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
-                meta.setColor(color);
-                item.setItemMeta(meta);
-            }
-        }
-    }
-
-    protected abstract void giveSpecialPotions(Player recipient);
-    protected abstract void giveExtraHearts(Player recipient);
-    protected abstract void extraConfiguration(Player recipient);
-    public abstract void removePlayer(Player recipient);
-    public abstract void resetData();
-
-    public ItemStack getIcon(){
-        return icon;
-    }
-
-    public String getName() {
-        return name.substring(0, 1) + name.substring(1).toLowerCase();
-    }
-
-    // This depends on kit, some kits may give more xp
-    public int getXpMultiplier() {
-        return 1;
-    }
-
-    public int getMaterialDropMultiplier() {
-        return 1;
-    }
+  public int getMaterialDropMultiplier() {
+    return 1;
+  }
 }
