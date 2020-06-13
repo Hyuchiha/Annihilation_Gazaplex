@@ -26,21 +26,17 @@ public class VaultHooks {
     return null;
   }
 
-
   public static Permission getPermissionManager() {
     return permission;
   }
-
 
   public static Chat getChatManager() {
     return chat;
   }
 
-
   public static Economy getEconomyManager() {
     return economy;
   }
-
 
   public static String getGroup(String name) {
     if (!vault) return "";
