@@ -64,7 +64,7 @@ public class ActionBar {
         packetChat = PacketChatConstructorResolver.resolve(new Class[]{
             IChatBaseComponent,
             ChatMessageType
-        }).newInstance(serialized, ChatMessageType.getEnumConstants()[0]);
+        }).newInstance(serialized, ChatMessageType.getEnumConstants()[2]);
       }
 
       sendPacket(player, packetChat);
