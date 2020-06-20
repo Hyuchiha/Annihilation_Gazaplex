@@ -133,7 +133,7 @@ public class InventoryListener implements Listener {
       Kit toChoose = Enums.getIfPresent(Kit.class, ChatColor.stripColor(name).toUpperCase()).orNull();
 
       player.closeInventory();
-      ;
+
       e.setCancelled(true);
 
       if (toChoose != null && !toChoose.isOwnedBy(player)) {

@@ -4,6 +4,7 @@ import com.hyuchiha.Annihilation.Game.BossStarItem;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Game.Kit;
+import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.BossManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Manager.VotingManager;
@@ -187,6 +188,11 @@ public class MenuUtils {
     ItemStack kitLogo = kit.getKit().getIcon().clone();
     ItemMeta meta = kitLogo.getItemMeta();
     List<String> lore = meta.getLore();
+
+    int price = Main.getInstance()
+        .getConfig("kits.yml")
+        .getInt("Kits." + kit.name().toUpperCase() + ".price");
+
     if (isUnlocked) {
       if (!hasKitSelected) {
         lore.add(ChatColor.GRAY + "---------------");
@@ -197,6 +203,7 @@ public class MenuUtils {
       lore.add(ChatColor.GRAY + "---------------");
       lore.add(ChatColor.RED + Translator.getColoredString("GAME.KIT_LOCKED"));
       lore.add(ChatColor.GRAY + "---------------");
+      lore.add(ChatColor.RED + Translator.getColoredString("GAME.UNLOCK_WITH").replace("%POINTS%", Integer.toString(price)));
     }
 
     meta.setLore(lore);
