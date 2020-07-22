@@ -203,7 +203,12 @@ public class BossManager {
     Location spawn = boss.getBossSpawn();
 
     if (spawn != null && spawn.getWorld() != null) {
-      Bukkit.getWorld(spawn.getWorld().getName()).loadChunk(spawn.getChunk());
+      Chunk chunk = spawn.getChunk();
+      Bukkit.getWorld(spawn.getWorld().getName()).loadChunk(chunk);
+
+      if (!Minecraft.Version.getVersion().olderThan(Minecraft.Version.v1_13_R1)) {
+        chunk.setForceLoaded(true);
+      }
 
       Wither witherBoss;
 

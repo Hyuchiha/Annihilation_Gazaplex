@@ -12,6 +12,7 @@ import com.hyuchiha.Annihilation.Manager.VotingManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Utils.KitUtils;
 import com.hyuchiha.Annihilation.Utils.MenuUtils;
+import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
@@ -20,9 +21,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class InventoryListener implements Listener {
 
@@ -33,15 +35,15 @@ public class InventoryListener implements Listener {
     GameManager.getCurrentGame().getCrafting().remove(p.getName());
   }
 
-  @EventHandler
-  public void onInventoryClick(InventoryClickEvent e) {
-    Inventory inv = e.getInventory();
+  @EventHandler()
+  public void onVoteMap(InventoryClickEvent e) {
     Player player = (Player) e.getWhoClicked();
+    InventoryView view = e.getView();
 
-    ItemStack clickedItem = e.getCurrentItem();
+    if (view.getTitle().equals(Translator.getColoredString("GAME.CLICK_TO_VOTE_MAP"))) {
+      ItemStack clickedItem = e.getCurrentItem();
 
-    if (inv.getTitle().startsWith(Translator.getColoredString("GAME.CLICK_TO_VOTE_MAP"))) {
-      if (e.getCurrentItem().getType() == Material.AIR || e.getCurrentItem().getType() == null) {
+      if (clickedItem == null || clickedItem.getType() == Material.AIR) {
         return;
       }
 
@@ -53,17 +55,24 @@ public class InventoryListener implements Listener {
 
         return;
       }
+
       if (clickedItem.hasItemMeta() && clickedItem.getItemMeta().hasDisplayName()) {
         String name = ChatColor.stripColor(clickedItem.getItemMeta().getDisplayName());
 
         VotingManager.vote(player, name);
       }
-
-      return;
     }
+  }
 
-    if (inv.getTitle().startsWith(Translator.getColoredString("GAME.CLICK_TO_CHOOSE_TEAM"))) {
-      if (e.getCurrentItem().getType() == Material.AIR || e.getCurrentItem().getType() == null) {
+  @EventHandler()
+  public void onChooseTeam(InventoryClickEvent e) {
+    Player player = (Player) e.getWhoClicked();
+    InventoryView view = e.getView();
+
+    if (view.getTitle().equals(Translator.getColoredString("GAME.CLICK_TO_CHOOSE_TEAM"))) {
+      ItemStack clickedItem = e.getCurrentItem();
+
+      if (clickedItem == null || clickedItem.getType() == Material.AIR) {
         return;
       }
 
@@ -90,73 +99,109 @@ public class InventoryListener implements Listener {
         }
       }
     }
+  }
 
-    if (inv.getTitle().startsWith(Translator.getColoredString("BOSS_SHOP"))) {
-      if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR || e.getCurrentItem().getType() == null) {
+  @EventHandler()
+  public void onBossShop(InventoryClickEvent e) {
+    Player player = (Player) e.getWhoClicked();
+    InventoryView view = e.getView();
+
+    if (view.getTitle().equals(Translator.getColoredString("GAME.BOSS_SHOP"))) {
+      ItemStack clickedItem = e.getCurrentItem();
+
+      if (clickedItem == null || clickedItem.getType() == Material.AIR) {
+        return;
+      }
+
+      e.setCancelled(true);
+      player.closeInventory();
+
+      player.getInventory().addItem(clickedItem);
+    }
+  }
+
+  @EventHandler()
+  public void onSelectClass(InventoryClickEvent e) {
+    Player player = (Player) e.getWhoClicked();
+    InventoryView view = e.getView();
+
+    if (view.getTitle().equals(Translator.getColoredString("GAME.CLASS_SELECT_INV_TITLE"))) {
+      ItemStack clickedItem = e.getCurrentItem();
+
+      if (clickedItem == null || clickedItem.getType() == Material.AIR) {
         return;
       }
 
       e.setCancelled(true);
 
-      if (e.getClickedInventory().getTitle().contains(Translator.getColoredString("GAME.BOSS_SHOP"))) {
-        player.getInventory().addItem(clickedItem);
-        player.closeInventory();
-      }
-
-      return;
-    }
-
-    if (inv.getTitle().startsWith(Translator.getColoredString("GAME.CLASS_SELECT_INV_TITLE"))) {
-      if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR || e.getCurrentItem().getType() == null) {
+      if (clickedItem.getType() == XMaterial.BLACK_STAINED_GLASS_PANE.parseMaterial()) {
         return;
       }
 
       player.closeInventory();
-      e.setCancelled(true);
 
       if (clickedItem.hasItemMeta() && clickedItem.getItemMeta().hasDisplayName()) {
         String name = clickedItem.getItemMeta().getDisplayName();
 
         KitUtils.selectKit(name, player);
       }
-
-      return;
     }
+  }
 
-    if (inv.getTitle().startsWith(Translator.getColoredString("GAME.CLASS_UNLOCK_INV_TITLE"))) {
-      if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR || e.getCurrentItem().getType() == null) {
+  @EventHandler()
+  public void onUnlockClass(InventoryClickEvent e) {
+    Player player = (Player) e.getWhoClicked();
+    InventoryView view = e.getView();
+
+    if (view.getTitle().equals(Translator.getColoredString("GAME.CLASS_UNLOCK_INV_TITLE"))) {
+      ItemStack clickedItem = e.getCurrentItem();
+
+      if (clickedItem == null || clickedItem.getType() == Material.AIR) {
         return;
       }
-
-      String name = e.getCurrentItem().getItemMeta().getDisplayName();
-
-      Kit toChoose = Enums.getIfPresent(Kit.class, ChatColor.stripColor(name).toUpperCase()).orNull();
-
-      player.closeInventory();
 
       e.setCancelled(true);
 
-      if (toChoose != null && !toChoose.isOwnedBy(player)) {
-        MenuUtils.showConfirmUnlockClass(player, toChoose);
-
-      } else {
-        player.sendMessage(Translator.getPrefix() + " " + Translator.getColoredString("GAME.PLAYER_ALREADY_HAVE_CLASS"));
-      }
-
-      return;
-    }
-
-    if (inv.getTitle().startsWith(Translator.getColoredString("GAME.CONFIRM_UNLOCK"))) {
-      if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR || e.getCurrentItem().getType() == null) {
+      if (clickedItem.getType() == XMaterial.BLACK_STAINED_GLASS_PANE.parseMaterial()) {
         return;
       }
+
+      player.closeInventory();
+
+      ItemMeta itemMeta = clickedItem.getItemMeta();
+      String itemName = itemMeta.getDisplayName();
+
+      Kit kitSelected = Enums.getIfPresent(Kit.class, ChatColor.stripColor(itemName).toUpperCase()).orNull();
+
+      if (kitSelected != null && !kitSelected.isOwnedBy(player)) {
+        MenuUtils.showConfirmUnlockClass(player, kitSelected);
+      } else {
+        player.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_ALREADY_HAVE_CLASS"));
+      }
+
+    }
+  }
+
+  @EventHandler
+  public void onConfirmUnlock(InventoryClickEvent e) {
+    Player player = (Player) e.getWhoClicked();
+    InventoryView view = e.getView();
+    Inventory inventory = e.getClickedInventory();
+
+    if (view.getTitle().equals(Translator.getColoredString("GAME.CONFIRM_UNLOCK"))) {
+      ItemStack clickedItem = e.getCurrentItem();
+
+      if (clickedItem == null || clickedItem.getType() == Material.AIR) {
+        return;
+      }
+
       e.setCancelled(true);
 
       if (e.getCurrentItem().getType() == Material.EMERALD_BLOCK || e.getCurrentItem().getType() == Material.REDSTONE_BLOCK) {
 
         player.closeInventory();
 
-        String name = e.getClickedInventory().getItem(4).getItemMeta().getDisplayName();
+        String name = inventory.getItem(4).getItemMeta().getDisplayName();
 
         if (e.getCurrentItem().getType() == Material.REDSTONE_BLOCK) {
           return;
@@ -173,18 +218,10 @@ public class InventoryListener implements Listener {
           String classUnlocked = Translator.getColoredString("GAME.PLAYER_UNLOCK_CLASS");
           player.sendMessage(Translator.getPrefix() + " " + classUnlocked.replace("%CLASS%", name));
         } else {
-          player.sendMessage(Translator.getPrefix() + " " + Translator.getColoredString("GAME.PLAYER_DONT_HAVE_REQUIRED_MONEY"));
+          player.sendMessage(Translator.getPrefix() + " " + Translator.getColoredString("INFO.PLAYER_DONT_HAVE_REQUIRED_MONEY"));
         }
 
       }
-    }
-
-  }
-
-  @EventHandler
-  public void ItemMoveEvent(InventoryMoveItemEvent event) {
-    if (event.getInitiator().getName().startsWith(Translator.getColoredString("GAME.CONFIRM_UNLOCK"))) {
-      event.setCancelled(true);
     }
   }
 }

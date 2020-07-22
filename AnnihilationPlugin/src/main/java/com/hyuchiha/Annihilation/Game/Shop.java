@@ -2,6 +2,7 @@ package com.hyuchiha.Annihilation.Game;
 
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.GameManager;
+import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
 import org.bukkit.Bukkit;
@@ -17,6 +18,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -54,33 +56,30 @@ public class Shop implements Listener {
     }
   }
 
-
   @EventHandler
   public void onShopInventoryClick(InventoryClickEvent e) {
     Player buyer = (Player) e.getWhoClicked();
-    if (e.getInventory().getName().equals(this.name + " Shop")) {
+    GamePlayer gPlayer = PlayerManager.getGamePlayer(buyer);
+    InventoryView view = e.getView();
+
+    if (view.getTitle().equals(name + " Shop")) {
       int slot = e.getRawSlot();
       if (slot < e.getInventory().getSize() && slot >= 0) {
-        if (slot < this.items.size() && this.items.get(slot) != null) {
-          if (this.name.equals("Brewing") && GameManager.getCurrentGame().getPhase() >= 3) {
-            sellItem(buyer, this.items.get(slot));
-          } else if (this.name.equals("Weapon")) {
-            sellItem(buyer, this.items.get(slot));
+
+        if (slot < items.size() && items.get(slot) != null) {
+          if (name.equals("Brewing") && GameManager.getCurrentGame().getPhase() >= 3) {
+            sellItem(buyer, items.get(slot));
+          } else if (name.equals("Weapon")) {
+            sellItem(buyer, items.get(slot));
           }
         }
 
         e.setCancelled(true);
+
       }
       buyer.updateInventory();
       e.setCancelled(true);
-    }
-  }
-
-  @EventHandler
-  public void ItemMoveEvent(InventoryMoveItemEvent event) {
-    Inventory inv = event.getSource();
-    if (inv.getName().equals(this.name + " Shop")) {
-      event.setCancelled(true);
+      buyer.closeInventory();
     }
   }
 

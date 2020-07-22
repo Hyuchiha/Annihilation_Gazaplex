@@ -16,6 +16,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -46,41 +47,6 @@ public class EnderChestListener implements Listener {
   }
 
   @EventHandler
-  public void ItemMoveEvent(InventoryMoveItemEvent event) {
-    Inventory inv = event.getInitiator();
-
-    if (inv != null && inv.getTitle() != null && !inv.getTitle().contains("Endechest")) {
-      return;
-    }
-
-    ItemStack material = event.getItem();
-    if (material == null) {
-      event.setCancelled(true);
-      return;
-    }
-
-    if (event.getItem().getType() == XMaterial.BLACK_STAINED_GLASS_PANE.parseMaterial()) {
-      event.setCancelled(true);
-
-      return;
-    }
-    ItemMeta meta = material.getItemMeta();
-
-    if (meta != null) {
-
-      String displayName = meta.getDisplayName();
-
-
-      if (displayName.equals(ChatColor.GOLD + "Slot disponible para el rango Gold") || displayName
-          .equals(ChatColor.GRAY + "Slot disponible para el rango Silver") || displayName
-          .equals(ChatColor.RED + "Slot disponible para el rango Bronze")) {
-        event.setCancelled(true);
-      }
-    }
-  }
-
-
-  @EventHandler
   public void onEnderChestBreak(BlockBreakEvent e) {
     if (EnderChestManager.isEnderChestBlock(e.getBlock().getLocation())) {
       e.setCancelled(true);
@@ -89,35 +55,31 @@ public class EnderChestListener implements Listener {
 
   @EventHandler
   public void enderInteract(InventoryClickEvent e) {
-    Inventory inv = e.getInventory();
     Player player = (Player) e.getWhoClicked();
+    InventoryView view = e.getView();
+    Inventory inv = e.getClickedInventory();
 
-    ItemStack interactedItem = e.getCurrentItem();
+    if (view.getTitle().contains("Enderchest")) {
+      ItemStack clickedItem = e.getCurrentItem();
 
-    if (interactedItem == null) {
-      return;
-    }
+      if (clickedItem == null || clickedItem.getType() == Material.AIR) {
+        return;
+      }
 
-    if (interactedItem.getType() == XMaterial.BLACK_STAINED_GLASS_PANE.parseMaterial() || interactedItem.getType() == null) {
-      e.setCancelled(true);
+      if (clickedItem.getType() == XMaterial.BLACK_STAINED_GLASS_PANE.parseMaterial()) {
+        e.setCancelled(true);
+        return;
+      }
 
-      return;
-    }
-    if (inv == null || inv.getTitle() == null) {
-      return;
-    }
-
-    if (inv.getTitle().contains("Enderchest")) {
-      ItemMeta name = interactedItem.getItemMeta();
-
+      ItemMeta name = clickedItem.getItemMeta();
       //TODO translate
-      if (name != null &&
-          name.hasDisplayName()) {
+      if (name != null && name.hasDisplayName()) {
         if (name.getDisplayName().equals(ChatColor.GOLD + "Slot disponible para el rango Gold")
             || name.getDisplayName().equals(ChatColor.GRAY + "Slot disponible para el rango Silver")
             || name.getDisplayName().equals(ChatColor.RED + "Slot disponible para el rango Bronze"))
           e.setCancelled(true);
       }
     }
+
   }
 }

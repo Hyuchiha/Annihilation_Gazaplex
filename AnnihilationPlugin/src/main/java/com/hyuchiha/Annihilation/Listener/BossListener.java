@@ -25,6 +25,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
+import org.inventivetalent.reflection.minecraft.Minecraft;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -265,8 +266,9 @@ public class BossListener implements Listener {
     if (BossManager.hasBossConfig()) {
       World bossWorld = BossManager.getBoss().getBossSpawn().getWorld();
 
-      if (bossWorld.getName().equals(chunkWorld.getName())) {
-        event.setCancelled(true);
+      if (bossWorld.getName().equals(chunkWorld.getName()) && Minecraft.Version.getVersion().olderThan(Minecraft.Version.v1_13_R1)) {
+        // TODO uncomment in future
+        // event.setCancelled(true);
       }
     }
 
