@@ -4,9 +4,14 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Maps;
 import net.minecraft.server.v1_13_R2.EntityTypes;
+import net.minecraft.server.v1_13_R2.IRegistry;
 import net.minecraft.server.v1_13_R2.MinecraftKey;
 import net.minecraft.server.v1_13_R2.RegistryMaterials;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
@@ -14,13 +19,46 @@ import java.util.Set;
 
 @SuppressWarnings("rawtypes")
 public class CustomEntityRegistry extends RegistryMaterials {
+
+  private static CustomEntityRegistry instance = null;
+
   private final BiMap<MinecraftKey, EntityTypes> entities = HashBiMap.create();
   private final BiMap<EntityTypes, MinecraftKey> entityClasses = this.entities.inverse();
   private final Map<EntityTypes, Integer> entityIds = Maps.newHashMap();
+
   private final RegistryMaterials<EntityTypes<?>> wrapped;
 
   public CustomEntityRegistry(RegistryMaterials<EntityTypes<?>> original) {
     this.wrapped = original;
+  }
+
+  public static CustomEntityRegistry getInstance() {
+    if (instance != null) {
+      return instance;
+    }
+
+    try {
+      Field registryMaterialsField = IRegistry.class.getDeclaredField("ENTITY_TYPE");
+      registryMaterialsField.setAccessible(true);
+
+      MethodHandle registryMaterialsSetter = MethodHandles.lookup().unreflectSetter(registryMaterialsField);
+
+      Field modifiersField = Field.class.getDeclaredField("modifiers");
+      modifiersField.setAccessible(true);
+      modifiersField.setInt(registryMaterialsField, registryMaterialsField.getModifiers() & ~Modifier.FINAL);
+
+      instance = new CustomEntityRegistry((RegistryMaterials<EntityTypes<?>>) registryMaterialsField.get(null));
+
+      registryMaterialsSetter.invoke(instance);
+    } catch (Exception e) {
+      instance = null;
+
+      throw new RuntimeException("Unable to override the old entity RegistryMaterials", e);
+    } catch (Throwable throwable) {
+      throw new RuntimeException("Error trying to set EntityRegistry");
+    }
+
+    return instance;
   }
 
   @Override
