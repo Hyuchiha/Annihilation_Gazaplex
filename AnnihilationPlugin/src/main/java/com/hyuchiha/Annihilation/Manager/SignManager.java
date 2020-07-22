@@ -3,6 +3,7 @@ package com.hyuchiha.Annihilation.Manager;
 import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Messages.Translator;
+import com.hyuchiha.Annihilation.Utils.GameUtils;
 import com.hyuchiha.Annihilation.Utils.LocationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -40,8 +41,7 @@ public class SignManager {
     if (b == null) {
       return;
     }
-    Material m = b.getType();
-    if (m == Material.SIGN_POST || m == Material.WALL_SIGN) {
+    if (GameUtils.isWallSign(b)) {
       signs.get(team).add(loc);
       updateIndividualSign(team);
     }
@@ -64,8 +64,7 @@ public class SignManager {
         return;
       }
 
-      Material m = b.getType();
-      if (m == Material.SIGN_POST || m == Material.WALL_SIGN) {
+      if (GameUtils.isWallSign(b)) {
         Sign s = (Sign) b.getState();
         s.setLine(0, ChatColor.DARK_PURPLE + "[" + Translator.getString("COMMONS.TEAM") + ChatColor.DARK_PURPLE + "]");
         s.setLine(1, t.coloredName());

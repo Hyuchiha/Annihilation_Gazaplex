@@ -1,6 +1,7 @@
 package com.hyuchiha.Annihilation.Manager;
 
 import com.hyuchiha.Annihilation.Game.GameTeam;
+import com.hyuchiha.Annihilation.Utils.GameUtils;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -59,10 +60,10 @@ public class EnderChestManager {
   }
 
   private static Inventory formatInventory(Inventory inventory, Player owner) {
-    ItemStack glass = new ItemStack(Material.STAINED_GLASS_PANE, 1, DyeColor.BLACK.getDyeData());
-    ItemMeta metaglass = glass.getItemMeta();
-    metaglass.setDisplayName(ChatColor.BLACK + "");
-    glass.setItemMeta(metaglass);
+    ItemStack glass = GameUtils.getDyeGlassPane(DyeColor.BLACK);
+    ItemMeta metaGlass = glass.getItemMeta();
+    metaGlass.setDisplayName(ChatColor.BLACK + "");
+    glass.setItemMeta(metaGlass);
 
     for (int i = 0; i < 45; i++) {
       inventory.setItem(i, glass);

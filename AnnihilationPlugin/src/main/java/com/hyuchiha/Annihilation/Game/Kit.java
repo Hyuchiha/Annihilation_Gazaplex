@@ -4,6 +4,7 @@ import com.hyuchiha.Annihilation.Database.Base.Account;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
 import com.hyuchiha.Annihilation.Kits.Implementations.*;
 import com.hyuchiha.Annihilation.Main;
+import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
@@ -14,21 +15,21 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.HashMap;
 
 public enum Kit {
-  CIVILIAN("CIVILIAN", Material.WORKBENCH),
-  ACROBAT("ACROBAT", Material.FEATHER),
-  ALCHEMIST("ALCHEMIST", Material.BREWING_STAND_ITEM),
-  ARCHER("ARCHER", Material.BOW),
-  BERSERKER("BERSERKER", Material.CHAINMAIL_CHESTPLATE),
-  BLOODMAGE("BLOODMAGE", Material.RECORD_3),
-  BUILDER("BUILDER", Material.CLAY_BRICK),
-  DEFENDER("DEFENDER", Material.SHIELD),
-  ENCHANTER("ENCHANTER", Material.ENCHANTMENT_TABLE),
-  MINER("MINER", Material.STONE_PICKAXE),
-  PYRO("PYRO", Material.FLINT_AND_STEEL),
-  SCORPIO("SCORPIO", Material.NETHER_STAR),
-  TRANSPORTER("TRANSPORTER", Material.QUARTZ),
-  VAMPIRE("VAMPIRE", Material.REDSTONE),
-  WARRIOR("WARRIOR", Material.STONE_SWORD);
+  CIVILIAN("CIVILIAN", XMaterial.CRAFTING_TABLE.parseMaterial()),
+  ACROBAT("ACROBAT", XMaterial.FEATHER.parseMaterial()),
+  ALCHEMIST("ALCHEMIST", XMaterial.BREWING_STAND.parseMaterial()),
+  ARCHER("ARCHER", XMaterial.BOW.parseMaterial()),
+  BERSERKER("BERSERKER", XMaterial.CHAINMAIL_CHESTPLATE.parseMaterial()),
+  BLOODMAGE("BLOODMAGE", XMaterial.MUSIC_DISC_BLOCKS.parseMaterial()),
+  BUILDER("BUILDER", XMaterial.BRICK.parseMaterial()),
+  DEFENDER("DEFENDER", XMaterial.SHIELD.parseMaterial()),
+  ENCHANTER("ENCHANTER", XMaterial.ENCHANTING_TABLE.parseMaterial()),
+  MINER("MINER", XMaterial.STONE_PICKAXE.parseMaterial()),
+  PYRO("PYRO", XMaterial.FLINT_AND_STEEL.parseMaterial()),
+  SCORPIO("SCORPIO", XMaterial.NETHER_STAR.parseMaterial()),
+  TRANSPORTER("TRANSPORTER", XMaterial.QUARTZ.parseMaterial()),
+  VAMPIRE("VAMPIRE", XMaterial.REDSTONE.parseMaterial()),
+  WARRIOR("WARRIOR", XMaterial.STONE_SWORD.parseMaterial());
 
   private HashMap<String, BaseKit> kits = new HashMap<>();
 

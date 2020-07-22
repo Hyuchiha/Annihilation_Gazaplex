@@ -9,6 +9,7 @@ import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Object.HookTracer;
 import com.hyuchiha.Annihilation.Utils.KitUtils;
 import com.hyuchiha.Annihilation.Utils.TimersUtils;
+import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -29,9 +30,9 @@ public class Scorpio extends BaseKit {
 
   @Override
   protected void setupSpawnItems() {
-    spawnItems.add(new ItemStack(Material.STONE_SWORD));
-    spawnItems.add(new ItemStack(Material.WOOD_PICKAXE));
-    spawnItems.add(new ItemStack(Material.WOOD_AXE));
+    spawnItems.add(XMaterial.STONE_SWORD.parseItem());
+    spawnItems.add(XMaterial.WOODEN_PICKAXE.parseItem());
+    spawnItems.add(XMaterial.WOODEN_AXE.parseItem());
 
     ItemStack star = new ItemStack(Material.NETHER_STAR);
     ItemMeta meta = star.getItemMeta();

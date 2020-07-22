@@ -3,9 +3,11 @@ package com.hyuchiha.Annihilation.Game;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
+import com.hyuchiha.Annihilation.Utils.GameUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
@@ -39,8 +41,8 @@ public class Shop implements Listener {
   @EventHandler
   public void onSignClick(PlayerInteractEvent e) {
     if (e.getClickedBlock() != null) {
-      Material type = e.getClickedBlock().getType();
-      if (type == Material.WALL_SIGN || type == Material.SIGN_POST) {
+      Block block = e.getClickedBlock();
+      if (GameUtils.isWallSign(block)) {
         Sign sign = (Sign) e.getClickedBlock().getState();
         String line0 = sign.getLine(0);
         String line1 = sign.getLine(1);

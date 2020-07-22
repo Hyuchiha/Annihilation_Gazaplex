@@ -21,7 +21,7 @@ public class ItemSelectorUtils {
   }
 
   public static void giveTeamSelector(Player player) {
-    ItemStack teamSelector = new ItemStack(Material.WOOL, 1, (short) 0, DyeColor.WHITE.getWoolData());
+    ItemStack teamSelector = XMaterial.WHITE_WOOL.parseItem();
     ItemMeta itemMeta = teamSelector.getItemMeta();
     itemMeta.setDisplayName(Translator.getColoredString("GAME.CLICK_TO_CHOOSE_TEAM"));
     teamSelector.setItemMeta(itemMeta);
@@ -29,7 +29,7 @@ public class ItemSelectorUtils {
   }
 
   public static void giveLobbyReturnItem(Player player) {
-    ItemStack lobbySelector = new ItemStack(Material.BED);
+    ItemStack lobbySelector = XMaterial.RED_BED.parseItem();
     ItemMeta itemMeta = lobbySelector.getItemMeta();
     itemMeta.setDisplayName(Translator.getColoredString("GAME.CLICK_TO_RETURN_LOBBY"));
     lobbySelector.setItemMeta(itemMeta);

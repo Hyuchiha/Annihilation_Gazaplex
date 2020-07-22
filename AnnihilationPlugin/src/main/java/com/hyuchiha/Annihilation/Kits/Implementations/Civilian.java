@@ -1,6 +1,7 @@
 package com.hyuchiha.Annihilation.Kits.Implementations;
 
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
+import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -14,11 +15,11 @@ public class Civilian extends BaseKit {
 
   @Override
   protected void setupSpawnItems() {
-    spawnItems.add(new ItemStack(Material.WOOD_SWORD));
-    spawnItems.add(new ItemStack(Material.WOOD_PICKAXE));
-    spawnItems.add(new ItemStack(Material.WOOD_AXE));
-    spawnItems.add(new ItemStack(Material.WOOD_SPADE));
-    spawnItems.add(new ItemStack(Material.WORKBENCH));
+    spawnItems.add(XMaterial.WOODEN_SWORD.parseItem());
+    spawnItems.add(XMaterial.WOODEN_PICKAXE.parseItem());
+    spawnItems.add(XMaterial.WOODEN_AXE.parseItem());
+    spawnItems.add(XMaterial.WOODEN_SHOVEL.parseItem());
+    spawnItems.add(XMaterial.CRAFTING_TABLE.parseItem());
   }
 
   @Override

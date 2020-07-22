@@ -9,6 +9,7 @@ import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
 import com.hyuchiha.Annihilation.Utils.LocationUtils;
+import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -108,12 +109,23 @@ public class BlockListener implements Listener {
   }
 
   private boolean permittedBreak(Material material) {
-    switch (material) {
-      case ENDER_STONE:
-      case MELON_BLOCK:
-      case LOG:
-      case LOG_2:
-      case QUARTZ_ORE:
+    XMaterial parsedMaterialType = XMaterial.matchXMaterial(material);
+    switch (parsedMaterialType) {
+      case END_STONE:
+      case MELON:
+      case ACACIA_LOG:
+      case BIRCH_LOG:
+      case DARK_OAK_LOG:
+      case JUNGLE_LOG:
+      case OAK_LOG:
+      case SPRUCE_LOG:
+      case STRIPPED_ACACIA_LOG:
+      case STRIPPED_BIRCH_LOG:
+      case STRIPPED_DARK_OAK_LOG:
+      case STRIPPED_JUNGLE_LOG:
+      case STRIPPED_OAK_LOG:
+      case STRIPPED_SPRUCE_LOG:
+      case NETHER_QUARTZ_ORE:
         return true;
     }
     return false;

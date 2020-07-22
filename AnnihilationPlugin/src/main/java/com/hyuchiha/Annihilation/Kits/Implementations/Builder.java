@@ -5,11 +5,9 @@ import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
-import com.hyuchiha.Annihilation.Utils.GameUtils;
-import com.hyuchiha.Annihilation.Utils.KitUtils;
-import com.hyuchiha.Annihilation.Utils.LocationUtils;
-import com.hyuchiha.Annihilation.Utils.TimersUtils;
+import com.hyuchiha.Annihilation.Utils.*;
 import org.bukkit.*;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -48,23 +46,23 @@ public class Builder extends BaseKit {
 
   private void fillDrops() {
     drops.add(new ItemStack(Material.GLASS, 20));
-    drops.add(new ItemStack(Material.SPRUCE_WOOD_STAIRS, 20));
-    drops.add(new ItemStack(Material.WOOD, 70));
+    drops.add(new ItemStack(XMaterial.SPRUCE_STAIRS.parseMaterial(), 20));
+    drops.add(new ItemStack(XMaterial.BIRCH_PLANKS.parseMaterial(), 70));
     drops.add(new ItemStack(Material.SPRUCE_FENCE, 10));
     drops.add(new ItemStack(Material.TORCH, 5));
     drops.add(new ItemStack(Material.BRICK, 40));
     drops.add(new ItemStack(Material.STONE, 50));
-    drops.add(new ItemStack(Material.WOOL, 30));
+    drops.add(new ItemStack(XMaterial.WHITE_WOOL.parseMaterial(), 30));
     drops.add(new ItemStack(Material.DIRT, 60));
-    drops.add(new ItemStack(Material.IRON_FENCE, 10));
+    drops.add(new ItemStack(XMaterial.IRON_BARS.parseMaterial(), 10));
   }
 
   @Override
   protected void setupSpawnItems() {
-    spawnItems.add(new ItemStack(Material.WOOD_SWORD));
-    spawnItems.add(new ItemStack(Material.WOOD_PICKAXE));
-    spawnItems.add(new ItemStack(Material.WOOD_AXE));
-    spawnItems.add(new ItemStack(Material.WOOD_SPADE));
+    spawnItems.add(XMaterial.WOODEN_SWORD.parseItem());
+    spawnItems.add(XMaterial.WOODEN_PICKAXE.parseItem());
+    spawnItems.add(XMaterial.WOODEN_AXE.parseItem());
+    spawnItems.add(XMaterial.WOODEN_SHOVEL.parseItem());
 
     ItemStack book = new ItemStack(Material.BOOK, 1);
     ItemMeta bookMeta = book.getItemMeta();

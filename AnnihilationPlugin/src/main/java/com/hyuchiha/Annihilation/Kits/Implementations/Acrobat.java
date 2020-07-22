@@ -8,6 +8,7 @@ import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.TimersUtils;
+import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -34,9 +35,9 @@ public class Acrobat extends BaseKit {
 
   @Override
   protected void setupSpawnItems() {
-    spawnItems.add(new ItemStack(Material.WOOD_SWORD));
-    spawnItems.add(new ItemStack(Material.WOOD_PICKAXE));
-    spawnItems.add(new ItemStack(Material.WOOD_AXE));
+    spawnItems.add(XMaterial.WOODEN_SWORD.parseItem());
+    spawnItems.add(XMaterial.WOODEN_PICKAXE.parseItem());
+    spawnItems.add(XMaterial.WOODEN_AXE.parseItem());
 
     spawnItems.add(new ItemStack(Material.BOW));
     spawnItems.add(new ItemStack(Material.ARROW, 6));

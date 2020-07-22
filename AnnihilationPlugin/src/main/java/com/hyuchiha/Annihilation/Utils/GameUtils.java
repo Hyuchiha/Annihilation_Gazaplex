@@ -10,6 +10,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.WallSign;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -41,9 +43,19 @@ public class GameUtils {
     return false;
   }
 
+  public static boolean isWallSign(Block block) {
+    BlockData data = block.getBlockData();
+    return data instanceof Sign || data instanceof WallSign;
+  }
+
+  public static ItemStack getDyeGlassPane(DyeColor color) {
+    String name = color.name().toUpperCase() + "_STAINED_GLASS_PANE";
+    return XMaterial.valueOf(name).parseItem();
+  }
+
   public static void playSounds(Player p) {
     for (int i = 0; i < 4; i++) {
-      p.playSound(p.getLocation(), Sound.BLOCK_NOTE_PLING, i, i);
+      p.playSound(p.getLocation(), Sound.NOTE_PLING.bukkitSound(), i, i);
     }
   }
 
@@ -159,7 +171,7 @@ public class GameUtils {
   }
 
   public static ItemStack getDyeColor(DyeColor color) {
-    ItemStack stack = new ItemStack(Material.INK_SACK);
+    ItemStack stack = XMaterial.INK_SAC.parseItem();
     Dye dye = new Dye();
     dye.setColor(color);
     ItemStack tempStack = dye.toItemStack();
@@ -169,7 +181,7 @@ public class GameUtils {
   }
 
   public static ItemStack getPlayerHead(String playerName) {
-    ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
+    ItemStack head = XMaterial.PLAYER_HEAD.parseItem();
     SkullMeta meta = (SkullMeta) head.getItemMeta();
     meta.setOwner(playerName);
     head.setItemMeta(meta);

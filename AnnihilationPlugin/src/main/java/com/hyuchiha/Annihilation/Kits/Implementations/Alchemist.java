@@ -8,6 +8,7 @@ import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.KitUtils;
 import com.hyuchiha.Annihilation.Utils.TimersUtils;
+import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -48,43 +49,43 @@ public class Alchemist extends BaseKit {
   private void fillDrops() {
     // 32% drops
     List<ItemStack> drops32 = new ArrayList<>();
-    drops32.add(new ItemStack(Material.FERMENTED_SPIDER_EYE));
-    drops32.add(new ItemStack(Material.NETHER_WARTS));
+    drops32.add(XMaterial.FERMENTED_SPIDER_EYE.parseItem());
+    drops32.add(XMaterial.NETHER_WART.parseItem());
     drops.put(32, drops32);
 
     // 28% drops
     List<ItemStack> drop28 = new ArrayList<>();
-    drop28.add(new ItemStack(Material.SPECKLED_MELON));
-    drop28.add(new ItemStack(Material.GOLDEN_CARROT));
-    drop28.add(new ItemStack(Material.SUGAR));
-    drop28.add(new ItemStack(Material.SPIDER_EYE));
-    drop28.add(new ItemStack(Material.MAGMA_CREAM));
+    drop28.add(XMaterial.GLISTERING_MELON_SLICE.parseItem());
+    drop28.add(XMaterial.GOLDEN_CARROT.parseItem());
+    drop28.add(XMaterial.SUGAR.parseItem());
+    drop28.add(XMaterial.SPIDER_EYE.parseItem());
+    drop28.add(XMaterial.MAGMA_CREAM.parseItem());
     drops.put(28, drop28);
 
     // 15% drops
     List<ItemStack> drop15 = new ArrayList<>();
-    drop15.add(new ItemStack(Material.GLOWSTONE_DUST));
-    drop15.add(new ItemStack(Material.GOLDEN_CARROT));
-    drop15.add(new ItemStack(Material.GOLDEN_APPLE));
+    drop15.add(XMaterial.GLOWSTONE_DUST.parseItem());
+    drop15.add(XMaterial.GOLDEN_CARROT.parseItem());
+    drop15.add(XMaterial.GOLDEN_APPLE.parseItem());
     drops.put(15, drop15);
 
     // 15% drops (bad drops)
     List<ItemStack> drop15Bad = new ArrayList<>();
-    drop15Bad.add(new ItemStack(Material.ROTTEN_FLESH));
-    drop15Bad.add(new ItemStack(Material.POISONOUS_POTATO));
-    drop15Bad.add(new ItemStack(Material.SNOW_BALL));
-    drop15Bad.add(new ItemStack(Material.STRING));
+    drop15Bad.add(XMaterial.ROTTEN_FLESH.parseItem());
+    drop15Bad.add(XMaterial.POISONOUS_POTATO.parseItem());
+    drop15Bad.add(XMaterial.SNOWBALL.parseItem());
+    drop15Bad.add(XMaterial.STRING.parseItem());
     drops.put(-15, drop15Bad);
 
     // 7% drops
     List<ItemStack> drop7 = new ArrayList<>();
-    drop7.add(new ItemStack(Material.GHAST_TEAR));
+    drop7.add(XMaterial.GHAST_TEAR.parseItem());
     drops.put(7, drop7);
 
     // 3% drops
     List<ItemStack> drop3 = new ArrayList<>();
-    drop3.add(new ItemStack(Material.BLAZE_POWDER));
-    drop3.add(new ItemStack(Material.SULPHUR));
+    drop3.add(XMaterial.BLAZE_POWDER.parseItem());
+    drop3.add(XMaterial.GUNPOWDER.parseItem());
     drops.put(3, drop3);
 
   }
@@ -101,13 +102,13 @@ public class Alchemist extends BaseKit {
 
   @Override
   protected void setupSpawnItems() {
-    spawnItems.add(new ItemStack(Material.WOOD_SWORD));
-    spawnItems.add(new ItemStack(Material.WOOD_PICKAXE));
-    spawnItems.add(new ItemStack(Material.WOOD_AXE));
+    spawnItems.add(XMaterial.WOODEN_SWORD.parseItem());
+    spawnItems.add(XMaterial.WOODEN_PICKAXE.parseItem());
+    spawnItems.add(XMaterial.WOODEN_AXE.parseItem());
 
-    spawnItems.add(new ItemStack(Material.BREWING_STAND_ITEM));
+    spawnItems.add(XMaterial.BREWING_STAND.parseItem());
 
-    ItemStack book = new ItemStack(Material.ENCHANTED_BOOK);
+    ItemStack book = XMaterial.ENCHANTED_BOOK.parseItem();
     ItemMeta bookMeta = book.getItemMeta();
     bookMeta.setDisplayName(Translator.getColoredString("KITS.ALCHEMIST_BOOK"));
     book.setItemMeta(bookMeta);

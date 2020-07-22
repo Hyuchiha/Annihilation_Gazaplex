@@ -27,7 +27,7 @@ public enum CustomEntityType implements EntityType {
   }
 
   public void addToMaps(Class clazz, String name, int id) {
-    // TODO look the way to register entities in 1.13
+    CustomEntityRegistry.registerCustomEntity(id, name, clazz);
   }
 
   public Entity getEntity(CustomEntityType entity, World world) {

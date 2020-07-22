@@ -8,6 +8,7 @@ import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Utils.KitUtils;
 import com.hyuchiha.Annihilation.Utils.TimersUtils;
+import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -42,9 +43,9 @@ public class Pyro extends BaseKit {
 
   @Override
   protected void setupSpawnItems() {
-    spawnItems.add(new ItemStack(Material.STONE_SWORD));
-    spawnItems.add(new ItemStack(Material.WOOD_PICKAXE));
-    spawnItems.add(new ItemStack(Material.WOOD_AXE));
+    spawnItems.add(XMaterial.STONE_SWORD.parseItem());
+    spawnItems.add(XMaterial.WOODEN_PICKAXE.parseItem());
+    spawnItems.add(XMaterial.WOODEN_AXE.parseItem());
 
     ItemStack potion = new ItemStack(Material.POTION, 1);
     PotionMeta meta = (PotionMeta) potion.getItemMeta();
@@ -52,7 +53,8 @@ public class Pyro extends BaseKit {
     potion.setItemMeta(meta);
     spawnItems.add(potion);
 
-    ItemStack flameItem = new ItemStack(Material.FIREBALL);
+    ItemStack flameItem = XMaterial.FIRE_CHARGE.parseItem();
+    assert flameItem != null;
     ItemMeta itemMeta = flameItem.getItemMeta();
     itemMeta.setDisplayName(Translator.getColoredString("KITS.PYRO_ITEM"));
     flameItem.setItemMeta(itemMeta);

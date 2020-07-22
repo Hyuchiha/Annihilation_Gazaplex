@@ -12,6 +12,7 @@ import com.hyuchiha.Annihilation.Manager.VotingManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
 import com.hyuchiha.Annihilation.Utils.MenuUtils;
+import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -152,7 +153,9 @@ public class PlayerListener implements Listener {
     if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
       ItemStack handItem = player.getInventory().getItemInMainHand();
       if (handItem != null) {
-        switch (handItem.getType()) {
+        XMaterial type = XMaterial.matchXMaterial(handItem);
+
+        switch (type) {
           case PAPER:
             if (handItem.getItemMeta().hasDisplayName() &&
                 handItem.getItemMeta().getDisplayName().contains(Translator.getColoredString("GAME.CLICK_TO_VOTE_MAP"))) {
@@ -167,7 +170,7 @@ public class PlayerListener implements Listener {
             break;
 
 
-          case WOOL:
+          case WHITE_WOOL:
             if (handItem.getItemMeta().hasDisplayName() &&
                 handItem.getItemMeta().getDisplayName().contains(Translator.getColoredString("GAME.CLICK_TO_CHOOSE_TEAM"))) {
               e.setCancelled(true);
@@ -176,7 +179,7 @@ public class PlayerListener implements Listener {
             }
             break;
 
-          case BED:
+          case RED_BED:
             if (handItem.getItemMeta().hasDisplayName() &&
                 handItem.getItemMeta().getDisplayName().contains(Translator.getColoredString("GAME.CLICK_TO_RETURN_LOBBY"))) {
               e.setCancelled(true);
@@ -259,7 +262,7 @@ public class PlayerListener implements Listener {
     if (e.isCancelled()) {
       return;
     }
-    if ((b.getType() == Material.WORKBENCH || b.getType() == Material.ANVIL) && b.getType().isBlock() &&
+    if ((b.getType() == XMaterial.CRAFTING_TABLE.parseMaterial() || b.getType() == Material.ANVIL) && b.getType().isBlock() &&
         GameManager.getCurrentGame().isInGame() && !GameManager.getCurrentGame().getCrafting().containsKey(((Player) player1).getName())) {
       GameManager.getCurrentGame().getCrafting().put(((Player) player1).getName(), b);
     }

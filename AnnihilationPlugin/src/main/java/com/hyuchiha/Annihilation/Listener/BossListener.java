@@ -11,6 +11,7 @@ import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.FireworkUtils;
 import com.hyuchiha.Annihilation.Utils.ItemSelectorUtils;
+import com.hyuchiha.Annihilation.Utils.Sound;
 import org.bukkit.*;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.*;
@@ -59,12 +60,7 @@ public class BossListener implements Listener {
       if (event.getCause() == EntityDamageEvent.DamageCause.VOID) {
         event.getEntity().remove();
 
-        Bukkit.getScheduler().runTask(plugin, new Runnable() {
-          @Override
-          public void run() {
-            BossManager.spawnBoss();
-          }
-        });
+        Bukkit.getScheduler().runTask(plugin, () -> BossManager.spawnBoss());
       }
     }
   }
@@ -167,20 +163,17 @@ public class BossListener implements Listener {
         event.getPlayer().sendMessage(Translator.getColoredString("BOSS_BEGIN_TELEPORT"));
         playersToTeleport.add(event.getPlayer().getName());
 
-        Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-          @Override
-          public void run() {
-            if (GameManager.hasCurrentGame() && GameManager.getCurrentGame().getTimer().isRunning()) {
-              if (closeToTeleport(location, playerLoc)) {
-                GamePlayer meta = PlayerManager.getGamePlayer(event.getPlayer());
-                Location spawnLocation = BossManager.getTeamSpawn(meta.getTeam());
-                event.getPlayer().teleport(spawnLocation);
-              } else {
-                event.getPlayer().sendMessage(Translator.getColoredString("BOSS_TELEPORT_ERROR"));
-              }
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+          if (GameManager.hasCurrentGame() && GameManager.getCurrentGame().getTimer().isRunning()) {
+            if (closeToTeleport(location, playerLoc)) {
+              GamePlayer meta = PlayerManager.getGamePlayer(event.getPlayer());
+              Location spawnLocation = BossManager.getTeamSpawn(meta.getTeam());
+              event.getPlayer().teleport(spawnLocation);
+            } else {
+              event.getPlayer().sendMessage(Translator.getColoredString("BOSS_TELEPORT_ERROR"));
             }
-            playersToTeleport.remove(event.getPlayer().getName());
           }
+          playersToTeleport.remove(event.getPlayer().getName());
         }, 20L * 5);
         break;
       }
@@ -236,7 +229,7 @@ public class BossListener implements Listener {
         gPlayer.addXp(config.getInt("Exp-boss-kill"));
 
         Location bossLocation = event.getEntity().getLocation();
-        bossLocation.getWorld().playSound(bossLocation, Sound.ENTITY_ENDERDRAGON_DEATH, 1.0F, 0.1F);
+        bossLocation.getWorld().playSound(bossLocation, Sound.ENDERDRAGON_DEATH.bukkitSound(), 1.0F, 0.1F);
 
         FireworkUtils.spawnFirework(
             bossLocation,

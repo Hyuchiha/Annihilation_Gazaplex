@@ -13,6 +13,8 @@ import com.hyuchiha.Annihilation.Object.Teleporter;
 import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
 import com.hyuchiha.Annihilation.Utils.KitUtils;
+import com.hyuchiha.Annihilation.Utils.Sound;
+import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -44,9 +46,9 @@ public class Transporter extends BaseKit {
 
   @Override
   protected void setupSpawnItems() {
-    spawnItems.add(new ItemStack(Material.STONE_SWORD));
-    spawnItems.add(new ItemStack(Material.WOOD_PICKAXE));
-    spawnItems.add(new ItemStack(Material.WOOD_AXE));
+    spawnItems.add(XMaterial.STONE_SWORD.parseItem());
+    spawnItems.add(XMaterial.WOODEN_PICKAXE.parseItem());
+    spawnItems.add(XMaterial.WOODEN_AXE.parseItem());
 
     ItemStack portal = new ItemStack(Material.QUARTZ);
     ItemMeta m = portal.getItemMeta();
@@ -98,7 +100,7 @@ public class Transporter extends BaseKit {
 
     if (event.getAction() == Action.RIGHT_CLICK_BLOCK && player.getGameMode() != GameMode.CREATIVE) {
 
-      if (block.getType() == Material.QUARTZ_ORE) {
+      if (block.getType() == XMaterial.NETHER_QUARTZ_ORE.parseMaterial()) {
         event.setCancelled(true);
         UUID owner = KitUtils.getBlockOwner(block);
         if (owner != null) {
@@ -155,11 +157,11 @@ public class Transporter extends BaseKit {
           }
 
           Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
-            block.setType(Material.QUARTZ_ORE);
+            block.setType(XMaterial.NETHER_QUARTZ_ORE.parseMaterial());
             block.getChunk().unload();
             block.getChunk().load();
             KitUtils.setBlockOwner(block, player.getUniqueId());
-            player.playSound(block.getLocation(), Sound.ENTITY_BLAZE_SHOOT, 1.0F, 1.9F);
+            player.playSound(block.getLocation(), Sound.BLAZE_BREATH.bukkitSound(), 1.0F, 1.9F);
           });
 
           event.setCancelled(true);
@@ -177,7 +179,7 @@ public class Transporter extends BaseKit {
     if (event.isSneaking()) {
       Player player = event.getPlayer();
       Block block = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
-      if (block.getType() == Material.QUARTZ_ORE) {
+      if (block.getType() == XMaterial.NETHER_QUARTZ_ORE.parseMaterial()) {
         UUID owner = KitUtils.getBlockOwner(block);
         if (owner != null) {
           GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
@@ -193,8 +195,8 @@ public class Transporter extends BaseKit {
             loc.setY(loc.getY() + 1.0D);
             player.teleport(Loc.getMiddle(loc));
             loc.getWorld().playEffect(loc, Effect.MOBSPAWNER_FLAMES, 1);
-            tele.getLoc1().toLocation().getWorld().playSound(tele.getLoc1().toLocation(), Sound.ENTITY_ENDERMEN_TELEPORT, 1.0F, (float) Math.random());
-            tele.getLoc2().toLocation().getWorld().playSound(tele.getLoc2().toLocation(), Sound.ENTITY_ENDERMEN_TELEPORT, 1.0F, (float) Math.random());
+            tele.getLoc1().toLocation().getWorld().playSound(tele.getLoc1().toLocation(), Sound.ENDERMAN_TELEPORT.bukkitSound(), 1.0F, (float) Math.random());
+            tele.getLoc2().toLocation().getWorld().playSound(tele.getLoc2().toLocation(), Sound.ENDERMAN_TELEPORT.bukkitSound(), 1.0F, (float) Math.random());
             tele.delay();
             event.setCancelled(true);
           }
@@ -208,7 +210,7 @@ public class Transporter extends BaseKit {
   public void MoveListeners(PlayerMoveEvent event) {
     ///block under your feet
     Block to = event.getTo().getBlock().getRelative(BlockFace.DOWN);
-    if (to.getType() == Material.QUARTZ_ORE) {
+    if (to.getType() == XMaterial.NETHER_QUARTZ_ORE.parseMaterial()) {
       Location x = event.getTo();
       Location y = event.getFrom();
       if (x.getBlockX() != y.getBlockX() || x.getBlockY() != y.getBlockY() || x.getBlockZ() != y.getBlockZ()) {
@@ -229,7 +231,7 @@ public class Transporter extends BaseKit {
   public void TeleporterProtect(BlockBreakEvent event) {
     Player player = event.getPlayer();
     Block block = event.getBlock();
-    if (block.getType() == Material.QUARTZ_ORE) {
+    if (block.getType() == XMaterial.NETHER_QUARTZ_ORE.parseMaterial()) {
       event.setCancelled(true);
       GamePlayer eventPlayer = PlayerManager.getGamePlayer(player);
 
@@ -258,7 +260,8 @@ public class Transporter extends BaseKit {
 
   private boolean canPlace(Material type) {
     //This tells if a transporter block can be placed at this type of block
-    switch (type) {
+    XMaterial parsedType = XMaterial.matchXMaterial(type);
+    switch (parsedType) {
       default:
         return true;
 
@@ -269,15 +272,18 @@ public class Transporter extends BaseKit {
       case FURNACE:
       case DISPENSER:
       case DROPPER:
-      case WORKBENCH:
-      case BURNING_FURNACE:
+      case CRAFTING_TABLE:
       case HOPPER:
       case BEACON:
       case ANVIL:
-      case SIGN_POST:
-      case WALL_SIGN:
-      case ENDER_PORTAL:
-      case QUARTZ_ORE:
+      case SPRUCE_WALL_SIGN:
+      case ACACIA_WALL_SIGN:
+      case BIRCH_WALL_SIGN:
+      case DARK_OAK_WALL_SIGN:
+      case JUNGLE_WALL_SIGN:
+      case OAK_WALL_SIGN:
+      case END_PORTAL:
+      case NETHER_QUARTZ_ORE:
         return false;
     }
   }

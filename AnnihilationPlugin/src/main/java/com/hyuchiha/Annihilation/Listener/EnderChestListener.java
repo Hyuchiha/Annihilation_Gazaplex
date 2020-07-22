@@ -3,6 +3,7 @@ package com.hyuchiha.Annihilation.Listener;
 import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Manager.EnderChestManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
+import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -58,7 +59,7 @@ public class EnderChestListener implements Listener {
       return;
     }
 
-    if (event.getItem().getType() == Material.STAINED_GLASS_PANE) {
+    if (event.getItem().getType() == XMaterial.BLACK_STAINED_GLASS_PANE.parseMaterial()) {
       event.setCancelled(true);
 
       return;
@@ -97,7 +98,7 @@ public class EnderChestListener implements Listener {
       return;
     }
 
-    if (interactedItem.getType() == Material.STAINED_GLASS_PANE || interactedItem.getType() == null) {
+    if (interactedItem.getType() == XMaterial.BLACK_STAINED_GLASS_PANE.parseMaterial() || interactedItem.getType() == null) {
       e.setCancelled(true);
 
       return;

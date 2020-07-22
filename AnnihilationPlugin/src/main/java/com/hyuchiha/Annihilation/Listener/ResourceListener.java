@@ -6,6 +6,7 @@ import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Manager.ResourceManager;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
+import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -48,10 +49,20 @@ public class ResourceListener implements Listener {
     }
 
     if (GameUtils.tooClose(e.getBlock().getLocation())
-        && e.getBlock().getType() != Material.MELON_BLOCK
-        && e.getBlock().getType() != Material.QUARTZ_ORE
-        && e.getBlock().getType() != Material.LOG
-        && e.getBlock().getType() != Material.LOG_2) {
+        && e.getBlock().getType() != XMaterial.MELON.parseMaterial()
+        && e.getBlock().getType() != XMaterial.NETHER_QUARTZ_ORE.parseMaterial()
+        && e.getBlock().getType() != XMaterial.BIRCH_LOG.parseMaterial()
+        && e.getBlock().getType() != XMaterial.JUNGLE_LOG.parseMaterial()
+        && e.getBlock().getType() != XMaterial.OAK_LOG.parseMaterial()
+        && e.getBlock().getType() != XMaterial.SPRUCE_LOG.parseMaterial()
+        && e.getBlock().getType() != XMaterial.ACACIA_LOG.parseMaterial()
+        && e.getBlock().getType() != XMaterial.DARK_OAK_LOG.parseMaterial()
+        && e.getBlock().getType() != XMaterial.STRIPPED_ACACIA_LOG.parseMaterial()
+        && e.getBlock().getType() != XMaterial.STRIPPED_BIRCH_LOG.parseMaterial()
+        && e.getBlock().getType() != XMaterial.STRIPPED_DARK_OAK_LOG.parseMaterial()
+        && e.getBlock().getType() != XMaterial.STRIPPED_JUNGLE_LOG.parseMaterial()
+        && e.getBlock().getType() != XMaterial.STRIPPED_OAK_LOG.parseMaterial()
+        && e.getBlock().getType() != XMaterial.STRIPPED_SPRUCE_LOG.parseMaterial()) {
       e.setCancelled(true);
 
       return;
@@ -60,7 +71,7 @@ public class ResourceListener implements Listener {
     if (ResourceManager.containsResource(e.getBlock().getType())) {
       e.setCancelled(true);
       breakResource(e.getPlayer(), e.getBlock());
-      e.getBlock().getWorld().playEffect(e.getBlock().getLocation(), Effect.STEP_SOUND, e.getBlock().getTypeId());
+      e.getBlock().getWorld().playEffect(e.getBlock().getLocation(), Effect.STEP_SOUND, 1F);
     } else if (this.queue.contains(e.getBlock().getLocation())) {
       e.setCancelled(true);
     }
@@ -87,7 +98,7 @@ public class ResourceListener implements Listener {
         drops = getGravelDrops();
         break;
       case LAPIS_ORE:
-        ItemStack sack = new ItemStack(Material.INK_SACK, 5, (short) 0, (byte) 4);
+        ItemStack sack = new ItemStack(XMaterial.INK_SAC.parseMaterial(), 5, (short) 0, (byte) 4);
         drops = new ItemStack[]{sack};
         break;
       default:
@@ -118,23 +129,32 @@ public class ResourceListener implements Listener {
 
   private void queueRespawn(final Block block) {
     final Material type = block.getType();
-    final byte data = block.getData();
     block.setType(getRespawnMaterial(type));
     this.queue.add(block.getLocation());
 
     this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () -> {
       block.setType(type);
-      block.setData(data);
       ResourceListener.this.queue.remove(block.getLocation());
-      block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, block.getTypeId());
+      block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, 1F);
     }, ResourceManager.getResource(type).getDelay() * 20L);
   }
 
   private Material getRespawnMaterial(Material type) {
-    switch (type) {
-      case LOG:
-      case LOG_2:
-      case MELON_BLOCK:
+    XMaterial materialType = XMaterial.matchXMaterial(type);
+    switch (materialType) {
+      case ACACIA_LOG:
+      case BIRCH_LOG:
+      case JUNGLE_LOG:
+      case OAK_LOG:
+      case SPRUCE_LOG:
+      case DARK_OAK_LOG:
+      case STRIPPED_ACACIA_LOG:
+      case STRIPPED_BIRCH_LOG:
+      case STRIPPED_DARK_OAK_LOG:
+      case STRIPPED_JUNGLE_LOG:
+      case STRIPPED_OAK_LOG:
+      case STRIPPED_SPRUCE_LOG:
+      case MELON:
         return Material.AIR;
     }
     return Material.COBBLESTONE;
@@ -156,11 +176,11 @@ public class ResourceListener implements Listener {
   }
 
   private int getDropQuantity(Material type) {
-    switch (type) {
-      case MELON_BLOCK:
+    XMaterial materialType = XMaterial.matchXMaterial(type);
+    switch (materialType) {
+      case MELON:
         return 3 + rand.nextInt(5);
       case REDSTONE_ORE:
-      case GLOWING_REDSTONE_ORE:
         return 4 + (rand.nextBoolean() ? 1 : 0);
       default:
         return 1;

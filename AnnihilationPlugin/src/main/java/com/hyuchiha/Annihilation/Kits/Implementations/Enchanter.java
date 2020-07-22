@@ -7,6 +7,7 @@ import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
 import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Manager.ResourceManager;
+import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -29,10 +30,13 @@ public class Enchanter extends BaseKit {
 
   @Override
   protected void setupSpawnItems() {
-    spawnItems.add(new ItemStack(Material.GOLD_SWORD));
-    spawnItems.add(new ItemStack(Material.WOOD_PICKAXE));
-    spawnItems.add(new ItemStack(Material.WOOD_AXE));
-    spawnItems.add(new ItemStack(Material.EXP_BOTTLE, 5));
+    spawnItems.add(XMaterial.GOLDEN_SWORD.parseItem());
+    spawnItems.add(XMaterial.WOODEN_PICKAXE.parseItem());
+    spawnItems.add(XMaterial.WOODEN_AXE.parseItem());
+
+    Material expBottleType = XMaterial.EXPERIENCE_BOTTLE.parseMaterial();
+    assert expBottleType != null;
+    spawnItems.add(new ItemStack(expBottleType, 5));
   }
 
   @Override
@@ -73,7 +77,8 @@ public class Enchanter extends BaseKit {
         && gPlayer.getKit() == Kit.ENCHANTER
     ) {
       if (random.nextInt(100) < 25) {
-        player.getInventory().addItem(new ItemStack(Material.EXP_BOTTLE, 1));
+        Material expType = XMaterial.EXPERIENCE_BOTTLE.parseMaterial();
+        player.getInventory().addItem(new ItemStack(expType, 1));
       }
 
     }

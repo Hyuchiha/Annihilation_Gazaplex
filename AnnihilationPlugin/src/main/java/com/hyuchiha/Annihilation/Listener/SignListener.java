@@ -7,6 +7,7 @@ import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Output.Output;
+import com.hyuchiha.Annihilation.Utils.GameUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
@@ -34,8 +35,8 @@ public class SignListener implements Listener {
     Action action = event.getAction();
     if ((action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) &&
         event.getClickedBlock() != null) {
-      Material clickedType = event.getClickedBlock().getType();
-      if (clickedType == Material.SIGN_POST || clickedType == Material.WALL_SIGN) {
+
+      if (GameUtils.isWallSign(event.getClickedBlock())) {
 
         Sign s = (Sign) event.getClickedBlock().getState();
 
@@ -66,8 +67,7 @@ public class SignListener implements Listener {
 
   @EventHandler
   public void onSignBreak(BlockBreakEvent event) {
-    Material clickedType = event.getBlock().getType();
-    if (clickedType == Material.SIGN_POST || clickedType == Material.WALL_SIGN) {
+    if (GameUtils.isWallSign(event.getBlock())) {
 
       Sign s = (Sign) event.getBlock().getState();
 

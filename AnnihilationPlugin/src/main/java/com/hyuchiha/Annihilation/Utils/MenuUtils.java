@@ -213,7 +213,7 @@ public class MenuUtils {
   }
 
   private static void fillInventoryWithGlass(int start, int end, Inventory inv) {
-    ItemStack glass = new ItemStack(Material.STAINED_GLASS_PANE, 1, DyeColor.BLACK.getDyeData());
+    ItemStack glass = GameUtils.getDyeGlassPane(DyeColor.BLACK);
     ItemMeta metaglass = glass.getItemMeta();
     metaglass.setDisplayName(ChatColor.BLACK + "");
     glass.setItemMeta(metaglass);

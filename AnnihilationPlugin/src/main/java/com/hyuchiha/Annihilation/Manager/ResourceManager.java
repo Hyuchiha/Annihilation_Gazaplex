@@ -1,6 +1,7 @@
 package com.hyuchiha.Annihilation.Manager;
 
 import com.hyuchiha.Annihilation.Game.Resource;
+import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
@@ -19,11 +20,23 @@ public class ResourceManager {
     addResource(Material.DIAMOND_ORE, 8, 30);
     addResource(Material.EMERALD_ORE, 8, 40);
     addResource(Material.REDSTONE_ORE, 5, 20);
-    addResource(Material.GLOWING_REDSTONE_ORE, 5, 20);
-    addResource(Material.LOG, 2, 10);
-    addResource(Material.LOG_2, 2, 10);
+    // addResource(Material.GLOWING_REDSTONE_ORE, 5, 20);
+
+    addResource(XMaterial.ACACIA_LOG.parseMaterial(), 2, 10);
+    addResource(XMaterial.BIRCH_LOG.parseMaterial(), 2, 10);
+    addResource(XMaterial.DARK_OAK_LOG.parseMaterial(), 2, 10);
+    addResource(XMaterial.JUNGLE_LOG.parseMaterial(), 2, 10);
+    addResource(XMaterial.OAK_LOG.parseMaterial(), 2, 10);
+    addResource(XMaterial.SPRUCE_LOG.parseMaterial(), 2, 10);
+    addResource(XMaterial.STRIPPED_ACACIA_LOG.parseMaterial(), 2, 10);
+    addResource(XMaterial.STRIPPED_BIRCH_LOG.parseMaterial(), 2, 10);
+    addResource(XMaterial.STRIPPED_DARK_OAK_LOG.parseMaterial(), 2, 10);
+    addResource(XMaterial.STRIPPED_JUNGLE_LOG.parseMaterial(), 2, 10);
+    addResource(XMaterial.STRIPPED_OAK_LOG.parseMaterial(), 2, 10);
+    addResource(XMaterial.STRIPPED_SPRUCE_LOG.parseMaterial(), 2, 10);
+
     addResource(Material.GRAVEL, 2, 20);
-    addResource(Material.MELON_BLOCK, 1, 10);
+    addResource(XMaterial.MELON.parseMaterial(), 1, 10);
     addResource(Material.LAPIS_ORE, 3, 10);
     addResource(Material.PUMPKIN, 1, 10);
   }
@@ -65,17 +78,17 @@ public class ResourceManager {
 
 
   private static Material getDropMaterial(Material type) {
-    switch (type) {
+    XMaterial parsedMaterialType = XMaterial.matchXMaterial(type);
+    switch (parsedMaterialType) {
       case COAL_ORE:
         return Material.COAL;
       case DIAMOND_ORE:
         return Material.DIAMOND;
       case EMERALD_ORE:
         return Material.EMERALD;
-      case GLOWING_REDSTONE_ORE:
       case REDSTONE_ORE:
         return Material.REDSTONE;
-      case MELON_BLOCK:
+      case MELON:
         return Material.MELON;
       case GRAVEL:
         return null;
