@@ -10,14 +10,13 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.type.WallSign;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.Dye;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.inventivetalent.reflection.minecraft.Minecraft;
 
 import java.util.Map;
 
@@ -44,8 +43,17 @@ public class GameUtils {
   }
 
   public static boolean isWallSign(Block block) {
-    BlockData data = block.getBlockData();
-    return data instanceof Sign || data instanceof WallSign;
+    if (Minecraft.Version.getVersion().olderThan(Minecraft.Version.v1_13_R1)) {
+      Material clickedType = block.getType();
+      return  clickedType == XMaterial.ACACIA_WALL_SIGN.parseMaterial()
+          || clickedType == XMaterial.SPRUCE_WALL_SIGN.parseMaterial()
+          || clickedType == XMaterial.BIRCH_WALL_SIGN.parseMaterial()
+          || clickedType == XMaterial.DARK_OAK_WALL_SIGN.parseMaterial()
+          || clickedType == XMaterial.JUNGLE_WALL_SIGN.parseMaterial()
+          || clickedType == XMaterial.OAK_WALL_SIGN.parseMaterial();
+    } else {
+      return BaseUtils.isANewVersionSign(block);
+    }
   }
 
   public static ItemStack getDyeGlassPane(DyeColor color) {

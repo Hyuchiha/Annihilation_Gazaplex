@@ -13,6 +13,7 @@ import com.hyuchiha.Annihilation.Mobs.v1_9_R1.MobCreator_v1_9_R1;
 import com.hyuchiha.Annihilation.Mobs.v1_9_R2.MobCreator_v1_9_R2;
 import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Tasks.BossRespawnTask;
+import com.hyuchiha.Annihilation.Utils.BaseUtils;
 import com.hyuchiha.Annihilation.Utils.ChestUtils;
 import com.hyuchiha.Annihilation.Utils.FireworkUtils;
 import com.hyuchiha.Annihilation.Utils.LocationUtils;
@@ -207,7 +208,7 @@ public class BossManager {
       Bukkit.getWorld(spawn.getWorld().getName()).loadChunk(chunk);
 
       if (!Minecraft.Version.getVersion().olderThan(Minecraft.Version.v1_13_R1)) {
-        chunk.setForceLoaded(true);
+        BaseUtils.forceChunkLoad(chunk);
       }
 
       Wither witherBoss;
