@@ -102,7 +102,7 @@
         <dependency>
             <groupId>xyz.xenondevs</groupId>
             <artifactId>particle</artifactId>
-            <version>1.0</version>
+            <version>1.5.1</version>
         </dependency>
     </dependencies>
 
