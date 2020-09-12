@@ -6,7 +6,7 @@ This repo contains the code base for **Annihilation Plugin** and it was designed
 
 # Features
 - Map Voting System
-- Map restorer on finish
+- Map restore on finish
 - Support for Vault
 - Support for SQLite, MySQL, MongoDB
 - BungeeCord Support
@@ -29,7 +29,7 @@ All the permissions required for running this plugin are listed here:
  - **annihilation.command.switch_kit** command to  switch kit
  - **annihilation.bypass.switch_team** needed if one player can switch team
  - **annihilation.bypass.team_limit** needed if one player can join to a full team
- - **annihilation.bypass.construction** needed if one player can construct and destroy inside the nexus
+ - **annihilation.bypass.construction** needed if one player can build and destroy inside the nexus
  - **annihilation.vip.diamond** for unlock enderchest diamond slots
  - **annihilation.vip.gold** for unlock enderchest gold slots
  - **annihilation.vip.iron** for unlock enderchest iron slots
@@ -38,7 +38,7 @@ All the permissions required for running this plugin are listed here:
 
 ## Commands
 
-This are the command a player can execute in game
+This are the commands a player can execute in game
 
 - **/anni** for view all the commands
 - **/anni start** start the current game
