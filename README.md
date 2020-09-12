@@ -2,7 +2,7 @@
 
 This plugins is inspired by **Annihilation Plugin** from **ShowBow**.
 
-This repo contains the base plugin for **Annihilation** and it was designed for be used in **Gazaplex Network** now becomes an open source hoping it can be used in another servers and be maintained by the community.
+This repo contains the code base for **Annihilation Plugin** and it was designed for **Gazaplex Network**, now becomes an open source hoping it can be used in another servers and be maintained by the community.
 
 # Features
 - Map Voting System
@@ -14,7 +14,7 @@ This repo contains the base plugin for **Annihilation** and it was designed for 
 - Multi-Configurable Arenas
 - Customizable Messages
 - Support for Minecraft 1.9 - 1.14
-- Multiple Kits for players
+- Multiple Kits for players (15)
 - Antinuker protection
 - Stats commands
 - Custom Wither Boss and Witches
@@ -52,9 +52,9 @@ This are the command a player can execute in game
 - **/star** gives a wither star (only for testing)
 
 
-> **Note:** The **Teams** command spect a team with the configured name in messages.yml if you put **Team Red** is called **Rojo** The command would be **/team rojo**
+> **Note:** The **Teams** command requires a team with the configured name in messages.yml if you put **Team Red** is called **Rojo** The command would be **/team rojo**
 > 
 
-## Configurate a map
-At this time the only way to configure a map is adding all the map data to **maps.yml** using the example format and placing the map in the directory called **maps**
+## Configure a map
+For now the only way to configure a map is adding all the map data to **maps.yml** using the example format and placing the map in the directory called **maps**
 
