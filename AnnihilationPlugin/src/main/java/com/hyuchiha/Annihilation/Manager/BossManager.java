@@ -1,5 +1,6 @@
 package com.hyuchiha.Annihilation.Manager;
 
+import com.hyuchiha.Annihilation.Base.*;
 import com.hyuchiha.Annihilation.Game.BossStarItem;
 import com.hyuchiha.Annihilation.Game.GameBoss;
 import com.hyuchiha.Annihilation.Game.GameTeam;
@@ -39,6 +40,7 @@ import java.util.*;
 
 public class BossManager {
   private static MobCreator creator;
+  private static ChunkHelper helper;
 
   private static GameBoss boss;
   private static BossRespawnTask task;
@@ -53,27 +55,35 @@ public class BossManager {
     switch (Minecraft.Version.getVersion()) {
       case v1_9_R1:
         creator = new MobCreator_v1_9_R1();
+        helper = new ChunkHelper_v1_9_R1();
         break;
       case v1_9_R2:
         creator = new MobCreator_v1_9_R2();
+        helper = new ChunkHelper_v1_9_R2();
         break;
       case v1_10_R1:
         creator = new MobCreator_v1_10_R1();
+        helper = new ChunkHelper_v1_10_R1();
         break;
       case v1_11_R1:
         creator = new MobCreator_v1_11_R1();
+        helper = new ChunkHelper_v1_11_R1();
         break;
       case v1_12_R1:
         creator = new MobCreator_v1_12_R1();
+        helper = new ChunkHelper_v1_12_R1();
         break;
       case v1_13_R1:
         creator = new MobCreator_v1_13_R1();
+        helper = new ChunkHelper_v1_13_R1();
         break;
       case v1_13_R2:
         creator = new MobCreator_v1_13_R2();
+        helper = new ChunkHelper_v1_13_R2();
         break;
       case v1_14_R1:
         creator = new MobCreator_v1_14_R1();
+        helper = new ChunkHelper_v1_14_R1();
         break;
       default:
         Output.log("Version not supported");
@@ -211,9 +221,7 @@ public class BossManager {
       Chunk chunk = spawn.getChunk();
       Bukkit.getWorld(spawn.getWorld().getName()).loadChunk(chunk);
 
-      if (!Minecraft.Version.getVersion().olderThan(Minecraft.Version.v1_13_R1)) {
-        BaseUtils.forceChunkLoad(chunk);
-      }
+      helper.forceChunkLoad(chunk);
 
       Wither witherBoss;
 
@@ -355,5 +363,9 @@ public class BossManager {
 
   public static List<BossStarItem> getBossStarItems() {
     return bossStarItems;
+  }
+
+  public static ChunkHelper getChunkHelper() {
+    return helper;
   }
 }

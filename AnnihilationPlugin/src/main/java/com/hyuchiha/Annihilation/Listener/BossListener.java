@@ -266,8 +266,8 @@ public class BossListener implements Listener {
     if (BossManager.hasBossConfig()) {
       World bossWorld = BossManager.getBoss().getBossSpawn().getWorld();
 
-      if (bossWorld.getName().equals(chunkWorld.getName()) && Minecraft.Version.getVersion().olderThan(Minecraft.Version.v1_13_R1)) {
-        event.setCancelled(true);
+      if (bossWorld.getName().equals(chunkWorld.getName())) {
+        BossManager.getChunkHelper().cancelChunkUnload(event);
       }
     }
 
