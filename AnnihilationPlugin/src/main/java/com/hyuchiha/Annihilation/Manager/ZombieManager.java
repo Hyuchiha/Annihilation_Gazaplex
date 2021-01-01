@@ -7,6 +7,8 @@ import com.hyuchiha.Annihilation.Mobs.v1_11_R1.MobCreator_v1_11_R1;
 import com.hyuchiha.Annihilation.Mobs.v1_12_R1.MobCreator_v1_12_R1;
 import com.hyuchiha.Annihilation.Mobs.v1_13_R1.MobCreator_v1_13_R1;
 import com.hyuchiha.Annihilation.Mobs.v1_13_R2.MobCreator_v1_13_R2;
+import com.hyuchiha.Annihilation.Mobs.v1_14_R1.MobCreator_v1_14_R1;
+import com.hyuchiha.Annihilation.Mobs.v1_15_R1.MobCreator_v1_15_R1;
 import com.hyuchiha.Annihilation.Mobs.v1_9_R1.MobCreator_v1_9_R1;
 import com.hyuchiha.Annihilation.Mobs.v1_9_R2.MobCreator_v1_9_R2;
 import com.hyuchiha.Annihilation.Output.Output;
@@ -49,6 +51,12 @@ public class ZombieManager {
         break;
       case v1_13_R2:
         creator = new MobCreator_v1_13_R2();
+        break;
+      case v1_14_R1:
+        creator = new MobCreator_v1_14_R1();
+        break;
+      case v1_15_R1:
+        creator = new MobCreator_v1_15_R1();
         break;
       default:
         Output.log("Version not supported");
