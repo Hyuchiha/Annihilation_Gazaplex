@@ -2,7 +2,7 @@ name: Annihilation
 main: com.hyuchiha.Annihilation.Main
 authors: [Hyuchiha]
 softdepend: [Vault, Multiverse-Core, ProtocolLib]
-version: 1.1.0
+version: 1.2.0
 commands:
   anni:
     description: All the commands for games
