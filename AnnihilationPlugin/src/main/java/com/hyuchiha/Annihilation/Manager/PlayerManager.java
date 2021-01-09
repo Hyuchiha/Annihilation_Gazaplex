@@ -46,6 +46,9 @@ public class PlayerManager {
       case v1_15_R1:
         respawner = new Respawner_v1_15_R1();
         return;
+      case v1_16_R1:
+        respawner = new Respawner_v1_16_R1();
+        break;
       default:
         Output.logError("Version not supported");
         Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
