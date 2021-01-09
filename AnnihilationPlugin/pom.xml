@@ -24,6 +24,10 @@
             <id>dmulloy2-repo</id>
             <url>http://repo.dmulloy2.net/nexus/repository/public/</url>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -34,9 +38,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>net.milkbowl.vault</groupId>
+            <groupId>com.github.MilkBowl</groupId>
             <artifactId>VaultAPI</artifactId>
-            <version>1.6</version>
+            <version>1.7</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -105,9 +109,9 @@
             <version>2.6</version>
         </dependency>
         <dependency>
-            <groupId>com.comphenix.protocol</groupId>
-            <artifactId>ProtocolLib-API</artifactId>
-            <version>4.4.0</version>
+            <groupId>com.github.dmulloy2</groupId>
+            <artifactId>ProtocolLib</artifactId>
+            <version>4.5.1</version>
         </dependency>
         <dependency>
             <groupId>xyz.xenondevs</groupId>
@@ -157,6 +161,8 @@
                                     <include>com.hyuchiha:v1_13_R1**</include>
                                     <include>com.hyuchiha:v1_13_R2**</include>
                                     <include>com.hyuchiha:v1_14_R1**</include>
+                                    <include>com.hyuchiha:v1_15_R1**</include>
+                                    <include>com.hyuchiha:v1_16_R1**</include>
                                     <include>org.mongodb:mongodb-driver</include>
                                     <include>org.mongodb:bson</include>
                                     <include>org.mongodb:mongodb-driver-core</include>
