@@ -18,21 +18,27 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+import java.util.List;
 import java.util.Random;
 
 public class GameListener implements Listener {
 
   private Main plugin;
+  private Configuration config;
 
   public Random random;
 
   public GameListener(Main plugin) {
     this.plugin = plugin;
     this.random = new Random();
+
+    this.config = plugin.getConfig("config.yml");
   }
 
 
@@ -46,6 +52,16 @@ public class GameListener implements Listener {
   public void onGameEnd(EndGameEvent event) {
     Output.log("Ending game");
     GameManager.endCurrentGame();
+
+    if (config.getBoolean("userCommandsOnFinish", false)) {
+      List<String> commands = config.getStringList("commands");
+
+      for (String command: commands) {
+        CommandSender sender = Bukkit.getConsoleSender();
+
+        Bukkit.dispatchCommand(sender, command);
+      }
+    }
   }
 
   @EventHandler

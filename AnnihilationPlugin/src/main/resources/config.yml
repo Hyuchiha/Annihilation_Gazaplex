@@ -31,7 +31,12 @@ Force-end:
 # Team prefix
 # With this the TEAMS_PREFIX translations should appear before the player name
 useTeamPrefix: true
-
+#
+# Commands after finish
+# If set true, you can execute a set of commands when every game finish
+userCommandsOnFinish: true
+commands:
+  - "Your command"
 #
 # The DB usage is mandatory
 # The available types are MySQL, SQLite, MongoDB
