@@ -34,7 +34,7 @@ useTeamPrefix: true
 #
 # Commands after finish
 # If set true, you can execute a set of commands when every game finish
-userCommandsOnFinish: true
+userCommandsOnFinish: false
 commands:
   - "Your command"
 #
