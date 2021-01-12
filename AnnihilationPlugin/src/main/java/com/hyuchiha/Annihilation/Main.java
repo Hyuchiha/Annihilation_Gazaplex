@@ -26,6 +26,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.inventivetalent.reflection.minecraft.MinecraftVersion;
 
 public class Main extends JavaPlugin {
   private static Main instance;
@@ -44,6 +45,9 @@ public class Main extends JavaPlugin {
 
     configManager = new ConfigManager(this);
     configManager.loadConfigFiles("config.yml", "maps.yml", "messages.yml", "shops.yml", "games.yml", "kits.yml");
+
+    String version = MinecraftVersion.getVersion().packageName();
+    Output.log("Using minecraft version: " + version);
 
     BossManager.init();
     ZombieManager.init();
