@@ -157,7 +157,7 @@ public class BossManager {
         potion.setSplash(splash);
 
         if (extended) {
-          potion.setHasExtendedDuration(extended);
+          potion.setHasExtendedDuration(true);
         }
 
         item = potion.toItemStack(1);
