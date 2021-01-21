@@ -71,7 +71,7 @@ public class ResourceListener implements Listener {
     if (ResourceManager.containsResource(e.getBlock().getType())) {
       e.setCancelled(true);
       breakResource(e.getPlayer(), e.getBlock());
-      e.getBlock().getWorld().playEffect(e.getBlock().getLocation(), Effect.STEP_SOUND, 1F);
+      e.getBlock().getWorld().playEffect(e.getBlock().getLocation(), Effect.STEP_SOUND, e.getBlock().getType(), 10);
     } else if (this.queue.contains(e.getBlock().getLocation())) {
       e.setCancelled(true);
     }
@@ -135,7 +135,7 @@ public class ResourceListener implements Listener {
     this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () -> {
       block.setType(type);
       ResourceListener.this.queue.remove(block.getLocation());
-      block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, 1F);
+      block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, block.getType(), 10);
     }, ResourceManager.getResource(type).getDelay() * 20L);
   }
 
