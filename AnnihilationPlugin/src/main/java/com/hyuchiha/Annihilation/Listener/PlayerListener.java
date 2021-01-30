@@ -38,6 +38,9 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+
 public class PlayerListener implements Listener {
   private Main plugin;
   private Configuration config;
@@ -183,6 +186,21 @@ public class PlayerListener implements Listener {
             if (handItem.getItemMeta().hasDisplayName() &&
                 handItem.getItemMeta().getDisplayName().contains(Translator.getColoredString("GAME.CLICK_TO_RETURN_LOBBY"))) {
               e.setCancelled(true);
+
+              final String ServerExit = plugin.getConfig().getString("Bungee.server");
+              try {
+                final ByteArrayOutputStream b = new ByteArrayOutputStream();
+                final DataOutputStream out = new DataOutputStream(b);
+                out.writeUTF("Connect");
+                out.writeUTF(ServerExit);
+                player.sendPluginMessage(this.plugin, "BungeeCord", b.toByteArray());
+                b.close();
+                out.close();
+              } catch (Exception error) {
+                String message = Translator.getColoredString("ERRORS.COULD_NOT_CONNECT_SERVER").replace("%SERVER%", ServerExit);
+                player.sendMessage(Translator.getPrefix() + ChatColor.RED + message);
+              }
+
             }
             break;
         }

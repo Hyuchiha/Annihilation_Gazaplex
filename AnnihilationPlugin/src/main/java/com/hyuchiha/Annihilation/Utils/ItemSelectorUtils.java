@@ -1,11 +1,13 @@
 package com.hyuchiha.Annihilation.Utils;
 
 import com.hyuchiha.Annihilation.Game.GamePlayer;
+import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -29,11 +31,18 @@ public class ItemSelectorUtils {
   }
 
   public static void giveLobbyReturnItem(Player player) {
-    ItemStack lobbySelector = XMaterial.RED_BED.parseItem();
-    ItemMeta itemMeta = lobbySelector.getItemMeta();
-    itemMeta.setDisplayName(Translator.getColoredString("GAME.CLICK_TO_RETURN_LOBBY"));
-    lobbySelector.setItemMeta(itemMeta);
-    player.getInventory().setItem(8, lobbySelector);
+    Configuration config = Main.getInstance().getConfig("config.yml");
+    boolean enableBungee = config.getBoolean("enableBungeeCommunication", false);
+
+    if (enableBungee) {
+      String type = config.getString("Bungee.item", "RED_BED");
+
+      ItemStack lobbySelector = XMaterial.valueOf(type).parseItem();
+      ItemMeta itemMeta = lobbySelector.getItemMeta();
+      itemMeta.setDisplayName(Translator.getColoredString("GAME.CLICK_TO_RETURN_LOBBY"));
+      lobbySelector.setItemMeta(itemMeta);
+      player.getInventory().setItem(8, lobbySelector);
+    }
   }
 
   public static void giveKitSelectorItem(Player player) {

@@ -151,9 +151,13 @@ public class Main extends JavaPlugin {
 
 
   private void hookBungeeCord() {
-    Bukkit.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-  }
+    Configuration config = getConfig("config.yml");
+    boolean enableBungee = config.getBoolean("enableBungeeCommunication", false);
 
+    if (enableBungee) {
+      Bukkit.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+    }
+  }
 
   private void hookVault() {
     if (getServer().getPluginManager().isPluginEnabled("Vault")) {

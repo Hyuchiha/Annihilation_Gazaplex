@@ -16,7 +16,7 @@ build: 10
 # Delay in minutes to respawn the bosses after death
 bossRespawnDelay: 10
 #
-# Delay in minutes to respawn the witchs after death
+# Delay in minutes to respawn the witches after death
 witchRespawnDelay: 5
 #
 # The last phase players can join a team
@@ -37,6 +37,13 @@ useTeamPrefix: true
 userCommandsOnFinish: false
 commands:
   - "Your command"
+#
+# Bungee config
+# With this you can set a custom Item and send the player to a custom server using Bungee
+enableBungeeCommunication: false
+Bungee:
+  server: "lobby"
+  item: "RED_BED"
 #
 # The DB usage is mandatory
 # The available types are MySQL, SQLite, MongoDB
