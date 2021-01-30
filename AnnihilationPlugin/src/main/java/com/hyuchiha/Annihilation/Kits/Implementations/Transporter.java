@@ -10,7 +10,6 @@ import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Object.Loc;
 import com.hyuchiha.Annihilation.Object.Teleporter;
-import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
 import com.hyuchiha.Annihilation.Utils.KitUtils;
 import com.hyuchiha.Annihilation.Utils.Sound;

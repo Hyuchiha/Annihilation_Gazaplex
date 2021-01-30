@@ -1,8 +1,6 @@
 package com.hyuchiha.Annihilation.Arena;
 
-import com.hyuchiha.Annihilation.Game.GameBoss;
 import com.hyuchiha.Annihilation.Game.GameTeam;
-import com.hyuchiha.Annihilation.Game.GameWitch;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.*;
 import com.hyuchiha.Annihilation.Maps.MapLoader;
@@ -13,7 +11,6 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class GameArena {

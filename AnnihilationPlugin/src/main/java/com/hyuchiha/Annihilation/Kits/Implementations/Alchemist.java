@@ -5,7 +5,6 @@ import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
-import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.KitUtils;
 import com.hyuchiha.Annihilation.Utils.TimersUtils;
 import com.hyuchiha.Annihilation.Utils.XMaterial;

@@ -6,9 +6,6 @@ import com.hyuchiha.Annihilation.Database.StatType;
 import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Output.Output;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,8 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.mongodb.client.model.Filters.eq;
 
 public abstract class SQLDB extends Database {
   protected static final String ACCOUNTS_TABLE = "annihilation_accounts";

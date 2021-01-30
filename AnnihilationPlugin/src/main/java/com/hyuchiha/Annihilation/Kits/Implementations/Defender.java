@@ -28,7 +28,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class Defender extends BaseKit {

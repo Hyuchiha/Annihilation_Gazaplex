@@ -7,21 +7,19 @@ import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Output.Output;
-import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 public class PlayerSerializer {
   private static final String pluginPath = "plugins/Annihilation/";
@@ -108,9 +106,16 @@ public class PlayerSerializer {
 
   public static void restartDataOfPlayers() {
     try {
-      File f = new File(usersPath);
-      FileUtils.cleanDirectory(f);
-    } catch (IOException e) {
+      File file = new File(usersPath);
+
+      if (file.isDirectory()) {
+        for (File f: file.listFiles()) {
+          f.delete();
+        }
+      }
+
+      file.delete();
+    } catch (Exception e) {
       Output.logError(e.getLocalizedMessage());
     }
   }

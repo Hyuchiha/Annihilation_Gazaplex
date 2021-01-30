@@ -21,10 +21,10 @@ import com.hyuchiha.Annihilation.Mobs.v1_9_R1.MobCreator_v1_9_R1;
 import com.hyuchiha.Annihilation.Mobs.v1_9_R2.MobCreator_v1_9_R2;
 import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Tasks.BossRespawnTask;
-import com.hyuchiha.Annihilation.Utils.BaseUtils;
 import com.hyuchiha.Annihilation.Utils.ChestUtils;
 import com.hyuchiha.Annihilation.Utils.FireworkUtils;
 import com.hyuchiha.Annihilation.Utils.LocationUtils;
+import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.*;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.Configuration;
@@ -143,7 +143,8 @@ public class BossManager {
 
   private static ItemStack loadItem(ConfigurationSection config, String itemName) {
     try {
-      Material type = Material.getMaterial(config.getString(itemName + ".type"));
+      String material = config.getString(itemName + ".type");
+      Material type = XMaterial.matchXMaterial(material).get().parseMaterial();
 
       ItemStack item = null;
       if (type == Material.POTION) {

@@ -6,7 +6,6 @@ import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
-import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.TimersUtils;
 import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.Bukkit;

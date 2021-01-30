@@ -2,7 +2,6 @@ package com.hyuchiha.Annihilation.Manager;
 
 import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Main;
-import com.hyuchiha.Annihilation.Output.Output;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitTask;

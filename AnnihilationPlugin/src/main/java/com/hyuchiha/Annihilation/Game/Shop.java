@@ -5,6 +5,7 @@ import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
+import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -15,7 +16,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
@@ -128,7 +128,9 @@ public class Shop implements Listener {
       }
       String[] params = entry.split(",");
       if (params.length >= 3) {
-        Material type = Material.getMaterial(params[0]);
+        String material = params[0];
+
+        Material type = XMaterial.matchXMaterial(material).get().parseMaterial();
         int qty = Integer.parseInt(params[1]);
         int price = Integer.parseInt(params[2]);
         ShopItem item = new ShopItem(type, qty, price);
@@ -141,7 +143,6 @@ public class Shop implements Listener {
       }
     }
   }
-
 
   public String getName() {
     return this.name;

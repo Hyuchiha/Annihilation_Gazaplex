@@ -1,7 +1,6 @@
 package com.hyuchiha.Annihilation.Maps;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.ChunkGenerator;

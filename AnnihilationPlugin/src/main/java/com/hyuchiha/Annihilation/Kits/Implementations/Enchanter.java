@@ -2,7 +2,6 @@ package com.hyuchiha.Annihilation.Kits.Implementations;
 
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.Kit;
-import com.hyuchiha.Annihilation.Game.Resource;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
 import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
