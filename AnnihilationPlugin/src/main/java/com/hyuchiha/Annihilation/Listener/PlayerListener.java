@@ -211,6 +211,8 @@ public class PlayerListener implements Listener {
 
   @EventHandler
   public void onPlayerPortal(PlayerPortalEvent event) {
+    event.setCancelled(true);
+
     Player player = event.getPlayer();
     if (player.getWorld() != Bukkit.getWorld("lobby")) {
 
@@ -224,10 +226,7 @@ public class PlayerListener implements Listener {
         }
       }, 20L);
 
-
     } else {
-
-
       player.teleport(MapManager.getLobbySpawn());
     }
   }

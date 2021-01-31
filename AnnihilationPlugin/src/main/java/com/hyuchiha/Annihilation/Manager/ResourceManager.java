@@ -89,7 +89,7 @@ public class ResourceManager {
       case REDSTONE_ORE:
         return Material.REDSTONE;
       case MELON:
-        return Material.MELON;
+        return XMaterial.MELON_SLICE.parseMaterial();
       case GRAVEL:
         return null;
     }
