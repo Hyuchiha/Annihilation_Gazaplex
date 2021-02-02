@@ -240,9 +240,11 @@ public class BossManager {
 
     if (spawn != null && spawn.getWorld() != null) {
       Chunk chunk = spawn.getChunk();
-      Bukkit.getWorld(spawn.getWorld().getName()).loadChunk(chunk);
+      World world = spawn.getWorld();
 
-      helper.forceChunkLoad(chunk);
+      Bukkit.getWorld(world.getName()).loadChunk(chunk);
+
+      helper.forceChunkLoad(world, chunk);
 
       Wither witherBoss;
 
