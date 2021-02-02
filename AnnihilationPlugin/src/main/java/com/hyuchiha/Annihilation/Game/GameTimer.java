@@ -39,10 +39,9 @@ public class GameTimer {
   private int fwID;
 
   public GameTimer(Main plugin, int start, int phaseTime, int restartingTime) {
-    this.gameStarted = false;
-
-
     this.plugin = plugin;
+
+    this.gameStarted = false;
 
     this.state = GameState.WAITING;
     this.startTime = start;
