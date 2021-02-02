@@ -100,7 +100,9 @@ public class GameListener implements Listener {
       nexus.add(0.5D, 0.0D, 0.5D);
       ParticleManager.createNexusBreakParticle(nexus);
 
-      data.addMoney(this.plugin.getConfig("config.yml").getDouble("Money-nexus-hit"));
+      double money = this.plugin.getConfig("config.yml").getDouble("Money-nexus-hit");
+      double vipMoney = PlayerManager.calculateVipMoneyGive(breaker.getPlayer(), money);
+      PlayerManager.addMoney(breaker.getPlayer(), vipMoney);
 
       if (victim.getNexus().getHealth() <= 0) {
         Bukkit.getServer().getPluginManager()
@@ -121,8 +123,11 @@ public class GameListener implements Listener {
     Location nexusLocation = victim.getNexus().getLocation();
     ParticleManager.createParticleNexusDestroy(nexusLocation);
 
-    Account data = this.plugin.getMainDatabase().getAccount(breaker.getPlayer().getUniqueId().toString(), breaker.getPlayer().getName());
-    data.addMoney(this.plugin.getConfig("config.yml").getDouble("Money-nexus-kill"));
+    // Account data = this.plugin.getMainDatabase().getAccount(breaker.getPlayer().getUniqueId().toString(), breaker.getPlayer().getName());
+
+    double money = this.plugin.getConfig("config.yml").getDouble("Money-nexus-kill");
+    double vipMoney = PlayerManager.calculateVipMoneyGive(breaker.getPlayer(), money);
+    PlayerManager.addMoney(breaker.getPlayer(), vipMoney);
 
     ScoreboardManager.removeTeamScoreboard(victim);
 

@@ -70,7 +70,6 @@ public class AnnihilationCommand implements CommandExecutor {
       }
     }
 
-
     return false;
   }
 }

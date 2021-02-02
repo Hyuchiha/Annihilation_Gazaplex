@@ -1,7 +1,6 @@
 package com.hyuchiha.Annihilation.Listener;
 
 import com.hyuchiha.Annihilation.Chat.ChatUtil;
-import com.hyuchiha.Annihilation.Database.Base.Account;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.BossManager;
@@ -221,10 +220,13 @@ public class BossListener implements Listener {
 
         BossManager.beginRespawnTime(respawnCount);
 
-        Account data = plugin.getMainDatabase().getAccount(killer.getUniqueId().toString(), killer.getName());
+        // Account data = plugin.getMainDatabase().getAccount(killer.getUniqueId().toString(), killer.getName());
         // data.increaseKills(); TODO Add stats for boss kill
 
-        data.addMoney(config.getDouble("Money-boss-kill"));
+        double money = config.getDouble("Money-boss-kill");
+        double vipMoney = PlayerManager.calculateVipMoneyGive(killer, money);
+        PlayerManager.addMoney(killer, vipMoney);
+
         gPlayer.addXp(config.getInt("Exp-boss-kill"));
 
         Location bossLocation = event.getEntity().getLocation();

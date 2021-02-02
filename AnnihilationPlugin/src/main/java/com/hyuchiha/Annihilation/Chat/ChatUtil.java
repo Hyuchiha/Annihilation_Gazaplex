@@ -125,8 +125,6 @@ public class ChatUtil {
     List<String> multiMessage = Translator.getMultiMessage("WIN_MESSAGE");
 
     for (String message : multiMessage) {
-
-
       String replacedMessage = message.replace("%TEAM%", winner.coloredName()).replace("%C%", winner.color().toString());
       broadcast(replacedMessage);
     }

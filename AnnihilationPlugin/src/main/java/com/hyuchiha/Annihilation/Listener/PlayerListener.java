@@ -92,7 +92,9 @@ public class PlayerListener implements Listener {
         Account data = this.plugin.getMainDatabase().getAccount(killer.getUniqueId().toString(), killer.getName());
         data.increaseKills();
 
-        data.addMoney(this.config.getDouble("Money-player-kill"));
+        double money = this.config.getDouble("Money-player-kill");
+        double vipMoney = PlayerManager.calculateVipMoneyGive(player, money);
+        PlayerManager.addMoney(player, vipMoney);
 
 
         String message = ChatUtil.formatDeathMessage(player, killer, e.getDeathMessage());

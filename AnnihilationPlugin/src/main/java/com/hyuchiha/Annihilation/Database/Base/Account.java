@@ -1,8 +1,6 @@
 package com.hyuchiha.Annihilation.Database.Base;
 
 import com.hyuchiha.Annihilation.Game.Kit;
-import com.hyuchiha.Annihilation.Messages.Translator;
-import com.hyuchiha.Annihilation.Utils.GameUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -138,50 +136,6 @@ public class Account {
 
   public Player getPlayer() {
     return Bukkit.getPlayer(this.uuid);
-  }
-
-
-  public double getMoneyToGive() {
-    return this.money;
-  }
-
-
-  public void addMoney(double money) {
-    Player p = getPlayer();
-
-    if (p == null) {
-      return;
-    }
-
-    if (GameUtils.isVip(p)) {
-      if (p.hasPermission("annihilation.vip.diamond")) {
-        p.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
-            .replace("%MONEY%", Double.toString(money * 5.0D)));
-
-        this.money += money * 5.0D;
-
-        return;
-      }
-      if (p.hasPermission("annihilation.vip.gold")) {
-        p.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
-            .replace("%MONEY%", Double.toString(money * 3.0D)));
-
-        this.money += money * 3.0D;
-
-        return;
-      }
-      if (p.hasPermission("annihilation.vip.iron")) {
-        p.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
-            .replace("%MONEY%", Double.toString(money * 2.0D)));
-
-        this.money += money * 2.0D;
-      }
-    } else {
-      p.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
-          .replace("%MONEY%", Double.toString(money)));
-
-      this.money += money;
-    }
   }
 
   public List<Kit> getKits() {

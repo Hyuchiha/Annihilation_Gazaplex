@@ -6,6 +6,7 @@ import com.hyuchiha.Annihilation.Hooks.VaultHooks;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Output.Output;
+import com.hyuchiha.Annihilation.Utils.GameUtils;
 import org.bukkit.entity.Player;
 import org.inventivetalent.reflection.minecraft.Minecraft;
 
@@ -91,6 +92,40 @@ public class PlayerManager {
       Output.log("Respawning using spigot api");
       player.spigot().respawn();
     }
+  }
+
+  public static double calculateVipMoneyGive(Player player, double money) {
+    if (player == null) {
+      return 0;
+    }
+
+    if (GameUtils.isVip(player)) {
+      if (player.hasPermission("annihilation.vip.diamond")) {
+        player.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
+            .replace("%MONEY%", Double.toString(money * 5.0D)));
+
+        return money * 5.0D;
+      }
+      if (player.hasPermission("annihilation.vip.gold")) {
+        player.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
+            .replace("%MONEY%", Double.toString(money * 3.0D)));
+
+        return money * 3.0D;
+      }
+      if (player.hasPermission("annihilation.vip.iron")) {
+        player.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
+            .replace("%MONEY%", Double.toString(money * 2.0D)));
+
+        return money * 2.0D;
+      }
+    } else {
+      player.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
+          .replace("%MONEY%", Double.toString(money)));
+
+      return money;
+    }
+
+    return 0;
   }
 
   public static void addMoney(Player p, double money) {
