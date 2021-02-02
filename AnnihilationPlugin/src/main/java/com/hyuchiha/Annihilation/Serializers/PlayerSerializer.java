@@ -36,7 +36,8 @@ public class PlayerSerializer {
     int food = player.getFoodLevel();
     float exhaustion = player.getExhaustion();
     float exp = player.getExp();
-    String wName = Bukkit.getPlayer(playerName).getWorld().getName();
+
+    String wName = player.getWorld().getName();
     GameTeam target = PlayerManager.getGamePlayer(player).getTeam();
 
     PlayerToConfig(playerName, items, armor, health, saturation, level, gm, food, exhaustion, exp, target, wName);
