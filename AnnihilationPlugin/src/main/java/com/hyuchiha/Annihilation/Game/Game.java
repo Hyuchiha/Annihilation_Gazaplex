@@ -93,6 +93,10 @@ public class Game {
       gp.prepareLobbyPlayer();
     }
 
+    for (GameTeam team: GameTeam.teams()) {
+      team.restartSpawns();
+    }
+
     for (Kit kit : Kit.values()) {
       kit.resetKit();
     }
