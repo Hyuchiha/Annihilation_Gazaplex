@@ -14,30 +14,30 @@ public class ResourceManager {
   private static final List<Location> diamonds = new ArrayList<>();
 
   public static void initializeResources() {
-    addResource(Material.COAL_ORE, 4, 10);
-    addResource(Material.IRON_ORE, 5, 20);
-    addResource(Material.GOLD_ORE, 5, 20);
-    addResource(Material.DIAMOND_ORE, 8, 30);
-    addResource(Material.EMERALD_ORE, 8, 40);
-    addResource(Material.REDSTONE_ORE, 5, 20);
+    addResource(Material.COAL_ORE, 2, 10);
+    addResource(Material.IRON_ORE, 3, 20);
+    addResource(Material.GOLD_ORE, 4, 20);
+    addResource(Material.DIAMOND_ORE, 5, 30);
+    addResource(Material.EMERALD_ORE, 6, 40);
+    addResource(Material.REDSTONE_ORE, 4, 20);
     // addResource(Material.GLOWING_REDSTONE_ORE, 5, 20);
 
-    addResource(XMaterial.ACACIA_LOG.parseMaterial(), 2, 10);
-    addResource(XMaterial.BIRCH_LOG.parseMaterial(), 2, 10);
-    addResource(XMaterial.DARK_OAK_LOG.parseMaterial(), 2, 10);
-    addResource(XMaterial.JUNGLE_LOG.parseMaterial(), 2, 10);
-    addResource(XMaterial.OAK_LOG.parseMaterial(), 2, 10);
-    addResource(XMaterial.SPRUCE_LOG.parseMaterial(), 2, 10);
-    addResource(XMaterial.STRIPPED_ACACIA_LOG.parseMaterial(), 2, 10);
-    addResource(XMaterial.STRIPPED_BIRCH_LOG.parseMaterial(), 2, 10);
-    addResource(XMaterial.STRIPPED_DARK_OAK_LOG.parseMaterial(), 2, 10);
-    addResource(XMaterial.STRIPPED_JUNGLE_LOG.parseMaterial(), 2, 10);
-    addResource(XMaterial.STRIPPED_OAK_LOG.parseMaterial(), 2, 10);
-    addResource(XMaterial.STRIPPED_SPRUCE_LOG.parseMaterial(), 2, 10);
+    addResource(XMaterial.ACACIA_LOG.parseMaterial(), 1, 10);
+    addResource(XMaterial.BIRCH_LOG.parseMaterial(), 1, 10);
+    addResource(XMaterial.DARK_OAK_LOG.parseMaterial(), 1, 10);
+    addResource(XMaterial.JUNGLE_LOG.parseMaterial(), 1, 10);
+    addResource(XMaterial.OAK_LOG.parseMaterial(), 1, 10);
+    addResource(XMaterial.SPRUCE_LOG.parseMaterial(), 1, 10);
+    addResource(XMaterial.STRIPPED_ACACIA_LOG.parseMaterial(), 1, 10);
+    addResource(XMaterial.STRIPPED_BIRCH_LOG.parseMaterial(), 1, 10);
+    addResource(XMaterial.STRIPPED_DARK_OAK_LOG.parseMaterial(), 1, 10);
+    addResource(XMaterial.STRIPPED_JUNGLE_LOG.parseMaterial(), 1, 10);
+    addResource(XMaterial.STRIPPED_OAK_LOG.parseMaterial(), 1, 10);
+    addResource(XMaterial.STRIPPED_SPRUCE_LOG.parseMaterial(), 1, 10);
 
-    addResource(Material.GRAVEL, 2, 20);
+    addResource(Material.GRAVEL, 1, 20);
     addResource(XMaterial.MELON.parseMaterial(), 1, 10);
-    addResource(Material.LAPIS_ORE, 3, 10);
+    addResource(Material.LAPIS_ORE, 2, 10);
     addResource(Material.PUMPKIN, 1, 10);
   }
 
