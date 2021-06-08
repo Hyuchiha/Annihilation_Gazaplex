@@ -5,6 +5,7 @@ import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.inventivetalent.reflection.minecraft.Minecraft;
+import org.inventivetalent.reflection.minecraft.MinecraftVersion;
 import org.inventivetalent.reflection.resolver.*;
 import org.inventivetalent.reflection.resolver.minecraft.NMSClassResolver;
 
@@ -79,7 +80,7 @@ public class TitleAPI {
     if (player == null || json == null) {
       throw new IllegalArgumentException("null argument");
     }
-    if (Minecraft.VERSION.olderThan(Minecraft.Version.v1_8_R1)) {
+    if (MinecraftVersion.getVersion().olderThan(Minecraft.Version.v1_8_R1)) {
       return;
     }
     if (!json.startsWith("{") || !json.endsWith("}")) {
@@ -107,7 +108,7 @@ public class TitleAPI {
     if (player == null || baseComponent == null) {
       throw new IllegalArgumentException("null argument");
     }
-    if (Minecraft.VERSION.olderThan(Minecraft.Version.v1_8_R1)) {
+    if (MinecraftVersion.getVersion().olderThan(Minecraft.Version.v1_8_R1)) {
       return;
     }
     String json = ComponentSerializer.toString(baseComponent);
@@ -140,7 +141,7 @@ public class TitleAPI {
     if (player == null || json == null) {
       throw new IllegalArgumentException("null argument");
     }
-    if (Minecraft.VERSION.olderThan(Minecraft.Version.v1_8_R1)) {
+    if (MinecraftVersion.getVersion().olderThan(Minecraft.Version.v1_8_R1)) {
       return;
     }
     if (!json.startsWith("{") || !json.endsWith("}")) {
@@ -168,7 +169,7 @@ public class TitleAPI {
     if (player == null || baseComponent == null) {
       throw new IllegalArgumentException("null argument");
     }
-    if (Minecraft.VERSION.olderThan(Minecraft.Version.v1_8_R1)) {
+    if (MinecraftVersion.getVersion().olderThan(Minecraft.Version.v1_8_R1)) {
       return;
     }
 
@@ -204,13 +205,13 @@ public class TitleAPI {
     if (player == null) {
       throw new IllegalArgumentException("null argument");
     }
-    if (Minecraft.VERSION.olderThan(Minecraft.Version.v1_8_R1)) {
+    if (MinecraftVersion.getVersion().olderThan(Minecraft.Version.v1_8_R1)) {
       return;
     }
 
     try {
       Object packetTitle;
-      if (Minecraft.VERSION.olderThan(Minecraft.Version.v1_8_R1)) {
+      if (MinecraftVersion.getVersion().olderThan(Minecraft.Version.v1_8_R1)) {
         packetTitle = PacketTitleConstructorResolver.resolve(new Class[]{
             EnumTitleAction,
             int.class,
@@ -239,13 +240,13 @@ public class TitleAPI {
     if (player == null) {
       throw new IllegalArgumentException("null argument");
     }
-    if (Minecraft.VERSION.olderThan(Minecraft.Version.v1_8_R1)) {
+    if (MinecraftVersion.getVersion().olderThan(Minecraft.Version.v1_8_R1)) {
       return;
     }
 
     try {
       Object packetTitle;
-      if (Minecraft.VERSION.olderThan(Minecraft.Version.v1_8_R1)) {
+      if (MinecraftVersion.getVersion().olderThan(Minecraft.Version.v1_8_R1)) {
         packetTitle = PacketTitleConstructorResolver.resolve(new Class[]{
             EnumTitleAction}).newInstance(EnumTitleAction.getEnumConstants()[3]);
       } else {
@@ -270,13 +271,13 @@ public class TitleAPI {
     if (player == null) {
       throw new IllegalArgumentException("null argument");
     }
-    if (Minecraft.VERSION.olderThan(Minecraft.Version.v1_8_R1)) {
+    if (MinecraftVersion.getVersion().olderThan(Minecraft.Version.v1_8_R1)) {
       return;
     }
 
     try {
       Object packetTitle;
-      if (Minecraft.VERSION.olderThan(Minecraft.Version.v1_8_R1)) {
+      if (MinecraftVersion.getVersion().olderThan(Minecraft.Version.v1_8_R1)) {
         packetTitle = PacketTitleConstructorResolver.resolve(new Class[]{
             EnumTitleAction}).newInstance(EnumTitleAction.getEnumConstants()[4]);
       } else {

@@ -3,8 +3,11 @@ package com.hyuchiha.Annihilation.MessagesApi;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.inventivetalent.reflection.minecraft.Minecraft;
+import org.inventivetalent.reflection.minecraft.MinecraftVersion;
 import org.inventivetalent.reflection.resolver.*;
 import org.inventivetalent.reflection.resolver.minecraft.NMSClassResolver;
+
+import java.util.UUID;
 
 /**
  * Utility class for sending action bar messages to players.
@@ -44,7 +47,7 @@ public class ActionBar {
     if (player == null || json == null) {
       throw new IllegalArgumentException("null argument");
     }
-    if (Minecraft.VERSION.olderThan(Minecraft.Version.v1_8_R1)) {
+    if (MinecraftVersion.getVersion().olderThan(Minecraft.Version.v1_8_R1)) {
       return;
     }
     if (!json.startsWith("{") || !json.endsWith("}")) {
@@ -55,16 +58,29 @@ public class ActionBar {
       Object serialized = serialize(json);
       Object packetChat;
 
-      if (Minecraft.Version.getVersion().olderThan(Minecraft.Version.v1_12_R1)) {
+      if (MinecraftVersion.getVersion().newerThan(Minecraft.Version.v1_15_R1)) {
+        // Version 1_16 and up
+        UUID uuidPlayer = player.getUniqueId();
+
         packetChat = PacketChatConstructorResolver.resolve(new Class[]{
             IChatBaseComponent,
-            byte.class
-        }).newInstance(serialized, (byte) 2);
-      } else {
+            ChatMessageType,
+            UUID.class
+        }).newInstance(serialized, ChatMessageType.getEnumConstants()[2], uuidPlayer);
+      } else if (MinecraftVersion.getVersion().newerThan(Minecraft.Version.v1_12_R1)) {
+        // Version 1_12_R2 and up
+
         packetChat = PacketChatConstructorResolver.resolve(new Class[]{
             IChatBaseComponent,
             ChatMessageType
         }).newInstance(serialized, ChatMessageType.getEnumConstants()[2]);
+      } else {
+        // Other version
+
+        packetChat = PacketChatConstructorResolver.resolve(new Class[]{
+            IChatBaseComponent,
+            byte.class
+        }).newInstance(serialized, (byte) 2);
       }
 
       sendPacket(player, packetChat);

@@ -63,19 +63,21 @@ public class BlockListener implements Listener {
     }
   }
 
-  @EventHandler(priority = EventPriority.HIGHEST)
+  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onBreakBlockNexus(BlockBreakEvent event) {
     if (GameManager.getCurrentGame().isInGame() && GameManager.getCurrentGame().getPhase() > 0) {
       for (GameTeam team : GameTeam.teams()) {
         if (team.getNexus().getLocation().equals(event.getBlock().getLocation())) {
           event.setCancelled(true);
 
-          if (team.getNexus().isAlive() &&
-              FastBreakProtect.LastBreakTimeIsCorrect(event.getPlayer())) {
-            Bukkit.getServer().getPluginManager().callEvent(new NexusDamageEvent(
-                PlayerManager.getGamePlayer(event.getPlayer()), team));
+          if (team.getNexus().isAlive() && FastBreakProtect.LastBreakTimeIsCorrect(event.getPlayer())) {
+            Bukkit.getServer().getPluginManager().callEvent(
+                new NexusDamageEvent(
+                    PlayerManager.getGamePlayer(event.getPlayer()),
+                    team
+                )
+            );
           }
-
 
           return;
         }
@@ -86,7 +88,8 @@ public class BlockListener implements Listener {
           !event.getPlayer().hasPermission("annihilation.bypass.construction") &&
           !permittedBreak(event.getBlock().getType())) {
         event.getPlayer().sendMessage(
-            Translator.getColoredString("ERRORS.TOO_CLOSE_NEXUS"));
+            Translator.getColoredString("ERRORS.TOO_CLOSE_NEXUS")
+        );
 
         event.setCancelled(true);
       } else if (!event.getPlayer().hasPermission("annihilation.bypass.construction")) {
