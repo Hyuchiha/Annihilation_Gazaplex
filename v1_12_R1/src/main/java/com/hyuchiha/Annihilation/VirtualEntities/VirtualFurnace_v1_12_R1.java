@@ -20,7 +20,7 @@ public class VirtualFurnace_v1_12_R1 extends TileEntityFurnace implements Virtua
 
   @Override
   public boolean canCook() {
-    return getItem(0) != null && getItem(1) != null;
+    return !getItem(0).isEmpty() && (!getItem(1).isEmpty() || this.getProperty(1) > 0);
   }
 
   @Override

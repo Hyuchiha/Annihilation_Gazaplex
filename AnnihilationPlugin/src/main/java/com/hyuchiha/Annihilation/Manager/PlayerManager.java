@@ -137,8 +137,6 @@ public class PlayerManager {
       VaultHooks.getEconomyManager().createPlayerAccount(p);
     }
 
-    p.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
-        .replace("%MONEY%", Double.toString(money)));
     VaultHooks.getEconomyManager().depositPlayer(p, money);
   }
 

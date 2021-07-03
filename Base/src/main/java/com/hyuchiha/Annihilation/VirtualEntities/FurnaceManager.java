@@ -29,6 +29,7 @@ public abstract class FurnaceManager {
             furnace.cook();
           } catch (IllegalArgumentException e) {
             // Just to catch the annoying error of block face
+            Bukkit.getLogger().info(e.getMessage());
           }
         }
       }

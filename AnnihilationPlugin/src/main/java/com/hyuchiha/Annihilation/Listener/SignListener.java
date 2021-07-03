@@ -39,8 +39,6 @@ public class SignListener implements Listener {
 
         Sign s = (Sign) event.getClickedBlock().getState();
 
-        Output.log(s.getLine(0));
-
         if (s.getLine(0).contains(ChatColor.DARK_PURPLE + "[" +
             Translator.getString("COMMONS.TEAM") + ChatColor.DARK_PURPLE + "]")) {
 

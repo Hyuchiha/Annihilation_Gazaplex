@@ -19,11 +19,11 @@ public class VirtualBrewingStand_v1_13_R2 extends TileEntityBrewingStand impleme
   @Override
   public boolean canMakePotions() {
     return getProperty(1) <= 0
-        && getContents().get(4) != null && getContents().get(4).getItem() == Items.BLAZE_POWDER
-        && getContents().get(0) != null &&
-        (getContents().get(1) != null
-            || getContents().get(2) != null
-            || getContents().get(3) != null);
+        && !getContents().get(4).isEmpty() && getContents().get(4).getItem() == Items.BLAZE_POWDER
+        && !getContents().get(0).isEmpty() &&
+        (!getContents().get(1).isEmpty()
+            || !getContents().get(2).isEmpty()
+            || !getContents().get(3).isEmpty());
   }
 
   @Override
