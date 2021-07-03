@@ -128,12 +128,15 @@ public class ResourceListener implements Listener {
 
   private void queueRespawn(final Block block) {
     final Material type = block.getType();
+
     block.setType(getRespawnMaterial(type));
     this.queue.add(block.getLocation());
 
     this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () -> {
       block.setType(type);
-      ResourceListener.this.queue.remove(block.getLocation());
+
+      this.queue.remove(block.getLocation());
+
       block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, block.getType(), 10);
     }, ResourceManager.getResource(type).getDelay() * 20L);
   }
