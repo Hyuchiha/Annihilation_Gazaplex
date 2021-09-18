@@ -23,18 +23,13 @@ public class TitleAPI {
   static Class<?> EnumTitleAction = classResolver.resolveSilent("net.minecraft.server." + Minecraft.getVersion() + "PacketPlayOutTitle$EnumTitleAction", "net.minecraft.server." + Minecraft.getVersion() + "EnumTitleAction", "org.spigotmc.ProtocolInjector$PacketTitle$Action");
   static Class<?> PlayerConnection = nmsClassResolver.resolveSilent("PlayerConnection");
   static Class<?> EntityPlayer = nmsClassResolver.resolveSilent("EntityPlayer");
-  static Class<?> NetworkManager = nmsClassResolver.resolveSilent("NetworkManager");
-  static Class<?> Channel = classResolver.resolveSilent("net.minecraft.util.io.netty.channel.Channel", "io.netty.channel.Channel");
 
   static ConstructorResolver PacketTitleConstructorResolver = new ConstructorResolver(PacketPlayOutTitle);
 
   static FieldResolver EntityPlayerFieldResolver = new FieldResolver(EntityPlayer);
-  static FieldResolver PlayerConnectionFieldResolver = new FieldResolver(PlayerConnection);
-  static FieldResolver NetworkManagerFieldResolver = new FieldResolver(NetworkManager);
 
   static MethodResolver PlayerConnectionMethodResolver = new MethodResolver(PlayerConnection);
-  static MethodResolver ChatSerailizerMethodResolver = new MethodResolver(ChatSerializer);
-  static MethodResolver NetworkManagerMethodResolver = new MethodResolver(NetworkManager);
+  static MethodResolver ChatSerializerMethodResolver = new MethodResolver(ChatSerializer);
 
 
   /**
@@ -294,7 +289,7 @@ public class TitleAPI {
   //Helper methods
 
   static Object serialize(String json) throws ReflectiveOperationException {
-    return ChatSerailizerMethodResolver.resolve(new ResolverQuery("a", String.class)).invoke(null, json);
+    return ChatSerializerMethodResolver.resolve(new ResolverQuery("a", String.class)).invoke(null, json);
   }
 
   static void sendPacket(Player receiver, Object packet) throws ReflectiveOperationException {

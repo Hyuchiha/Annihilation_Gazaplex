@@ -10,8 +10,8 @@ import java.util.UUID;
 
 public abstract class FurnaceManager {
 
-  private Plugin plugin;
-  private HashMap<UUID, VirtualFurnace> furnaces = new HashMap<>();
+  private final Plugin plugin;
+  private final HashMap<UUID, VirtualFurnace> furnaces = new HashMap<>();
   private boolean isRunning = false;
   private BukkitTask task;
 

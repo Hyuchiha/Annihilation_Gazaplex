@@ -10,8 +10,8 @@ import java.util.UUID;
 
 public abstract class BrewingManager {
 
-  private Plugin plugin;
-  private HashMap<UUID, VirtualBrewingStand> brewingStands = new HashMap<>();
+  private final Plugin plugin;
+  private final HashMap<UUID, VirtualBrewingStand> brewingStands = new HashMap<>();
   private boolean isRunning = false;
   private BukkitTask task;
 
@@ -39,9 +39,7 @@ public abstract class BrewingManager {
   }
 
   public void clearBrewingStands() {
-    if (brewingStands != null) {
-      brewingStands.clear();
-    }
+    brewingStands.clear();
   }
 
   public boolean hasBrewingRegistered(UUID playerUUID) {

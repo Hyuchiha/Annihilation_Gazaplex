@@ -77,9 +77,7 @@ public class MongoDB extends Database {
 
     List<Account> accounts = new ArrayList<>();
 
-    MongoCursor<Document> cursor = findIterable.iterator();
-    while (cursor.hasNext()) {
-      Document document = cursor.next();
+    for (Document document : findIterable) {
       accounts.add(getAccountFromDocument(document));
     }
 
@@ -138,16 +136,18 @@ public class MongoDB extends Database {
     MongoCollection<Document> collection = database.getCollection(ACCOUNTS_COLLECTION);
     Document document = collection.find(eq("uuid", uuid)).first();
 
-    Account account = getAccountFromDocument(document);
+    if (document != null) {
+      Account account = getAccountFromDocument(document);
 
-    account.getKits().add(Kit.valueOf(kit.toUpperCase()));
+      account.getKits().add(Kit.valueOf(kit.toUpperCase()));
 
-    collection.replaceOne(
-        eq("_id", document.get("_id")),
-        getDocument(account)
-    );
+      collection.replaceOne(
+          eq("_id", document.get("_id")),
+          getDocument(account)
+      );
 
-    cachedAccounts.put(uuid, account);
+      cachedAccounts.put(uuid, account);
+    }
   }
 
 

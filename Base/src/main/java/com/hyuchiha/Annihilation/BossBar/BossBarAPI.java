@@ -26,10 +26,7 @@ public class BossBarAPI {
 
     pluginInstance = plugin;
 
-    Iterator players = Bukkit.getOnlinePlayers().iterator();
-
-    while (players.hasNext()) {
-      Player player = (Player) players.next();
+    for (Player player : Bukkit.getOnlinePlayers()) {
       removeBar(player);
     }
 
@@ -89,7 +86,7 @@ public class BossBarAPI {
     return barMap.get(player.getUniqueId());
   }
 
-  public static void handlePlayerTeleport(Player player, Location from, Location to) {
+  public static void handlePlayerTeleport(Player player) {
     if (hasBar(player)) {
       final BossBar bar = getBossBar(player);
 

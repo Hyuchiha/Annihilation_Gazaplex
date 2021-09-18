@@ -28,13 +28,13 @@ public class BossBarListener implements Listener {
       priority = EventPriority.MONITOR
   )
   public void onTeleport(PlayerTeleportEvent e) {
-    BossBarAPI.handlePlayerTeleport(e.getPlayer(), e.getFrom(), e.getTo());
+    BossBarAPI.handlePlayerTeleport(e.getPlayer());
   }
 
   @EventHandler(
       priority = EventPriority.MONITOR
   )
   public void onRespawn(PlayerRespawnEvent e) {
-    BossBarAPI.handlePlayerTeleport(e.getPlayer(), e.getPlayer().getLocation(), e.getRespawnLocation());
+    BossBarAPI.handlePlayerTeleport(e.getPlayer());
   }
 }

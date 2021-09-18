@@ -15,7 +15,7 @@ public class VoidGenerator extends ChunkGenerator {
   }
 
   @Override
-  public ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, @NotNull BiomeGrid biome) {
+  public @NotNull ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, @NotNull BiomeGrid biome) {
     ChunkData chunkData = super.createChunkData(world);
 
     // Set biome.
