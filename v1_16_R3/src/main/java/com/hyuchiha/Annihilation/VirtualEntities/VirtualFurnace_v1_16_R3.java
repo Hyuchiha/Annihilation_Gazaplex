@@ -1,7 +1,6 @@
 package com.hyuchiha.Annihilation.VirtualEntities;
 
 import net.minecraft.server.v1_16_R3.*;
-import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftInventoryFurnace;
 import org.bukkit.entity.Player;
