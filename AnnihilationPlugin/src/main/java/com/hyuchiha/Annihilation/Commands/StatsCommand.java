@@ -21,59 +21,52 @@ public class StatsCommand implements CommandExecutor {
     this.plugin = plugin;
   }
 
-
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-    if (sender instanceof Player) {
-      if (args.length > 0) {
-        Player playerToCheck = Bukkit.getPlayer(args[0]);
+    if (!(sender instanceof Player)) {
+      sender.sendMessage(Translator.getPrefix() + " " + ChatColor.RED + Translator.getString("ERRORS.CONSOLE_PLAYER_COMMAND"));
+      return true;
+    }
 
-        if (playerToCheck != null) {
-          listStats((Player) sender, playerToCheck.getName(), StatType.values());
-        } else {
-          OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
-          if (offlinePlayer != null && offlinePlayer.hasPlayedBefore()) {
-            listStats((Player) sender, offlinePlayer.getName(), StatType.values());
-          } else {
-            sender.sendMessage(Translator.getPrefix() + " " + ChatColor.RED + Translator.getString("ERRORS.PLAYER_DONT_EXIST"));
-          }
-        }
+    Player player = (Player) sender;
+
+    if (args.length > 0) {
+      Player playerToCheck = Bukkit.getPlayer(args[0]);
+
+      if (playerToCheck != null) {
+        listStats(player, playerToCheck.getName(), StatType.values());
       } else {
-
-        listStats((Player) sender);
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
+        if (offlinePlayer != null && offlinePlayer.hasPlayedBefore()) {
+          listStats(player, offlinePlayer.getName(), StatType.values());
+        } else {
+          player.sendMessage(Translator.getPrefix() + " " + ChatColor.RED + Translator.getString("ERRORS.PLAYER_DONT_EXIST"));
+        }
       }
     } else {
-      sender.sendMessage(Translator.getPrefix() + " " + ChatColor.RED + Translator.getString("ERRORS.CONSOLE_PLAYER_COMMAND"));
+      listStats(player);
     }
 
     return true;
   }
 
-
   private void listStats(Player player) {
     listStats(player, player.getName(), StatType.values());
   }
 
-
-  private void listStats(Player sender, String player, StatType[] stats) {
+  private void listStats(Player sender, String playerName, StatType[] stats) {
     String GRAY = ChatColor.GRAY.toString();
     String DARK_AQUA = ChatColor.DARK_AQUA.toString();
     String AQUA = ChatColor.AQUA.toString();
     sender.sendMessage(GRAY + "=========[ " + DARK_AQUA + Translator.getString("INFO.COMMAND_STATS") + GRAY + " ]=========");
-
-
-    sender.sendMessage(GRAY + "=========  " + AQUA + player + GRAY + "  =========");
+    sender.sendMessage(GRAY + "=========  " + AQUA + playerName + GRAY + "  =========");
 
     for (StatType stat : stats) {
-      String name = WordUtils.capitalize(stat.name().toLowerCase()
-          .replace('_', ' '));
-
-      sender.sendMessage(DARK_AQUA + name + ": " + AQUA +
-          getStat(stat, player));
+      String name = WordUtils.capitalize(stat.name().toLowerCase().replace('_', ' '));
+      sender.sendMessage(DARK_AQUA + name + ": " + AQUA + getStat(stat, playerName));
     }
 
     sender.sendMessage(GRAY + "=========================");
   }
-
 
   private int getStat(StatType statType, String playerName) {
     Account account = getPlayerAccount(playerName);
@@ -93,8 +86,8 @@ public class StatsCommand implements CommandExecutor {
         default:
           return 0;
       }
-
     }
+
     return 0;
   }
 
@@ -102,28 +95,17 @@ public class StatsCommand implements CommandExecutor {
     Player player = Bukkit.getPlayer(playerName);
 
     if (player != null) {
-      Account onlineAccount = this.plugin
-          .getMainDatabase()
-          .getAccount(player.getUniqueId().toString(), player.getName());
-
-
+      Account onlineAccount = this.plugin.getMainDatabase().getAccount(player.getUniqueId().toString(), player.getName());
       if (onlineAccount != null) {
         return onlineAccount;
       }
     }
 
-
     OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
-
     if (offlinePlayer != null) {
-      Account offlineAccount = this.plugin
-          .getMainDatabase()
-          .getAccount(offlinePlayer.getUniqueId().toString(), offlinePlayer.getName());
-
-
+      Account offlineAccount = this.plugin.getMainDatabase().getAccount(offlinePlayer.getUniqueId().toString(), offlinePlayer.getName());
       return offlineAccount;
     }
-
 
     return null;
   }
