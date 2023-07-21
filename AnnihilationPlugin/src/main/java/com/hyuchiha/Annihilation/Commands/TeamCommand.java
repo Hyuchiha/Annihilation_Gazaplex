@@ -18,28 +18,36 @@ public class TeamCommand implements CommandExecutor {
 
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
     if (args.length == 0) {
-      TeamUtils.listTeams((Player) sender);
-    } else if (!(sender instanceof Player)) {
-      sender.sendMessage(Translator.getString("ERRORS.CONSOLE_PLAYER_COMMAND"));
+      if (!(sender instanceof Player)) {
+        sender.sendMessage(Translator.getString("ERRORS.CONSOLE_PLAYER_COMMAND"));
+        return true;
+      }
+
+      Player player = (Player) sender;
+      TeamUtils.listTeams(player);
     } else {
-      GamePlayer gamePlayer = PlayerManager.getGamePlayer((Player) sender);
+      if (!(sender instanceof Player)) {
+        sender.sendMessage(Translator.getString("ERRORS.CONSOLE_PLAYER_COMMAND"));
+        return true;
+      }
+
+      Player player = (Player) sender;
+      GamePlayer gamePlayer = PlayerManager.getGamePlayer(player);
       GameTeam team = GameTeam.getTeamByTranslatedName(args[0]);
 
       if (GameManager.getCurrentGame() == null) {
-        sender.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("ERRORS.CANNOT_JOIN_TEAM"));
+        player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("ERRORS.CANNOT_JOIN_TEAM"));
         return true;
       }
 
       if (team != null) {
-        GameManager.getCurrentGame().joinTeam((Player) sender, team.name());
+        GameManager.getCurrentGame().joinTeam(player, team.name());
       } else {
         Output.log("The game does not exist");
-        sender.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("ERRORS.CANNOT_JOIN_TEAM"));
+        player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("ERRORS.CANNOT_JOIN_TEAM"));
       }
     }
 
-
     return true;
   }
-
 }
