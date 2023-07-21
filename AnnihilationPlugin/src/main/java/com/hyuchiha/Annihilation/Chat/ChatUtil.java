@@ -53,11 +53,9 @@ public class ChatUtil {
   }
 
 
-  public static String teamMessage(GameTeam team, Player sender, boolean dead) {
-    String playerName = sender.getName();
-    World w = sender.getWorld();
-    if (team == GameTeam.NONE) {
-      return allMessage(team, sender, false);
+public static String teamMessage(GameTeam team, Player sender, boolean dead) {
+    if (team == null) {
+        return allMessage(GameTeam.NONE, sender, dead);
     }
     String group = GRAY + "[" + team.color() + Translator.getString("COMMONS.TEAM") + GRAY + "] ";
     String primaryGroup0 = VaultHooks.getPermissionManager().getPrimaryGroup(Bukkit.getPlayer(playerName));
