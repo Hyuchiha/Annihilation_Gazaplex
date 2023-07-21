@@ -16,30 +16,27 @@ public class ChatListener implements Listener {
 
   @EventHandler
   public void onPlayerChat(AsyncPlayerChatEvent e) {
-    if (!VaultHooks.vault) {
+    if (!VaultHooks.vault || e.isCancelled()) {
       return;
     }
 
     Player sender = e.getPlayer();
-    boolean All = false;
     GamePlayer meta = PlayerManager.getGamePlayer(sender);
-
     GameTeam team = meta.getTeam();
-    boolean dead = (!meta.isAlive() && GameManager.getCurrentGame().isInGame());
+    boolean dead = (!meta.isAlive() && GameManager.getCurrentGame() != null && GameManager.getCurrentGame().isInGame());
+
     String msg = e.getMessage();
-    if (e.getMessage().startsWith("!") && !e.getMessage().equalsIgnoreCase("!")) {
+    boolean all = false;
+    if (msg.startsWith("!") && !msg.equalsIgnoreCase("!")) {
       msg = msg.substring(1);
-      All = true;
+      all = true;
     }
 
-    if (e.isCancelled()) {
-      return;
-    }
-
-    if (All) {
+    if (all) {
       e.setFormat(ChatUtil.allMessage(team, sender, dead) + msg);
     } else {
-      for (Player p : Bukkit.getOnlinePlayers()) {
+      Set<Player> recipients = new HashSet<>(e.getRecipients());
+      for (Player p : recipients) {
         GamePlayer metap = PlayerManager.getGamePlayer(p);
         if (metap.getTeam() != team) {
           e.getRecipients().remove(p);
