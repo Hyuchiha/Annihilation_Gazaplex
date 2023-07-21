@@ -16,7 +16,7 @@
     <repositories>
         <repository>
             <id>elmakers-repo</id>
-            <url>http://maven.elmakers.com/repository/</url>
+            <url>https://maven.elmakers.com/repository/</url>
         </repository>
         <!--        <repository>-->
         <!--            <id>techcable-repo</id>-->
@@ -24,7 +24,7 @@
         <!--        </repository>-->
         <repository>
             <id>Multiverse-Core</id>
-            <url>http://repo.onarandombox.com/content/repositories/multiverse</url>
+            <url>https://repo.onarandombox.com/content/repositories/multiverse</url>
         </repository>
         <repository>
             <id>spigot-repo</id>
