@@ -56,16 +56,17 @@ public class ChatUtil {
   public static String teamMessage(GameTeam team, Player sender, boolean dead) {
     String playerName = sender.getName();
     World w = sender.getWorld();
-    if (team == GameTeam.NONE) {
-      return allMessage(team, sender, false);
+
+    if (team == null) {
+      return allMessage(GameTeam.NONE, sender, dead);
     }
     String group = GRAY + "[" + team.color() + Translator.getString("COMMONS.TEAM") + GRAY + "] ";
-    String primaryGroup0 = VaultHooks.getPermissionManager().getPrimaryGroup(Bukkit.getPlayer(playerName));
+    String primaryGroup0 = VaultHooks.getPermissionManager().getPrimaryGroup(sender); // Use sender directly
     String gprefix = VaultHooks.getChatManager().getGroupPrefix(w, primaryGroup0);
     String s = group + fixDefault(ChatColor.translateAlternateColorCodes('&', gprefix)) + team.getChatColor() + " " + playerName + DARK_AQUA + "" + BOLD + " > " + RESET;
     if (dead) {
       group = DARK_GRAY + "[" + DARK_RED + Translator.getString("COMMONS.DEAD") + DARK_GRAY + "] " + group;
-      String primaryGroup2 = VaultHooks.getPermissionManager().getPrimaryGroup(Bukkit.getPlayer(playerName));
+      String primaryGroup2 = VaultHooks.getPermissionManager().getPrimaryGroup(sender); // Use sender directly
       gprefix = VaultHooks.getChatManager().getGroupPrefix(w, primaryGroup2);
       s = group + fixDefault(ChatColor.translateAlternateColorCodes('&', gprefix)) + team.getChatColor() + " " + playerName + DARK_AQUA + "" + BOLD + " > " + RESET;
     }
