@@ -50,11 +50,13 @@ Bungee:
 # MySQL Configuration
 Database:
   type: "MySQL"
-  host: "localhost"
+  host: "your_host_url"
   port: 3306
-  name: "anni"
-  user: "root"
-  pass: "root"
+  name: "your_db_name"
+  user: "your_username"
+  pass: "your_password"
+  useSSL: true
+  keystorePassword: "your_keystore_password"
 
 # SQLite Configuration
 #Database:
