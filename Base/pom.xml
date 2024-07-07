@@ -18,10 +18,6 @@
             <id>elmakers-repo</id>
             <url>https://maven.elmakers.com/repository/</url>
         </repository>
-        <!--        <repository>-->
-        <!--            <id>techcable-repo</id>-->
-        <!--            <url>http://repo.techcable.net/content/groups/public/</url>-->
-        <!--        </repository>-->
         <repository>
             <id>Multiverse-Core</id>
             <url>https://repo.onarandombox.com/content/repositories/multiverse</url>
