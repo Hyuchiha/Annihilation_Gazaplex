@@ -17,8 +17,8 @@
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
         <repository>
-            <id>dmulloy2-repo</id>
-            <url>https://repo.dmulloy2.net/nexus/repository/public/</url>
+            <id>inventive-repo</id>
+            <url>https://repo.inventivetalent.org/content/groups/public/</url>
         </repository>
         <repository>
             <id>jitpack.io</id>
@@ -105,6 +105,11 @@
             <version>v1_0</version>
         </dependency>
         <dependency>
+            <groupId>com.hyuchiha</groupId>
+            <artifactId>v1_17_R1</artifactId>
+            <version>v1_0</version>
+        </dependency>
+        <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver</artifactId>
             <version>3.12.14</version>
@@ -166,6 +171,7 @@
                                     <include>com.hyuchiha:v1_16_R1**</include>
                                     <include>com.hyuchiha:v1_16_R2**</include>
                                     <include>com.hyuchiha:v1_16_R3**</include>
+                                    <include>com.hyuchiha:v1_17_R1**</include>
                                     <include>org.mongodb:mongodb-driver</include>
                                     <include>org.mongodb:bson</include>
                                     <include>org.mongodb:mongodb-driver-core</include>
