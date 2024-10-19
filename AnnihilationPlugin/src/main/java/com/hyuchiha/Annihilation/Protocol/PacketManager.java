@@ -86,4 +86,11 @@ public class PacketManager {
       }
     }
   }
+
+  public static void clear() {
+    if (equipmentListener != null) {
+      equipmentListener.close();
+      equipmentListener = null;
+    }
+  }
 }

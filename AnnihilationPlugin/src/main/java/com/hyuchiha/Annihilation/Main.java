@@ -89,6 +89,9 @@ public class Main extends JavaPlugin {
     EnderBrewingManager.disableBrewingManager();
     EnderFurnaceManager.disableFurnaceManager();
 
+    // Disable PacketManagerListener
+    PacketManager.clear();
+
     this.database.close();
   }
 
