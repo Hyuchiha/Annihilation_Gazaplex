@@ -10,6 +10,7 @@ import com.hyuchiha.Annihilation.Manager.MapManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Manager.VotingManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
+import com.hyuchiha.Annihilation.Protocol.PacketManager;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
 import com.hyuchiha.Annihilation.Utils.MenuUtils;
 import com.hyuchiha.Annihilation.Utils.XMaterial;
@@ -249,6 +250,7 @@ public class PlayerListener implements Listener {
       for (PotionEffect effect : potion.getCustomEffects()) {
         if (effect.getType() == PotionEffectType.INVISIBILITY) {
           Player player = event.getPlayer();
+          PacketManager.sendPacketHelmet(player, player.getInventory().getHelmet());
         }
       }
     }
@@ -263,6 +265,7 @@ public class PlayerListener implements Listener {
         for (LivingEntity entity : event.getAffectedEntities()) {
           if (entity instanceof Player) {
             Player player = (Player) entity;
+            PacketManager.sendPacketHelmet(player, player.getInventory().getHelmet());
           }
         }
       }

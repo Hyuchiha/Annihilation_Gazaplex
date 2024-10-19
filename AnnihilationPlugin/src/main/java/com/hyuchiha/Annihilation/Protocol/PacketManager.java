@@ -1,12 +1,15 @@
 package com.hyuchiha.Annihilation.Protocol;
 
+import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
+import com.hyuchiha.Annihilation.Protocol.Packets.WrapperPlayServerEntityEquipment;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -40,6 +43,7 @@ public class PacketManager {
                 Color color = gamePlayer.getTeam().getColor();
                 LeatherArmorMeta leather = (LeatherArmorMeta) helmet.getItemMeta();
                 leather.setColor(color);
+                helmet.setItemMeta(leather);
 
                 equipmentEvent.setEquipment(helmet);
               } else {
@@ -67,5 +71,19 @@ public class PacketManager {
 
   private static boolean checkProtocolEnabled() {
     return Bukkit.getServer().getPluginManager().isPluginEnabled("ProtocolLib");
+  }
+
+  public static void sendPacketHelmet(Player client, ItemStack helmet) {
+    WrapperPlayServerEntityEquipment wrapper = new WrapperPlayServerEntityEquipment();
+    wrapper.setEntityID(client.getEntityId());
+    wrapper.setSlot(EnumWrappers.ItemSlot.HEAD);
+    wrapper.setItem(helmet);
+
+    for (Entity toSend: client.getNearbyEntities(30, 30, 30)) {
+      if (toSend instanceof Player) {
+        Player toSendPlayer = (Player) toSend;
+        wrapper.sendPacket(toSendPlayer);
+      }
+    }
   }
 }
