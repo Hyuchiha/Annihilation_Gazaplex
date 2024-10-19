@@ -27,6 +27,7 @@ public enum Kit {
   MINER("MINER", XMaterial.STONE_PICKAXE.parseMaterial()),
   PYRO("PYRO", XMaterial.FLINT_AND_STEEL.parseMaterial()),
   SCORPIO("SCORPIO", XMaterial.NETHER_STAR.parseMaterial()),
+  SCOUT("SCOUT", XMaterial.FISHING_ROD.parseMaterial()),
   TRANSPORTER("TRANSPORTER", XMaterial.QUARTZ.parseMaterial()),
   VAMPIRE("VAMPIRE", XMaterial.REDSTONE.parseMaterial()),
   WARRIOR("WARRIOR", XMaterial.STONE_SWORD.parseMaterial());
