@@ -85,6 +85,9 @@ public enum Kit {
       case "SCORPIO":
         kits.put(name, new Scorpio(kitName, icon, configurationSection));
         break;
+      case "SCOUT":
+        kits.put(name, new Scout(kitName, icon, configurationSection));
+        break;
       case "TRANSPORTER":
         kits.put(name, new Transporter(kitName, icon, configurationSection));
         break;
