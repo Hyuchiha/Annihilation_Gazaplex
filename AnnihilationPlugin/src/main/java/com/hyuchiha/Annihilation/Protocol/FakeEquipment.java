@@ -317,7 +317,7 @@ public abstract class FakeEquipment {
       public void run() {
         try {
           ProtocolLibrary.getProtocolManager().sendServerPacket(client, equipmentPacket);
-        } catch (InvocationTargetException e) {
+        } catch (Exception e) {
           throw new RuntimeException("Unable to update slot.", e);
         }
       }
