@@ -130,6 +130,14 @@ Kits:
       - "&2 para atrapar a tus enemigos"
       - "&2 hacia donde este"
       - "&2 y asesinarlos de forma veloz"
+  SCOUT:
+    name: "&2Scout"
+    lore:
+      - "&bEres el experto portador de garfios"
+      - ""
+      - "&bUsa tu gancho especial para atrapar"
+      - "&by elimina rápidamente a tus enemigos."
+    price: 75000
   TRANSPORTER:
     name: "&2 Transporter"
     lore:
