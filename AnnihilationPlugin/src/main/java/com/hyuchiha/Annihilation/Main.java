@@ -86,6 +86,8 @@ public class Main extends JavaPlugin {
 
 
   public void onDisable() {
+    GameManager.forceStopGame();
+
     EnderBrewingManager.disableBrewingManager();
     EnderFurnaceManager.disableFurnaceManager();
 
