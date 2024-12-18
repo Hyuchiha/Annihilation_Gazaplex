@@ -1,7 +1,7 @@
 package com.hyuchiha.Annihilation.Manager;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.hyuchiha.Annihilation.Game.Resource;
-import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
@@ -14,31 +14,31 @@ public class ResourceManager {
   private static final List<Location> diamonds = new ArrayList<>();
 
   public static void initializeResources() {
-    addResource(Material.COAL_ORE, 2, 10);
-    addResource(Material.IRON_ORE, 3, 20);
-    addResource(Material.GOLD_ORE, 4, 20);
-    addResource(Material.DIAMOND_ORE, 5, 30);
-    addResource(Material.EMERALD_ORE, 6, 40);
-    addResource(Material.REDSTONE_ORE, 4, 20);
+    addResource(XMaterial.COAL_ORE.get(), 2, 10);
+    addResource(XMaterial.IRON_ORE.get(), 3, 20);
+    addResource(XMaterial.GOLD_ORE.get(), 4, 20);
+    addResource(XMaterial.DIAMOND_ORE.get(), 5, 30);
+    addResource(XMaterial.EMERALD_ORE.get(), 6, 40);
+    addResource(XMaterial.REDSTONE_ORE.get(), 4, 20);
     // addResource(Material.GLOWING_REDSTONE_ORE, 5, 20);
 
-    addResource(XMaterial.ACACIA_LOG.parseMaterial(), 1, 10);
-    addResource(XMaterial.BIRCH_LOG.parseMaterial(), 1, 10);
-    addResource(XMaterial.DARK_OAK_LOG.parseMaterial(), 1, 10);
-    addResource(XMaterial.JUNGLE_LOG.parseMaterial(), 1, 10);
-    addResource(XMaterial.OAK_LOG.parseMaterial(), 1, 10);
-    addResource(XMaterial.SPRUCE_LOG.parseMaterial(), 1, 10);
-    addResource(XMaterial.STRIPPED_ACACIA_LOG.parseMaterial(), 1, 10);
-    addResource(XMaterial.STRIPPED_BIRCH_LOG.parseMaterial(), 1, 10);
-    addResource(XMaterial.STRIPPED_DARK_OAK_LOG.parseMaterial(), 1, 10);
-    addResource(XMaterial.STRIPPED_JUNGLE_LOG.parseMaterial(), 1, 10);
-    addResource(XMaterial.STRIPPED_OAK_LOG.parseMaterial(), 1, 10);
-    addResource(XMaterial.STRIPPED_SPRUCE_LOG.parseMaterial(), 1, 10);
+    addResource(XMaterial.ACACIA_LOG.get(), 1, 10);
+    addResource(XMaterial.BIRCH_LOG.get(), 1, 10);
+    addResource(XMaterial.DARK_OAK_LOG.get(), 1, 10);
+    addResource(XMaterial.JUNGLE_LOG.get(), 1, 10);
+    addResource(XMaterial.OAK_LOG.get(), 1, 10);
+    addResource(XMaterial.SPRUCE_LOG.get(), 1, 10);
+    addResource(XMaterial.STRIPPED_ACACIA_LOG.get(), 1, 10);
+    addResource(XMaterial.STRIPPED_BIRCH_LOG.get(), 1, 10);
+    addResource(XMaterial.STRIPPED_DARK_OAK_LOG.get(), 1, 10);
+    addResource(XMaterial.STRIPPED_JUNGLE_LOG.get(), 1, 10);
+    addResource(XMaterial.STRIPPED_OAK_LOG.get(), 1, 10);
+    addResource(XMaterial.STRIPPED_SPRUCE_LOG.get(), 1, 10);
 
-    addResource(Material.GRAVEL, 1, 20);
-    addResource(XMaterial.MELON.parseMaterial(), 1, 10);
-    addResource(Material.LAPIS_ORE, 2, 10);
-    addResource(Material.PUMPKIN, 1, 10);
+    addResource(XMaterial.GRAVEL.get(), 1, 20);
+    addResource(XMaterial.MELON.get(), 1, 10);
+    addResource(XMaterial.LAPIS_ORE.get(), 2, 10);
+    addResource(XMaterial.PUMPKIN.get(), 1, 10);
   }
 
   public static boolean containsResource(Material type) {
@@ -81,15 +81,15 @@ public class ResourceManager {
     XMaterial parsedMaterialType = XMaterial.matchXMaterial(type);
     switch (parsedMaterialType) {
       case COAL_ORE:
-        return Material.COAL;
+        return XMaterial.COAL.get();
       case DIAMOND_ORE:
-        return Material.DIAMOND;
+        return XMaterial.DIAMOND.get();
       case EMERALD_ORE:
-        return Material.EMERALD;
+        return XMaterial.EMERALD.get();
       case REDSTONE_ORE:
-        return Material.REDSTONE;
+        return XMaterial.REDSTONE.get();
       case MELON:
-        return XMaterial.MELON_SLICE.parseMaterial();
+        return XMaterial.MELON_SLICE.get();
       case GRAVEL:
         return null;
     }

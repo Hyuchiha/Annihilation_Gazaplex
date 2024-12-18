@@ -1,5 +1,6 @@
 package com.hyuchiha.Annihilation.Listener;
 
+import com.cryptomorin.xseries.XSound;
 import com.hyuchiha.Annihilation.Chat.ChatUtil;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Main;
@@ -9,7 +10,6 @@ import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Utils.FireworkUtils;
 import com.hyuchiha.Annihilation.Utils.ItemSelectorUtils;
-import com.hyuchiha.Annihilation.Utils.Sound;
 import org.bukkit.*;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.*;
@@ -230,7 +230,7 @@ public class BossListener implements Listener {
         gPlayer.addXp(config.getInt("Exp-boss-kill"));
 
         Location bossLocation = event.getEntity().getLocation();
-        bossLocation.getWorld().playSound(bossLocation, Sound.ENDERDRAGON_DEATH.bukkitSound(), 1.0F, 0.1F);
+        XSound.ENTITY_ENDER_DRAGON_DEATH.play(bossLocation, 1.0F, 0.1F);
 
         FireworkUtils.spawnFirework(
             bossLocation,

@@ -1,5 +1,7 @@
 package com.hyuchiha.Annihilation.Kits.Implementations;
 
+import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XSound;
 import com.hyuchiha.Annihilation.Arena.Nexus;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.GameTeam;
@@ -12,8 +14,6 @@ import com.hyuchiha.Annihilation.Object.Loc;
 import com.hyuchiha.Annihilation.Object.Teleporter;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
 import com.hyuchiha.Annihilation.Utils.KitUtils;
-import com.hyuchiha.Annihilation.Utils.Sound;
-import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -99,7 +99,7 @@ public class Transporter extends BaseKit {
 
     if (event.getAction() == Action.RIGHT_CLICK_BLOCK && player.getGameMode() != GameMode.CREATIVE) {
 
-      if (block.getType() == XMaterial.NETHER_QUARTZ_ORE.parseMaterial()) {
+      if (block.getType() == XMaterial.NETHER_QUARTZ_ORE.get()) {
         event.setCancelled(true);
         UUID owner = KitUtils.getBlockOwner(block);
         if (owner != null) {
@@ -156,11 +156,11 @@ public class Transporter extends BaseKit {
           }
 
           Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
-            block.setType(XMaterial.NETHER_QUARTZ_ORE.parseMaterial());
+            block.setType(XMaterial.NETHER_QUARTZ_ORE.get());
             block.getChunk().unload();
             block.getChunk().load();
             KitUtils.setBlockOwner(block, player.getUniqueId());
-            player.playSound(block.getLocation(), Sound.BLAZE_BREATH.bukkitSound(), 1.0F, 1.9F);
+            XSound.ENTITY_BLAZE_AMBIENT.play(player, 1.0F, 1.9F);
           });
 
           event.setCancelled(true);
@@ -178,7 +178,7 @@ public class Transporter extends BaseKit {
     if (event.isSneaking()) {
       Player player = event.getPlayer();
       Block block = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
-      if (block.getType() == XMaterial.NETHER_QUARTZ_ORE.parseMaterial()) {
+      if (block.getType() == XMaterial.NETHER_QUARTZ_ORE.get()) {
         UUID owner = KitUtils.getBlockOwner(block);
         if (owner != null) {
           GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
@@ -194,8 +194,8 @@ public class Transporter extends BaseKit {
             loc.setY(loc.getY() + 1.0D);
             player.teleport(Loc.getMiddle(loc));
             loc.getWorld().playEffect(loc, Effect.MOBSPAWNER_FLAMES, 1);
-            tele.getLoc1().toLocation().getWorld().playSound(tele.getLoc1().toLocation(), Sound.ENDERMAN_TELEPORT.bukkitSound(), 1.0F, (float) Math.random());
-            tele.getLoc2().toLocation().getWorld().playSound(tele.getLoc2().toLocation(), Sound.ENDERMAN_TELEPORT.bukkitSound(), 1.0F, (float) Math.random());
+            XSound.ENTITY_ENDERMAN_TELEPORT.play(tele.getLoc1().toLocation(), 1.0F, (float) Math.random());
+            XSound.ENTITY_ENDERMAN_TELEPORT.play(tele.getLoc2().toLocation(), 1.0F, (float) Math.random());
             tele.delay();
             event.setCancelled(true);
           }
@@ -209,7 +209,7 @@ public class Transporter extends BaseKit {
   public void MoveListeners(PlayerMoveEvent event) {
     ///block under your feet
     Block to = event.getTo().getBlock().getRelative(BlockFace.DOWN);
-    if (to.getType() == XMaterial.NETHER_QUARTZ_ORE.parseMaterial()) {
+    if (to.getType() == XMaterial.NETHER_QUARTZ_ORE.get()) {
       Location x = event.getTo();
       Location y = event.getFrom();
       if (x.getBlockX() != y.getBlockX() || x.getBlockY() != y.getBlockY() || x.getBlockZ() != y.getBlockZ()) {
@@ -230,7 +230,7 @@ public class Transporter extends BaseKit {
   public void TeleporterProtect(BlockBreakEvent event) {
     Player player = event.getPlayer();
     Block block = event.getBlock();
-    if (block.getType() == XMaterial.NETHER_QUARTZ_ORE.parseMaterial()) {
+    if (block.getType() == XMaterial.NETHER_QUARTZ_ORE.get()) {
       event.setCancelled(true);
       GamePlayer eventPlayer = PlayerManager.getGamePlayer(player);
 

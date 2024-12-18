@@ -1,12 +1,12 @@
 package com.hyuchiha.Annihilation.Kits.Implementations;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
 import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Manager.ResourceManager;
-import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -33,7 +33,7 @@ public class Enchanter extends BaseKit {
     spawnItems.add(XMaterial.WOODEN_PICKAXE.parseItem());
     spawnItems.add(XMaterial.WOODEN_AXE.parseItem());
 
-    Material expBottleType = XMaterial.EXPERIENCE_BOTTLE.parseMaterial();
+    Material expBottleType = XMaterial.EXPERIENCE_BOTTLE.get();
     assert expBottleType != null;
     spawnItems.add(new ItemStack(expBottleType, 5));
   }
@@ -76,7 +76,7 @@ public class Enchanter extends BaseKit {
         && gPlayer.getKit() == Kit.ENCHANTER
     ) {
       if (random.nextInt(100) < 25) {
-        Material expType = XMaterial.EXPERIENCE_BOTTLE.parseMaterial();
+        Material expType = XMaterial.EXPERIENCE_BOTTLE.get();
         player.getInventory().addItem(new ItemStack(expType, 1));
       }
 

@@ -1,5 +1,7 @@
 package com.hyuchiha.Annihilation.Kits.Implementations;
 
+import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XSound;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
@@ -8,7 +10,6 @@ import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
 import com.hyuchiha.Annihilation.Utils.KitUtils;
 import com.hyuchiha.Annihilation.Utils.TimersUtils;
-import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -47,16 +48,16 @@ public class Builder extends BaseKit {
   }
 
   private void fillDrops() {
-    drops.add(new ItemStack(Material.GLASS, 20));
-    drops.add(new ItemStack(XMaterial.SPRUCE_STAIRS.parseMaterial(), 20));
-    drops.add(new ItemStack(XMaterial.BIRCH_PLANKS.parseMaterial(), 70));
-    drops.add(new ItemStack(Material.SPRUCE_FENCE, 10));
-    drops.add(new ItemStack(Material.TORCH, 5));
-    drops.add(new ItemStack(Material.BRICK, 40));
-    drops.add(new ItemStack(Material.STONE, 50));
-    drops.add(new ItemStack(XMaterial.WHITE_WOOL.parseMaterial(), 30));
-    drops.add(new ItemStack(Material.DIRT, 60));
-    drops.add(new ItemStack(XMaterial.IRON_BARS.parseMaterial(), 10));
+    drops.add(new ItemStack(XMaterial.GLASS.get(), 20));
+    drops.add(new ItemStack(XMaterial.SPRUCE_STAIRS.get(), 20));
+    drops.add(new ItemStack(XMaterial.BIRCH_PLANKS.get(), 70));
+    drops.add(new ItemStack(XMaterial.SPRUCE_FENCE.get(), 10));
+    drops.add(new ItemStack(XMaterial.TORCH.get(), 5));
+    drops.add(new ItemStack(XMaterial.BRICK.get(), 40));
+    drops.add(new ItemStack(XMaterial.STONE.get(), 50));
+    drops.add(new ItemStack(XMaterial.WHITE_WOOL.get(), 30));
+    drops.add(new ItemStack(XMaterial.DIRT.get(), 60));
+    drops.add(new ItemStack(XMaterial.IRON_BARS.get(), 10));
   }
 
   @Override
@@ -229,7 +230,7 @@ public class Builder extends BaseKit {
   private void playDelayingBlockEffect(Player player) {
     Location location = player.getLocation();
     World world = player.getWorld();
-    world.playSound(location, Sound.ENTITY_GHAST_HURT, 10, 1);
+    XSound.ENTITY_GHAST_HURT.play(location, 10, 1);
 
     player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 10, 1));
     player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 20 * 10, 2));

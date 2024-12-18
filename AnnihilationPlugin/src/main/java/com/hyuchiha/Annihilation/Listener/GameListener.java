@@ -1,5 +1,6 @@
 package com.hyuchiha.Annihilation.Listener;
 
+import com.cryptomorin.xseries.XSound;
 import com.hyuchiha.Annihilation.Chat.ChatUtil;
 import com.hyuchiha.Annihilation.Database.Base.Account;
 import com.hyuchiha.Annihilation.Event.*;
@@ -88,9 +89,7 @@ public class GameListener implements Listener {
       ScoreboardManager.updateInGameScoreboard(victim);
 
       float pitch = 0.5F + random.nextFloat() * 0.5F;
-      victim.getNexus().getLocation().getWorld()
-          .playSound(victim.getNexus().getLocation(), Sound.BLOCK_ANVIL_LAND, 1F, pitch);
-
+      XSound.BLOCK_ANVIL_LAND.play(victim.getNexus().getLocation(), 1F, pitch);
 
       for (Player p : victim.getPlayers()) {
         GameUtils.playSounds(p);
@@ -140,7 +139,7 @@ public class GameListener implements Listener {
         Account victimData = this.plugin.getMainDatabase().getAccount(breaker.getPlayer().getUniqueId().toString(), breaker.getPlayer().getName());
         victimData.increateLosses();
       }
-      player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1.0F, 1.25F);
+      XSound.ENTITY_GENERIC_EXPLODE.play(player, 1.0F, 1.25F);
     }
 
     for (Location spawn : victim.getSpawns()) {

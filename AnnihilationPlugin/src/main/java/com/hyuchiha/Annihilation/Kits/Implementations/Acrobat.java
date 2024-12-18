@@ -1,5 +1,7 @@
 package com.hyuchiha.Annihilation.Kits.Implementations;
 
+import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XSound;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
@@ -7,7 +9,6 @@ import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Utils.TimersUtils;
-import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -51,7 +52,7 @@ public class Acrobat extends BaseKit {
             && GameManager.getCurrentGame().isInGame()
             && TimersUtils.getRemainingMiliseconds(player, Kit.ACROBAT) == 0) {
 
-          // player.playSound(player.getLocation(), Sound.ENTITY_WITHER_SHOOT, 1.0F, 2.0F);
+          XSound.ENTITY_WITHER_SHOOT.play(player, 1.0F, 2.0F);
           player.setAllowFlight(true);
         }
 
@@ -118,7 +119,7 @@ public class Acrobat extends BaseKit {
         player.setAllowFlight(false);
         player.setFlying(false);
         player.setVelocity(player.getLocation().getDirection().setY(1).multiply(1));
-        player.playSound(player.getLocation(), Sound.ENTITY_ZOMBIE_INFECT, 1.0F, 2.0F);
+        XSound.ENTITY_ZOMBIE_INFECT.play(player, 1.0F, 2.0F);
       } else {
         player.setAllowFlight(false);
         player.setFlying(false);

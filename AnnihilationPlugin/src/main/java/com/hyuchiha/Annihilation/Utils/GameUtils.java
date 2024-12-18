@@ -1,5 +1,7 @@
 package com.hyuchiha.Annihilation.Utils;
 
+import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XSound;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Main;
@@ -48,12 +50,12 @@ public class GameUtils {
   public static boolean isWallSign(Block block) {
     if (Minecraft.Version.getVersion().olderThan(Minecraft.Version.v1_13_R1)) {
       Material clickedType = block.getType();
-      return  clickedType == XMaterial.ACACIA_WALL_SIGN.parseMaterial()
-          || clickedType == XMaterial.SPRUCE_WALL_SIGN.parseMaterial()
-          || clickedType == XMaterial.BIRCH_WALL_SIGN.parseMaterial()
-          || clickedType == XMaterial.DARK_OAK_WALL_SIGN.parseMaterial()
-          || clickedType == XMaterial.JUNGLE_WALL_SIGN.parseMaterial()
-          || clickedType == XMaterial.OAK_WALL_SIGN.parseMaterial();
+      return  clickedType == XMaterial.ACACIA_WALL_SIGN.get()
+          || clickedType == XMaterial.SPRUCE_WALL_SIGN.get()
+          || clickedType == XMaterial.BIRCH_WALL_SIGN.get()
+          || clickedType == XMaterial.DARK_OAK_WALL_SIGN.get()
+          || clickedType == XMaterial.JUNGLE_WALL_SIGN.get()
+          || clickedType == XMaterial.OAK_WALL_SIGN.get();
     } else {
       return BaseUtils.isANewVersionSign(block);
     }
@@ -66,7 +68,7 @@ public class GameUtils {
 
   public static void playSounds(Player p) {
     for (int i = 0; i < 4; i++) {
-      p.playSound(p.getLocation(), Sound.NOTE_PLING.bukkitSound(), i, i);
+      XSound.BLOCK_NOTE_BLOCK_PLING.play(p, i, i);
     }
   }
 

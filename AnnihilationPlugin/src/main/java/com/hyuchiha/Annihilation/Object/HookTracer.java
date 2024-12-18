@@ -1,5 +1,6 @@
 package com.hyuchiha.Annihilation.Object;
 
+import com.cryptomorin.xseries.XSound;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Main;
@@ -46,15 +47,15 @@ public class HookTracer implements Runnable {
               Location loc1 = user.getLocation();
               Location loc2 = target.getLocation();
               if (loc2.getY() >= loc1.getY()) {
-                target.getWorld().playSound(target.getLocation(), Sound.BLOCK_WOODEN_DOOR_OPEN, 1F, 0.1F);
-                user.getWorld().playSound(user.getLocation(), Sound.BLOCK_WOODEN_DOOR_CLOSE, 1F, 0.1F);
+                XSound.BLOCK_WOODEN_DOOR_OPEN.play(target.getLocation(), 1F, 0.1F);
+                XSound.BLOCK_WOODEN_DOOR_CLOSE.play(user.getLocation(), 1F, 0.1F);
                 loc2.setY(loc1.getY());
                 Vector vec = loc2.toVector().subtract(loc1.toVector()).setY(.08D).multiply(7);
                 user.setVelocity(vec);
               }
             } else {
-              target.getWorld().playSound(target.getLocation(), Sound.BLOCK_WOODEN_DOOR_OPEN, 1F, 0.1F);
-              user.getWorld().playSound(user.getLocation(), Sound.BLOCK_WOODEN_DOOR_CLOSE, 1F, 0.1F);
+              XSound.BLOCK_WOODEN_DOOR_OPEN.play(target.getLocation(), 1F, 0.1F);
+              XSound.BLOCK_WOODEN_DOOR_CLOSE.play(user.getLocation(), 1F, 0.1F);
 
               // Stop player damage
               DamageControl.addTempImmunity(target, EntityDamageEvent.DamageCause.FALL, System.currentTimeMillis() + 8000); //8 second fall immunity

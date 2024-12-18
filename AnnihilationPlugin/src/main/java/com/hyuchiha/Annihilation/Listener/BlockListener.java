@@ -1,5 +1,6 @@
 package com.hyuchiha.Annihilation.Listener;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.hyuchiha.Annihilation.Anticheat.FastBreakProtect;
 import com.hyuchiha.Annihilation.Event.NexusDamageEvent;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
@@ -9,7 +10,6 @@ import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
 import com.hyuchiha.Annihilation.Utils.LocationUtils;
-import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;

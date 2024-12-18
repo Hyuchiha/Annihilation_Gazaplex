@@ -1,10 +1,10 @@
 package com.hyuchiha.Annihilation.Kits.Implementations;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
-import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;

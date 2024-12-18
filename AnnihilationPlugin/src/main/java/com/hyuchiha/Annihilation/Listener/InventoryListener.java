@@ -1,5 +1,6 @@
 package com.hyuchiha.Annihilation.Listener;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.google.common.base.Enums;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.GameState;
@@ -12,7 +13,6 @@ import com.hyuchiha.Annihilation.Manager.VotingManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Utils.KitUtils;
 import com.hyuchiha.Annihilation.Utils.MenuUtils;
-import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
@@ -134,7 +134,7 @@ public class InventoryListener implements Listener {
 
       e.setCancelled(true);
 
-      if (clickedItem.getType() == XMaterial.BLACK_STAINED_GLASS_PANE.parseMaterial()) {
+      if (clickedItem.getType() == XMaterial.BLACK_STAINED_GLASS_PANE.get()) {
         return;
       }
 
@@ -162,7 +162,7 @@ public class InventoryListener implements Listener {
 
       e.setCancelled(true);
 
-      if (clickedItem.getType() == XMaterial.BLACK_STAINED_GLASS_PANE.parseMaterial()) {
+      if (clickedItem.getType() == XMaterial.BLACK_STAINED_GLASS_PANE.get()) {
         return;
       }
 

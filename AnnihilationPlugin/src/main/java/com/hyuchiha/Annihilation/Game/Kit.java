@@ -1,10 +1,10 @@
 package com.hyuchiha.Annihilation.Game;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.hyuchiha.Annihilation.Database.Base.Account;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
 import com.hyuchiha.Annihilation.Kits.Implementations.*;
 import com.hyuchiha.Annihilation.Main;
-import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
@@ -15,22 +15,22 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.HashMap;
 
 public enum Kit {
-  CIVILIAN("CIVILIAN", XMaterial.CRAFTING_TABLE.parseMaterial()),
-  ACROBAT("ACROBAT", XMaterial.FEATHER.parseMaterial()),
-  ALCHEMIST("ALCHEMIST", XMaterial.BREWING_STAND.parseMaterial()),
-  ARCHER("ARCHER", XMaterial.BOW.parseMaterial()),
-  BERSERKER("BERSERKER", XMaterial.CHAINMAIL_CHESTPLATE.parseMaterial()),
-  BLOODMAGE("BLOODMAGE", XMaterial.MUSIC_DISC_BLOCKS.parseMaterial()),
-  BUILDER("BUILDER", XMaterial.BRICK.parseMaterial()),
-  DEFENDER("DEFENDER", XMaterial.SHIELD.parseMaterial()),
-  ENCHANTER("ENCHANTER", XMaterial.ENCHANTING_TABLE.parseMaterial()),
-  MINER("MINER", XMaterial.STONE_PICKAXE.parseMaterial()),
-  PYRO("PYRO", XMaterial.FLINT_AND_STEEL.parseMaterial()),
-  SCORPIO("SCORPIO", XMaterial.NETHER_STAR.parseMaterial()),
-  SCOUT("SCOUT", XMaterial.FISHING_ROD.parseMaterial()),
-  TRANSPORTER("TRANSPORTER", XMaterial.QUARTZ.parseMaterial()),
-  VAMPIRE("VAMPIRE", XMaterial.REDSTONE.parseMaterial()),
-  WARRIOR("WARRIOR", XMaterial.STONE_SWORD.parseMaterial());
+  CIVILIAN("CIVILIAN", XMaterial.CRAFTING_TABLE.get()),
+  ACROBAT("ACROBAT", XMaterial.FEATHER.get()),
+  ALCHEMIST("ALCHEMIST", XMaterial.BREWING_STAND.get()),
+  ARCHER("ARCHER", XMaterial.BOW.get()),
+  BERSERKER("BERSERKER", XMaterial.CHAINMAIL_CHESTPLATE.get()),
+  BLOODMAGE("BLOODMAGE", XMaterial.MUSIC_DISC_BLOCKS.get()),
+  BUILDER("BUILDER", XMaterial.BRICK.get()),
+  DEFENDER("DEFENDER", XMaterial.SHIELD.get()),
+  ENCHANTER("ENCHANTER", XMaterial.ENCHANTING_TABLE.get()),
+  MINER("MINER", XMaterial.STONE_PICKAXE.get()),
+  PYRO("PYRO", XMaterial.FLINT_AND_STEEL.get()),
+  SCORPIO("SCORPIO", XMaterial.NETHER_STAR.get()),
+  SCOUT("SCOUT", XMaterial.FISHING_ROD.get()),
+  TRANSPORTER("TRANSPORTER", XMaterial.QUARTZ.get()),
+  VAMPIRE("VAMPIRE", XMaterial.REDSTONE.get()),
+  WARRIOR("WARRIOR", XMaterial.STONE_SWORD.get());
 
   private HashMap<String, BaseKit> kits = new HashMap<>();
 

@@ -1,7 +1,7 @@
 package com.hyuchiha.Annihilation.Kits.Implementations;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
-import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

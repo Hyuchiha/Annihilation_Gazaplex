@@ -1,5 +1,6 @@
 package com.hyuchiha.Annihilation.Listener;
 
+import com.cryptomorin.xseries.XSound;
 import com.hyuchiha.Annihilation.Output.Output;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -46,7 +47,7 @@ public class SoulboundListener implements Listener {
   public void onSoulboundDrop(PlayerDropItemEvent e) {
     if (isSoulbound(e.getItemDrop().getItemStack())) {
       Player p = e.getPlayer();
-      p.playSound(p.getLocation(), Sound.ENTITY_BLAZE_HURT, 1.0F, 0.25F);
+      XSound.ENTITY_BLAZE_HURT.play(p, 1.0F, 0.25F);
       e.getItemDrop().remove();
     }
   }

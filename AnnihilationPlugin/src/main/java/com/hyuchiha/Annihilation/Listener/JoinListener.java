@@ -1,5 +1,6 @@
 package com.hyuchiha.Annihilation.Listener;
 
+import com.cryptomorin.xseries.XSound;
 import com.hyuchiha.Annihilation.BossBar.BossBarAPI;
 import com.hyuchiha.Annihilation.Event.StartGameEvent;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
@@ -95,7 +96,7 @@ public class JoinListener implements Listener {
     }
     p.teleport(meta.getTeam().getRandomSpawn());
     p.sendMessage(Translator.getPrefix() + Translator.getColoredString("INFO.NPC_JOIN_RESUMED"));
-    p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
+    XSound.ENTITY_PLAYER_LEVELUP.play(p.getLocation(), 1.0F, 1.0F);
     SignManager.updateIndividualSign(meta.getTeam());
     ScoreboardManager.updatePlayerScoreboard();
     p.setGameMode(GameMode.SURVIVAL);

@@ -1,14 +1,14 @@
 package com.hyuchiha.Annihilation.Kits.Implementations;
 
+import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XSound;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
-import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,7 +25,7 @@ public class Scout extends BaseKit {
 
     @Override
     protected void setupSpawnItems() {
-        spawnItems.add(new ItemStack(Material.GOLD_SWORD));
+        spawnItems.add(XMaterial.GOLDEN_SWORD.parseItem());
         spawnItems.add(XMaterial.WOODEN_PICKAXE.parseItem());
         spawnItems.add(XMaterial.WOODEN_AXE.parseItem());
 
@@ -96,12 +96,12 @@ public class Scout extends BaseKit {
             player.setVelocity(vel);
 
             // Play the initial left-click sound when throwing the grappling hook
-            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
+            XSound.ENTITY_PLAYER_ATTACK_SWEEP.play(player, 1.0F, 1.0F);
         } else if (event.getState() == PlayerFishEvent.State.CAUGHT_ENTITY &&
                 gPlayer.getKit() == Kit.SCOUT) {
 
             // Play the sound when the hook is grabbed
-            player.playSound(player.getLocation(), Sound.ENTITY_ENDERPEARL_THROW, 1.0F, 1.0F);
+            XSound.ENTITY_ENDER_PEARL_THROW.play(player, 1.0F, 1.0F);
         }
     }
 }

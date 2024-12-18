@@ -1,12 +1,12 @@
 package com.hyuchiha.Annihilation.Listener;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.Resource;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Manager.ResourceManager;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
-import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -48,20 +48,20 @@ public class ResourceListener implements Listener {
     }
 
     if (GameUtils.tooClose(e.getBlock().getLocation())
-        && e.getBlock().getType() != XMaterial.MELON.parseMaterial()
-        && e.getBlock().getType() != XMaterial.NETHER_QUARTZ_ORE.parseMaterial()
-        && e.getBlock().getType() != XMaterial.BIRCH_LOG.parseMaterial()
-        && e.getBlock().getType() != XMaterial.JUNGLE_LOG.parseMaterial()
-        && e.getBlock().getType() != XMaterial.OAK_LOG.parseMaterial()
-        && e.getBlock().getType() != XMaterial.SPRUCE_LOG.parseMaterial()
-        && e.getBlock().getType() != XMaterial.ACACIA_LOG.parseMaterial()
-        && e.getBlock().getType() != XMaterial.DARK_OAK_LOG.parseMaterial()
-        && e.getBlock().getType() != XMaterial.STRIPPED_ACACIA_LOG.parseMaterial()
-        && e.getBlock().getType() != XMaterial.STRIPPED_BIRCH_LOG.parseMaterial()
-        && e.getBlock().getType() != XMaterial.STRIPPED_DARK_OAK_LOG.parseMaterial()
-        && e.getBlock().getType() != XMaterial.STRIPPED_JUNGLE_LOG.parseMaterial()
-        && e.getBlock().getType() != XMaterial.STRIPPED_OAK_LOG.parseMaterial()
-        && e.getBlock().getType() != XMaterial.STRIPPED_SPRUCE_LOG.parseMaterial()) {
+        && e.getBlock().getType() != XMaterial.MELON.get()
+        && e.getBlock().getType() != XMaterial.NETHER_QUARTZ_ORE.get()
+        && e.getBlock().getType() != XMaterial.BIRCH_LOG.get()
+        && e.getBlock().getType() != XMaterial.JUNGLE_LOG.get()
+        && e.getBlock().getType() != XMaterial.OAK_LOG.get()
+        && e.getBlock().getType() != XMaterial.SPRUCE_LOG.get()
+        && e.getBlock().getType() != XMaterial.ACACIA_LOG.get()
+        && e.getBlock().getType() != XMaterial.DARK_OAK_LOG.get()
+        && e.getBlock().getType() != XMaterial.STRIPPED_ACACIA_LOG.get()
+        && e.getBlock().getType() != XMaterial.STRIPPED_BIRCH_LOG.get()
+        && e.getBlock().getType() != XMaterial.STRIPPED_DARK_OAK_LOG.get()
+        && e.getBlock().getType() != XMaterial.STRIPPED_JUNGLE_LOG.get()
+        && e.getBlock().getType() != XMaterial.STRIPPED_OAK_LOG.get()
+        && e.getBlock().getType() != XMaterial.STRIPPED_SPRUCE_LOG.get()) {
       e.setCancelled(true);
 
       return;
@@ -97,7 +97,7 @@ public class ResourceListener implements Listener {
         drops = getGravelDrops();
         break;
       case LAPIS_ORE:
-        ItemStack sack = new ItemStack(XMaterial.INK_SAC.parseMaterial(), 5, (short) 0, (byte) 4);
+        ItemStack sack = new ItemStack(XMaterial.INK_SAC.get(), 5, (short) 0, (byte) 4);
         drops = new ItemStack[]{sack};
         break;
       default:

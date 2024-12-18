@@ -1,5 +1,7 @@
 package com.hyuchiha.Annihilation.Manager;
 
+import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XSound;
 import com.hyuchiha.Annihilation.Base.*;
 import com.hyuchiha.Annihilation.Game.BossStarItem;
 import com.hyuchiha.Annihilation.Game.GameBoss;
@@ -25,7 +27,6 @@ import com.hyuchiha.Annihilation.Tasks.BossRespawnTask;
 import com.hyuchiha.Annihilation.Utils.ChestUtils;
 import com.hyuchiha.Annihilation.Utils.FireworkUtils;
 import com.hyuchiha.Annihilation.Utils.LocationUtils;
-import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.*;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.Configuration;
@@ -149,7 +150,7 @@ public class BossManager {
   private static ItemStack loadItem(ConfigurationSection config, String itemName) {
     try {
       String material = config.getString(itemName + ".type");
-      Material type = XMaterial.matchXMaterial(material).get().parseMaterial();
+      Material type = XMaterial.matchXMaterial(material).get().get();
 
       ItemStack item = null;
       if (type == Material.POTION) {
@@ -272,7 +273,7 @@ public class BossManager {
       FireworkUtils.spawnFirework(boss.getBossSpawn());
       FireworkUtils.spawnFirework(boss.getBossSpawn());
 
-      boss.getBossSpawn().getWorld().playSound(boss.getBossSpawn(), Sound.ENTITY_WITHER_SPAWN, 1.0F, 0.1F);
+      XSound.ENTITY_WITHER_SPAWN.play(boss.getBossSpawn(), 1.0F, 0.1F);
     } else {
       Output.logError("Boss spawn location is null, not spawning the Boss");
     }

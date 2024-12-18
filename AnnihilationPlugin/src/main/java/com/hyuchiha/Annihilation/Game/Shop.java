@@ -1,11 +1,11 @@
 package com.hyuchiha.Annihilation.Game;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
-import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -130,7 +130,7 @@ public class Shop implements Listener {
       if (params.length >= 3) {
         String material = params[0];
 
-        Material type = XMaterial.matchXMaterial(material).get().parseMaterial();
+        Material type = XMaterial.matchXMaterial(material).get().get();
         int qty = Integer.parseInt(params[1]);
         int price = Integer.parseInt(params[2]);
         ShopItem item = new ShopItem(type, qty, price);

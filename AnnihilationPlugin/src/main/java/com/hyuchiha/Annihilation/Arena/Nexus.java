@@ -1,7 +1,7 @@
 package com.hyuchiha.Annihilation.Arena;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.hyuchiha.Annihilation.Game.GameTeam;
-import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -16,7 +16,7 @@ public class Nexus {
     this.location = location;
     this.health = health;
 
-    location.getBlock().setType(XMaterial.END_STONE.parseMaterial());
+    location.getBlock().setType(XMaterial.END_STONE.get());
   }
 
   public GameTeam getTeam() {

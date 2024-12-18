@@ -1,5 +1,6 @@
 package com.hyuchiha.Annihilation.Game;
 
+import com.cryptomorin.xseries.XSound;
 import com.hyuchiha.Annihilation.BossBar.BossBarAPI;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.MapManager;
@@ -9,6 +10,7 @@ import com.hyuchiha.Annihilation.Utils.ItemSelectorUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -76,7 +78,7 @@ public class GamePlayer {
 
   public void addXp(int exp) {
     getPlayer().giveExp(exp);
-    getPlayer().playSound(getPlayer().getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F);
+    XSound.ENTITY_EXPERIENCE_ORB_PICKUP.play(getPlayer(), 1.0F, 1.0F);
   }
 
   public void prepareLobbyPlayer() {
@@ -144,7 +146,8 @@ public class GamePlayer {
       int xpMultiplier = getKit().getKit().getXpMultiplier();
 
       getPlayer().giveExp(xp * xpMultiplier);
-      getPlayer().playSound(getPlayer().getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, new Random().nextFloat() * 0.2F + 0.9F);
+      float pitch = new Random().nextFloat() * 0.2F + 0.9F;
+      XSound.ENTITY_EXPERIENCE_ORB_PICKUP.play(getPlayer(), 1.0F, pitch);
     }
   }
 

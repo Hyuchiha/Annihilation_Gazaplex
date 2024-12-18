@@ -1,5 +1,6 @@
 package com.hyuchiha.Annihilation.Listener;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.hyuchiha.Annihilation.Chat.ChatUtil;
 import com.hyuchiha.Annihilation.Database.Base.Account;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
@@ -13,7 +14,6 @@ import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Protocol.PacketManager;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
 import com.hyuchiha.Annihilation.Utils.MenuUtils;
-import com.hyuchiha.Annihilation.Utils.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -284,7 +284,7 @@ public class PlayerListener implements Listener {
     if (e.isCancelled()) {
       return;
     }
-    if ((b.getType() == XMaterial.CRAFTING_TABLE.parseMaterial() || b.getType() == Material.ANVIL) && b.getType().isBlock() &&
+    if ((b.getType() == XMaterial.CRAFTING_TABLE.get() || b.getType() == Material.ANVIL) && b.getType().isBlock() &&
         GameManager.getCurrentGame().isInGame() && !GameManager.getCurrentGame().getCrafting().containsKey(((Player) player1).getName())) {
       GameManager.getCurrentGame().getCrafting().put(((Player) player1).getName(), b);
     }
