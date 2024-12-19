@@ -12,7 +12,7 @@ import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 
 public enum CustomEntityType implements EntityType {
-  CUSTOM_WITHER("Wither", 64,CustomWither .class),
+  CUSTOM_WITHER("Wither", 64, CustomWither .class),
   CUSTOM_ZOMBIE("Zombie", 54, CustomZombie.class);
 
   private static CustomEntityRegistry ENTITY_REGISTRY = CustomEntityRegistry.getInstance();

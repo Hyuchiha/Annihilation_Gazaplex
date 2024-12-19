@@ -39,6 +39,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
+@SuppressWarnings("rawtypes")
 public class CustomEntityRegistry extends RegistryBlocks {
 
   private static CustomEntityRegistry instance = null;
