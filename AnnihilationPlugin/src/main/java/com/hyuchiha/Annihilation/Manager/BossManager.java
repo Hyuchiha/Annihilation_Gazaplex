@@ -111,6 +111,10 @@ public class BossManager {
         creator = new MobCreator_v1_17_R1();
         helper = new ChunkHelper_v1_17_R1();
         break;
+      case v1_18_R1:
+        // No creator
+        helper = new ChunkHelper_v1_18_R1();
+        break;
       default:
         Output.log("Version not supported");
         break;

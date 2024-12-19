@@ -186,6 +186,7 @@
                                     <include>com.hyuchiha:v1_16_R2**</include>
                                     <include>com.hyuchiha:v1_16_R3**</include>
                                     <include>com.hyuchiha:v1_17_R1**</include>
+                                    <include>com.hyuchiha:v1_18_R1**</include>
                                     <include>org.mongodb:mongodb-driver</include>
                                     <include>org.mongodb:bson</include>
                                     <include>org.mongodb:mongodb-driver-core</include>

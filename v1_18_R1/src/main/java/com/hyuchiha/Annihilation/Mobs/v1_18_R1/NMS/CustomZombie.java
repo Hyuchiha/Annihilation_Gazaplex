@@ -35,8 +35,8 @@ public class CustomZombie extends EntityZombie {
         this.bS.a(5, new PathfinderGoalNearestAttackableTarget(this, EntityHuman.class, true, false));
     }
 
-    @Override
-    protected boolean x() {
-        return false;
-    }
+//    @Override
+//    protected boolean x() {
+//        return false;
+//    }
 }
