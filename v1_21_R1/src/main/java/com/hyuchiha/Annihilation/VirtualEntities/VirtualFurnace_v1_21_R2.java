@@ -1,41 +1,39 @@
 package com.hyuchiha.Annihilation.VirtualEntities;
 
-import net.minecraft.core.BlockPosition;
-import net.minecraft.network.chat.IChatBaseComponent;
-import net.minecraft.server.level.EntityPlayer;
-import net.minecraft.world.entity.player.PlayerInventory;
-import net.minecraft.world.inventory.Container;
-import net.minecraft.world.inventory.ContainerBlastFurnace;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.BlastFurnaceMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipes;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.TileEntityFurnace;
-import net.minecraft.world.level.block.entity.TileEntityTypes;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.bukkit.craftbukkit.v1_21_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_21_R1.inventory.CraftInventoryFurnace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 
-public class VirtualFurnace_v1_21_R2 extends TileEntityFurnace implements VirtualFurnace {
-    public EntityPlayer handle;
+public class VirtualFurnace_v1_21_R2 extends AbstractFurnaceBlockEntity implements VirtualFurnace {
+
+    private ServerPlayer handle;
 
     public VirtualFurnace_v1_21_R2(Player player) {
-        super(TileEntityTypes.D, BlockPosition.c, Blocks.nW.o(), Recipes.c);
+        super(BlockEntityType.BLAST_FURNACE, BlockPos.ZERO, null, RecipeType.SMELTING);
 
         this.handle = ((CraftPlayer) player).getHandle();
-        this.n = handle.cN();
+        this.level = this.handle.level();
     }
 
     @Override
     public boolean canCook() {
-        ItemStack slot0 = getContents().get(0);
-        ItemStack slot1 = getContents().get(1);
-        return slot0.e() && (slot1.e() || this.m.a(1) > 0);
+        return !getItem(0).isEmpty() && (!getItem(1).isEmpty() || this.dataAccess.get(1) > 0);
     }
 
     @Override
     public void cook() {
-        TileEntityFurnace.a(this.n, BlockPosition.c, Blocks.nW.o(), this);
+        AbstractFurnaceBlockEntity.serverTick(this.level, this.worldPosition, null, this);
     }
 
     @Override
@@ -45,37 +43,40 @@ public class VirtualFurnace_v1_21_R2 extends TileEntityFurnace implements Virtua
 
     @Override
     public void openFurnace() {
-        handle.a(this);
+        handle.openMenu(this);
     }
 
     @Override
-    protected IChatBaseComponent k() {
-        return IChatBaseComponent.c("container.blast_furnace");
+    protected int getBurnDuration(ItemStack itemstack) {
+        int burnTime = super.getBurnDuration(itemstack);
+
+        return burnTime / 3;
     }
 
     @Override
-    protected int b(ItemStack var0) {
-        int fuelTime = super.b(var0);
+    public void setItem(int i, ItemStack itemstack) {
+        super.setItem(i, itemstack);
 
-        return fuelTime / 3;
-    }
-
-    @Override
-    public void a(int i, ItemStack itemStack) {
-        super.a(i, itemStack);
-
-        ItemStack itemstack1 = (ItemStack)this.l.get(i);
-        boolean flag = !itemStack.e() && ItemStack.c(itemstack1, itemStack);
+        ItemStack itemstack1 = (ItemStack)this.items.get(i);
+        boolean flag = !itemstack.isEmpty() && ItemStack.isSameItemSameComponents(itemstack1, itemstack);
 
         if (i == 0 && !flag) {
-            this.w = this.w / 4;
-            this.v = 0;
-            this.e();
+            this.cookingTotalTime = this.cookingTotalTime / 4;
+            this.cookingProgress = 0;
+            this.setChanged();
         }
     }
 
+
+// New Methods
+
     @Override
-    protected Container a(int i, PlayerInventory playerInventory) {
-        return new ContainerBlastFurnace(i, playerInventory, this, this.m);
+    protected Component getDefaultName() {
+        return Component.translatable("container.brewing");
+    }
+
+    @Override
+    protected AbstractContainerMenu createMenu(int i, Inventory inventory) {
+        return new BlastFurnaceMenu(i, inventory, this, this.dataAccess);
     }
 }

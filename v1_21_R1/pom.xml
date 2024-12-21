@@ -31,6 +31,7 @@
             <artifactId>spigot</artifactId>
             <version>${craftbukkit.version}</version>
             <scope>provided</scope>
+            <classifier>remapped-mojang</classifier>
         </dependency>
         <dependency>
             <groupId>com.hyuchiha</groupId>

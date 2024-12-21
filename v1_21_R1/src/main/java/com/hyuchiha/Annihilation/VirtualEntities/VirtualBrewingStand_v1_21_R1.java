@@ -1,42 +1,44 @@
 package com.hyuchiha.Annihilation.VirtualEntities;
 
-import net.minecraft.core.BlockPosition;
-import net.minecraft.server.level.EntityPlayer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.TileEntityBrewingStand;
+import net.minecraft.world.level.block.entity.BrewingStandBlockEntity;
 import org.bukkit.craftbukkit.v1_21_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_21_R1.inventory.CraftInventoryBrewer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 
-public class VirtualBrewingStand_v1_21_R1 extends TileEntityBrewingStand implements VirtualBrewingStand {
+public class VirtualBrewingStand_v1_21_R1 extends BrewingStandBlockEntity implements VirtualBrewingStand {
 
-    private EntityPlayer handle;
+    private ServerPlayer handle;
 
     public VirtualBrewingStand_v1_21_R1(Player player) {
-        super(BlockPosition.c, Blocks.fs.o());
+        super(BlockPos.ZERO, null);
 
         this.handle = ((CraftPlayer) player).getHandle();
-        this.n = this.handle.cN();
+        this.level = this.handle.level();
 
-        b(4, new ItemStack(Items.so, 64));
+        ItemStack blazePower = new ItemStack(Items.BLAZE_POWDER, 64);
+        setItem(4, blazePower);
     }
 
     @Override
     public boolean canMakePotions() {
-        return this.f.a(1) <= 0
-                && !getContents().get(4).e() && getContents().get(4).g() == Items.so
-                && !getContents().get(0).e() &&
-                (!getContents().get(1).e()
-                    || !getContents().get(2).e()
-                    || !getContents().get(3).e());
+        return this.dataAccess.get(1) <= 0
+                && !getContents().get(4).isEmpty() && getContents().get(4).is(Items.BLAZE_POWDER)
+                && !getContents().get(0).isEmpty() &&
+                (!getContents().get(1).isEmpty()
+                    || !getContents().get(2).isEmpty()
+                    || !getContents().get(3).isEmpty());
     }
 
     @Override
     public void makePotions() {
-        TileEntityBrewingStand.a(this.n, BlockPosition.c, Blocks.fs.o(), this);
+        BrewingStandBlockEntity.serverTick(this.level, this.worldPosition, null, this);
     }
 
     @Override
@@ -46,6 +48,6 @@ public class VirtualBrewingStand_v1_21_R1 extends TileEntityBrewingStand impleme
 
     @Override
     public void openBrewingStand() {
-        handle.a(this);
+        handle.openMenu(this);
     }
 }

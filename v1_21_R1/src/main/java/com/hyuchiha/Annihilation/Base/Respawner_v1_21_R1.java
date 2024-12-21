@@ -1,15 +1,15 @@
 package com.hyuchiha.Annihilation.Base;
 
-import net.minecraft.network.protocol.game.PacketPlayInClientCommand;
-import net.minecraft.server.level.EntityPlayer;
+import net.minecraft.network.protocol.game.ServerboundClientCommandPacket;
+import net.minecraft.server.level.ServerPlayer;
 import org.bukkit.craftbukkit.v1_21_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public class Respawner_v1_21_R1 implements Respawner{
     @Override
     public void respawn(Player player) {
-        PacketPlayInClientCommand in = new PacketPlayInClientCommand(PacketPlayInClientCommand.EnumClientCommand.a);
-        EntityPlayer cPlayer = ((CraftPlayer) player).getHandle();
-        cPlayer.c.a(in);
+        ServerboundClientCommandPacket in = new ServerboundClientCommandPacket(ServerboundClientCommandPacket.Action.PERFORM_RESPAWN);
+        ServerPlayer cPlayer = ((CraftPlayer) player).getHandle();
+        cPlayer.connection.send(in);
     }
 }
