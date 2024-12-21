@@ -38,7 +38,7 @@ public class VirtualBrewingStand_v1_18_R1 extends TileEntityBrewingStand impleme
 
     @Override
     public void makePotions() {
-        TileEntityBrewingStand.a(this.n, BlockPosition.b, Blocks.mi.n(), this);
+        TileEntityBrewingStand.a(this.n, BlockPosition.b, Blocks.ej.n(), this);
     }
 
     @Override
