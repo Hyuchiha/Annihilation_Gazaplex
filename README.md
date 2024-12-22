@@ -13,7 +13,7 @@ This repo contains the code base for **Annihilation Plugin** and it was designed
 - Balanced teams validator
 - Multi-Configurable Arenas
 - Customizable Messages
-- Support for Minecraft 1.9 - 1.16
+- Support for Minecraft 1.9 - 1.21
 - Multiple Kits for players (15)
 - Antinuker protection
 - Stats commands
