@@ -12,15 +12,15 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.FuelValues;
-import org.bukkit.craftbukkit.v1_21_R2.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_21_R2.inventory.CraftInventoryFurnace;
+import org.bukkit.craftbukkit.v1_21_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_21_R3.inventory.CraftInventoryFurnace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 
-public class VirtualFurnace_v1_21_R2 extends AbstractFurnaceBlockEntity implements VirtualFurnace {
+public class VirtualFurnace_v1_21_R3 extends AbstractFurnaceBlockEntity implements VirtualFurnace {
     private ServerPlayer handle;
 
-    public VirtualFurnace_v1_21_R2(Player player) {
+    public VirtualFurnace_v1_21_R3(Player player) {
         super(BlockEntityType.BLAST_FURNACE, BlockPos.ZERO, null, RecipeType.SMELTING);
 
         this.handle = ((CraftPlayer) player).getHandle();
@@ -63,7 +63,7 @@ public class VirtualFurnace_v1_21_R2 extends AbstractFurnaceBlockEntity implemen
 
         if (i == 0 && !flag) {
             this.cookingTotalTime = this.cookingTotalTime / 4;
-            this.cookingProgress = 0;
+            this.cookingTimer = 0;
             this.setChanged();
         }
     }

@@ -94,6 +94,8 @@ public class Main extends JavaPlugin {
     // Disable PacketManagerListener
     PacketManager.clear();
 
+    ShopManager.clearShops();
+
     this.database.close();
   }
 

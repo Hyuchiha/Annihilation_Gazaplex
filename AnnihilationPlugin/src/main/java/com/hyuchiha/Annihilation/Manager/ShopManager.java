@@ -18,4 +18,10 @@ public class ShopManager {
     weaponShop = new Shop(Main.getInstance(), Weapon, config);
     brewingShop = new Shop(Main.getInstance(), Brewing, config);
   }
+
+  public static void clearShops() {
+    Output.log("Removing shops");
+    weaponShop = null;
+    brewingShop = null;
+  }
 }

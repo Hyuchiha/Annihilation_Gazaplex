@@ -115,6 +115,18 @@ public class BossManager {
         // No creator
         helper = new ChunkHelper_v1_18_R1();
         break;
+      case v1_21_R1:
+        // No Creator
+        helper = new ChunkHelper_v1_21_R1();
+        break;
+      case v1_21_R2:
+        // No creator
+        helper = new ChunkHelper_v1_21_R2();
+        break;
+      case v1_21_R3:
+        // No creator
+        helper = new ChunkHelper_v1_21_R3();
+        break;
       default:
         Output.log("Version not supported");
         break;
