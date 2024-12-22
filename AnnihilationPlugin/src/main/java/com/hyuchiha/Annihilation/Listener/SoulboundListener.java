@@ -3,7 +3,6 @@ package com.hyuchiha.Annihilation.Listener;
 import com.cryptomorin.xseries.XSound;
 import com.hyuchiha.Annihilation.Output.Output;
 import org.bukkit.ChatColor;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

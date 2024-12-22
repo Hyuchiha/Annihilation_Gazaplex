@@ -1,7 +1,6 @@
 package com.hyuchiha.Annihilation.Base;
 
 import net.minecraft.network.protocol.game.PacketPlayInClientCommand;
-import net.minecraft.network.protocol.game.PacketPlayOutRespawn;
 import net.minecraft.server.level.EntityPlayer;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;

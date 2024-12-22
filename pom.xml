@@ -37,6 +37,7 @@
         <module>v1_18_R1</module>
         <module>v1_21_R1</module>
         <module>AnnihilationPlugin</module>
+        <module>v1_21_R2</module>
     </modules>
 
 </project>

@@ -38,7 +38,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 import static com.comphenix.protocol.PacketType.Play.Server.ENTITY_EQUIPMENT;

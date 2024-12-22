@@ -10,13 +10,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import org.bukkit.craftbukkit.v1_21_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_21_R1.inventory.CraftInventoryFurnace;
+import net.minecraft.world.level.block.entity.FuelValues;
+import org.bukkit.craftbukkit.v1_21_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_21_R2.inventory.CraftInventoryFurnace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 
 public class VirtualFurnace_v1_21_R2 extends AbstractFurnaceBlockEntity implements VirtualFurnace {
-
     private ServerPlayer handle;
 
     public VirtualFurnace_v1_21_R2(Player player) {
@@ -33,7 +33,7 @@ public class VirtualFurnace_v1_21_R2 extends AbstractFurnaceBlockEntity implemen
 
     @Override
     public void cook() {
-        AbstractFurnaceBlockEntity.serverTick(this.level, this.worldPosition, null, this);
+        AbstractFurnaceBlockEntity.serverTick(this.getLevel().getMinecraftWorld(), this.worldPosition, null, this);
     }
 
     @Override
@@ -47,8 +47,8 @@ public class VirtualFurnace_v1_21_R2 extends AbstractFurnaceBlockEntity implemen
     }
 
     @Override
-    protected int getBurnDuration(ItemStack itemstack) {
-        int burnTime = super.getBurnDuration(itemstack);
+    protected int getBurnDuration(FuelValues values, ItemStack itemstack) {
+        int burnTime = super.getBurnDuration(values, itemstack);
 
         return burnTime / 3;
     }
@@ -57,7 +57,7 @@ public class VirtualFurnace_v1_21_R2 extends AbstractFurnaceBlockEntity implemen
     public void setItem(int i, ItemStack itemstack) {
         super.setItem(i, itemstack);
 
-        ItemStack itemstack1 = (ItemStack)this.items.get(i);
+        ItemStack itemstack1 = this.items.get(i);
         boolean flag = !itemstack.isEmpty() && ItemStack.isSameItemSameComponents(itemstack1, itemstack);
 
         if (i == 0 && !flag) {
@@ -67,8 +67,7 @@ public class VirtualFurnace_v1_21_R2 extends AbstractFurnaceBlockEntity implemen
         }
     }
 
-
-// New Methods
+    // New Methods
 
     @Override
     protected Component getDefaultName() {

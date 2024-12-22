@@ -5,16 +5,16 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BrewingStandBlockEntity;
-import org.bukkit.craftbukkit.v1_21_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_21_R1.inventory.CraftInventoryBrewer;
+import org.bukkit.craftbukkit.v1_21_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_21_R2.inventory.CraftInventoryBrewer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 
-public class VirtualBrewingStand_v1_21_R1 extends BrewingStandBlockEntity implements VirtualBrewingStand {
+public class VirtualBrewingStand_v1_21_R2 extends BrewingStandBlockEntity implements VirtualBrewingStand {
 
     private ServerPlayer handle;
 
-    public VirtualBrewingStand_v1_21_R1(Player player) {
+    public VirtualBrewingStand_v1_21_R2(Player player) {
         super(BlockPos.ZERO, null);
 
         this.handle = ((CraftPlayer) player).getHandle();
@@ -30,8 +30,8 @@ public class VirtualBrewingStand_v1_21_R1 extends BrewingStandBlockEntity implem
                 && !getContents().get(4).isEmpty() && getContents().get(4).is(Items.BLAZE_POWDER)
                 && !getContents().get(0).isEmpty() &&
                 (!getContents().get(1).isEmpty()
-                    || !getContents().get(2).isEmpty()
-                    || !getContents().get(3).isEmpty());
+                        || !getContents().get(2).isEmpty()
+                        || !getContents().get(3).isEmpty());
     }
 
     @Override
