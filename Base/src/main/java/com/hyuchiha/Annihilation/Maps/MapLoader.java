@@ -171,14 +171,20 @@ public class MapLoader {
       }
     }
 
-    WorldCreator wc = new WorldCreator(world);
-    wc.environment(environment);
-    wc.generator(new VoidGenerator());
-    World result = Bukkit.createWorld(wc);
+    World result = null;
+
+    try {
+      WorldCreator wc = new WorldCreator(world);
+      wc.environment(environment);
+      wc.generator(new VoidGenerator());
+      result = Bukkit.createWorld(wc);
+    } catch (Exception e) {
+      plugin.getLogger().log(Level.SEVERE, "Error loading world", e);
+    }
 
     for (Hooks hook : hooks) {
       try {
-        hook.postLoad(world, environment);
+        //hook.postLoad(world, environment);
       } catch (Exception e) {
         plugin.getLogger().log(Level.WARNING, "Error calling hook", e);
       }

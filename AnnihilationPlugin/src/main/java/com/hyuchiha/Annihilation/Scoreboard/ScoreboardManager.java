@@ -107,8 +107,13 @@ public class ScoreboardManager {
           WordUtils.capitalize(Translator.getString("COMMONS.TEAM") + " " + t.getName())
       );
 
-
       sbt.setPrefix(t.color().toString());
+
+      Configuration config = Main.getInstance().getConfig("config.yml");
+      if (config.getBoolean("useTeamPrefix")) {
+        String prefix = Translator.getColoredString("TEAMS_PREFIX." + t.name().toUpperCase());
+        sbt.setPrefix(t.color().toString() + prefix + " ");
+      }
     }
 
     scoreObjective.getScore(ChatColor.AQUA + "").setScore(-1);
@@ -139,6 +144,7 @@ public class ScoreboardManager {
     Team sbt = teams.get(team.name());
     sbt.setAllowFriendlyFire(false);
     sbt.setCanSeeFriendlyInvisibles(false);
+    sbt.setPrefix(team.color().toString());
 
     Configuration config = Main.getInstance().getConfig("config.yml");
     if (config.getBoolean("useTeamPrefix")) {

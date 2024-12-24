@@ -1,6 +1,7 @@
 package com.hyuchiha.Annihilation.Maps.Hooks;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 
@@ -14,7 +15,7 @@ public class MultiverseCoreHooks implements Hooks {
 
   @Override
   public void preUnload(String world, World.Environment environment) {
-
+    getMultiverseCore().getMVWorldManager().unloadWorld(world);
   }
 
   @Override
@@ -36,7 +37,7 @@ public class MultiverseCoreHooks implements Hooks {
   }
 
   private MultiverseCore getMultiverseCore() {
-    return (MultiverseCore) plugin.getServer().getPluginManager().getPlugin("Multiverse-Core");
+    return (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
   }
 
 }

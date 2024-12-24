@@ -20,8 +20,8 @@ public class ParticleManager {
         if (team.isTeamAlive()) {
           Location teamNexus = team.getNexus().getLocation().clone();
           teamNexus.add(0.5D, 0.0D, 0.5D);
-          ParticleEffect.TOWN_AURA.display(teamNexus, 1F, 1F, 1F, 0, 20, null, Bukkit.getOnlinePlayers());
-          ParticleEffect.ENCHANTMENT_TABLE.display(teamNexus, 1F, 1F, 1F, 0, 20, null, Bukkit.getOnlinePlayers());
+          //ParticleEffect.TOWN_AURA.display(teamNexus, 1F, 1F, 1F, 0, 20, null, Bukkit.getOnlinePlayers());
+          //ParticleEffect.ENCHANTMENT_TABLE.display(teamNexus, 1F, 1F, 1F, 0, 20, null, Bukkit.getOnlinePlayers());
         }
       }
     }, 100L, 5L);
@@ -30,12 +30,12 @@ public class ParticleManager {
   }
 
   public static void createNexusBreakParticle(Location nexus) {
-    ParticleEffect.LAVA.display(nexus, 1F, 1F, 1F, 1F, 20, null, Bukkit.getOnlinePlayers());
-    ParticleEffect.SMOKE_LARGE.display(nexus, 1F, 1F, 1F, 1F, 20, null, Bukkit.getOnlinePlayers());
+    //ParticleEffect.LAVA.display(nexus, 1F, 1F, 1F, 1F, 20, null, Bukkit.getOnlinePlayers());
+    //ParticleEffect.SMOKE_LARGE.display(nexus, 1F, 1F, 1F, 1F, 20, null, Bukkit.getOnlinePlayers());
   }
 
   public static void createParticleNexusDestroy(Location nexus) {
-    ParticleEffect.EXPLOSION_LARGE.display(nexus, 1F, 1F, 1F, 1F, 20, null, Bukkit.getOnlinePlayers());
+    //ParticleEffect.EXPLOSION_LARGE.display(nexus, 1F, 1F, 1F, 1F, 20, null, Bukkit.getOnlinePlayers());
   }
 
   public static void endGameParticles() {

@@ -1,6 +1,7 @@
 package com.hyuchiha.Annihilation.Listener;
 
 import com.cryptomorin.xseries.XSound;
+import com.cryptomorin.xseries.messages.Titles;
 import com.hyuchiha.Annihilation.BossBar.BossBarAPI;
 import com.hyuchiha.Annihilation.Event.StartGameEvent;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
@@ -9,7 +10,6 @@ import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Manager.SignManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
-import com.hyuchiha.Annihilation.MessagesApi.TitleAPI;
 import com.hyuchiha.Annihilation.Scoreboard.ScoreboardManager;
 import com.hyuchiha.Annihilation.Serializers.PlayerSerializer;
 import org.bukkit.Bukkit;
@@ -41,10 +41,11 @@ public class JoinListener implements Listener {
 
     player.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_JOIN_MESSAGE"));
 
-    TitleAPI.send(player,
+    Titles.sendTitle(player,
+        10, 30, 10,
         Translator.getColoredString("TITLES.SERVER_JOIN_TITLE"),
-        Translator.getColoredString("TITLES.SERVER_JOIN_SUBTITLE"), 10, 30, 10);
-
+        Translator.getColoredString("TITLES.SERVER_JOIN_SUBTITLE")
+    );
 
     GamePlayer gamePlayer = PlayerManager.getGamePlayer(player);
     this.plugin.getMainDatabase().createAccount(player.getUniqueId().toString(), player.getName());
