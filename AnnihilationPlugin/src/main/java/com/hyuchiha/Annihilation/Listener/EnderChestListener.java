@@ -4,6 +4,7 @@ import com.cryptomorin.xseries.XMaterial;
 import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Manager.EnderChestManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
+import com.hyuchiha.Annihilation.Output.Output;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -30,11 +31,13 @@ public class EnderChestListener implements Listener {
     if (e.getClickedBlock().getType() != Material.ENDER_CHEST) {
       return;
     }
+    Output.log("Ender chest click");
 
     Block clicked = e.getClickedBlock();
     Player player = e.getPlayer();
     GameTeam team = PlayerManager.getGamePlayer(player).getTeam();
     if (team == GameTeam.NONE || !EnderChestManager.teamHasChest(team)) {
+      Output.log("No ender chest for team");
       return;
     }
 

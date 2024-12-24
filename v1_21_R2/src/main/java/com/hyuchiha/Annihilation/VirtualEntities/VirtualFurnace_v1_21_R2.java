@@ -9,6 +9,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.BlastFurnaceMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.FuelValues;
@@ -21,7 +22,7 @@ public class VirtualFurnace_v1_21_R2 extends AbstractFurnaceBlockEntity implemen
     private ServerPlayer handle;
 
     public VirtualFurnace_v1_21_R2(Player player) {
-        super(BlockEntityType.BLAST_FURNACE, BlockPos.ZERO, null, RecipeType.SMELTING);
+        super(BlockEntityType.BLAST_FURNACE, BlockPos.ZERO, Blocks.BLAST_FURNACE.defaultBlockState(), RecipeType.SMELTING);
 
         this.handle = ((CraftPlayer) player).getHandle();
         this.level = this.handle.level();

@@ -1,6 +1,7 @@
 package com.hyuchiha.Annihilation.Listener;
 
 import com.cryptomorin.xseries.XSound;
+import com.cryptomorin.xseries.messages.ActionBar;
 import com.hyuchiha.Annihilation.Chat.ChatUtil;
 import com.hyuchiha.Annihilation.Database.Base.Account;
 import com.hyuchiha.Annihilation.Event.*;
@@ -9,7 +10,6 @@ import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.*;
 import com.hyuchiha.Annihilation.Messages.Translator;
-import com.hyuchiha.Annihilation.MessagesApi.ActionBar;
 import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Scoreboard.ScoreboardManager;
 import com.hyuchiha.Annihilation.Utils.FireworkUtils;
@@ -83,7 +83,9 @@ public class GameListener implements Listener {
 
       String msg = ChatUtil.nexusBreakMessage(breaker.getPlayer(), attacker, victim);
       // ChatUtil.broadcast(msg); Old broadcast
-      ActionBar.sendToAll(msg);
+      for (Player player : Bukkit.getOnlinePlayers()) {
+        ActionBar.sendActionBar(player, msg);
+      }
 
       ScoreboardManager.updateInGameScoreboard(victim);
 

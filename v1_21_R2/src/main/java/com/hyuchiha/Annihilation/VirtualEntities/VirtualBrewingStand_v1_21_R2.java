@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BrewingStandBlockEntity;
 import org.bukkit.craftbukkit.v1_21_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_21_R2.inventory.CraftInventoryBrewer;
@@ -15,7 +16,7 @@ public class VirtualBrewingStand_v1_21_R2 extends BrewingStandBlockEntity implem
     private ServerPlayer handle;
 
     public VirtualBrewingStand_v1_21_R2(Player player) {
-        super(BlockPos.ZERO, null);
+        super(BlockPos.ZERO, Blocks.BREWING_STAND.defaultBlockState());
 
         this.handle = ((CraftPlayer) player).getHandle();
         this.level = this.handle.level();

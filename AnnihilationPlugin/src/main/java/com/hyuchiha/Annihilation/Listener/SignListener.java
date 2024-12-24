@@ -36,6 +36,7 @@ public class SignListener implements Listener {
         event.getClickedBlock() != null) {
 
       if (GameUtils.isWallSign(event.getClickedBlock())) {
+        event.setCancelled(true);
 
         Sign s = (Sign) event.getClickedBlock().getState();
 

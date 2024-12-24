@@ -114,15 +114,6 @@ public class BlockListener implements Listener {
     }
   }
 
-  @EventHandler
-  public void onPlayerSignInteract(PlayerInteractEvent event) {
-    Block b = event.getClickedBlock();
-
-    if (event.getAction() == Action.RIGHT_CLICK_BLOCK && GameUtils.hasSignAttached(b)) {
-      event.setCancelled(true);
-    }
-  }
-
   private boolean permittedBreak(Material material) {
     XMaterial parsedMaterialType = XMaterial.matchXMaterial(material);
     switch (parsedMaterialType) {
