@@ -1,6 +1,7 @@
 package com.hyuchiha.Annihilation.Maps.Hooks;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
+import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
@@ -31,8 +32,16 @@ public class MultiverseCoreHooks implements Hooks {
   @Override
   public void postLoad(String world, World.Environment environment) {
     World bukkitWorld = plugin.getServer().getWorld(world);
-    if (bukkitWorld != null && getMultiverseCore().getMVWorldManager().getMVWorld(world) == null) {
-      getMultiverseCore().getMVWorldManager().addWorld(world, environment, String.valueOf(bukkitWorld.getSeed()), bukkitWorld.getWorldType(), Boolean.TRUE, null);
+
+    if (bukkitWorld != null) {
+      MVWorldManager manager = getMultiverseCore().getMVWorldManager();;
+
+      if (manager.isMVWorld(world)) {
+        manager.loadWorld(world);
+        return;
+      }
+
+      manager.addWorld(world, environment, String.valueOf(bukkitWorld.getSeed()), bukkitWorld.getWorldType(), Boolean.TRUE, null);
     }
   }
 
