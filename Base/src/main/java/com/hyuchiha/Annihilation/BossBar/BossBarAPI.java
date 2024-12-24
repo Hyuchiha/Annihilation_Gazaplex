@@ -5,7 +5,6 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
-import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -79,7 +78,6 @@ public class BossBarAPI {
     return barMap.containsKey(player.getUniqueId());
   }
 
-  @Nullable
   public static BossBar getBossBar(@Nonnull Player player) {
     return barMap.get(player.getUniqueId());
   }

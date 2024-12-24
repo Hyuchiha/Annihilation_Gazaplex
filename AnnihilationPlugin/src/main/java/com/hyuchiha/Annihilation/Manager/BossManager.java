@@ -1,6 +1,7 @@
 package com.hyuchiha.Annihilation.Manager;
 
 import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XPotion;
 import com.cryptomorin.xseries.XSound;
 import com.hyuchiha.Annihilation.Base.*;
 import com.hyuchiha.Annihilation.Game.BossStarItem;
@@ -38,7 +39,10 @@ import org.bukkit.entity.Wither;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import org.inventivetalent.reflection.minecraft.Minecraft;
 
@@ -166,6 +170,9 @@ public class BossManager {
   private static ItemStack loadItem(ConfigurationSection config, String itemName) {
     try {
       String material = config.getString(itemName + ".type");
+
+      Output.log("Material:" + material + "-ToFound");
+
       Material type = XMaterial.matchXMaterial(material).get().get();
 
       ItemStack item = null;
@@ -176,14 +183,16 @@ public class BossManager {
         boolean splash = config.getBoolean(itemName + ".splash");
         boolean extended = config.getBoolean(itemName + ".extended");
 
-        Potion potion = new Potion(PotionType.valueOf(potionType), potionEffectNum);
-        potion.setSplash(splash);
+        ItemStack newPotionItemStack = splash ? XMaterial.SPLASH_POTION.parseItem() : XMaterial.POTION.parseItem();
+        PotionMeta newPotionMeta = (PotionMeta) newPotionItemStack.getItemMeta();
 
-        if (extended) {
-          potion.setHasExtendedDuration(true);
-        }
+        PotionEffect effect = XPotion.parseEffect(extended ? "LONG_" + potionType : potionType).getEffect();
+        PotionEffectType effectType = effect.getType();
+        newPotionMeta.addCustomEffect(new PotionEffect(effectType, effect.getDuration(), potionEffectNum), true);
 
-        item = potion.toItemStack(1);
+        newPotionItemStack.setItemMeta(newPotionMeta);
+
+        item = newPotionItemStack;
 
       } else {
         int qty = config.getInt(itemName + ".amount");
@@ -218,6 +227,7 @@ public class BossManager {
       return item;
     } catch (Exception e) {
       e.printStackTrace();
+      Output.log("Item: " + itemName);
       Output.logError(e.getLocalizedMessage());
     }
     return null;

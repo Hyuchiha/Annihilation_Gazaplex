@@ -141,14 +141,14 @@ Boss-Star:
   Item2:
     type: POTION
     position: 2
-    potionType: REGEN
+    potionType: REGENERATION
     potionEffectNum: 1
     splash: true
     extended: true
   Item3:
     type: POTION
     position: 3
-    potionType: INSTANT_HEAL
+    potionType: INSTANT_HEALTH
     potionEffectNum: 1
     splash: true
     extended: false

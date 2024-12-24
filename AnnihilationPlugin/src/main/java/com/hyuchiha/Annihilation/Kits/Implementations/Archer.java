@@ -1,6 +1,8 @@
 package com.hyuchiha.Annihilation.Kits.Implementations;
 
+import com.cryptomorin.xseries.XEnchantment;
 import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XPotion;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
@@ -28,6 +30,8 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import org.bukkit.projectiles.ProjectileSource;
 
@@ -53,14 +57,16 @@ public class Archer extends BaseKit {
     spawnItems.add(XMaterial.WOODEN_SHOVEL.parseItem());
 
     ItemStack bow = new ItemStack(Material.BOW);
-    bow.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
+    bow.addEnchantment(XEnchantment.PUNCH.get(), 1);
     spawnItems.add(bow);
 
     spawnItems.add(new ItemStack(Material.ARROW, 16));
 
     ItemStack potion = new ItemStack(Material.POTION, 1);
     PotionMeta meta = (PotionMeta) potion.getItemMeta();
-    meta.setBasePotionData(new PotionData(PotionType.INSTANT_HEAL, false, false));
+
+    PotionEffectType effectType = XPotion.INSTANT_HEALTH.getPotionEffectType();
+    meta.addCustomEffect(new PotionEffect(effectType, 20 * 30, 1), true);
     potion.setItemMeta(meta);
     spawnItems.add(potion);
 

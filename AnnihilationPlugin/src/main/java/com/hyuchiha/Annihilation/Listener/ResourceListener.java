@@ -1,5 +1,6 @@
 package com.hyuchiha.Annihilation.Listener;
 
+import com.cryptomorin.xseries.XEnchantment;
 import com.cryptomorin.xseries.XMaterial;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.Resource;
@@ -109,7 +110,7 @@ public class ResourceListener implements Listener {
             || dropType == Material.COAL
             || dropType == Material.EMERALD
             || dropType == Material.REDSTONE)
-            && itemInHand.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS)) {
+            && itemInHand.containsEnchantment(XEnchantment.LOOTING.get())) {
 
           qty = quantityDroppedWithBonus(type, itemInHand);
         }
@@ -190,7 +191,7 @@ public class ResourceListener implements Listener {
   }
 
   private int quantityDroppedWithBonus(Material type, ItemStack itemInHand) {
-    int fortune = itemInHand.getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS);
+    int fortune = itemInHand.getEnchantmentLevel(XEnchantment.LOOTING.get());
     Random random = new Random();
 
     if (fortune < 1) {

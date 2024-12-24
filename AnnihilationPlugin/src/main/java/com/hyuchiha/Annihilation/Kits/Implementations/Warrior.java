@@ -1,6 +1,7 @@
 package com.hyuchiha.Annihilation.Kits.Implementations;
 
 import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XPotion;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
@@ -16,6 +17,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
 public class Warrior extends BaseKit {
@@ -31,7 +34,8 @@ public class Warrior extends BaseKit {
 
     ItemStack potion = new ItemStack(Material.POTION, 1);
     PotionMeta meta = (PotionMeta) potion.getItemMeta();
-    meta.setBasePotionData(new PotionData(PotionType.INSTANT_HEAL, false, false));
+    PotionEffectType effectType = XPotion.INSTANT_HEALTH.getPotionEffectType();
+    meta.addCustomEffect(new PotionEffect(effectType, 20 * 30, 1), true);
     potion.setItemMeta(meta);
     spawnItems.add(potion);
   }

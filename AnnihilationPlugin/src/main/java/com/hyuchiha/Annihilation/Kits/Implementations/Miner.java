@@ -1,5 +1,6 @@
 package com.hyuchiha.Annihilation.Kits.Implementations;
 
+import com.cryptomorin.xseries.XEnchantment;
 import com.cryptomorin.xseries.XMaterial;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
 import org.bukkit.Material;
@@ -19,7 +20,7 @@ public class Miner extends BaseKit {
     spawnItems.add(XMaterial.WOODEN_SWORD.parseItem());
 
     ItemStack pickaxe = XMaterial.STONE_PICKAXE.parseItem();
-    pickaxe.addEnchantment(Enchantment.DIG_SPEED, 1);
+    pickaxe.addEnchantment(XEnchantment.EFFICIENCY.get(), 1);
     spawnItems.add(pickaxe);
 
     spawnItems.add(XMaterial.WOODEN_AXE.parseItem());

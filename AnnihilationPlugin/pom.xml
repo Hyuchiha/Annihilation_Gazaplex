@@ -34,7 +34,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.9-R0.1-SNAPSHOT</version>
+            <version>1.21.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -211,6 +211,7 @@
                                     <include>org.mongodb:bson</include>
                                     <include>org.mongodb:mongodb-driver-core</include>
                                     <include>xyz.xenondevs:particle</include>
+                                    <include>com.github.cryptomorin:XSeries</include>
                                 </includes>
                             </artifactSet>
                         </configuration>

@@ -1,6 +1,7 @@
 package com.hyuchiha.Annihilation.Utils;
 
 import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XPotion;
 import com.cryptomorin.xseries.XSound;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.GameTeam;
@@ -27,7 +28,7 @@ import java.util.Map;
 
 public class GameUtils {
   public static void giveEffect(final GamePlayer player) {
-    Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> player.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 100, 80)), 20L);
+    Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> player.getPlayer().addPotionEffect(XPotion.RESISTANCE.buildPotionEffect(100, 80)), 20L);
   }
 
 

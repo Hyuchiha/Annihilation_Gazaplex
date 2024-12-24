@@ -1,6 +1,7 @@
 package com.hyuchiha.Annihilation.Kits.Implementations;
 
 import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XPotion;
 import com.cryptomorin.xseries.XSound;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.Kit;
@@ -235,8 +236,8 @@ public class Builder extends BaseKit {
     World world = player.getWorld();
     XSound.ENTITY_GHAST_HURT.play(location, 10, 1);
 
-    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 10, 1));
-    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 20 * 10, 2));
+    player.addPotionEffect(XPotion.SLOWNESS.buildPotionEffect(20 * 10, 1));
+    player.addPotionEffect(XPotion.MINING_FATIGUE.buildPotionEffect(20 * 10, 2));
   }
 
   private List<ItemStack> getRandomDrops() {
