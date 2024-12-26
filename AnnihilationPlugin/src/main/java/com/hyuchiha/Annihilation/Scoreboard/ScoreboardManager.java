@@ -104,7 +104,7 @@ public class ScoreboardManager {
 
       Team sbt = scoreboardBase.registerNewTeam(t.name() + "SB");
       sbt.addEntry(
-          WordUtils.capitalize(Translator.getString("COMMONS.TEAM") + " " + t.getName())
+          WordUtils.capitalize(t.color().toString() + Translator.getString("COMMONS.TEAM") + " " + t.getName())
       );
 
       sbt.setPrefix(t.color().toString());
@@ -121,10 +121,25 @@ public class ScoreboardManager {
   }
 
   public static void updateInGameScoreboard(final GameTeam victim) {
-    scoreboardBase.getTeam(victim.name() + "SB").setPrefix(ChatColor.RESET.toString());
+    Team sbt = scoreboardBase.getTeam(victim.name() + "SB");
+
+    sbt.setPrefix(ChatColor.RESET + "");
+
+    Configuration config = Main.getInstance().getConfig("config.yml");
+    if (config.getBoolean("useTeamPrefix")) {
+      String prefix = Translator.getColoredString("TEAMS_PREFIX." + victim.name().toUpperCase());
+      sbt.setPrefix(ChatColor.RESET + prefix + " ");
+    }
+
     scores.get(victim.name()).setScore(victim.getNexus().getHealth());
-    Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> scoreboardBase.getTeam(victim.name() + "SB")
-        .setPrefix(victim.color().toString()), 2L);
+    Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+      sbt.setPrefix(victim.color().toString());
+
+      if (config.getBoolean("useTeamPrefix")) {
+        String prefix = Translator.getColoredString("TEAMS_PREFIX." + victim.name().toUpperCase());
+        sbt.setPrefix(victim.color().toString() + prefix + " ");
+      }
+    }, 2L);
   }
 
 

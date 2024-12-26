@@ -16,7 +16,7 @@ public class MultiverseCoreHooks implements Hooks {
 
   @Override
   public void preUnload(String world, World.Environment environment) {
-    getMultiverseCore().getMVWorldManager().unloadWorld(world);
+
   }
 
   @Override

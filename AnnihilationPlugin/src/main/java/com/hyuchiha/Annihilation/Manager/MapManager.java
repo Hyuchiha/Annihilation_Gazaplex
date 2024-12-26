@@ -6,11 +6,10 @@ import com.hyuchiha.Annihilation.Maps.MapLoader;
 import com.hyuchiha.Annihilation.Maps.VoidGenerator;
 import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.LocationUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
+import org.bukkit.*;
 import org.bukkit.configuration.Configuration;
+import org.inventivetalent.reflection.minecraft.Minecraft;
+import org.inventivetalent.reflection.minecraft.MinecraftVersion;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,9 +54,15 @@ public class MapManager {
   }
 
   private static void initSettingForArena(World world) {
-    world.setGameRuleValue("doFireTick", "false");
-    world.setGameRuleValue("doDaylightCycle", "false");
-    world.setGameRuleValue("doMobSpawning", "false");
+    if (MinecraftVersion.getVersion().olderThan(Minecraft.Version.v1_13_R1)) {
+      world.setGameRuleValue("doFireTick", "false");
+      world.setGameRuleValue("doDaylightCycle", "false");
+      world.setGameRuleValue("doMobSpawning", "false");
+    } else {
+      world.setGameRule(GameRule.DO_FIRE_TICK, false);
+      world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+      world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
+    }
   }
 
   public static Location getLobbySpawn() {
