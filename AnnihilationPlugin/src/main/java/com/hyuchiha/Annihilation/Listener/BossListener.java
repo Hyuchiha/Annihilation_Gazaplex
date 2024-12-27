@@ -143,7 +143,7 @@ public class BossListener implements Listener {
   }
 
   @EventHandler
-  public void onPlayerMoveBossSpawn(final PlayerMoveEvent event) {
+  public void onPlayerMoveBossSpawn(PlayerMoveEvent event) {
 
     if (GameManager.hasCurrentGame() && GameManager.getCurrentGame().getPhase() < 3) {
       return;
@@ -153,7 +153,7 @@ public class BossListener implements Listener {
       return;
     }
 
-    final Location playerLoc = event.getPlayer().getLocation();
+    Location playerLoc = event.getPlayer().getLocation();
     List<Location> locations = BossManager.getTeleportLocations();
 
     for (final Location location : locations) {

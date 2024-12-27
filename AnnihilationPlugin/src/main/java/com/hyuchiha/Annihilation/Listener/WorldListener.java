@@ -1,5 +1,6 @@
 package com.hyuchiha.Annihilation.Listener;
 
+import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
 import com.hyuchiha.Annihilation.Utils.LocationUtils;
 import org.bukkit.Material;
@@ -39,6 +40,7 @@ public class WorldListener implements Listener {
       add(EntityType.SLIME);
       add(EntityType.WITCH);
       add(EntityType.ZOMBIE);
+      add(EntityType.WITHER);
     }
   };
 
@@ -129,7 +131,9 @@ public class WorldListener implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onSpawn(CreatureSpawnEvent e) {
+    Output.log("Spawn Entity Event: " + e.getEntityType().toString());
     if (isHostile(e.getEntityType())) {
+      Output.log("Spawn Reason: " + e.getSpawnReason().toString());
       if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.CUSTOM) {
         return;
       }

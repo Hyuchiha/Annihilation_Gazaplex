@@ -29,6 +29,8 @@ import com.hyuchiha.Annihilation.Utils.ChestUtils;
 import com.hyuchiha.Annihilation.Utils.FireworkUtils;
 import com.hyuchiha.Annihilation.Utils.LocationUtils;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
@@ -286,7 +288,10 @@ public class BossManager {
         witherBoss = (Wither) spawn.getWorld().spawnEntity(spawn, EntityType.WITHER);
       }
 
-      witherBoss.setMaxHealth(boss.getHealth());
+      Output.log("Location: " + spawn.toString());
+
+      AttributeInstance attribute = witherBoss.getAttribute(Attribute.MAX_HEALTH);
+      attribute.setBaseValue(boss.getHealth());
       witherBoss.setHealth(boss.getHealth());
       witherBoss.setCanPickupItems(false);
       witherBoss.setRemoveWhenFarAway(false);
@@ -294,6 +299,8 @@ public class BossManager {
       witherBoss.setCustomName(
           ChatColor.translateAlternateColorCodes('&', boss
               .getBossName() + " &8» &a" + boss.getHealth() + " HP"));
+
+      Output.log("Boss: " + witherBoss.toString());
 
       FireworkUtils.spawnFirework(boss.getBossSpawn());
       FireworkUtils.spawnFirework(boss.getBossSpawn());
