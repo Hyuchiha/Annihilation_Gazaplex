@@ -98,7 +98,7 @@ public class ScoreboardManager {
 
     for (GameTeam t : GameTeam.teams()) {
       scores.put(t.name(), scoreObjective.getScore(
-          WordUtils.capitalize(Translator.getString("COMMONS.TEAM") + " " + t.getName())));
+          WordUtils.capitalize(t.color().toString() + Translator.getString("COMMONS.TEAM") + " " + t.getName())));
 
       scores.get(t.name()).setScore(t.getNexus().getHealth());
 
