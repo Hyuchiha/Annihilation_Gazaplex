@@ -27,12 +27,7 @@ public class VirtualBrewingStand_v1_21_R2 extends BrewingStandBlockEntity implem
 
     @Override
     public boolean canMakePotions() {
-        return this.dataAccess.get(1) <= 0
-                && !getContents().get(4).isEmpty() && getContents().get(4).is(Items.BLAZE_POWDER)
-                && !getContents().get(0).isEmpty() &&
-                (!getContents().get(1).isEmpty()
-                        || !getContents().get(2).isEmpty()
-                        || !getContents().get(3).isEmpty());
+        return !getContents().get(3).isEmpty();
     }
 
     @Override
