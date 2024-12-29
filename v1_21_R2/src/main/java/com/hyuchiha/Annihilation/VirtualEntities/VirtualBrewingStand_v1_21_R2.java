@@ -41,6 +41,11 @@ public class VirtualBrewingStand_v1_21_R2 extends BrewingStandBlockEntity implem
     }
 
     @Override
+    public boolean stillValid(net.minecraft.world.entity.player.Player player) {
+        return true; // Allow player to interact with the furnace
+    }
+
+    @Override
     public InventoryHolder getOwner() {
         return () -> new CraftInventoryBrewer(this);
     }

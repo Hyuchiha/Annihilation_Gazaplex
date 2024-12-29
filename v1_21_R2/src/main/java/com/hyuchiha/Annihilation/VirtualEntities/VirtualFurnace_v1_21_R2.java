@@ -39,6 +39,11 @@ public class VirtualFurnace_v1_21_R2 extends AbstractFurnaceBlockEntity implemen
     }
 
     @Override
+    public boolean stillValid(net.minecraft.world.entity.player.Player player) {
+        return true; // Allow player to interact with the furnace
+    }
+
+    @Override
     public InventoryHolder getOwner() {
         return () -> new CraftInventoryFurnace(this);
     }
