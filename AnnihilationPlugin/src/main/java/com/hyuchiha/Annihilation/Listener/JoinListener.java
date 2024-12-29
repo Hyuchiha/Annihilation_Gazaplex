@@ -11,6 +11,7 @@ import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Manager.SignManager;
 import com.hyuchiha.Annihilation.Manager.ZombieManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
+import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Scoreboard.ScoreboardManager;
 import com.hyuchiha.Annihilation.Serializers.PlayerSerializer;
 import org.bukkit.Bukkit;
@@ -96,7 +97,9 @@ public class JoinListener implements Listener {
     p.setGameMode(GameMode.SURVIVAL);
     p.updateInventory();
 
+    Output.log("Checking for zombie: " + p.getName());
     if (ZombieManager.getZombies().containsKey(p.getName())) {
+      Output.log("Zonbie found");
       Zombie zombie = (Zombie) ZombieManager.getZombies().get(p.getName());
       zombie.remove();
 
