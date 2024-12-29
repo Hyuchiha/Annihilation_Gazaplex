@@ -61,7 +61,9 @@ public abstract class FurnaceManager {
   }
 
   public void disableFurnaces() {
-    task.cancel();
+    if (task != null) {
+      task.cancel();
+    }
 
     isRunning = false;
   }

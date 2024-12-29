@@ -43,9 +43,6 @@ public class SignListener implements Listener {
         if (s.getLine(0).contains(ChatColor.DARK_PURPLE + "[" +
             Translator.getString("COMMONS.TEAM") + ChatColor.DARK_PURPLE + "]")) {
 
-          Output.log("Sign with team name");
-          Output.log(s.getLine(1));
-
           String teamName = ChatColor.stripColor(s.getLine(1));
           GameTeam team = GameTeam.getTeamByTranslatedName(teamName);
 

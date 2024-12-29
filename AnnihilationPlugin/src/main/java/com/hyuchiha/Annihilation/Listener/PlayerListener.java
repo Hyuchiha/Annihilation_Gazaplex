@@ -117,7 +117,6 @@ public class PlayerListener implements Listener {
   public void onPlayerRespawn(PlayerRespawnEvent e) {
     Player player = e.getPlayer();
 
-
     GamePlayer gm = PlayerManager.getGamePlayer(player);
 
     if (gm.isAlive()) {

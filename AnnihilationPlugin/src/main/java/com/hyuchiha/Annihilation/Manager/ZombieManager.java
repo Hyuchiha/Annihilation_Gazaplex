@@ -105,8 +105,8 @@ public class ZombieManager {
     zombie.getEquipment().setArmorContents(armors);
     zombie.setRemoveWhenFarAway(false);
 
-    if (!zombies.containsKey(zombie.getCustomName())) {
-      zombies.put(zombie.getCustomName(), zombie);
+    if (!zombies.containsKey(player.getName())) {
+      zombies.put(player.getName(), zombie);
     }
 
   }
@@ -120,7 +120,6 @@ public class ZombieManager {
 
     for (Entity entity : world.getEntities()) {
       if (entity.getType() == EntityType.ZOMBIE) {
-        Output.log("Removing zombie");
         entity.remove();
       }
     }

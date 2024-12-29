@@ -37,7 +37,7 @@ public class VirtualBrewingStand_v1_21_R2 extends BrewingStandBlockEntity implem
 
     @Override
     public void makePotions() {
-        BrewingStandBlockEntity.serverTick(this.level, this.worldPosition, null, this);
+        BrewingStandBlockEntity.serverTick(this.getLevel(), BlockPos.ZERO, Blocks.BREWING_STAND.defaultBlockState(), this);
     }
 
     @Override

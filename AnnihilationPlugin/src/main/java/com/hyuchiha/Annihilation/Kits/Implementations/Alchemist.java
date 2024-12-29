@@ -149,7 +149,7 @@ public class Alchemist extends BaseKit {
     }
   }
 
-  @EventHandler
+  @EventHandler(ignoreCancelled = true)
   public void onBrewingInteract(PlayerInteractEvent event) {
     if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
       return;

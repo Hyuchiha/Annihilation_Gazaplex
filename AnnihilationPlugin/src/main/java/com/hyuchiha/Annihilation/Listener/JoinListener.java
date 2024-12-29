@@ -9,6 +9,7 @@ import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Manager.SignManager;
+import com.hyuchiha.Annihilation.Manager.ZombieManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Scoreboard.ScoreboardManager;
 import com.hyuchiha.Annihilation.Serializers.PlayerSerializer;
@@ -16,6 +17,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
@@ -64,7 +66,6 @@ public class JoinListener implements Listener {
       Bukkit.getServer().getPluginManager().callEvent(new StartGameEvent());
     }
 
-
     Bukkit.getScheduler().scheduleSyncDelayedTask(this.plugin, () -> rejoinPlayer(player), 20L);
   }
 
@@ -81,14 +82,7 @@ public class JoinListener implements Listener {
 
     GamePlayer meta = PlayerManager.getGamePlayer(p);
 
-    if (meta == null) {
-      p.kickPlayer(Translator.getPrefix() + Translator.getColoredString("ERRORS.PLAYER_DONT_EXIST"));
-
-      return;
-    }
     if (PlayerSerializer.isKilled(playerName)) {
-
-
       meta.preparePlayerForGame();
       p.sendMessage(Translator.getPrefix() + Translator.getColoredString("INFO.NPC_JOIN_KILLED"));
 
@@ -101,6 +95,13 @@ public class JoinListener implements Listener {
     ScoreboardManager.updatePlayerScoreboard();
     p.setGameMode(GameMode.SURVIVAL);
     p.updateInventory();
+
+    if (ZombieManager.getZombies().containsKey(p.getName())) {
+      Zombie zombie = (Zombie) ZombieManager.getZombies().get(p.getName());
+      zombie.remove();
+
+      ZombieManager.getZombies().remove(p.getName());
+    }
   }
 
 
@@ -110,11 +111,7 @@ public class JoinListener implements Listener {
         && GameManager.getCurrentGame().getTimer().isGameStarted()
         && GameManager.getCurrentGame().getPhase() > this.plugin.getConfig("config.yml").getInt("lastJoinPhase")
     ) {
-      event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER,
-
-          Translator.getPrefix() + ChatColor.RED +
-
-              Translator.getString("ERRORS.GAME_STARTED"));
+      event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Translator.getPrefix() + ChatColor.RED + Translator.getString("ERRORS.GAME_STARTED"));
     }
   }
 

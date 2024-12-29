@@ -22,7 +22,7 @@ public class VirtualFurnace_v1_21_R2 extends AbstractFurnaceBlockEntity implemen
     private ServerPlayer handle;
 
     public VirtualFurnace_v1_21_R2(Player player) {
-        super(BlockEntityType.BLAST_FURNACE, BlockPos.ZERO, Blocks.BLAST_FURNACE.defaultBlockState(), RecipeType.SMELTING);
+        super(BlockEntityType.BLAST_FURNACE, BlockPos.ZERO, Blocks.BLAST_FURNACE.defaultBlockState(), RecipeType.BLASTING);
 
         this.handle = ((CraftPlayer) player).getHandle();
         this.level = this.handle.level();
@@ -35,7 +35,7 @@ public class VirtualFurnace_v1_21_R2 extends AbstractFurnaceBlockEntity implemen
 
     @Override
     public void cook() {
-        AbstractFurnaceBlockEntity.serverTick((ServerLevel) this.getLevel(), this.worldPosition, null, this);
+        AbstractFurnaceBlockEntity.serverTick((ServerLevel) this.getLevel(), BlockPos.ZERO, Blocks.BLAST_FURNACE.defaultBlockState(), this);
     }
 
     @Override
@@ -70,7 +70,6 @@ public class VirtualFurnace_v1_21_R2 extends AbstractFurnaceBlockEntity implemen
     }
 
     // New Methods
-
     @Override
     protected Component getDefaultName() {
         return Component.translatable("container.brewing");
