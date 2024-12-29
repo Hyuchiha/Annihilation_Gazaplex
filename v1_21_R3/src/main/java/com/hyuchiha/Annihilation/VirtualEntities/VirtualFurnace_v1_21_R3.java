@@ -9,6 +9,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.BlastFurnaceMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.FuelValues;
@@ -21,7 +22,7 @@ public class VirtualFurnace_v1_21_R3 extends AbstractFurnaceBlockEntity implemen
     private ServerPlayer handle;
 
     public VirtualFurnace_v1_21_R3(Player player) {
-        super(BlockEntityType.BLAST_FURNACE, BlockPos.ZERO, null, RecipeType.SMELTING);
+        super(BlockEntityType.BLAST_FURNACE, BlockPos.ZERO, Blocks.BLAST_FURNACE.defaultBlockState(), RecipeType.BLASTING);
 
         this.handle = ((CraftPlayer) player).getHandle();
         this.level = this.handle.level();
@@ -34,7 +35,12 @@ public class VirtualFurnace_v1_21_R3 extends AbstractFurnaceBlockEntity implemen
 
     @Override
     public void cook() {
-        AbstractFurnaceBlockEntity.serverTick((ServerLevel) this.getLevel(), this.worldPosition, null, this);
+        AbstractFurnaceBlockEntity.serverTick((ServerLevel) this.getLevel(), BlockPos.ZERO, Blocks.BLAST_FURNACE.defaultBlockState(), this);
+    }
+
+    @Override
+    public boolean stillValid(net.minecraft.world.entity.player.Player player) {
+        return true; // Allow player to interact with the furnace
     }
 
     @Override

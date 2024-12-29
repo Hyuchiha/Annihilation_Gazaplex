@@ -10,6 +10,6 @@ public class Respawner_v1_21_R3 implements Respawner{
     public void respawn(Player player) {
         ServerboundClientCommandPacket in = new ServerboundClientCommandPacket(ServerboundClientCommandPacket.Action.PERFORM_RESPAWN);
         ServerPlayer cPlayer = ((CraftPlayer) player).getHandle();
-        cPlayer.connection.send(in);
+        cPlayer.connection.handleClientCommand(in);
     }
 }
