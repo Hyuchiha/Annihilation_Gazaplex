@@ -103,15 +103,18 @@ public class ResourceListener implements Listener {
         break;
       default:
         Material dropType = resource.getDrop();
+
+        boolean isOre = dropType == Material.DIAMOND_ORE
+                || dropType == Material.EMERALD_ORE
+                || dropType == Material.GOLD_ORE
+                || dropType == Material.IRON_ORE
+                || dropType == Material.COAL_ORE
+                || dropType == Material.REDSTONE_ORE;
+
         int qty = getDropQuantity(type);
-        int dropMultiplier = gamePlayer.getKit().getKit().getMaterialDropMultiplier();
+        int dropMultiplier = isOre ? gamePlayer.getKit().getKit().getMaterialDropMultiplier() : 1;
 
-        if ((dropType == Material.DIAMOND
-            || dropType == Material.COAL
-            || dropType == Material.EMERALD
-            || dropType == Material.REDSTONE)
-            && itemInHand.containsEnchantment(XEnchantment.LOOTING.get())) {
-
+        if (isOre && itemInHand.containsEnchantment(XEnchantment.LOOTING.get())) {
           qty = quantityDroppedWithBonus(type, itemInHand);
         }
 

@@ -41,23 +41,22 @@ public class Acrobat extends BaseKit {
     spawnItems.add(new ItemStack(Material.BOW));
     spawnItems.add(new ItemStack(Material.ARROW, 6));
 
-    Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {
-
-      for (Player player : Bukkit.getOnlinePlayers()) {
-        GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
-
-        if (gPlayer.getKit() == Kit.ACROBAT
-            && GameManager.hasCurrentGame()
-            && GameManager.getCurrentGame().isInGame()
-            && TimersUtils.getRemainingMiliseconds(player, Kit.ACROBAT) == 0) {
-
-          XSound.ENTITY_WITHER_SHOOT.play(player, 1.0F, 2.0F);
-          player.setAllowFlight(true);
-        }
-
-      }
-
-    }, 20L, 20L);
+//    Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {
+//
+//      for (Player player : Bukkit.getOnlinePlayers()) {
+//        GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
+//
+//        if (gPlayer.getKit() == Kit.ACROBAT
+//            && GameManager.hasCurrentGame()
+//            && GameManager.getCurrentGame().isInGame()
+//            && TimersUtils.getRemainingMiliseconds(player, Kit.ACROBAT) == 0) {
+//
+//          XSound.ENTITY_WITHER_SHOOT.play(player, 1.0F, 2.0F);
+//          player.setAllowFlight(true);
+//        }
+//      }
+//
+//    }, 20L, 20L);
   }
 
   @Override
@@ -72,7 +71,7 @@ public class Acrobat extends BaseKit {
 
   @Override
   protected void extraConfiguration(Player recipient) {
-    // Noupe
+    recipient.setAllowFlight(true);
   }
 
   @Override
@@ -142,6 +141,7 @@ public class Acrobat extends BaseKit {
           if (gPlayer.getKit() == Kit.ACROBAT) {
             if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR && !TimersUtils.hasExpired(player, Kit.ACROBAT)) {
               player.setAllowFlight(true);
+              XSound.ENTITY_WITHER_SHOOT.play(player, 1.0F, 2.0F);
             }
           }
         }

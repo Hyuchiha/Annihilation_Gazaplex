@@ -223,8 +223,8 @@ public class GameTimer {
     String text = "";
     switch (this.state) {
       case STARTING:
-        text = Translator.getColoredString("COMMONS.LOBBY");
-        text = text + " &7| &f" + Translator.getColoredString("BOSSBAR.TIME_TO_START") + -this.time;
+        text = ChatColor.DARK_PURPLE + Translator.getColoredString("COMMONS.LOBBY");
+        text = text + " &7| &f" + Translator.getColoredString("BOSSBAR.TIME_TO_START") + ChatColor.GOLD + -this.time;
         text = ChatColor.translateAlternateColorCodes('&', text);
         break;
       case PHASE_1:
