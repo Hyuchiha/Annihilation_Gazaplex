@@ -87,6 +87,15 @@ public class PlayerManager {
     return createPlayerData(player);
   }
 
+  public static GamePlayer getGamePlayerByUUID(String uuid) {
+    GamePlayer gamePlayer = players.get(uuid);
+    if (gamePlayer != null) {
+      return gamePlayer;
+    }
+
+    return null;
+  }
+
   private static GamePlayer createPlayerData(Player player) {
     GamePlayer actualPlayer = new GamePlayer(player.getUniqueId());
     players.put(player.getUniqueId().toString(), actualPlayer);

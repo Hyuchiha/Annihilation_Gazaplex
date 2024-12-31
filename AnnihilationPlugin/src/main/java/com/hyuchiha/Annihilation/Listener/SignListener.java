@@ -47,9 +47,7 @@ public class SignListener implements Listener {
           GameTeam team = GameTeam.getTeamByTranslatedName(teamName);
 
           if (team != null && GameManager.getCurrentGame() != null) {
-            if (gamePlayer.getTeam() == GameTeam.NONE) {
-              GameManager.getCurrentGame().joinTeam(event.getPlayer(), team.name());
-            }
+            GameManager.getCurrentGame().joinTeam(event.getPlayer(), team.name());
           } else {
             Output.log("The sign exist but the team no");
             player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("ERRORS.CANNOT_JOIN_TEAM"));

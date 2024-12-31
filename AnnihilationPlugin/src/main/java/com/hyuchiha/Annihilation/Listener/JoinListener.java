@@ -114,6 +114,11 @@ public class JoinListener implements Listener {
         && GameManager.getCurrentGame().getTimer().isGameStarted()
         && GameManager.getCurrentGame().getPhase() > this.plugin.getConfig("config.yml").getInt("lastJoinPhase")
     ) {
+      GamePlayer gPlayer = PlayerManager.getGamePlayerByUUID(event.getUniqueId().toString());
+      if (gPlayer != null && gPlayer.getTeam().isTeamAlive() && gPlayer.isAlive()) {
+        return;
+      }
+
       event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Translator.getPrefix() + ChatColor.RED + Translator.getString("ERRORS.GAME_STARTED"));
     }
   }
@@ -132,7 +137,6 @@ public class JoinListener implements Listener {
         !p.isOp() || !p.getName().equals("byHyuchiha")) &&
         p.isOnline() && !p.hasPermission("annihilation.vip.pass")) {
       event.disallow(PlayerLoginEvent.Result.KICK_OTHER, Translator.getColoredString("ERRORS.NO_JOIN_PHASE"));
-
 
       return;
     }

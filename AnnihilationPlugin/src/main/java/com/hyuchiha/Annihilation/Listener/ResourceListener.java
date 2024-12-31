@@ -22,6 +22,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -126,6 +128,21 @@ public class ResourceListener implements Listener {
 
     gamePlayer.giveOreDrops(drops);
     gamePlayer.giveOreXP(resource.getXp());
+
+
+    // Restore item durability after breaking the block
+    ItemMeta meta = itemInHand.getItemMeta();
+
+    if (meta instanceof Damageable) { // Check if the item is damageable
+      Damageable damageable = (Damageable) meta;
+
+      int currentDamage = damageable.getDamage(); // Get the current damage
+      if (currentDamage > 0) {
+        damageable.setDamage(currentDamage - 1); // Reduce damage by 1 point
+        itemInHand.setItemMeta(meta); // Apply the changes to the item
+        player.updateInventory(); // Update the inventory to reflect changes
+      }
+    }
 
     queueRespawn(block);
   }

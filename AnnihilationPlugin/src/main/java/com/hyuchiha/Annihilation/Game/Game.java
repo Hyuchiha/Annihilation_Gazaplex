@@ -224,9 +224,13 @@ public class Game {
           + toJoin.coloredName());
       gamePlayer.setTeam(toJoin);
 
-      ScoreboardManager.getTeams().get(team.toUpperCase()).addPlayer(player);
+      ScoreboardManager.getTeams().get(team.toUpperCase()).addEntry(player.getName());
 
       SignManager.updateSigns();
+
+      if (isInGame()) {
+        gamePlayer.preparePlayerForGame();
+      }
     }
   }
 
