@@ -4,6 +4,7 @@ import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.VotingManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
+import com.hyuchiha.Annihilation.Output.Output;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -157,17 +158,25 @@ public class ScoreboardManager {
   public static void setTeam(GameTeam team) {
     teams.put(team.name(), scoreboardBase.registerNewTeam(team.name()));
     Team sbt = teams.get(team.name());
+
     sbt.setAllowFriendlyFire(false);
     sbt.setCanSeeFriendlyInvisibles(false);
-    sbt.setPrefix(team.color().toString());
 
+    // Set team prefix for colored names
     Configuration config = Main.getInstance().getConfig("config.yml");
+    String prefix = team.color().toString(); // Team color
+
     if (config.getBoolean("useTeamPrefix")) {
-      String prefix = Translator.getColoredString("TEAMS_PREFIX." + team.name().toUpperCase());
-      sbt.setPrefix(team.color().toString() + prefix + " ");
+      prefix += Translator.getColoredString("TEAMS_PREFIX." + team.name().toUpperCase());
     }
 
+    Output.log("Prefix: " + prefix);
+    sbt.setPrefix(prefix);
+    sbt.setSuffix("");
+
     sbt.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OWN_TEAM);
+    // Set the color for tab list names
+    sbt.setColor(team.getChatColor());
   }
 
 
