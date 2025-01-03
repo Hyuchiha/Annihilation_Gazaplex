@@ -23,6 +23,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.concurrent.TimeUnit;
+
 public class Scorpio extends BaseKit {
   public Scorpio(String name, ItemStack icon, ConfigurationSection section) {
     super(name, icon, section);
@@ -79,11 +81,13 @@ public class Scorpio extends BaseKit {
       if (handItem != null && KitUtils.isKitItem(handItem, "KITS.SCORPIO_ITEM") &&
           gPlayer.getKit() == Kit.SCORPIO) {
 
-        if (TimersUtils.hasExpired(player, Kit.BUILDER)) {
+        if (TimersUtils.hasExpired(player, Kit.SCORPIO)) {
           Item item = player.getWorld().dropItem(player.getEyeLocation(), new ItemStack(Material.NETHER_STAR, 1));
           item.setPickupDelay(Integer.MAX_VALUE);
           item.setVelocity(player.getEyeLocation().getDirection().multiply(2));
           Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), new HookTracer(item, gPlayer, 90), 1);
+
+          TimersUtils.addDelay(player, Kit.SCORPIO, 30, TimeUnit.SECONDS);
         }
 
       }

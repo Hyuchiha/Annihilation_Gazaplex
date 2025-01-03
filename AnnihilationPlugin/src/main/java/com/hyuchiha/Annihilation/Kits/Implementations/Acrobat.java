@@ -22,6 +22,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
+import org.bukkit.event.player.PlayerToggleSprintEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.concurrent.TimeUnit;
@@ -170,10 +171,9 @@ public class Acrobat extends BaseKit {
 //    if (event.isSprinting()
 //            && gPlayer.getKit() == Kit.ACROBAT
 //            && TimersUtils.hasDelay(player, Kit.ACROBAT)
-//            && TimersUtils.hasExpired(player.getUniqueId().toString(), Kit.ACROBAT)) {
+//            && TimersUtils.hasExpired(player, Kit.ACROBAT)) {
 //
 //      if (player.getFoodLevel() <= 6) {
-//        Output.log("Can sprint");
 //        player.setSprinting(true);
 //      } else {
 //        event.setCancelled(true);
