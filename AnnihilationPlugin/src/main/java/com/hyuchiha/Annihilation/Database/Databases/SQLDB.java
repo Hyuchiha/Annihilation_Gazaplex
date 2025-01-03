@@ -60,13 +60,7 @@ public abstract class SQLDB extends Database {
         String KITS_UNLOCKED_QUERY = getDatabaseKitsUnlockedQuery();
         query(KITS_UNLOCKED_QUERY);
 
-
-        for (Kit kit : Kit.values()) {
-          String query = getInsertKitQuery(kit);
-
-          query(query);
-        }
-
+        insertMissingKits();
       }
 
     } catch (SQLException e) {
@@ -92,6 +86,22 @@ public abstract class SQLDB extends Database {
         this.connection.close();
     } catch (SQLException e) {
       e.printStackTrace();
+    }
+  }
+
+  private void insertMissingKits() {
+    for (Kit kit : Kit.values()) {
+      try {
+        int id = getIdOfElement(kit.name());
+
+        if (id < 0) {
+          String query = getInsertKitQuery(kit);
+
+          query(query);
+        }
+      } catch (SQLException e) {
+        Output.logError(e.getMessage());
+      }
     }
   }
 
