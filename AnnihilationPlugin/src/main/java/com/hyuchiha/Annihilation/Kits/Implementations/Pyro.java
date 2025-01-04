@@ -25,10 +25,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionData;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.potion.PotionType;
 
 import java.util.List;
 import java.util.Random;
@@ -50,9 +46,7 @@ public class Pyro extends BaseKit {
 
     ItemStack potion = new ItemStack(Material.POTION, 1);
     PotionMeta meta = (PotionMeta) potion.getItemMeta();
-
-    PotionEffectType effectType = XPotion.INSTANT_HEALTH.getPotionEffectType();
-    meta.addCustomEffect(new PotionEffect(effectType, 20 * 30, 1), true);
+    meta.setBasePotionType(XPotion.INSTANT_HEALTH.getPotionType());
     potion.setItemMeta(meta);
     spawnItems.add(potion);
 

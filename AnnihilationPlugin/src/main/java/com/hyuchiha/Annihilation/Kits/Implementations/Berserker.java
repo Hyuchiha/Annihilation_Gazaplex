@@ -16,10 +16,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionData;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.potion.PotionType;
 
 public class Berserker extends BaseKit {
   // https://shotbow.net/forum/wiki/anni-berserker/
@@ -35,8 +31,7 @@ public class Berserker extends BaseKit {
 
     ItemStack potion = new ItemStack(Material.POTION, 1);
     PotionMeta meta = (PotionMeta) potion.getItemMeta();
-    PotionEffectType effectType = XPotion.INSTANT_HEALTH.getPotionEffectType();
-    meta.addCustomEffect(new PotionEffect(effectType, 20 * 30, 1), true);
+    meta.setBasePotionType(XPotion.INSTANT_HEALTH.getPotionType());
     potion.setItemMeta(meta);
     spawnItems.add(potion);
   }

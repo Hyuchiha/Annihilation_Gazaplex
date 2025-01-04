@@ -1,6 +1,7 @@
 package com.hyuchiha.Annihilation.Kits.Implementations;
 
 import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XPotion;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
@@ -15,10 +16,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.potion.PotionType;
 
 import java.util.Random;
 
@@ -52,7 +51,7 @@ public class Vampire extends BaseKit {
 
     ItemStack potion = new ItemStack(Material.POTION, 1);
     PotionMeta meta = (PotionMeta) potion.getItemMeta();
-    meta.setBasePotionData(new PotionData(PotionType.NIGHT_VISION, false, false));
+    meta.setBasePotionType(XPotion.NIGHT_VISION.getPotionType());
     potion.setItemMeta(meta);
     spawnItems.add(potion);
   }
