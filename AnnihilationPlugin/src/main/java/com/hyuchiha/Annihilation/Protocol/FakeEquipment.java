@@ -30,18 +30,22 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.events.PacketListener;
+import com.comphenix.protocol.reflect.StructureModifier;
+import com.comphenix.protocol.wrappers.EnumWrappers;
+import com.comphenix.protocol.wrappers.Pair;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.MapMaker;
+import com.hyuchiha.Annihilation.Output.Output;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import java.util.List;
 import java.util.Map;
 
 import static com.comphenix.protocol.PacketType.Play.Server.ENTITY_EQUIPMENT;
-import static com.comphenix.protocol.PacketType.Play.Server.NAMED_ENTITY_SPAWN;
 
 /**
  * Modify player equipment.
@@ -61,11 +65,12 @@ public abstract class FakeEquipment {
     FEET(2),
     LEGS(3),
     CHEST(4),
-    HEAD(5);
+    HEAD(5),
+    BODY(6);
 
     private int id;
 
-    private EquipmentSlot(int id) {
+    EquipmentSlot(int id) {
       this.id = id;
     }
 
@@ -106,7 +111,7 @@ public abstract class FakeEquipment {
      */
     public boolean isEmpty(LivingEntity entity) {
       ItemStack stack = getEquipment(entity);
-      return stack != null && stack.getType() == Material.AIR;
+      return stack == null || stack.getType() == Material.AIR;
     }
 
     /**
@@ -125,6 +130,7 @@ public abstract class FakeEquipment {
      * @return The equipment slot.
      */
     public static EquipmentSlot fromId(int id) {
+      Output.log("ItemSlot: " + id);
       for (EquipmentSlot slot : values()) {
         if (slot.getId() == id) {
           return slot;
@@ -145,7 +151,7 @@ public abstract class FakeEquipment {
     private EquipmentSlot slot;
     private ItemStack equipment;
 
-    private EquipmentSendingEvent(Player client, LivingEntity visibleEntity, EquipmentSlot slot, ItemStack equipment) {
+    public EquipmentSendingEvent(Player client, LivingEntity visibleEntity, EquipmentSlot slot, ItemStack equipment) {
       this.client = client;
       this.visibleEntity = visibleEntity;
       this.slot = slot;
@@ -173,7 +179,7 @@ public abstract class FakeEquipment {
     /**
      * Retrieve the equipment that we are
      *
-     * @return
+     * @return The ItemStack on the Slot
      */
     public ItemStack getEquipment() {
       return equipment;
@@ -221,22 +227,28 @@ public abstract class FakeEquipment {
     this.manager = ProtocolLibrary.getProtocolManager();
 
     manager.addPacketListener(
-        listener = new PacketAdapter(plugin, ENTITY_EQUIPMENT, NAMED_ENTITY_SPAWN) {
+        listener = new PacketAdapter(plugin, ENTITY_EQUIPMENT) {
           @Override
           public void onPacketSending(PacketEvent event) {
             PacketContainer packet = event.getPacket();
-            PacketType type = event.getPacketType();
 
             if (packet.getEntityModifier(event).read(0) instanceof LivingEntity) {
-              // The entity that is being displayed on the player's screen
               LivingEntity visibleEntity = (LivingEntity) packet.getEntityModifier(event).read(0);
               Player observingPlayer = event.getPlayer();
 
-              if (ENTITY_EQUIPMENT.equals(type)) {
-                EquipmentSlot slot = EquipmentSlot.fromId(packet.getItemSlots().read(0).ordinal());
-                ItemStack equipment = packet.getItemModifier().read(0);
+              // Read the equipment slots safely
+              List<Pair<EnumWrappers.ItemSlot, ItemStack>> equipmentList = packet.getSlotStackPairLists().read(0);
+              if (equipmentList == null || equipmentList.isEmpty()) {
+                return; // Exit if no equipment is found
+              }
+
+              for (Pair<EnumWrappers.ItemSlot, ItemStack> pair : equipmentList) {
+                EquipmentSlot slot = EquipmentSlot.fromId(pair.getFirst().ordinal());
+                ItemStack equipment = pair.getSecond();
+
                 EquipmentSendingEvent sendingEvent = new EquipmentSendingEvent(
-                    observingPlayer, visibleEntity, slot, equipment);
+                        observingPlayer, visibleEntity, slot, equipment
+                );
 
                 // Assume we process all packets - the overhead isn't that bad
                 EquipmentSlot previous = processedPackets.get(packet.getHandle());
@@ -254,19 +266,17 @@ public abstract class FakeEquipment {
                 }
 
                 // Save changes
-                if (slot != sendingEvent.getSlot()) {
-                  packet.getIntegers().write(0, slot.getId());
-                }
-                if (equipment != sendingEvent.getEquipment()) {
-                  packet.getItemModifier().write(0, sendingEvent.getEquipment());
+                if (slot.ordinal() != sendingEvent.getSlot().getId()) {
+                  pair.setFirst(EnumWrappers.ItemSlot.values()[sendingEvent.getSlot().getId()]);
                 }
 
-              } else if (NAMED_ENTITY_SPAWN.equals(type)) {
-                // Trigger updates?
-                onEntitySpawn(observingPlayer, visibleEntity);
-              } else {
-                throw new IllegalArgumentException("Unknown packet type:" + type);
+                if (!equipment.equals(sendingEvent.getEquipment())) {
+                  pair.setSecond(sendingEvent.getEquipment());
+                }
               }
+
+              // Write back the modified list
+              packet.getSlotStackPairLists().write(0, equipmentList);
             }
           }
         });
