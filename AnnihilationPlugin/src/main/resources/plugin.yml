@@ -3,7 +3,7 @@ main: com.hyuchiha.Annihilation.Main
 authors: [Hyuchiha]
 softdepend: [Vault, Multiverse-Core, ProtocolLib]
 api-version: "1.13"
-version: 1.5.0
+version: 1.5.1
 commands:
   anni:
     description: All the commands for games
