@@ -97,11 +97,13 @@ public class Builder extends BaseKit {
   public void removePlayer(Player recipient) {
     // We remove delaying blocks
     List<Block> playerBlocks = delayBlocks.get(recipient.getUniqueId());
-    for (Block block : playerBlocks) {
-      block.setType(Material.STONE);
-    }
+    if (playerBlocks != null) {
+      for (Block block : playerBlocks) {
+        block.setType(Material.STONE);
+      }
 
-    delayBlocks.remove(recipient.getUniqueId());
+      delayBlocks.remove(recipient.getUniqueId());
+    }
   }
 
   @Override
