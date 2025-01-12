@@ -12,8 +12,7 @@ import org.bukkit.entity.Player;
 public class KitCommand implements CommandExecutor {
 
   @Override
-  public boolean onCommand(CommandSender sender, Command cmd, String label,
-                           String[] args) {
+  public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
     if (!(sender instanceof Player)) {
       sender.sendMessage(ChatColor.RED + Translator.getColoredString("ERRORS.CONSOLE_KIT_COMMAND"));
     } else {

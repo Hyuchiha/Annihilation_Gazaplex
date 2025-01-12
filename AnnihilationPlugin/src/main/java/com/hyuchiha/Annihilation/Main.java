@@ -148,10 +148,14 @@ public class Main extends JavaPlugin {
 
   private void registerCommands() {
     getCommand("anni").setExecutor(new AnnihilationCommand(this));
+    getCommand("anni").setTabCompleter(new AnnihilationTabCompletion());
     getCommand("team").setExecutor(new TeamCommand());
+    getCommand("team").setTabCompleter(new TeamTabCompletion());
     getCommand("vote").setExecutor(new VoteCommand());
     getCommand("stats").setExecutor(new StatsCommand(this));
+    getCommand("stats").setTabCompleter(new StatsTabCompletion());
     getCommand("top").setExecutor(new TopCommand(this));
+    getCommand("top").setTabCompleter(new TopTabCompletion());
     getCommand("class").setExecutor(new KitCommand());
     getCommand("star").setExecutor(new StarCommand());
   }

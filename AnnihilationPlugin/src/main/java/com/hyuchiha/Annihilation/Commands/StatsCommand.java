@@ -106,7 +106,6 @@ public class StatsCommand implements CommandExecutor {
           .getMainDatabase()
           .getAccount(player.getUniqueId().toString(), player.getName());
 
-
       if (onlineAccount != null) {
         return onlineAccount;
       }
