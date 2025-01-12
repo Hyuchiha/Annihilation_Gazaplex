@@ -2,6 +2,7 @@ package com.hyuchiha.Annihilation.Manager;
 
 import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
+import com.hyuchiha.Annihilation.Utils.PermissionUtils;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -71,7 +72,7 @@ public class EnderChestManager {
 
     inventory.clear(10);
 
-    if (owner.hasPermission("annihilation.vip.diamond")) {
+    if (PermissionUtils.hasPermission(owner, "annihilation.vip.diamond")) {
 
       inventory.clear(12);
 
@@ -93,7 +94,7 @@ public class EnderChestManager {
       inventory.setItem(25, diamondMeta);
       inventory.setItem(34, diamondMeta);
 
-      if (owner.hasPermission("annihilation.vip.gold")) {
+      if (PermissionUtils.hasPermission(owner, "annihilation.vip.gold")) {
 
         inventory.clear(12);
 
@@ -109,7 +110,7 @@ public class EnderChestManager {
         inventory.setItem(14, material);
         inventory.setItem(23, material);
 
-        if (owner.hasPermission("annihilation.vip.iron")) {
+        if (PermissionUtils.hasPermission(owner, "annihilation.vip.iron")) {
 
           inventory.clear(12);
         } else {

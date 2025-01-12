@@ -10,6 +10,7 @@ import com.hyuchiha.Annihilation.Object.DamageControl;
 import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Scoreboard.ScoreboardManager;
 import com.hyuchiha.Annihilation.Serializers.PlayerSerializer;
+import com.hyuchiha.Annihilation.Utils.PermissionUtils;
 import com.hyuchiha.Annihilation.Utils.TeamUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -204,7 +205,7 @@ public class Game {
   public void joinTeam(Player player, String team) {
     GamePlayer gamePlayer = PlayerManager.getGamePlayer(player);
 
-    if (gamePlayer.getTeam() != GameTeam.NONE && !player.hasPermission("annihilation.bypass.switch_team")) {
+    if (gamePlayer.getTeam() != GameTeam.NONE && !PermissionUtils.hasPermission(player, "annihilation.bypass.switch_team")) {
       player.sendMessage(Translator.getPrefix() + ChatColor.GRAY + Translator.getString("ERROR.PLAYER_NOSWITCHTEAM"));
     } else {
       GameTeam toJoin = (GameTeam) Enums.getIfPresent(GameTeam.class, team.toUpperCase()).orNull();
@@ -215,7 +216,7 @@ public class Game {
 
         return;
       }
-      if (TeamUtils.getTeamAllowEnter(toJoin) && !player.hasPermission("annihilation.bypass.team_limit")) {
+      if (TeamUtils.getTeamAllowEnter(toJoin) && !PermissionUtils.hasPermission(player, "annihilation.bypass.team_limit")) {
         player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("ERRORS.GAME_TEAMFULL"));
 
         return;

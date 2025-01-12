@@ -14,6 +14,7 @@ import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Scoreboard.ScoreboardManager;
 import com.hyuchiha.Annihilation.Serializers.PlayerSerializer;
+import com.hyuchiha.Annihilation.Utils.PermissionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -135,7 +136,7 @@ public class JoinListener implements Listener {
     if (!PlayerSerializer.playerPlayed(p) &&
         GameManager.getCurrentGame().getPhase() > this.plugin.getConfig("config.yml").getInt("lastJoinPhase") && (
         !p.isOp() || !p.getName().equals("byHyuchiha")) &&
-        p.isOnline() && !p.hasPermission("annihilation.vip.pass")) {
+        p.isOnline() && !PermissionUtils.hasPermission(p, "annihilation.vip.pass")) {
       event.disallow(PlayerLoginEvent.Result.KICK_OTHER, Translator.getColoredString("ERRORS.NO_JOIN_PHASE"));
 
       return;

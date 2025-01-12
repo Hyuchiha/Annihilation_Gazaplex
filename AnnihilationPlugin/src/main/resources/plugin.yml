@@ -1,9 +1,15 @@
+# General Data
 name: Annihilation
-main: com.hyuchiha.Annihilation.Main
-authors: [Hyuchiha]
-softdepend: [Vault, Multiverse-Core, ProtocolLib]
-api-version: "1.13"
 version: 1.5.1
+author: Hyuchiha
+api-version: 1.13
+
+# Plugin Data
+main: com.hyuchiha.Annihilation.Main
+load: POSTWORLD
+softdepend: [Vault, Multiverse-Core, ProtocolLib]
+
+# Commands
 commands:
   anni:
     description: All the commands for games
@@ -26,3 +32,125 @@ commands:
   star:
     description: Only for testing
     aliases: st
+
+# Permissions
+permissions:
+  annihilation.*:
+    description: Grants full access to all Annihilation functionality.
+    children:
+      annihilation.command.*: true
+      annihilation.bypass.*: true
+      annihilation.vip.*: true
+      annihilation.class.*: true
+  annihilation.command.*:
+    description: Grants full access to all Annihilation Commands
+    children:
+      annihilation.command.start: true
+      annihilation.command.stop: true
+      annihilation.command.switch_kit: true
+  annihilation.command.start:
+    description: Can start a game
+    default: op
+  annihilation.command.stop:
+    description: Can stop the current game
+    default: op
+  annihilation.command.switch_kit:
+    description: Can switch kits using the command
+    default: op
+  annihilation.bypass.*:
+    description: Grants full access to all ByPass validations
+    children:
+      annihilation.bypass.switch_team: true
+      annihilation.bypass.team_limit: true
+      annihilation.bypass.construction: true
+  annihilation.bypass.switch_team:
+    description: Can switch teams
+    default: op
+  annihilation.bypass.team_limit:
+    description: Can join a team ignoring the size limit
+    default: op
+  annihilation.bypass.construction:
+    description: Can ignore the construction limit
+    default: op
+  annihilation.vip.*:
+    description: Grants full access to all VIP functionality
+    children:
+      annihilation.vip.diamond: true
+      annihilation.vip.gold: true
+      annihilation.vip.iron: true
+      annihilation.vip.pass: true
+  annihilation.vip.diamond:
+    description: Can have access to enderchest diamond slots
+    default: op
+  annihilation.vip.gold:
+    description: Can have access to enderchest gold slots
+    default: op
+  annihilation.vip.iron:
+    description: Can have access to enderchest iron slots
+    default: op
+  annihilation.vip.pass:
+    description: Can join even when the game is above phase 3
+    default: op
+  annihilation.class.*:
+    description: Grants full access to all the KITS from Annihilation
+    children:
+      annihilation.class.acrobat: true
+      annihilation.class.alchemist: true
+      annihilation.class.archer: true
+      annihilation.class.berserker: true
+      annihilation.class.bloodmage: true
+      annihilation.class.builder: true
+      annihilation.class.defender: true
+      annihilation.class.enchanter: true
+      annihilation.class.miner: true
+      annihilation.class.pyro: true
+      annihilation.class.scorpio: true
+      annihilation.class.scout: true
+      annihilation.class.transporter: true
+      annihilation.class.vampire: true
+      annihilation.class.warrior: true
+  annihilation.class.acrobat:
+    description: Access to acrobat class
+    default: op
+  annihilation.class.alchemist:
+    description: Access to alchemist class
+    default: op
+  annihilation.class.archer:
+    description: Access to archer class
+    default: op
+  annihilation.class.berserker:
+    description: Access to berserker class
+    default: op
+  annihilation.class.bloodmage:
+    description: Access to bloodmage class
+    default: op
+  annihilation.class.builder:
+    description: Access to builder class
+    default: op
+  annihilation.class.defender:
+    description: Access to defender class
+    default: op
+  annihilation.class.enchanter:
+    description: Access to enchanter class
+    default: op
+  annihilation.class.miner:
+    description: Access to miner class
+    default: op
+  annihilation.class.pyro:
+    description: Access to pyro class
+    default: op
+  annihilation.class.scorpio:
+    description: Access to scorpio class
+    default: op
+  annihilation.class.scout:
+    description: Access to scout class
+    default: op
+  annihilation.class.transporter:
+    description: Access to transporter class
+    default: op
+  annihilation.class.vampire:
+    description: Access to vampire class
+    default: op
+  annihilation.class.warrior:
+    description: Access to warrior class
+    default: op

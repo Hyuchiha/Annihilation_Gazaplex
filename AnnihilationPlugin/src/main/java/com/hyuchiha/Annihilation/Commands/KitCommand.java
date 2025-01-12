@@ -2,6 +2,7 @@ package com.hyuchiha.Annihilation.Commands;
 
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Utils.MenuUtils;
+import com.hyuchiha.Annihilation.Utils.PermissionUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,7 +19,7 @@ public class KitCommand implements CommandExecutor {
     } else {
       Player player = (Player) sender;
 
-      if (!player.hasPermission("annihilation.command.switch_kit")) {
+      if (!PermissionUtils.hasPermission(player, "annihilation.command.switch_kit")) {
         sender.sendMessage(ChatColor.RED + Translator.getColoredString("ERRORS.NO_PERMISSION"));
         return true;
       }

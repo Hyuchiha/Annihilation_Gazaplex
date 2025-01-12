@@ -10,6 +10,7 @@ import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
 import com.hyuchiha.Annihilation.Utils.LocationUtils;
+import com.hyuchiha.Annihilation.Utils.PermissionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -33,8 +34,8 @@ public class BlockListener implements Listener {
 
         return;
       }
-      if (GameUtils.tooClose(e.getBlock().getLocation()) && e
-          .getPlayer().hasPermission("annihilation.bypass.construction")) {
+      if (GameUtils.tooClose(e.getBlock().getLocation()) &&
+              PermissionUtils.hasPermission(e.getPlayer(), "annihilation.bypass.construction")) {
         e.setCancelled(true);
         e.getPlayer().sendMessage(Translator.getColoredString("ERRORS.TOO_CLOSE_NEXUS"));
 
@@ -43,7 +44,7 @@ public class BlockListener implements Listener {
       if (e.getBlock().getType() == Material.COBBLESTONE || e.getBlock().getType() == Material.CLAY) {
         e.setCancelled(true);
       }
-    } else if (!e.getPlayer().hasPermission("annihilation.bypass.construction")) {
+    } else if (!PermissionUtils.hasPermission(e.getPlayer(), "annihilation.bypass.construction")) {
       e.setCancelled(true);
     }
   }
@@ -84,15 +85,16 @@ public class BlockListener implements Listener {
       }
 
 
-      if (GameUtils.tooClose(event.getBlock().getLocation()) &&
-          !event.getPlayer().hasPermission("annihilation.bypass.construction") &&
-          !permittedBreak(event.getBlock().getType())) {
+      if (GameUtils.tooClose(event.getBlock().getLocation())
+              && !PermissionUtils.hasPermission(event.getPlayer(), "annihilation.bypass.construction")
+              && !permittedBreak(event.getBlock().getType())
+      ) {
         event.getPlayer().sendMessage(
             Translator.getColoredString("ERRORS.TOO_CLOSE_NEXUS")
         );
 
         event.setCancelled(true);
-      } else if (!event.getPlayer().hasPermission("annihilation.bypass.construction")) {
+      } else if (!PermissionUtils.hasPermission(event.getPlayer(), "annihilation.bypass.construction")) {
         event.setCancelled(true);
       }
     }

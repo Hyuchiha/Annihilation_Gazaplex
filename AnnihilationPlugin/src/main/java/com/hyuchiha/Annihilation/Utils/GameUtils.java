@@ -173,9 +173,9 @@ public class GameUtils {
   }
 
   public static boolean isVip(Player player) {
-    return (player.hasPermission("annihilation.vip.diamond")
-        || player.hasPermission("annihilation.vip.gold")
-        || player.hasPermission("annihilation.vip.iron"));
+    return (PermissionUtils.hasPermission(player, "annihilation.vip.diamond")
+        || PermissionUtils.hasPermission(player, "annihilation.vip.gold")
+        || PermissionUtils.hasPermission(player, "annihilation.vip.iron"));
   }
 
   private static int getBuildDistance() {

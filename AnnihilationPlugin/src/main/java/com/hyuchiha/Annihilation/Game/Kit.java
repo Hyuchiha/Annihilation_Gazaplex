@@ -5,6 +5,7 @@ import com.hyuchiha.Annihilation.Database.Base.Account;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
 import com.hyuchiha.Annihilation.Kits.Implementations.*;
 import com.hyuchiha.Annihilation.Main;
+import com.hyuchiha.Annihilation.Utils.PermissionUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
@@ -113,7 +114,7 @@ public enum Kit {
 
     return p.isOp()
         || this == CIVILIAN
-        || p.hasPermission("annihilation.class." + getName().toLowerCase())
+        || PermissionUtils.hasPermission(p, "annihilation.class." + getName().toLowerCase())
         || (account != null && account.hasKit(this));
   }
 

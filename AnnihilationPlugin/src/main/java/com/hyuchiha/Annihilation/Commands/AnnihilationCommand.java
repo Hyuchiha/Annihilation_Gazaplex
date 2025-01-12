@@ -4,11 +4,13 @@ import com.hyuchiha.Annihilation.Event.StartGameEvent;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
+import com.hyuchiha.Annihilation.Utils.PermissionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class AnnihilationCommand implements CommandExecutor {
   private Main plugin;
@@ -42,7 +44,7 @@ public class AnnihilationCommand implements CommandExecutor {
 
       switch (args[0]) {
         case "start":
-          if (sender.hasPermission("annihilation.command.start")) {
+          if (PermissionUtils.hasPermission((Player) sender, "annihilation.command.start")) {
             if (GameManager.getCurrentGame().isInGame()) {
               sender.sendMessage(prefix + red + Translator.getColoredString("ERRORS.GAME_STARTED"));
             } else {
@@ -55,7 +57,7 @@ public class AnnihilationCommand implements CommandExecutor {
           }
           break;
         case "stop":
-          if (sender.hasPermission("annihilation.command.stop")) {
+          if (PermissionUtils.hasPermission((Player) sender, "annihilation.command.stop")) {
             if (GameManager.getCurrentGame().isInGame()) {
               GameManager.endCurrentGame();
 

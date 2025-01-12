@@ -7,6 +7,7 @@ import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
+import com.hyuchiha.Annihilation.Utils.PermissionUtils;
 import org.bukkit.entity.Player;
 import org.inventivetalent.reflection.minecraft.Minecraft;
 
@@ -124,19 +125,19 @@ public class PlayerManager {
     }
 
     if (GameUtils.isVip(player)) {
-      if (player.hasPermission("annihilation.vip.diamond")) {
+      if (PermissionUtils.hasPermission(player, "annihilation.vip.diamond")) {
         player.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
             .replace("%MONEY%", Double.toString(money * 5.0D)));
 
         return money * 5.0D;
       }
-      if (player.hasPermission("annihilation.vip.gold")) {
+      if (PermissionUtils.hasPermission(player, "annihilation.vip.gold")) {
         player.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
             .replace("%MONEY%", Double.toString(money * 3.0D)));
 
         return money * 3.0D;
       }
-      if (player.hasPermission("annihilation.vip.iron")) {
+      if (PermissionUtils.hasPermission(player, "annihilation.vip.iron")) {
         player.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
             .replace("%MONEY%", Double.toString(money * 2.0D)));
 
