@@ -12,20 +12,19 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.FuelValues;
-import org.bukkit.craftbukkit.v1_21_R2.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_21_R2.inventory.CraftInventoryFurnace;
+import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_19_R3.inventory.CraftInventoryFurnace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 
-public class VirtualFurnace_v1_21_R2 extends AbstractFurnaceBlockEntity implements VirtualFurnace {
+public class VirtualFurnace_v1_19_R3 extends AbstractFurnaceBlockEntity implements VirtualFurnace {
     private ServerPlayer handle;
 
-    public VirtualFurnace_v1_21_R2(Player player) {
+    public VirtualFurnace_v1_19_R3(Player player) {
         super(BlockEntityType.BLAST_FURNACE, BlockPos.ZERO, Blocks.BLAST_FURNACE.defaultBlockState(), RecipeType.BLASTING);
 
         this.handle = ((CraftPlayer) player).getHandle();
-        this.level = this.handle.level();
+        this.level = this.handle.getLevel();
     }
 
     @Override
@@ -54,8 +53,8 @@ public class VirtualFurnace_v1_21_R2 extends AbstractFurnaceBlockEntity implemen
     }
 
     @Override
-    protected int getBurnDuration(FuelValues values, ItemStack itemstack) {
-        int burnTime = super.getBurnDuration(values, itemstack);
+    protected int getBurnDuration(ItemStack itemstack) {
+        int burnTime = super.getBurnDuration(itemstack);
 
         return burnTime / 3;
     }
@@ -65,7 +64,7 @@ public class VirtualFurnace_v1_21_R2 extends AbstractFurnaceBlockEntity implemen
         super.setItem(i, itemstack);
 
         ItemStack itemstack1 = this.items.get(i);
-        boolean flag = !itemstack.isEmpty() && ItemStack.isSameItemSameComponents(itemstack1, itemstack);
+        boolean flag = !itemstack.isEmpty() && ItemStack.matches(itemstack1, itemstack);
 
         if (i == 0 && !flag) {
             this.cookingTotalTime = this.cookingTotalTime / 4;
@@ -74,7 +73,9 @@ public class VirtualFurnace_v1_21_R2 extends AbstractFurnaceBlockEntity implemen
         }
     }
 
+
     // New Methods
+
     @Override
     protected Component getDefaultName() {
         return Component.translatable("container.blast_furnace");

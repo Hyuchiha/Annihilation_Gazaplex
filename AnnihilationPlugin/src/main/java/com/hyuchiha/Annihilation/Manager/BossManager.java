@@ -119,6 +119,22 @@ public class BossManager {
         // No creator
         helper = new ChunkHelper_v1_18_R1();
         break;
+      case v1_18_R2:
+        // No creator
+        helper = new ChunkHelper_v1_18_R2();
+        break;
+      case v1_19_R1:
+        // No creator
+        helper = new ChunkHelper_v1_19_R1();
+        break;
+      case v1_19_R2:
+        // No creator
+        helper = new ChunkHelper_v1_19_R2();
+        break;
+      case v1_19_R3:
+        // No creator
+        helper = new ChunkHelper_v1_19_R3();
+        break;
       case v1_20_R1:
         // No creator
         helper = new ChunkHelper_v1_20_R1();

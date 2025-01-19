@@ -79,7 +79,7 @@ public class VirtualFurnace_v1_21_R1 extends AbstractFurnaceBlockEntity implemen
 
     @Override
     protected Component getDefaultName() {
-        return Component.translatable("container.brewing");
+        return Component.translatable("container.blast_furnace");
     }
 
     @Override

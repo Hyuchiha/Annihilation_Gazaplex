@@ -62,6 +62,18 @@ public class EnderFurnaceManager {
       case v1_18_R1:
         furnaceManager = new FurnaceManager_v1_18_R1(main);
         break;
+      case v1_18_R2:
+        furnaceManager = new FurnaceManager_v1_18_R2(main);
+        break;
+      case v1_19_R1:
+        furnaceManager = new FurnaceManager_v1_19_R1(main);
+        break;
+      case v1_19_R2:
+        furnaceManager = new FurnaceManager_v1_19_R2(main);
+        break;
+      case v1_19_R3:
+        furnaceManager = new FurnaceManager_v1_19_R3(main);
+        break;
       case v1_20_R1:
         furnaceManager = new FurnaceManager_v1_20_R1(main);
         break;
