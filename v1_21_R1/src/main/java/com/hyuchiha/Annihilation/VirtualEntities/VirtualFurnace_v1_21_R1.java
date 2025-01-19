@@ -64,7 +64,7 @@ public class VirtualFurnace_v1_21_R1 extends AbstractFurnaceBlockEntity implemen
     public void setItem(int i, ItemStack itemstack) {
         super.setItem(i, itemstack);
 
-        ItemStack itemstack1 = (ItemStack)this.items.get(i);
+        ItemStack itemstack1 = this.items.get(i);
         boolean flag = !itemstack.isEmpty() && ItemStack.isSameItemSameComponents(itemstack1, itemstack);
 
         if (i == 0 && !flag) {
