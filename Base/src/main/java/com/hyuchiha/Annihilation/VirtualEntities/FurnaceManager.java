@@ -68,6 +68,6 @@ public abstract class FurnaceManager {
     isRunning = false;
   }
 
-  abstract VirtualFurnace createFurnace(Player player);
+  protected abstract VirtualFurnace createFurnace(Player player);
 
 }

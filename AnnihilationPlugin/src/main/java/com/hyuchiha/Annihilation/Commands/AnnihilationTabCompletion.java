@@ -1,6 +1,5 @@
 package com.hyuchiha.Annihilation.Commands;
 
-import com.hyuchiha.Annihilation.Game.GameTeam;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;

@@ -121,6 +121,21 @@
 
         <dependency>
             <groupId>com.hyuchiha</groupId>
+            <artifactId>v1_20_R1</artifactId>
+            <version>v1_0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.hyuchiha</groupId>
+            <artifactId>v1_20_R2</artifactId>
+            <version>v1_0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.hyuchiha</groupId>
+            <artifactId>v1_20_R3</artifactId>
+            <version>v1_0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.hyuchiha</groupId>
             <artifactId>v1_21_R1</artifactId>
             <version>v1_0</version>
         </dependency>

@@ -63,5 +63,5 @@ public abstract class BrewingManager {
     isRunning = false;
   }
 
-  abstract VirtualBrewingStand createBrewingStand(Player player);
+  protected abstract VirtualBrewingStand createBrewingStand(Player player);
 }

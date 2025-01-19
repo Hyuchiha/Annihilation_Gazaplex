@@ -9,7 +9,7 @@ public class FurnaceManager_v1_14_R1 extends FurnaceManager {
   }
 
   @Override
-  VirtualFurnace createFurnace(Player player) {
+  protected VirtualFurnace createFurnace(Player player) {
     return new VirtualFurnace_v1_14_R1(player);
   }
 }

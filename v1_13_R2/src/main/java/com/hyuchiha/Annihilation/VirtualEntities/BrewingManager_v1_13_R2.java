@@ -9,7 +9,7 @@ public class BrewingManager_v1_13_R2 extends BrewingManager {
   }
 
   @Override
-  VirtualBrewingStand createBrewingStand(Player player) {
+  protected VirtualBrewingStand createBrewingStand(Player player) {
     return new VirtualBrewingStand_v1_13_R2(player);
   }
 }
