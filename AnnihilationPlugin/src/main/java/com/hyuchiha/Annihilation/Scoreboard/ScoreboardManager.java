@@ -170,7 +170,6 @@ public class ScoreboardManager {
       prefix += Translator.getColoredString("TEAMS_PREFIX." + team.name().toUpperCase());
     }
 
-    Output.log("Prefix: " + prefix);
     sbt.setPrefix(prefix);
     sbt.setSuffix("");
 

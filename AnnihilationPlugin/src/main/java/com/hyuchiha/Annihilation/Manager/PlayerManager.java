@@ -147,26 +147,26 @@ public class PlayerManager {
 
     if (GameUtils.isVip(player)) {
       if (PermissionUtils.hasPermission(player, "annihilation.vip.diamond")) {
-        player.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
-            .replace("%MONEY%", Double.toString(money * 5.0D)));
+//        player.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
+//            .replace("%MONEY%", Double.toString(money * 5.0D)));
 
         return money * 5.0D;
       }
       if (PermissionUtils.hasPermission(player, "annihilation.vip.gold")) {
-        player.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
-            .replace("%MONEY%", Double.toString(money * 3.0D)));
+//        player.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
+//            .replace("%MONEY%", Double.toString(money * 3.0D)));
 
         return money * 3.0D;
       }
       if (PermissionUtils.hasPermission(player, "annihilation.vip.iron")) {
-        player.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
-            .replace("%MONEY%", Double.toString(money * 2.0D)));
+//        player.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
+//            .replace("%MONEY%", Double.toString(money * 2.0D)));
 
         return money * 2.0D;
       }
     } else {
-      player.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
-          .replace("%MONEY%", Double.toString(money)));
+//      player.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
+//          .replace("%MONEY%", Double.toString(money)));
 
       return money;
     }
