@@ -94,6 +94,8 @@ public class Scorpio extends BaseKit {
           Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), new HookTracer(item, gPlayer, 90), 1);
 
           TimersUtils.addDelay(player, Kit.SCORPIO, 30, TimeUnit.SECONDS);
+        } else {
+          KitUtils.showKitItemDelay(player, gPlayer.getKit());
         }
 
       }

@@ -132,7 +132,7 @@ public class Archer extends BaseKit {
     }
   }
 
-  @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+  @EventHandler(priority = EventPriority.HIGH)
   public void onArcherBookInteract(PlayerInteractEvent e) {
     Player player = e.getPlayer();
     GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
