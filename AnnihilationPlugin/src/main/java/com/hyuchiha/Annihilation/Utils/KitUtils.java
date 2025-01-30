@@ -1,6 +1,7 @@
 package com.hyuchiha.Annihilation.Utils;
 
 import com.cryptomorin.xseries.XSound;
+import com.cryptomorin.xseries.messages.ActionBar;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Main;
@@ -56,7 +57,8 @@ public class KitUtils {
   public static void showKitItemDelay(Player player, Kit kit) {
     String remainingTime = TimersUtils.geDelayRemaining(player, kit);
     String message = Translator.getColoredString("GAME.DELAY").replace("%TIME%", remainingTime);
-    player.sendMessage(message);
+    //player.sendMessage(message);
+    ActionBar.sendActionBar(player, message);
     XSound.ENTITY_WOLF_GROWL.play(player, 2.0F, 1.0F);
   }
 
