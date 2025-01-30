@@ -9,6 +9,7 @@ import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -44,7 +45,9 @@ public class Berserker extends BaseKit {
   @Override
   protected void giveExtraHearts(Player recipient) {
     // Finally, this is needed
-    recipient.setMaxHealth(14.0D);
+
+    AttributeInstance attribute = recipient.getAttribute(Attribute.MAX_HEALTH);
+    attribute.setBaseValue(14.0D);
     recipient.setHealth(14.0D);
   }
 
@@ -75,7 +78,9 @@ public class Berserker extends BaseKit {
         double currentMaxHealth = killer.getMaxHealth();
 
         if (currentMaxHealth < 40.0D) {
-          killer.setMaxHealth(currentMaxHealth + 2.0D);
+          AttributeInstance attribute = killer.getAttribute(Attribute.MAX_HEALTH);
+          attribute.setBaseValue(currentMaxHealth + 2.0D);
+          killer.setHealth(currentMaxHealth + 2.0D);
         }
       }
 

@@ -21,6 +21,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -108,6 +109,11 @@ public class Pyro extends BaseKit {
     Player player = e.getPlayer();
     GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
     Action action = e.getAction();
+
+    EquipmentSlot handUser = e.getHand();
+    if (handUser != EquipmentSlot.HAND) {
+      return;
+    }
 
     if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
       PlayerInventory inventory = player.getInventory();

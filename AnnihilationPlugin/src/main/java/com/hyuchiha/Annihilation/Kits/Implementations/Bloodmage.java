@@ -11,6 +11,8 @@ import com.hyuchiha.Annihilation.Utils.KitUtils;
 import com.hyuchiha.Annihilation.Utils.TimersUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,6 +20,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -115,6 +118,11 @@ public class Bloodmage extends BaseKit {
     GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
     Action action = e.getAction();
 
+    EquipmentSlot handUser = e.getHand();
+    if (handUser != EquipmentSlot.HAND) {
+      return;
+    }
+
     if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
       PlayerInventory inventory = player.getInventory();
       ItemStack handItem = inventory.getItemInMainHand();
@@ -137,7 +145,9 @@ public class Bloodmage extends BaseKit {
 
               // The user only has reduced this hearts 2 times
               if (delays.size() <= 2) {
-                target.setMaxHealth(target.getHealth() - 2.0D);
+                AttributeInstance attribute = target.getAttribute(Attribute.MAX_HEALTH);
+                attribute.setBaseValue(target.getHealth() - 2.0D);
+                target.setHealth(target.getHealth() - 2.0D);
 
                 int PID = scheduleHeartRestorer(target);
                 delays.add(PID);
@@ -145,7 +155,9 @@ public class Bloodmage extends BaseKit {
             } else {
               // First time with the effect, we create the list and save it
               List<Integer> delays = new ArrayList<>();
-              target.setMaxHealth(target.getHealth() - 2.0D);
+              AttributeInstance attribute = target.getAttribute(Attribute.MAX_HEALTH);
+              attribute.setBaseValue(target.getHealth() - 2.0D);
+              target.setHealth(target.getHealth() - 2.0D);
 
               int PID = scheduleHeartRestorer(target);
               delays.add(PID);
@@ -180,10 +192,12 @@ public class Bloodmage extends BaseKit {
 
   private int scheduleHeartRestorer(Player target) {
     return Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> {
-      double maxHealth = target.getMaxHealth();
+      AttributeInstance attribute = target.getAttribute(Attribute.MAX_HEALTH);
+
+      double maxHealth = attribute.getValue();
       double health = target.getHealth();
 
-      target.setMaxHealth(maxHealth + 2.0D);
+      attribute.setBaseValue(maxHealth + 2.0D);
       target.setHealth(health + 2.0D);
     }, 5 * 20);
   }

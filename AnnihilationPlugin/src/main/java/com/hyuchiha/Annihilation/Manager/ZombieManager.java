@@ -19,6 +19,8 @@ import com.hyuchiha.Annihilation.Mobs.v1_9_R2.MobCreator_v1_9_R2;
 import com.hyuchiha.Annihilation.Output.Output;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -95,8 +97,9 @@ public class ZombieManager {
       zombie = world.spawn(player.getLocation(), Zombie.class);
     }
 
+    AttributeInstance attribute = zombie.getAttribute(Attribute.MAX_HEALTH);
+    attribute.setBaseValue(40);
     zombie.setBaby(false);
-    zombie.setMaxHealth(40);
     zombie.setCanPickupItems(false);
     zombie.setCustomName(gPlayer.getTeam().getChatColor() + player.getName());
     ItemStack hand = player.getInventory().getItemInMainHand();

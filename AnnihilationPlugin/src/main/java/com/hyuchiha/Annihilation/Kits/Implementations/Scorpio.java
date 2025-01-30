@@ -19,6 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -73,6 +74,11 @@ public class Scorpio extends BaseKit {
     Player player = event.getPlayer();
     GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
     Action action = event.getAction();
+
+    EquipmentSlot handUser = event.getHand();
+    if (handUser != EquipmentSlot.HAND) {
+      return;
+    }
 
     if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
       PlayerInventory inventory = player.getInventory();

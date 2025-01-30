@@ -9,6 +9,8 @@ import com.hyuchiha.Annihilation.Scoreboard.ScoreboardManager;
 import com.hyuchiha.Annihilation.Utils.ItemSelectorUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -65,7 +67,9 @@ public class GamePlayer {
   private void setupPlayerData() {
     Player player = getPlayer();
 
-    player.setMaxHealth(20.0D);
+    AttributeInstance attribute = player.getAttribute(Attribute.MAX_HEALTH);
+    attribute.setBaseValue(20.0D);
+
     player.setHealth(20.0D);
     player.setFoodLevel(20);
     player.setExp(0.0F);

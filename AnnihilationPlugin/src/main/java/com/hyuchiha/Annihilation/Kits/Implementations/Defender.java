@@ -17,11 +17,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -103,6 +106,11 @@ public class Defender extends BaseKit {
     GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
     Action action = e.getAction();
 
+    EquipmentSlot handUser = e.getHand();
+    if (handUser != EquipmentSlot.HAND) {
+      return;
+    }
+
     if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
       PlayerInventory inventory = player.getInventory();
       ItemStack handItem = inventory.getItemInMainHand();
@@ -132,7 +140,8 @@ public class Defender extends BaseKit {
       int health = nexus.getHealth();
       double additionalHealth = Math.ceil((75 - health) / 10.0);
 
-      player.setMaxHealth(20 + additionalHealth);
+      AttributeInstance attribute = player.getAttribute(Attribute.MAX_HEALTH);
+      attribute.setBaseValue(20 + additionalHealth);
 
       player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 3, 1));
     }

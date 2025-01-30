@@ -26,6 +26,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -117,6 +118,11 @@ public class Builder extends BaseKit {
     Player player = e.getPlayer();
     GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
     Action action = e.getAction();
+
+    EquipmentSlot handUser = e.getHand();
+    if (handUser != EquipmentSlot.HAND) {
+      return;
+    }
 
     if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
       PlayerInventory inventory = player.getInventory();

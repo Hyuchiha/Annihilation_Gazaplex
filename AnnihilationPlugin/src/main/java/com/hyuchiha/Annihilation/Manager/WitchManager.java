@@ -8,6 +8,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -54,7 +56,8 @@ public class WitchManager {
 
       Witch witch = (Witch) spawn.getWorld().spawnEntity(spawn, EntityType.WITCH);
 
-      witch.setMaxHealth(gWitch.getHealth());
+      AttributeInstance attribute = witch.getAttribute(Attribute.MAX_HEALTH);
+      attribute.setBaseValue(gWitch.getHealth());
       witch.setHealth(gWitch.getHealth());
       witch.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 5));
       witch.setCanPickupItems(false);
