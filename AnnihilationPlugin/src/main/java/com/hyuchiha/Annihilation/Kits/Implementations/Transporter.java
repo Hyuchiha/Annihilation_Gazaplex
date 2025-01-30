@@ -27,6 +27,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -96,6 +97,11 @@ public class Transporter extends BaseKit {
     Player player = event.getPlayer();
     GamePlayer eventPlayer = PlayerManager.getGamePlayer(player);
     Block block = event.getClickedBlock();
+
+    EquipmentSlot handUser = event.getHand();
+    if (handUser != EquipmentSlot.HAND) {
+      return;
+    }
 
     if (event.getAction() == Action.RIGHT_CLICK_BLOCK && player.getGameMode() != GameMode.CREATIVE) {
 
