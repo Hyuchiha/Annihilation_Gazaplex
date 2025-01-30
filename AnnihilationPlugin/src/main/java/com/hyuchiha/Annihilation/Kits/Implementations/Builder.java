@@ -183,6 +183,10 @@ public class Builder extends BaseKit {
 
     Block block = event.getBlock();
 
+    if (block.getType() != Material.SEA_LANTERN) {
+      return;
+    }
+
     // Get all players with builder class
     for (UUID uuid : delayBlocks.keySet()) {
       Player blockPlayer = Bukkit.getPlayer(uuid);
@@ -208,8 +212,14 @@ public class Builder extends BaseKit {
         // Check if the breaker and the block owner are from same team
         if (gpBlock.getTeam() == gPlayer.getTeam()) {
           // if the breaker is different from the owner of the block, the event is cancelled
-          if (player.getUniqueId() != blockPlayer.getUniqueId()) {
+          if (player.getUniqueId() != uuid) {
             event.setCancelled(true);
+          } else {
+            // Eliminamos el bloque
+            event.setCancelled(true);
+            block.setType(Material.AIR);
+
+            blocks.remove(blockFound);
           }
 
           // if is from other team, we play the delaying block effect
