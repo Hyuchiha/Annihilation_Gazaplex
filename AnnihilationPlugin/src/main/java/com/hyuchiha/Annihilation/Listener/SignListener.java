@@ -16,6 +16,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 
 
 public class SignListener implements Listener {
@@ -29,7 +30,11 @@ public class SignListener implements Listener {
   @EventHandler
   public void onSignClick(PlayerInteractEvent event) {
     Player player = event.getPlayer();
-    GamePlayer gamePlayer = PlayerManager.getGamePlayer(player);
+
+    EquipmentSlot handUser = event.getHand();
+    if (handUser != EquipmentSlot.HAND) {
+      return;
+    }
 
     Action action = event.getAction();
     if ((action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) &&

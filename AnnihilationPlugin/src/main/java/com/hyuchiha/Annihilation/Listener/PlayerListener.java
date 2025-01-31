@@ -34,6 +34,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
@@ -152,9 +153,14 @@ public class PlayerListener implements Listener {
   @EventHandler
   public void onLobbyItemInteract(PlayerInteractEvent e) {
     Player player = e.getPlayer();
-    GamePlayer pmeta = PlayerManager.getGamePlayer(player);
+
+    EquipmentSlot handUser = e.getHand();
+    if (handUser != EquipmentSlot.HAND) {
+      return;
+    }
 
     Action action = e.getAction();
+
     if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
       ItemStack handItem = player.getInventory().getItemInMainHand();
       if (handItem != null) {

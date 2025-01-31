@@ -111,7 +111,6 @@ public class BossListener implements Listener {
       if (material.getType() == Material.LAVA_BUCKET) {
         if (BossManager.hasBossConfig() && bossWorld != null && bossWorld == player.getWorld()) {
           event.setCancelled(true);
-          return;
         }
       }
     }
