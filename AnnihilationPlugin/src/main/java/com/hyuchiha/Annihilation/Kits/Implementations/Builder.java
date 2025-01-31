@@ -8,8 +8,10 @@ import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
+import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
 import com.hyuchiha.Annihilation.Utils.KitUtils;
+import com.hyuchiha.Annihilation.Utils.LocationUtils;
 import com.hyuchiha.Annihilation.Utils.TimersUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -183,9 +185,9 @@ public class Builder extends BaseKit {
 
     Block block = event.getBlock();
 
-    if (block.getType() != Material.SEA_LANTERN) {
-      return;
-    }
+//    if (block.getType() != Material.SEA_LANTERN) {
+//      return;
+//    }
 
     // Get all players with builder class
     for (UUID uuid : delayBlocks.keySet()) {
@@ -202,28 +204,34 @@ public class Builder extends BaseKit {
         // Check if the block destroyed is near to a player block
         if (GameUtils.blockNearBlock(block, playerBlock, 5)) {
           blockFound = playerBlock;
+          Output.log("Block found");
           break;
         }
       }
 
       // After iterate if the variable has some value we check other things
       if (blockFound != null) {
+        Output.log("Checking who break it");
 
         // Check if the breaker and the block owner are from same team
         if (gpBlock.getTeam() == gPlayer.getTeam()) {
-          // if the breaker is different from the owner of the block, the event is cancelled
-          if (player.getUniqueId() != uuid) {
-            event.setCancelled(true);
-          } else {
-            // Eliminamos el bloque
-            event.setCancelled(true);
-            block.setType(Material.AIR);
 
-            blocks.remove(blockFound);
+          if (LocationUtils.isSameBlock(blockFound, block)) {
+            // if the breaker is different from the owner of the block, the event is cancelled
+            if (player.getUniqueId() != uuid) {
+              Output.log("Another user broke the block");
+              event.setCancelled(true);
+            } else {
+              event.setCancelled(true);
+              block.setType(Material.AIR);
+
+              blocks.remove(blockFound);
+            }
+
           }
 
-          // if is from other team, we play the delaying block effect
         } else {
+          // if is from other team, we play the delaying block effect
           playDelayingBlockEffect(player);
         }
 
@@ -249,7 +257,6 @@ public class Builder extends BaseKit {
 
   private void playDelayingBlockEffect(Player player) {
     Location location = player.getLocation();
-    World world = player.getWorld();
     XSound.ENTITY_GHAST_HURT.play(location, 10, 1);
 
     player.addPotionEffect(XPotion.SLOWNESS.buildPotionEffect(20 * 10, 1));
