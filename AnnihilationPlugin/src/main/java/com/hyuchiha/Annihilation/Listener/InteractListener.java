@@ -1,8 +1,6 @@
 package com.hyuchiha.Annihilation.Listener;
 
-import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.GameTeam;
-import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Utils.MenuUtils;
 import org.bukkit.entity.Player;
