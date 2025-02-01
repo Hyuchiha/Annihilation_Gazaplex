@@ -124,7 +124,7 @@ public class Defender extends BaseKit {
           nexusLocation.add(1, 0, 1);
           player.teleport(nexusLocation);
 
-          TimersUtils.addDelay(player, Kit.DEFENDER, 20, TimeUnit.SECONDS);
+          TimersUtils.addDelay(player, Kit.DEFENDER, 60, TimeUnit.SECONDS);
         } else {
           KitUtils.showKitItemDelay(player, gPlayer.getKit());
         }

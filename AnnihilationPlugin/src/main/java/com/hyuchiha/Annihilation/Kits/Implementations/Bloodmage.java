@@ -114,68 +114,50 @@ public class Bloodmage extends BaseKit {
 
   @EventHandler()
   public void onBloodMageItemInteract(PlayerInteractEvent e) {
-    Player player = e.getPlayer();
-    GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
-    Action action = e.getAction();
-
-    EquipmentSlot handUser = e.getHand();
-    if (handUser != EquipmentSlot.HAND) {
+    if (e.getHand() != EquipmentSlot.HAND) {
       return;
     }
 
-    if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
-      PlayerInventory inventory = player.getInventory();
-      ItemStack handItem = inventory.getItemInMainHand();
+    Player player = e.getPlayer();
+    GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
 
-
-      if (handItem != null && KitUtils.isKitItem(handItem, "KITS.BLOODMAGE_ITEM")
-          && gPlayer.getKit() == Kit.BLOODMAGE) {
-
-        if (TimersUtils.hasExpired(player, Kit.BLOODMAGE)) {
-          Player target = KitUtils.getTarget(player, 6, true);
-
-          if (target != null) {
-            UUID targetId = target.getUniqueId();
-
-            target.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 20 * 5, 1));
-
-            // This validators are for stack ability hearts remove, only 2 times
-            if (delaysHearts.containsKey(targetId)) {
-              List<Integer> delays = delaysHearts.get(targetId);
-
-              // The user only has reduced this hearts 2 times
-              if (delays.size() <= 2) {
-                AttributeInstance attribute = target.getAttribute(Attribute.MAX_HEALTH);
-                attribute.setBaseValue(target.getHealth() - 2.0D);
-                target.setHealth(target.getHealth() - 2.0D);
-
-                int PID = scheduleHeartRestorer(target);
-                delays.add(PID);
-              }
-            } else {
-              // First time with the effect, we create the list and save it
-              List<Integer> delays = new ArrayList<>();
-              AttributeInstance attribute = target.getAttribute(Attribute.MAX_HEALTH);
-              attribute.setBaseValue(target.getHealth() - 2.0D);
-              target.setHealth(target.getHealth() - 2.0D);
-
-              int PID = scheduleHeartRestorer(target);
-              delays.add(PID);
-
-              delaysHearts.put(targetId, delays);
-            }
-
-            TimersUtils.addDelay(player, Kit.BLOODMAGE, 60, TimeUnit.SECONDS);
-          }
-
-        } else {
-          KitUtils.showKitItemDelay(player, gPlayer.getKit());
-        }
-
-      }
-
+    if ((e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) ||
+            gPlayer.getKit() != Kit.BLOODMAGE) {
+      return;
     }
 
+      ItemStack handItem = player.getInventory().getItemInMainHand();
+    if (handItem == null || KitUtils.isKitItem(handItem, "KITS.BLOODMAGE_ITEM")) {
+      return;
+    }
+
+    if (!TimersUtils.hasExpired(player, Kit.BLOODMAGE)) {
+      KitUtils.showKitItemDelay(player, gPlayer.getKit());
+    }
+
+    Player target = KitUtils.getTarget(player, 6, true);
+    if (target == null) {
+      return;
+    }
+
+    target.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 20 * 5, 1));
+
+    UUID targetId = target.getUniqueId();
+    delaysHearts.putIfAbsent(targetId, new ArrayList<>());
+    List<Integer> delays = delaysHearts.get(targetId);
+
+    if (delays.size() < 2) {
+      AttributeInstance attribute = target.getAttribute(Attribute.MAX_HEALTH);
+      double newHealth = Math.max(2.0, target.getHealth() - 2.0);
+
+      attribute.setBaseValue(attribute.getBaseValue() - 2.0);
+      target.setHealth(newHealth);
+
+      int PID = scheduleHeartRestorer(target);
+      delays.add(PID);
+    }
+
+    TimersUtils.addDelay(player, Kit.BLOODMAGE, 60, TimeUnit.SECONDS);
   }
 
   @EventHandler()
