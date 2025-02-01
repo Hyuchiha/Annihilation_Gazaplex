@@ -221,8 +221,7 @@ public class Game {
 
         return;
       }
-      player.sendMessage(Translator.getPrefix() + ChatColor.DARK_AQUA + Translator.getColoredString("GAME.JOINED_TEAM")
-          + toJoin.coloredName());
+      player.sendMessage(Translator.getPrefix() + ChatColor.DARK_AQUA + Translator.getColoredString("GAME.JOINED_TEAM").replace("%TEAM%", toJoin.coloredName()));
       gamePlayer.setTeam(toJoin);
 
       ScoreboardManager.getTeams().get(team.toUpperCase()).addEntry(player.getName());

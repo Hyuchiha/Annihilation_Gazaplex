@@ -71,8 +71,7 @@ public class SignManager {
             (t.getPlayers().size() == 1) ? (" " + Translator.getString("COMMONS.PLAYER")) : (" " + Translator.getString("COMMONS.PLAYER") + "s")));
 
         if (t.getNexus() != null && GameManager.getCurrentGame().getPhase() > 0) {
-          s.setLine(3, ChatColor.BOLD.toString() + Translator.getColoredString("INFO.NEXUS_HEALTH") + t
-              .getNexus().getHealth());
+          s.setLine(3, ChatColor.BOLD.toString() + Translator.getColoredString("INFO.NEXUS_HEALTH").replace("%HEALTH%", Integer.toString(t.getNexus().getHealth())));
         } else {
           s.setLine(3, " ");
         }

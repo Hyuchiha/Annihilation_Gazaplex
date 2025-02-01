@@ -49,7 +49,7 @@ public class TopCommand implements CommandExecutor {
     String DARK_AQUA = ChatColor.DARK_AQUA.toString();
     String AQUA = ChatColor.AQUA.toString();
 
-    sender.sendMessage(GRAY + "=========[ " + DARK_AQUA + Translator.getColoredString("INFO.TOP_STATS") + stat.name() + GRAY + " ]=========");
+    sender.sendMessage(GRAY + "=========[ " + DARK_AQUA + Translator.getColoredString("INFO.TOP_STATS").replace("%STAT%", stat.name()) + GRAY + " ]=========");
 
 
     List<Account> tops = new ArrayList<Account>();
