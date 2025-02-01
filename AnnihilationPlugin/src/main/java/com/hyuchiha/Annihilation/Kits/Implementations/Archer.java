@@ -66,7 +66,8 @@ public class Archer extends BaseKit {
 
     ItemStack book = new ItemStack(Material.BOOK, 1);
     ItemMeta bookMeta = book.getItemMeta();
-    bookMeta.setDisplayName(Translator.getColoredString("KITS.ARCHER_BOOK"));
+    bookMeta.setDisplayName(Translator.getColoredString("KITS.ARCHER.ITEM"));
+    bookMeta.setLore(Translator.getMultiMessage("KITS.ARCHER.DESC"));
     book.setItemMeta(bookMeta);
     spawnItems.add(book);
   }
@@ -147,7 +148,7 @@ public class Archer extends BaseKit {
       PlayerInventory inventory = player.getInventory();
       ItemStack handItem = inventory.getItemInMainHand();
 
-      if (handItem != null && KitUtils.isKitItem(handItem, "KITS.ARCHER_BOOK")
+      if (handItem != null && KitUtils.isKitItem(handItem, "KITS.ARCHER.ITEM")
           && gPlayer.getKit() == Kit.ARCHER) {
 
         if (TimersUtils.hasExpired(player, Kit.ARCHER)) {

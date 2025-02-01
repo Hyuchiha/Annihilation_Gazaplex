@@ -39,7 +39,8 @@ public class Scorpio extends BaseKit {
 
     ItemStack star = new ItemStack(Material.NETHER_STAR);
     ItemMeta meta = star.getItemMeta();
-    meta.setDisplayName(Translator.getColoredString("KITS.SCORPIO_ITEM"));
+    meta.setDisplayName(Translator.getColoredString("KITS.SCORPIO.ITEM"));
+    meta.setLore(Translator.getMultiMessage("KITS.SCORPIO.DESC"));
     star.setItemMeta(meta);
     spawnItems.add(star);
   }
@@ -84,7 +85,7 @@ public class Scorpio extends BaseKit {
       PlayerInventory inventory = player.getInventory();
       ItemStack handItem = inventory.getItemInMainHand();
 
-      if (handItem != null && KitUtils.isKitItem(handItem, "KITS.SCORPIO_ITEM") &&
+      if (handItem != null && KitUtils.isKitItem(handItem, "KITS.SCORPIO.ITEM") &&
           gPlayer.getKit() == Kit.SCORPIO) {
 
         if (TimersUtils.hasExpired(player, Kit.SCORPIO)) {

@@ -110,7 +110,8 @@ public class Alchemist extends BaseKit {
 
     ItemStack book = XMaterial.ENCHANTED_BOOK.parseItem();
     ItemMeta bookMeta = book.getItemMeta();
-    bookMeta.setDisplayName(Translator.getColoredString("KITS.ALCHEMIST_BOOK"));
+    bookMeta.setDisplayName(Translator.getColoredString("KITS.ALCHEMIST.ITEM"));
+    bookMeta.setLore(Translator.getMultiMessage("KITS.ALCHEMIST.DISC"));
     book.setItemMeta(bookMeta);
     spawnItems.add(book);
   }
@@ -238,7 +239,7 @@ public class Alchemist extends BaseKit {
       PlayerInventory inventory = player.getInventory();
       ItemStack handItem = inventory.getItemInMainHand();
 
-      if (handItem != null && KitUtils.isKitItem(handItem, "KITS.ALCHEMIST_BOOK")
+      if (handItem != null && KitUtils.isKitItem(handItem, "KITS.ALCHEMIST.ITEM")
           && gPlayer.getKit() == Kit.ALCHEMIST) {
 
         if (TimersUtils.hasExpired(player, Kit.ALCHEMIST)) {

@@ -54,7 +54,8 @@ public class Pyro extends BaseKit {
     ItemStack flameItem = XMaterial.FIRE_CHARGE.parseItem();
     assert flameItem != null;
     ItemMeta itemMeta = flameItem.getItemMeta();
-    itemMeta.setDisplayName(Translator.getColoredString("KITS.PYRO_ITEM"));
+    itemMeta.setDisplayName(Translator.getColoredString("KITS.PYRO.ITEM"));
+    itemMeta.setLore(Translator.getMultiMessage("KITS.PYRO.DESC"));
     flameItem.setItemMeta(itemMeta);
     spawnItems.add(flameItem);
   }
@@ -119,7 +120,7 @@ public class Pyro extends BaseKit {
       PlayerInventory inventory = player.getInventory();
       ItemStack handItem = inventory.getItemInMainHand();
 
-      if (handItem != null && KitUtils.isKitItem(handItem, "KITS.PYRO_ITEM")
+      if (handItem != null && KitUtils.isKitItem(handItem, "KITS.PYRO.ITEM")
           && gPlayer.getKit() == Kit.PYRO) {
 
         if (TimersUtils.hasExpired(player, Kit.PYRO)) {

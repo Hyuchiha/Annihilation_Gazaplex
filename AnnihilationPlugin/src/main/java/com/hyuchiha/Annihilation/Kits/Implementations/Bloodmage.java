@@ -67,7 +67,8 @@ public class Bloodmage extends BaseKit {
 
     ItemStack abilityItem = new ItemStack(Material.FERMENTED_SPIDER_EYE, 1);
     ItemMeta meta = abilityItem.getItemMeta();
-    meta.setDisplayName(Translator.getColoredString("KITS.BLOODMAGE_ITEM"));
+    meta.setDisplayName(Translator.getColoredString("KITS.BLOODMAGE.ITEM"));
+    meta.setLore(Translator.getMultiMessage("KITS.BLOODMAGE.DESC"));
     abilityItem.setItemMeta(meta);
     spawnItems.add(abilityItem);
   }
@@ -127,7 +128,7 @@ public class Bloodmage extends BaseKit {
     }
 
       ItemStack handItem = player.getInventory().getItemInMainHand();
-    if (handItem == null || KitUtils.isKitItem(handItem, "KITS.BLOODMAGE_ITEM")) {
+    if (handItem == null || KitUtils.isKitItem(handItem, "KITS.BLOODMAGE.ITEM")) {
       return;
     }
 

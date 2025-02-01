@@ -52,7 +52,8 @@ public class Transporter extends BaseKit {
 
     ItemStack portal = new ItemStack(Material.QUARTZ);
     ItemMeta m = portal.getItemMeta();
-    m.setDisplayName(Translator.getColoredString("KITS.TRANSPORTER_ITEM"));
+    m.setDisplayName(Translator.getColoredString("KITS.TRANSPORTER.ITEM"));
+    m.setLore(Translator.getMultiMessage("KITS.TRANSPORTER.DESC"));
     portal.setItemMeta(m);
     spawnItems.add(portal);
   }
@@ -122,7 +123,7 @@ public class Transporter extends BaseKit {
       PlayerInventory inventory = player.getInventory();
       ItemStack handItem = inventory.getItemInMainHand();
 
-      if (eventPlayer.getKit() == Kit.TRANSPORTER && handItem != null && KitUtils.isKitItem(handItem, "KITS.TRANSPORTER_ITEM")) {
+      if (eventPlayer.getKit() == Kit.TRANSPORTER && handItem != null && KitUtils.isKitItem(handItem, "KITS.TRANSPORTER.ITEM")) {
 
         Block clickedBlock = block.getRelative(BlockFace.UP);
         Block other2 = clickedBlock.getRelative(BlockFace.UP);
@@ -224,7 +225,7 @@ public class Transporter extends BaseKit {
         if (owner != null) {
           Teleporter tele = teleports.get(owner);
           if (tele != null && tele.isLinked() && tele.getOwner().getTeam() == user.getTeam()) {
-            String message = Translator.getColoredString("KITS.TELEPORT_HELP").replace("%OWNER%", ChatColor.WHITE + tele.getOwner().getPlayer().getName());
+            String message = Translator.getColoredString("KITS.TRANSPORTER.HELP").replace("%OWNER%", ChatColor.WHITE + tele.getOwner().getPlayer().getName());
             event.getPlayer().sendMessage(message);
           }
         }
@@ -249,7 +250,7 @@ public class Transporter extends BaseKit {
         tele.clear();
       } else if (eventPlayer.getTeam() != tele.getOwner().getTeam()) {
         tele.clear();
-        String message = Translator.getColoredString("KITS.TELEPORT_DESTROY").replace("%PLAYER%", player.getName());
+        String message = Translator.getColoredString("KITS.TRANSPORTER.DESTROY").replace("%PLAYER%", player.getName());
         tele.getOwner().getPlayer().sendMessage(message);
       }
 

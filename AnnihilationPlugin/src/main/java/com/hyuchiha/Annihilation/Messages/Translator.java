@@ -5,10 +5,8 @@ import com.hyuchiha.Annihilation.Output.Output;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Translator {
   private static final Main plugin = Main.getInstance();
@@ -20,45 +18,37 @@ public class Translator {
     ConfigurationSection section = plugin.getConfig("messages.yml");
     Map<String, Object> map = section.getValues(false);
 
-    for (String key : map.keySet()) {
+    loadMessages("", section);
+  }
+
+  private static void loadMessages(String prefix, ConfigurationSection section) {
+    for (String key: section.getKeys(false)) {
+      String fullKey = prefix.isEmpty() ? key : prefix + "." + key;
+
       if (section.isConfigurationSection(key)) {
-        for (String subKey : section.getConfigurationSection(key).getKeys(false)) {
-          String concatKey = key + '.' + subKey;
-          messages.put(concatKey, section.getString(concatKey));
-        }
-      }
-
-      if (section.isString(key)) {
-        messages.put(key, section.getString(key));
-      }
-
-      if (section.isList(key)) {
-        listMessages.put(key, section.getStringList(key));
+        loadMessages(fullKey, section.getConfigurationSection(key));
+      } else if (section.isString(key)) {
+        messages.put(fullKey, section.getString(key));
+      } else if (section.isList(key)) {
+        listMessages.put(fullKey, section.getStringList(key));
       }
     }
   }
 
-
   public static String getString(String id) {
-    String ss = findMessageWithId(id);
-    return ChatColor.stripColor(ss);
+    return ChatColor.stripColor(findMessageWithId(id));
   }
 
-
-  public static String getColoredString(String s) {
-    String ss = findMessageWithId(s);
-    return ChatColor.translateAlternateColorCodes('&', ss);
+  public static String getColoredString(String id) {
+    return ChatColor.translateAlternateColorCodes('&', findMessageWithId(id));
   }
 
   public static List<String> getMultiMessage(String id) {
-    List<String> messages = new ArrayList<>();
-    if (listMessages.containsKey(id)) {
-      messages = listMessages.get(id);
-    }
-
-    return messages;
+    return listMessages.getOrDefault(id, Collections.emptyList())
+            .stream()
+            .map(line -> ChatColor.translateAlternateColorCodes('&', line))
+            .collect(Collectors.toList());
   }
-
 
   public static String getPrefix() {
     return getColoredString("PREFIX") + " ";
@@ -66,9 +56,6 @@ public class Translator {
 
 
   private static String findMessageWithId(String id) {
-    if (messages.containsKey(id)) {
-      return messages.get(id);
-    }
-    return id;
+    return messages.getOrDefault(id, id);
   }
 }

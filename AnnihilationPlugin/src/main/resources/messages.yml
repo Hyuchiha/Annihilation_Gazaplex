@@ -58,18 +58,109 @@ GAME:
   PURCHASED: '&7Purchased &e'
   DELAY: '&bYou can use this ability in %TIME%s'
 KITS:
-  ARCHER_BOOK: "Arrow Drop"
-  ALCHEMIST_BOOK: "Alchemist Drop"
-  BLOODMAGE_ITEM: "Corrupt"
-  BUILDER_BOOK: "Resource Drop"
-  BUILDER_DELAYING_BLOCK: "Delaying block"
-  BUILDER_ITEM_MENU: "Resources"
-  DEFENDER_ITEM: "Guardian Warp"
-  PYRO_ITEM: "Fire wave"
-  SCORPIO_ITEM: "Scorpio item"
-  TRANSPORTER_ITEM: "Portal maker"
-  TELEPORT_HELP: "This is a teleport owned by %OWNER%, Sneak to go through it"
-  TELEPORT_DESTROY: "Your portal has been destroyed by %PLAYER%"
+  ALCHEMIST:
+    ITEM: "&6&lAlchemist Drop"
+    DESC:
+      - "&5Alchemist Drop"
+      - ""
+      - "&5Grants you potion ingredients"
+      - "&5every &690 &5seconds"
+      - "&5However, there is a small chance"
+      - "&5to receive useless items"
+  ARCHER:
+    ITEM: "&6&lArrow Drop"
+    DESC:
+      - "&b Arrow drop"
+      - ""
+      - "&b Grants you &632 &barrows"
+      - "&b every &645 &bseconds"
+      - "&b allowing you to keep fighting"
+      - "&b without running out of ammunition"
+  BLOODMAGE:
+    ITEM: "&8&lCorruption Orb"
+    DESC:
+      - "&8Corrupt Orb"
+      - ""
+      - "&8Target an enemy up to &76 blocks away"
+      - "&8and corrupt them."
+      - "&8This reduces their health by &c2 hearts"
+      - "&8for &75 seconds &8and applies"
+      - "&8the &0Wither effect &8for the same duration."
+      - ""
+      - "&8This ability can be used every &760 seconds."
+  BUILDER:
+    ITEM: "&6&lResource Drop"
+    DESC:
+      - "&6Resource Drop"
+      - ""
+      - "&6Grants you a set of materials"
+      - "&6to reinforce your defenses."
+      - ""
+      - "&6You can use this ability every &790 seconds."
+      - "&6There is a &e30% chance &6to receive"
+      - "&6a special material."
+  DELAYING_BLOCK:
+    ITEM: "&8&lDelaying Block"
+    DESC:
+      - "&8Delaying Block"
+      - ""
+      - "&8Place this block to reinforce your defenses."
+      - "&8If an enemy breaks a block"
+      - "&8within a &75-block radius,"
+      - "&8they will be inflicted with:"
+      - "&7- &9Slowness"
+      - "&7- &9Mining Fatigue"
+    MENU: "Resources"
+  DEFENDER:
+    ITEM: "&6&lGuardian Warp"
+    DESC:
+      - "&6Guardian Warp"
+      - ""
+      - "&6Teleport to your Nexus"
+      - "&6at any moment to defend it."
+      - ""
+      - "&6You can use this ability every &760 seconds."
+  PYRO:
+    ITEM: "&c&lFire Wave"
+    DESC:
+      - "&cFire Wave"
+      - ""
+      - "&cUnleash a wave of flames,"
+      - "&cburning all enemies"
+      - "&cwithin a &710-block radius."
+      - ""
+      - "&cYou can use this ability every &740 seconds."
+  SCORPIO:
+    ITEM: "&8&lShadow Shuriken"
+    DESC:
+      - "&8Shadow Shuriken"
+      - ""
+      - "&8Throw this shuriken in front of you"
+      - "&8to capture and teleport an enemy"
+      - "&8directly in front of you."
+      - ""
+      - "&8You can use this ability every &730 seconds."
+  SCOUT:
+    ITEM: "&8&lGrapple"
+    DESC:
+      - "&8&lGrapple"
+      - ""
+      - "&8Throw this shuriken in front of you"
+      - "&8to capture and teleport an enemy"
+      - "&8directly in front of you."
+      - ""
+      - "&8You can use this ability every &730 seconds."
+  TRANSPORTER:
+    ITEM: "&5&lPortal Maker"
+    DESC:
+      - "&5Portal Maker"
+      - ""
+      - "&5Place a portal by selecting 2 blocks"
+      - "&5to transport your allies to another location."
+      - ""
+      - "&5Enemies can break your portals at any time."
+    HELP: "This is a teleport owned by %OWNER%, Sneak to go through it"
+    DESTROY: "Your portal has been destroyed by %PLAYER%"
 # Info messages
 INFO:
   TOP_STATS: "Top "

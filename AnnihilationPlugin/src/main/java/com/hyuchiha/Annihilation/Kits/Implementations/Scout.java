@@ -6,6 +6,7 @@ import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
+import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Utils.TimersUtils;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
@@ -33,7 +34,8 @@ public class Scout extends BaseKit {
 
         ItemStack grapple = new ItemStack(Material.FISHING_ROD);
         ItemMeta meta = grapple.getItemMeta();
-        meta.setDisplayName(ChatColor.GREEN + "Grapple");
+        meta.setDisplayName(Translator.getColoredString("KITS.SCOUT.ITEM"));
+        meta.setLore(Translator.getMultiMessage("KITS.SCOUT.DESC"));
         grapple.setItemMeta(meta);
         spawnItems.add(grapple);
     }

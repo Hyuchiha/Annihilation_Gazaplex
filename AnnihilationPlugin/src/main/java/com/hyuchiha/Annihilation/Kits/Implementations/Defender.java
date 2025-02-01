@@ -65,7 +65,8 @@ public class Defender extends BaseKit {
 
     ItemStack dye = GameUtils.getDyeColor(DyeColor.LIME);
     ItemMeta dyeMeta = dye.getItemMeta();
-    dyeMeta.setDisplayName(Translator.getColoredString("KITS.DEFENDER_ITEM"));
+    dyeMeta.setDisplayName(Translator.getColoredString("KITS.DEFENDER.ITEM"));
+    dyeMeta.setLore(Translator.getMultiMessage("KITS.DEFENDER.DESC"));
     dye.setItemMeta(dyeMeta);
     spawnItems.add(dye);
   }
@@ -115,7 +116,7 @@ public class Defender extends BaseKit {
       PlayerInventory inventory = player.getInventory();
       ItemStack handItem = inventory.getItemInMainHand();
 
-      if (handItem != null && KitUtils.isKitItem(handItem, "KITS.DEFENDER_ITEM")
+      if (handItem != null && KitUtils.isKitItem(handItem, "KITS.DEFENDER.ITEM")
           && gPlayer.getKit() == Kit.DEFENDER) {
 
         if (TimersUtils.hasExpired(player, Kit.DEFENDER)) {

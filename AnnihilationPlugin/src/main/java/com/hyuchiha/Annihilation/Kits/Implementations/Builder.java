@@ -74,7 +74,8 @@ public class Builder extends BaseKit {
 
     ItemStack book = new ItemStack(Material.BOOK, 1);
     ItemMeta bookMeta = book.getItemMeta();
-    bookMeta.setDisplayName(Translator.getColoredString("KITS.BUILDER_BOOK"));
+    bookMeta.setDisplayName(Translator.getColoredString("KITS.BUILDER.ITEM"));
+    bookMeta.setLore(Translator.getMultiMessage("KITS.BUILDER.DESC"));
     book.setItemMeta(bookMeta);
     spawnItems.add(book);
 
@@ -130,7 +131,7 @@ public class Builder extends BaseKit {
       PlayerInventory inventory = player.getInventory();
       ItemStack handItem = inventory.getItemInMainHand();
 
-      if (handItem != null && KitUtils.isKitItem(handItem, "KITS.BUILDER_BOOK")
+      if (handItem != null && KitUtils.isKitItem(handItem, "KITS.BUILDER.ITEM")
           && gPlayer.getKit() == Kit.BUILDER) {
 
         if (TimersUtils.hasExpired(player, Kit.BUILDER)) {
@@ -161,7 +162,7 @@ public class Builder extends BaseKit {
       if (event.getBlock().getType() == Material.SEA_LANTERN && event.getItemInHand().hasItemMeta()) {
         ItemMeta blockMeta = event.getItemInHand().getItemMeta();
 
-        if (blockMeta.getDisplayName().equals(Translator.getColoredString("KITS.BUILDER_DELAYING_BLOCK"))) {
+        if (blockMeta.getDisplayName().equals(Translator.getColoredString("KITS.DELAYING_BLOCK.ITEM"))) {
           List<Block> blocks = delayBlocks.get(p.getUniqueId());
 
           if (blocks == null) {
@@ -250,7 +251,7 @@ public class Builder extends BaseKit {
     ItemStack item = event.getItem();
     if (source.getType() == InventoryType.PLAYER
         && destination.getType() != InventoryType.PLAYER
-        && KitUtils.isKitItem(item, "KITS.BUILDER_BOOK")) {
+        && KitUtils.isKitItem(item, "KITS.BUILDER.ITEM")) {
       event.setCancelled(true);
     }
   }
@@ -271,7 +272,7 @@ public class Builder extends BaseKit {
 
   public void createInventoryMenu(Player player, List<ItemStack> drops) {
     int size = 9 * (int) Math.ceil(drops.size() / 9.0D);
-    Inventory inv = Bukkit.createInventory(player, size, Translator.getColoredString("KITS.BUILDER_ITEM_MENU"));
+    Inventory inv = Bukkit.createInventory(player, size, Translator.getColoredString("KITS.BUILDER.MENU"));
 
     for (ItemStack drop : drops) {
       inv.addItem(drop);
@@ -283,7 +284,8 @@ public class Builder extends BaseKit {
   private ItemStack getDelayingBlocks(int quantity) {
     ItemStack delayingBlock = new ItemStack(Material.SEA_LANTERN, quantity);
     ItemMeta delayingBlockMeta = delayingBlock.getItemMeta();
-    delayingBlockMeta.setDisplayName(Translator.getColoredString("KITS.BUILDER_DELAYING_BLOCK"));
+    delayingBlockMeta.setDisplayName(Translator.getColoredString("KITS.DELAYING_BLOCK.ITEM"));
+    delayingBlockMeta.setLore(Translator.getMultiMessage("KITS.DELAYING_BLOCK.DESC"));
     delayingBlock.setItemMeta(delayingBlockMeta);
     return delayingBlock;
   }
