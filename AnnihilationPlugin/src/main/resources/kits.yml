@@ -7,169 +7,145 @@ Kits:
     lore:
       - "&3 Clase inicial"
       - ""
-      - "&b Este kit te da lo"
-      - "&b básico para sobrevivir."
+      - "&b Este kit te proporciona lo"
+      - "&b esencial para sobrevivir."
     price: 0
   ACROBAT:
     name: "&3 Acróbata"
     lore:
-      - "&b Tu eres la pluma"
+      - "&b Eres tan ligero como una pluma."
       - ""
-      - "&b Recorre el mundo con tu doble salto"
-      - "&b Dispara desde el cielo con tu arco"
-      - "&b Y corre por mas tiempo que otros jugadores"
-      - "&b Gracias a tu gran estamina"
+      - "&b Usa tu doble salto para moverte con libertad."
+      - "&b Dispara desde las alturas con tu arco."
+      - "&b Tu resistencia te permite correr por más tiempo."
     price: 75000
   ALCHEMIST:
     name: "&3 Alquimista"
     lore:
-      - "&b Tu eres el autentico alquimista"
+      - "&b Un verdadero maestro de la alquimia."
       - ""
-      - "&b Con tu libro obten"
-      - "&b ingredientes para tus pociones"
-      - "&b cada 90 segundos"
-      - "&b cuidado que puede tocarte algo malo"
+      - "&b Usa tu libro mágico para obtener"
+      - "&b ingredientes de pociones cada 90 segundos."
+      - "&b Pero ten cuidado, podrías recibir algo inesperado."
     price: 75000
   ARCHER:
     name: "&3 Arquero"
     lore:
-      - "&b Tu eres la flecha"
+      - "&b Precisión letal con cada disparo."
       - ""
-      - "&b Con tu arco inflinges +1 de daño"
-      - "&b Tienes la habilidad de craftear"
-      - "&b flechas a un bajo costo"
+      - "&b Infliges +1 de daño con el arco."
+      - "&b Puedes fabricar flechas a un costo reducido."
     price: 75000
   BERSERKER:
     name: "&2 Berserker"
     lore:
-      - "&b Tu eres la autentica ira"
+      - "&b La ira en su máxima expresión."
       - ""
-      - "&b Con tu espada, eres capaz de"
-      - "&b aplicar mas daño a los oponentes"
-      - "&b con mejor armadura que la tuya."
-      - ""
-      - "&b Cada muerte te suma un corazon"
-      - "&b para un maximo de 20 corazones"
+      - "&b Causa más daño a enemigos con mejor armadura."
+      - "&b Cada muerte te otorga un corazón extra"
+      - "&b hasta un máximo de 20 corazones."
     price: 75000
   BLOODMAGE:
-    name: "&2 Bloodmage"
+    name: "&2 Mago de Sangre"
     lore:
-      - "&b Tu eres el peligro"
+      - "&b Un poder oscuro y letal."
       - ""
-      - "&b Puede que no golpees a la gente"
-      - "&b asta la muerte, pero eso no te hace"
-      - "&b menos potente."
+      - "&b No siempre matas con golpes, pero"
+      - "&b tu magia drena la vida de los enemigos."
       - ""
-      - "&b Ayuda a tus compañeros envenenando a"
-      - "&b tus enemigos y reduciendo su vida maxima"
+      - "&b Ayuda a tu equipo envenenando a los rivales"
+      - "&b y reduciendo su vida máxima."
     price: 75000
   BUILDER:
     name: "&2 Builder"
     lore:
-      - "&b Tu eres la piedra"
+      - "&b La piedra angular de la defensa."
       - ""
-      - "&b Tu eres el constructor de nuestra primera defensa"
-      - "&b Con tu habilidad, obtienes los objetos"
-      - "&b para construir la mejor base creada"
+      - "&b Obtienes materiales para construir"
+      - "&b las mejores fortificaciones."
       - ""
-      - "&b Utiliza tus &cDelaying blocks"
-      - "&b Para apoyar en la defensa de tu equipo"
-      - "&b y quien sabe, quizas algun enemigo muera"
-      - "&b cruzando tu muro"
+      - "&b Usa los &cBloques de Retardo"
+      - "&b para reforzar tu equipo y detener a los enemigos."
     price: 25000
   DEFENDER:
     name: "&2 Defender"
     lore:
-      - "&b Tu eres nuestra ultima defensa"
+      - "&b El guardián de la última línea."
       - ""
-      - "&b Tu eres el encargado de poner tu cuerpo"
-      - "&b y tu espiritu en la defensa"
-      - "&b de nuestro equipo"
+      - "&b Tu deber es proteger el Nexus"
+      - "&b con cuerpo y espíritu."
       - ""
-      - "&b Mientras permanescas cerca del nexus"
-      - "&b Tendras corazones y regeneracion extra"
+      - "&b Mientras estés cerca del Nexus,"
+      - "&b obtendrás corazones adicionales y regeneración."
     price: 25000
   ENCHANTER:
     name: "&2 Enchanter"
     lore:
-      - "&b El encantador"
+      - "&b Maestro en el arte de los encantamientos."
       - ""
-      - "&b Con tu habilidad"
-      - "&b por cada bloque de recursos"
-      - "&b que destruyas"
-      - "&b recibiras el doble"
-      - "&b de experiencia"
+      - "&b Cada vez que minas recursos,"
+      - "&b obtienes el doble de experiencia."
     price: 25000
   MINER:
     name: "&2 Minero"
     lore:
-      - "&b Tu eres el obrero"
+      - "&b El alma del suministro de recursos."
       - ""
-      - "&b Con tu set de herramientas"
-      - "&b consigues el doble de"
-      - "&b materiales minados"
+      - "&b Tus herramientas te permiten extraer"
+      - "&b el doble de materiales al minar."
       - ""
-      - "&b Arma a tu equipo"
+      - "&b ¡Abastece a tu equipo con los mejores recursos!"
     price: 10000
   PYRO:
-    name: "&2 Pyromaniatico"
+    name: "&2 Piromaniaco"
     lore:
-      - "&b Tu eres la llama"
+      - "&b Un verdadero maestro del fuego."
       - ""
-      - "&b Utiliza tus armas para dañar"
-      - "&b a tus rivales con tu fuego"
-      - "&b y no te preocupes"
-      - "&b el fuego no te puede hacer daño"
+      - "&b Tus ataques pueden incendiar a los enemigos."
+      - "&b Y lo mejor de todo, eres inmune al fuego."
     price: 25000
   SCORPIO:
     name: "&2 Escorpio"
     lore:
-      - "&b Eres el gancho"
+      - "&b Nadie escapa de tu gancho."
       - ""
-      - "&2 Utiliza tu gancho especial"
-      - "&2 para atrapar a tus enemigos"
-      - "&2 hacia donde este"
-      - "&2 y asesinarlos de forma veloz"
+      - "&2 Usa tu gancho especial para atraer"
+      - "&2 a los enemigos hacia ti y eliminarlos."
+    price: 75000
   SCOUT:
     name: "&2Scout"
     lore:
-      - "&bEres el experto portador de garfios"
+      - "&b Maestro de la movilidad."
       - ""
-      - "&bUsa tu gancho especial para atrapar"
-      - "&by elimina rápidamente a tus enemigos."
+      - "&b Usa tu gancho especial para desplazarte"
+      - "&b rápidamente y eliminar enemigos con agilidad."
     price: 75000
   TRANSPORTER:
     name: "&2 Transporter"
     lore:
-      - "&b Eres el puente"
+      - "&b Conectando mundos con portales."
       - ""
-      - "&b Une dos partes del mapa con portales"
-      - "&b Que puedes crear para ti y tu equipo"
-      - "&b se muevan con facilidad"
+      - "&b Crea portales para que tu equipo se desplace con facilidad."
       - ""
-      - "&b Tus portales permanecerán en tanto"
-      - "&b sigas con vida o los destruyan"
+      - "&b Tus portales permanecerán activos"
+      - "&b mientras sigas con vida o hasta que sean destruidos."
     price: 75000
   VAMPIRE:
     name: "&2 Vampiro"
     lore:
-      - "&b Tu eres el miedo"
+      - "&b La criatura de la noche."
       - ""
-      - "&b De noche, tu progreso en batalla"
-      - "&b es inalcanzable, con cada golpe que"
-      - "&b propines a tu adversario, tiene un 20%"
-      - "&b de probabilidad de absorber la vida"
-      - "&b de tu contrincante"
+      - "&b Durante la noche, cada golpe tiene"
+      - "&b un 20% de probabilidad de absorber la vida del enemigo."
       - ""
-      - "&b Funciona solo de noche."
+      - "&b Habilidad disponible solo en la oscuridad."
     price: 25000
   WARRIOR:
     name: "&2 Guerrero"
     lore:
-      - "&b Eres un guerrero"
+      - "&b Un combatiente formidable."
       - ""
-      - "&b Haces daño extra (+1)"
-      - "&b con cualquier arna"
+      - "&b Infliges +1 de daño con cualquier arma."
       - ""
-      - "&b Nadie te derribara"
+      - "&b Nadie podrá derribarte fácilmente."
     price: 50000
