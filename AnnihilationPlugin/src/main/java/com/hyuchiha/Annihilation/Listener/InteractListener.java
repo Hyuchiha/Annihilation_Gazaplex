@@ -57,7 +57,7 @@ public class InteractListener implements Listener {
                 for (GameTeam team : GameTeam.teams()) {
                   if (setToNext) {
                     ItemMeta meta = handItem.getItemMeta();
-                    meta.setDisplayName(team.color() + Translator.getColoredString("GAME.COMPASS_FOCUS").replace("%TEAM%", team.toString()));
+                    meta.setDisplayName(team.color() + Translator.getColoredString("GAME.COMPASS_FOCUS").replace("%TEAM%", team.coloredName() + team.toString()));
                     handItem.setItemMeta(meta);
                     player.setCompassTarget(team.getNexus().getLocation());
                     setCompass = true;

@@ -14,7 +14,7 @@ TEAMS_PREFIX:
   YELLOW: "[Y]"
 # Base translations
 COMMONS:
-  TEAM: "&6Team"
+  TEAM: "Team"
   PLAYER: "&bPlayer"
   LOBBY: "&2Lobby"
   DEAD: "&4Dead"
