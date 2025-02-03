@@ -127,7 +127,7 @@ public class Bloodmage extends BaseKit {
       return;
     }
 
-      ItemStack handItem = player.getInventory().getItemInMainHand();
+    ItemStack handItem = player.getInventory().getItemInMainHand();
     if (handItem == null || KitUtils.isKitItem(handItem, "KITS.BLOODMAGE.ITEM")) {
       return;
     }
@@ -136,7 +136,7 @@ public class Bloodmage extends BaseKit {
       KitUtils.showKitItemDelay(player, gPlayer.getKit());
     }
 
-    Player target = KitUtils.getTarget(player, 6, true);
+    Player target = KitUtils.getTarget(player, 10, true);
     if (target == null) {
       return;
     }

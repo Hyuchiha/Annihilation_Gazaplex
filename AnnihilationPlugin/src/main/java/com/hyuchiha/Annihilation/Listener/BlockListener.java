@@ -22,6 +22,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class BlockListener implements Listener {
 
@@ -73,6 +76,21 @@ public class BlockListener implements Listener {
           event.setCancelled(true);
 
           if (team.getNexus().isAlive() && FastBreakProtect.LastBreakTimeIsCorrect(event.getPlayer())) {
+            ItemStack itemInHand = event.getPlayer().getItemInUse();
+
+            ItemMeta meta = itemInHand.getItemMeta();
+            if (meta instanceof Damageable) {
+              Damageable damageable = (Damageable) meta;
+
+              int currentDamage = damageable.getDamage(); // Get the current damage
+              if (currentDamage > 0) {
+                damageable.setDamage(currentDamage + 10); // Reduce damage by 1 point
+                itemInHand.setItemMeta(meta); // Apply the changes to the item
+
+                event.getPlayer().updateInventory(); // Update the inventory to reflect changes
+              }
+            }
+
             Bukkit.getServer().getPluginManager().callEvent(
                 new NexusDamageEvent(
                     PlayerManager.getGamePlayer(event.getPlayer()),
