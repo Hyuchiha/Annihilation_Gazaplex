@@ -50,7 +50,12 @@ public class GameManager {
       for (Player player : Bukkit.getOnlinePlayers()) {
         if (PlayerManager.getGamePlayer(player).getTeam() == currentGame.getWinner()) {
           Account winnerData = Main.getInstance().getMainDatabase().getAccount(player.getUniqueId().toString(), player.getName());
-          winnerData.increaseNexusDamage();
+          winnerData.increaseWins();
+
+          Main.getInstance().getMainDatabase().saveAccount(winnerData);
+        } else {
+          Account looserAccount = Main.getInstance().getMainDatabase().getAccount(player.getUniqueId().toString(), player.getName());
+          Main.getInstance().getMainDatabase().saveAccount(looserAccount);
         }
       }
 

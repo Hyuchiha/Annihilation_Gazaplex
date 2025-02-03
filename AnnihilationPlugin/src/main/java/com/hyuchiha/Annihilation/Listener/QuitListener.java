@@ -38,6 +38,14 @@ public class QuitListener implements Listener {
     String playerName = player.getName();
     e.setQuitMessage("");
 
+    Database database = this.plugin.getMainDatabase();
+    Account account = database.getAccount(player.getUniqueId().toString(), player.getName());
+
+    if (account != null) {
+      database.saveAccount(account);
+      database.removeCachedAccount(account);
+    }
+
     if (gamePlayer.getTeam() == GameTeam.NONE) {
       PlayerSerializer.delete(playerName);
 
@@ -47,14 +55,6 @@ public class QuitListener implements Listener {
       PlayerSerializer.removeItems(playerName);
 
       return;
-    }
-
-    Database database = this.plugin.getMainDatabase();
-    Account account = database.getAccount(player.getUniqueId().toString(), player.getName());
-
-    if (account != null) {
-      database.saveAccount(account);
-      database.removeCachedAccount(account);
     }
 
     PlayerSerializer.SerializePlayer(player);
