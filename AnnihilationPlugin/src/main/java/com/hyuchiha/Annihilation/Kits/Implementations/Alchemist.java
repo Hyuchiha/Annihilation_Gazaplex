@@ -112,7 +112,7 @@ public class Alchemist extends BaseKit {
     ItemStack book = XMaterial.ENCHANTED_BOOK.parseItem();
     ItemMeta bookMeta = book.getItemMeta();
     bookMeta.setDisplayName(Translator.getColoredString("KITS.ALCHEMIST.ITEM"));
-    bookMeta.setLore(Translator.getMultiMessage("KITS.ALCHEMIST.DISC"));
+    bookMeta.setLore(Translator.getMultiMessage("KITS.ALCHEMIST.DESC"));
     book.setItemMeta(bookMeta);
     spawnItems.add(book);
   }

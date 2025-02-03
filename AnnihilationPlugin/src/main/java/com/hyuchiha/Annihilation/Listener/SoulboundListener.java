@@ -13,6 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 public class SoulboundListener implements Listener {
   private static final String soulboundTag = ChatColor.GOLD + "Soulbound";
@@ -37,7 +38,9 @@ public class SoulboundListener implements Listener {
     if (!meta.hasLore()) {
       meta.setLore(Collections.singletonList(soulboundTag));
     } else {
-      meta.getLore().add(soulboundTag);
+      List<String> lore = meta.getLore();
+      lore.add(soulboundTag);
+      meta.setLore(lore);
     }
     stack.setItemMeta(meta);
   }

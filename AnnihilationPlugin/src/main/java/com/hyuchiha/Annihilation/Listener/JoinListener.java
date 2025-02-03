@@ -100,11 +100,17 @@ public class JoinListener implements Listener {
 
     Output.log("Checking for zombie: " + p.getName());
     if (ZombieManager.getZombies().containsKey(p.getName())) {
-      Output.log("Zonbie found");
-      Zombie zombie = (Zombie) ZombieManager.getZombies().get(p.getName());
-      zombie.remove();
+      Bukkit.getScheduler().runTask(plugin, () -> {
+        Zombie zombie = (Zombie) ZombieManager.getZombies().get(p.getName());
+        zombie.setHealth(0);
+        zombie.remove();
 
-      ZombieManager.getZombies().remove(p.getName());
+        if (zombie.isDead() || !zombie.isValid()) {
+          Output.log("Zombie successfully removed!");
+        }
+
+        ZombieManager.getZombies().remove(p.getName());
+      });
     }
   }
 

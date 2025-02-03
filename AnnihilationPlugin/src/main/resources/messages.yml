@@ -86,7 +86,7 @@ KITS:
       - "&8and corrupt them."
       - "&8This reduces their health by &c2 hearts"
       - "&8for &75 seconds &8and applies"
-      - "&8the &0Wither effect &8for the same duration."
+      - "&8the &cWither effect &8for the same duration."
       - ""
       - "&8This ability can be used every &760 seconds."
   BUILDER:
@@ -100,6 +100,7 @@ KITS:
       - "&6You can use this ability every &790 seconds."
       - "&6There is a &e30% chance &6to receive"
       - "&6a special material."
+    MENU: "Resources"
   DELAYING_BLOCK:
     ITEM: "&8&lDelaying Block"
     DESC:
@@ -111,7 +112,6 @@ KITS:
       - "&8they will be inflicted with:"
       - "&7- &9Slowness"
       - "&7- &9Mining Fatigue"
-    MENU: "Resources"
   DEFENDER:
     ITEM: "&6&lGuardian Warp"
     DESC:

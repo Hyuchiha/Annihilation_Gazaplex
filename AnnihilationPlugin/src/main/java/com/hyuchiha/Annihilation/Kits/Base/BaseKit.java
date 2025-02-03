@@ -88,7 +88,7 @@ public abstract class BaseKit implements Listener {
 
     ItemStack compass = new ItemStack(Material.COMPASS);
     ItemMeta compassMeta = compass.getItemMeta();
-    compassMeta.setDisplayName(team.color() + Translator.getColoredString("GAME.COMPASS_FOCUS").replace("%TEAM%", team.coloredName() + team.toString()));
+    compassMeta.setDisplayName(team.color() + Translator.getColoredString("GAME.COMPASS_FOCUS").replace("%TEAM%", team.coloredName()));
     compass.setItemMeta(compassMeta);
     SoulboundListener.soulbind(compass);
 
