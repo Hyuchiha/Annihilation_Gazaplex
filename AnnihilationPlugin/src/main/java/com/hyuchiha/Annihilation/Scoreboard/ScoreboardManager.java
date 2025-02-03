@@ -172,7 +172,8 @@ public class ScoreboardManager {
     sbt.setPrefix(prefix);
     sbt.setSuffix("");
 
-    sbt.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OWN_TEAM);
+    //sbt.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
+    sbt.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OTHER_TEAMS);
     // Set the color for tab list names
     sbt.setColor(team.getChatColor());
   }
