@@ -76,7 +76,7 @@ public abstract class BaseKit implements Listener {
   public void giveKitItems(Player recipient) {
     GamePlayer gPlayer = PlayerManager.getGamePlayer(recipient);
     PlayerInventory inv = recipient.getInventory();
-    inv.clear();
+    //inv.clear();
 
     for (ItemStack item : spawnItems) {
       ItemStack toGive = item.clone();

@@ -7,6 +7,7 @@ import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
+import com.hyuchiha.Annihilation.Output.Output;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -25,6 +26,8 @@ import java.util.UUID;
 public class KitUtils {
 
   public static void selectKit(String className, Player player) {
+    Output.log("Player select different kit: " + className);
+
     GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
 
     Kit selectedKit = Kit.valueOf(ChatColor.stripColor(className).toUpperCase());
