@@ -18,6 +18,8 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.Dye;
 import org.inventivetalent.reflection.minecraft.Minecraft;
@@ -219,6 +221,19 @@ public class GameUtils {
     return Math.abs(ax - bx) <= distance
         && Math.abs(ay - by) <= distance
         && Math.abs(az - bz) <= distance;
+  }
+
+  public static void damageItem(ItemStack item, int damage) {
+    ItemMeta meta = item.getItemMeta();
+    if (meta instanceof Damageable) {
+      Damageable damageable = (Damageable) meta;
+
+      int currentDamage = damageable.getDamage(); // Get the current damage
+      if (currentDamage > 0) {
+        damageable.setDamage(currentDamage + 2); // Reduce damage by 1 point
+        item.setItemMeta(meta); // Apply the changes to the item
+      }
+    }
   }
 
 }

@@ -215,7 +215,7 @@ BOSSBAR:
   TIME_TO_START: "&fGame starts in &e%TIME% seconds"
   RESTARTING: "&cRestarting in &e%TIME% seconds!"
 DEATHS:
-  SLAIN_BY: "&cwas slain by"
+  SLAIN_BY: "&cwas slain by&c"
 #Boss Messages
 BOSS_BEGIN_TELEPORT: "&9Teleporting in 5 seconds. Do not move!"
 BOSS_TELEPORT_ERROR: "&cError! You are outside the boss teleport area."

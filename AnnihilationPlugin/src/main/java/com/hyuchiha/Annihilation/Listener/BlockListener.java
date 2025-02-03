@@ -78,17 +78,10 @@ public class BlockListener implements Listener {
           if (team.getNexus().isAlive() && FastBreakProtect.LastBreakTimeIsCorrect(event.getPlayer())) {
             ItemStack itemInHand = event.getPlayer().getItemInUse();
 
-            ItemMeta meta = itemInHand.getItemMeta();
-            if (meta instanceof Damageable) {
-              Damageable damageable = (Damageable) meta;
+            if (itemInHand != null) {
+              GameUtils.damageItem(itemInHand, 2);
 
-              int currentDamage = damageable.getDamage(); // Get the current damage
-              if (currentDamage > 0) {
-                damageable.setDamage(currentDamage + 10); // Reduce damage by 1 point
-                itemInHand.setItemMeta(meta); // Apply the changes to the item
-
-                event.getPlayer().updateInventory(); // Update the inventory to reflect changes
-              }
+              event.getPlayer().updateInventory(); // Update the inventory to reflect changes
             }
 
             Bukkit.getServer().getPluginManager().callEvent(
