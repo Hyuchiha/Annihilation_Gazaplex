@@ -145,33 +145,28 @@ public class PlayerManager {
       return 0;
     }
 
+    double moneyToGive = money;
+
     if (GameUtils.isVip(player)) {
       if (PermissionUtils.hasPermission(player, "annihilation.vip.diamond")) {
-//        player.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
-//            .replace("%MONEY%", Double.toString(money * 5.0D)));
-
-        return money * 5.0D;
+        moneyToGive = money * 5.0D;
       }
+
       if (PermissionUtils.hasPermission(player, "annihilation.vip.gold")) {
-//        player.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
-//            .replace("%MONEY%", Double.toString(money * 3.0D)));
-
-        return money * 3.0D;
+        moneyToGive = money * 3.0D;
       }
+
       if (PermissionUtils.hasPermission(player, "annihilation.vip.iron")) {
-//        player.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
-//            .replace("%MONEY%", Double.toString(money * 2.0D)));
-
-        return money * 2.0D;
+        moneyToGive = money * 2.0D;
       }
-    } else {
-//      player.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
-//          .replace("%MONEY%", Double.toString(money)));
-
-      return money;
     }
 
-    return 0;
+    if (Main.getInstance().getConfig("config.yml").getBoolean("showMoneyEarn")) {
+      player.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
+              .replace("%MONEY%", Double.toString(moneyToGive)));
+    }
+
+    return moneyToGive;
   }
 
   public static void addMoney(Player p, double money) {

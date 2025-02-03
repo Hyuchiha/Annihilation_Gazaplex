@@ -81,6 +81,9 @@ motd: '&cPhase: &5%PHASE%'
 motd-lobby: '&5Lobby'
 motd-start: '&6Phase: &2%PHASE%'
 
+# Show message when a player earns money
+showMoneyEarn: false
+
 #
 #Economy setup
 Exp-player-kill: 20
