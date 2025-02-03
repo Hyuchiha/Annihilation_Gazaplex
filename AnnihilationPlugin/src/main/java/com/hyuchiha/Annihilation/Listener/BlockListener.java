@@ -56,13 +56,11 @@ public class BlockListener implements Listener {
     Block b = e.getBlock();
     if (GameUtils.hasSignAttached(b) &&
         GameUtils.isShopSignAttached(b)) {
-      Output.log("Sign or shop");
       e.setCancelled(true);
     }
 
 
     if (LocationUtils.isEmptyColumn(e.getBlock().getLocation()) && e.getPlayer().getGameMode() != GameMode.CREATIVE) {
-      Output.log("Empty column");
       e.setCancelled(true);
     }
   }
@@ -72,7 +70,6 @@ public class BlockListener implements Listener {
     if (GameManager.getCurrentGame().isInGame() && GameManager.getCurrentGame().getPhase() > 0) {
       for (GameTeam team : GameTeam.teams()) {
         if (team.getNexus().getLocation().equals(event.getBlock().getLocation())) {
-          Output.log("Nexus Break");
           event.setCancelled(true);
 
           if (team.getNexus().isAlive() && FastBreakProtect.LastBreakTimeIsCorrect(event.getPlayer())) {
@@ -112,7 +109,6 @@ public class BlockListener implements Listener {
     GamePlayer meta = PlayerManager.getGamePlayer(player);
     for (Block bo : GameManager.getCurrentGame().getCrafting().values()) {
       if (LocationUtils.isSameBlock(b, bo) && GameUtils.isBlockTeam(meta.getTeam())) {
-        Output.log("Crafting Break");
         e.setCancelled(true);
       }
     }

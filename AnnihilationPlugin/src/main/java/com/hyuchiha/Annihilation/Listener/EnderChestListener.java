@@ -49,7 +49,6 @@ public class EnderChestListener implements Listener {
   @EventHandler
   public void onEnderChestBreak(BlockBreakEvent e) {
     if (EnderChestManager.isEnderChestBlock(e.getBlock().getLocation())) {
-      Output.log("Chest breack");
       e.setCancelled(true);
     }
   }

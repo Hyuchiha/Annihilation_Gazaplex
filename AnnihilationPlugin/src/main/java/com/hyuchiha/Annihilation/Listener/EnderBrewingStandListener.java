@@ -60,7 +60,6 @@ public class EnderBrewingStandListener implements Listener {
   @EventHandler
   public void onBrewingBreak(BlockBreakEvent e) {
     if (EnderBrewingManager.isBrewingLocation(e.getBlock().getLocation())){
-      Output.log("Brewing break");
       e.setCancelled(true);
     }
   }

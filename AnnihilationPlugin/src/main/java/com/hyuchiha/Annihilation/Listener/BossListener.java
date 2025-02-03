@@ -78,7 +78,6 @@ public class BossListener implements Listener {
 
       if (bossWorld != null && Objects.equals(event.getBlock().getWorld().getName(), bossWorld.getName())) {
         if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
-          Output.log("Boss Map Break");
           event.setCancelled(true);
         }
       }

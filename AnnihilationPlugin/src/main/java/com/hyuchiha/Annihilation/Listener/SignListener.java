@@ -69,7 +69,6 @@ public class SignListener implements Listener {
 
       if (s.getLine(0).contains(ChatColor.DARK_PURPLE + "[" +
           Translator.getColoredString("COMMONS.TEAM") + ChatColor.DARK_PURPLE + "]"))
-        Output.log("Sign break");
         event.setCancelled(true);
     }
   }

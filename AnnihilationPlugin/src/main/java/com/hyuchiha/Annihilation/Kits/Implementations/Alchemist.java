@@ -220,8 +220,6 @@ public class Alchemist extends BaseKit {
         } else {
           // No it was from your team, no shame
           e.setCancelled(true);
-
-          Output.log("Alchemist");
         }
       }
     }

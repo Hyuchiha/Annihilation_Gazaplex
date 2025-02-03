@@ -46,7 +46,6 @@ public class EnderFurnaceListener implements Listener {
   @EventHandler
   public void onFurnaceBreak(BlockBreakEvent e) {
     if (EnderFurnaceManager.isFurnaceLocation(e.getBlock().getLocation())) {
-      Output.log("Furnace break");
       e.setCancelled(true);
     }
   }

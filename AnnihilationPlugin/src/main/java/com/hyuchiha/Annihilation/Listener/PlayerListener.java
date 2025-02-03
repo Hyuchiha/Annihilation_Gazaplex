@@ -133,7 +133,6 @@ public class PlayerListener implements Listener {
   @EventHandler
   public void LobbyBlockBreak(BlockBreakEvent e) {
     if (e.getPlayer().getGameMode() != GameMode.CREATIVE && e.getPlayer().getWorld().getName().equalsIgnoreCase("lobby")) {
-      Output.log("Lobby Block Break");
       e.setCancelled(true);
     }
   }

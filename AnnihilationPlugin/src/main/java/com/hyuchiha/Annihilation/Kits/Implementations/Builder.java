@@ -205,25 +205,20 @@ public class Builder extends BaseKit {
         // Check if the block destroyed is near to a player block
         if (GameUtils.blockNearBlock(block, playerBlock, 5)) {
           blockFound = playerBlock;
-          Output.log("Block found");
           break;
         }
       }
 
       // After iterate if the variable has some value we check other things
       if (blockFound != null) {
-        Output.log("Checking who break it");
-
         // Check if the breaker and the block owner are from same team
         if (gpBlock.getTeam() == gPlayer.getTeam()) {
 
           if (LocationUtils.isSameBlock(blockFound, block)) {
             // if the breaker is different from the owner of the block, the event is cancelled
             if (player.getUniqueId() != uuid) {
-              Output.log("Another user broke the block");
               event.setCancelled(true);
             } else {
-              Output.log("Cancelled");
               event.setCancelled(true);
               block.setType(Material.AIR);
 

@@ -239,7 +239,6 @@ public class Transporter extends BaseKit {
     Player player = event.getPlayer();
     Block block = event.getBlock();
     if (block.getType() == XMaterial.NETHER_QUARTZ_ORE.get()) {
-      Output.log("Transporter Quarts");
       event.setCancelled(true);
       GamePlayer eventPlayer = PlayerManager.getGamePlayer(player);
 

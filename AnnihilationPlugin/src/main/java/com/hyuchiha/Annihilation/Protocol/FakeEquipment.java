@@ -128,7 +128,6 @@ public abstract class FakeEquipment {
      * @return The equipment slot.
      */
     public static EquipmentSlot fromId(int id) {
-      Output.log("ItemSlot: " + id);
       for (EquipmentSlot slot : values()) {
         if (slot.getId() == id) {
           return slot;

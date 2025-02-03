@@ -255,7 +255,6 @@ public class BossManager {
       return item;
     } catch (Exception e) {
       e.printStackTrace();
-      Output.log("Item: " + itemName);
       Output.logError(e.getLocalizedMessage());
     }
     return null;
