@@ -8,6 +8,7 @@ import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
+import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
 import com.hyuchiha.Annihilation.Utils.LocationUtils;
 import com.hyuchiha.Annihilation.Utils.PermissionUtils;
@@ -55,11 +56,13 @@ public class BlockListener implements Listener {
     Block b = e.getBlock();
     if (GameUtils.hasSignAttached(b) &&
         GameUtils.isShopSignAttached(b)) {
+      Output.log("Sign or shop");
       e.setCancelled(true);
     }
 
 
     if (LocationUtils.isEmptyColumn(e.getBlock().getLocation()) && e.getPlayer().getGameMode() != GameMode.CREATIVE) {
+      Output.log("Empty column");
       e.setCancelled(true);
     }
   }
@@ -69,6 +72,7 @@ public class BlockListener implements Listener {
     if (GameManager.getCurrentGame().isInGame() && GameManager.getCurrentGame().getPhase() > 0) {
       for (GameTeam team : GameTeam.teams()) {
         if (team.getNexus().getLocation().equals(event.getBlock().getLocation())) {
+          Output.log("Nexus Break");
           event.setCancelled(true);
 
           if (team.getNexus().isAlive() && FastBreakProtect.LastBreakTimeIsCorrect(event.getPlayer())) {
@@ -94,9 +98,9 @@ public class BlockListener implements Listener {
         );
 
         event.setCancelled(true);
-      } else if (!PermissionUtils.hasPermission(event.getPlayer(), "annihilation.bypass.construction")) {
-        event.setCancelled(true);
       }
+    } else if (!PermissionUtils.hasPermission(event.getPlayer(), "annihilation.bypass.construction")) {
+      event.setCancelled(true);
     }
   }
 
@@ -108,6 +112,7 @@ public class BlockListener implements Listener {
     GamePlayer meta = PlayerManager.getGamePlayer(player);
     for (Block bo : GameManager.getCurrentGame().getCrafting().values()) {
       if (LocationUtils.isSameBlock(b, bo) && GameUtils.isBlockTeam(meta.getTeam())) {
+        Output.log("Crafting Break");
         e.setCancelled(true);
       }
     }

@@ -6,6 +6,7 @@ import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
+import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.KitUtils;
 import com.hyuchiha.Annihilation.Utils.TimersUtils;
 import org.bukkit.Bukkit;
@@ -219,6 +220,8 @@ public class Alchemist extends BaseKit {
         } else {
           // No it was from your team, no shame
           e.setCancelled(true);
+
+          Output.log("Alchemist");
         }
       }
     }

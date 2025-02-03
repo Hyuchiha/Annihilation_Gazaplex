@@ -4,6 +4,7 @@ import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Manager.EnderFurnaceManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
+import com.hyuchiha.Annihilation.Output.Output;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -44,7 +45,9 @@ public class EnderFurnaceListener implements Listener {
 
   @EventHandler
   public void onFurnaceBreak(BlockBreakEvent e) {
-    if (EnderFurnaceManager.isFurnaceLocation(e.getBlock().getLocation()))
+    if (EnderFurnaceManager.isFurnaceLocation(e.getBlock().getLocation())) {
+      Output.log("Furnace break");
       e.setCancelled(true);
+    }
   }
 }

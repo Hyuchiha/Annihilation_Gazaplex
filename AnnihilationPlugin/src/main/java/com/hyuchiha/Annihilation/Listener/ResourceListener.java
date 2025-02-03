@@ -7,6 +7,7 @@ import com.hyuchiha.Annihilation.Game.Resource;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Manager.ResourceManager;
+import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
 import org.bukkit.Effect;
 import org.bukkit.GameMode;
@@ -44,6 +45,7 @@ public class ResourceListener implements Listener {
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
   public void onResourceBreak(BlockBreakEvent e) {
     if (e.getPlayer().getWorld().getName().equalsIgnoreCase("lobby") && e.getPlayer().getGameMode() != GameMode.CREATIVE) {
+      Output.log("Resource break lobby");
       e.setCancelled(true);
 
       return;
@@ -64,16 +66,19 @@ public class ResourceListener implements Listener {
         && e.getBlock().getType() != XMaterial.STRIPPED_JUNGLE_LOG.get()
         && e.getBlock().getType() != XMaterial.STRIPPED_OAK_LOG.get()
         && e.getBlock().getType() != XMaterial.STRIPPED_SPRUCE_LOG.get()) {
+      Output.log("Resource close, log");
       e.setCancelled(true);
 
       return;
     }
 
     if (ResourceManager.containsResource(e.getBlock().getType())) {
+      Output.log("Is resource break");
       e.setCancelled(true);
       breakResource(e.getPlayer(), e.getBlock());
       e.getBlock().getWorld().playEffect(e.getBlock().getLocation(), Effect.STEP_SOUND, e.getBlock().getType(), 10);
     } else if (this.queue.contains(e.getBlock().getLocation())) {
+      Output.log("Queue break block");
       e.setCancelled(true);
     }
   }

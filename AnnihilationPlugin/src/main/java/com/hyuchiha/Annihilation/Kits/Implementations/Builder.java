@@ -223,6 +223,7 @@ public class Builder extends BaseKit {
               Output.log("Another user broke the block");
               event.setCancelled(true);
             } else {
+              Output.log("Cancelled");
               event.setCancelled(true);
               block.setType(Material.AIR);
 

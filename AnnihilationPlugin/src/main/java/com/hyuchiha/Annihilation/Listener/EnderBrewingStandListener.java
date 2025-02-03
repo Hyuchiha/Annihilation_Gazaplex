@@ -4,6 +4,7 @@ import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Manager.EnderBrewingManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
+import com.hyuchiha.Annihilation.Output.Output;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -58,7 +59,9 @@ public class EnderBrewingStandListener implements Listener {
 
   @EventHandler
   public void onBrewingBreak(BlockBreakEvent e) {
-    if (EnderBrewingManager.isBrewingLocation(e.getBlock().getLocation()))
+    if (EnderBrewingManager.isBrewingLocation(e.getBlock().getLocation())){
+      Output.log("Brewing break");
       e.setCancelled(true);
+    }
   }
 }

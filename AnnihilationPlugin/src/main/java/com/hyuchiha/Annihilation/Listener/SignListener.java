@@ -44,7 +44,7 @@ public class SignListener implements Listener {
         Sign s = (Sign) event.getClickedBlock().getState();
 
         if (s.getLine(0).contains(ChatColor.DARK_PURPLE + "[" +
-            Translator.getString("COMMONS.TEAM") + ChatColor.DARK_PURPLE + "]")) {
+            Translator.getColoredString("COMMONS.TEAM") + ChatColor.DARK_PURPLE + "]")) {
 
           String teamName = ChatColor.stripColor(s.getLine(1));
           GameTeam team = GameTeam.getTeamByTranslatedName(teamName);
@@ -53,7 +53,7 @@ public class SignListener implements Listener {
             GameManager.getCurrentGame().joinTeam(event.getPlayer(), team.name());
           } else {
             Output.log("The sign exist but the team no");
-            player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("ERRORS.CANNOT_JOIN_TEAM"));
+            player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getColoredString("ERRORS.CANNOT_JOIN_TEAM"));
           }
         }
       }
@@ -68,7 +68,8 @@ public class SignListener implements Listener {
       Sign s = (Sign) event.getBlock().getState();
 
       if (s.getLine(0).contains(ChatColor.DARK_PURPLE + "[" +
-          Translator.getString("COMMONS.TEAM") + ChatColor.DARK_PURPLE + "]"))
+          Translator.getColoredString("COMMONS.TEAM") + ChatColor.DARK_PURPLE + "]"))
+        Output.log("Sign break");
         event.setCancelled(true);
     }
   }

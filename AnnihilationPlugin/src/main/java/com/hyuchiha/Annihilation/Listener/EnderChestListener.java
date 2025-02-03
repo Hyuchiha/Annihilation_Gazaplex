@@ -4,6 +4,7 @@ import com.cryptomorin.xseries.XMaterial;
 import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Manager.EnderChestManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
+import com.hyuchiha.Annihilation.Output.Output;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -48,6 +49,7 @@ public class EnderChestListener implements Listener {
   @EventHandler
   public void onEnderChestBreak(BlockBreakEvent e) {
     if (EnderChestManager.isEnderChestBlock(e.getBlock().getLocation())) {
+      Output.log("Chest breack");
       e.setCancelled(true);
     }
   }

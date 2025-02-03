@@ -30,14 +30,14 @@ public class TopCommand implements CommandExecutor {
         if (stat != null) {
           listTopStat((Player) sender, stat);
         } else {
-          sender.sendMessage(ChatColor.RED + Translator.getString("ERRORS.STAT_NOT_FOUND"));
+          sender.sendMessage(ChatColor.RED + Translator.getColoredString("ERRORS.STAT_NOT_FOUND"));
         }
       } else {
 
         sender.sendMessage(Translator.getPrefix() + " /top [KILLS, DEATHS, WINS, LOSSES, NEXUS_DAMAGE]");
       }
     } else {
-      sender.sendMessage(ChatColor.RED + Translator.getString("ERRORS.CONSOLE_PLAYER_COMMAND"));
+      sender.sendMessage(ChatColor.RED + Translator.getColoredString("ERRORS.CONSOLE_PLAYER_COMMAND"));
       return true;
     }
 

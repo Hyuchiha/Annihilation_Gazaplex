@@ -12,6 +12,7 @@ import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Object.Loc;
 import com.hyuchiha.Annihilation.Object.Teleporter;
+import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
 import com.hyuchiha.Annihilation.Utils.KitUtils;
 import org.bukkit.*;
@@ -238,6 +239,7 @@ public class Transporter extends BaseKit {
     Player player = event.getPlayer();
     Block block = event.getBlock();
     if (block.getType() == XMaterial.NETHER_QUARTZ_ORE.get()) {
+      Output.log("Transporter Quarts");
       event.setCancelled(true);
       GamePlayer eventPlayer = PlayerManager.getGamePlayer(player);
 

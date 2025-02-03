@@ -65,10 +65,10 @@ public class SignManager {
 
       if (GameUtils.isWallSign(b)) {
         Sign s = (Sign) b.getState();
-        s.setLine(0, ChatColor.DARK_PURPLE + "[" + Translator.getString("COMMONS.TEAM") + ChatColor.DARK_PURPLE + "]");
+        s.setLine(0, ChatColor.DARK_PURPLE + "[" + Translator.getColoredString("COMMONS.TEAM") + ChatColor.DARK_PURPLE + "]");
         s.setLine(1, t.coloredName());
         s.setLine(2, ChatColor.UNDERLINE.toString() + t.getPlayers().size() + (
-            (t.getPlayers().size() == 1) ? (" " + Translator.getString("COMMONS.PLAYER")) : (" " + Translator.getString("COMMONS.PLAYER") + "s")));
+            (t.getPlayers().size() == 1) ? (" " + Translator.getColoredString("COMMONS.PLAYER")) : (" " + Translator.getColoredString("COMMONS.PLAYER") + "s")));
 
         if (t.getNexus() != null && GameManager.getCurrentGame().getPhase() > 0) {
           s.setLine(3, ChatColor.BOLD.toString() + Translator.getColoredString("INFO.NEXUS_HEALTH").replace("%HEALTH%", Integer.toString(t.getNexus().getHealth())));

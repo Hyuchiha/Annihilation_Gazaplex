@@ -25,19 +25,19 @@ public enum GameTeam {
     switch (name()) {
       case "RED":
         this.color = ChatColor.RED;
-        this.name = Translator.getString("TEAMS." + name().toUpperCase());
+        this.name = Translator.getColoredString("TEAMS." + name().toUpperCase());
         break;
       case "YELLOW":
         this.color = ChatColor.YELLOW;
-        this.name = Translator.getString("TEAMS." + name().toUpperCase());
+        this.name = Translator.getColoredString("TEAMS." + name().toUpperCase());
         break;
       case "GREEN":
         this.color = ChatColor.GREEN;
-        this.name = Translator.getString("TEAMS." + name().toUpperCase());
+        this.name = Translator.getColoredString("TEAMS." + name().toUpperCase());
         break;
       case "BLUE":
         this.color = ChatColor.BLUE;
-        this.name = Translator.getString("TEAMS." + name().toUpperCase());
+        this.name = Translator.getColoredString("TEAMS." + name().toUpperCase());
         break;
       default:
         this.color = ChatColor.LIGHT_PURPLE;

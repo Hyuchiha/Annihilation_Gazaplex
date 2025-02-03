@@ -83,7 +83,7 @@ public class InventoryListener implements Listener {
         String name = ChatColor.stripColor(clickedItem.getItemMeta().getDisplayName());
 
         if (GameManager.getCurrentGame() != null && GameManager.getCurrentGame().isInGame()) {
-          player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("ERRORS.CANNOT_JOIN_TEAM"));
+          player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getColoredString("ERRORS.CANNOT_JOIN_TEAM"));
 
           return;
         }
@@ -95,7 +95,7 @@ public class InventoryListener implements Listener {
             GameManager.getCurrentGame().joinTeam(player, team.name());
           }
         } else {
-          player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("ERRORS.CANNOT_JOIN_TEAM"));
+          player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getColoredString("ERRORS.CANNOT_JOIN_TEAM"));
         }
       }
     }

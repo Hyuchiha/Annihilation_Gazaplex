@@ -48,7 +48,7 @@ public class VotingManager {
 
 
     voter.sendMessage(Translator.getPrefix() + ChatColor.YELLOW + vote + ChatColor.RED +
-        Translator.getString("GAME.MAP_INVALID").replace("%MAP%", vote));
+        Translator.getColoredString("GAME.MAP_INVALID").replace("%MAP%", vote));
     return false;
   }
 
@@ -56,7 +56,7 @@ public class VotingManager {
     for (String map : maps.values()) {
       if (vote.equalsIgnoreCase(map)) {
         votes.put(voter.getName(), map);
-        voter.sendMessage(Translator.getPrefix() + Translator.getString("GAME.VOTE_MAP").replace("%MAP%", map));
+        voter.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.VOTE_MAP").replace("%MAP%", map));
 
         ScoreboardManager.updateLobbyScoreboard();
 

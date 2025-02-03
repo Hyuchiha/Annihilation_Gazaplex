@@ -13,7 +13,7 @@ public class TeamUtils {
       int size = t.getPlayers().size();
 
       player.sendMessage(t.coloredName() + " - " + size + " " +
-          Translator.getString("COMMONS.PLAYER") + ((size > 1) ? "" : "s"));
+          Translator.getColoredString("COMMONS.PLAYER") + ((size > 1) ? "" : "s"));
     }
     player.sendMessage(Translator.getColoredString("COMMANDS.TEAMS_ENDLINE"));
   }

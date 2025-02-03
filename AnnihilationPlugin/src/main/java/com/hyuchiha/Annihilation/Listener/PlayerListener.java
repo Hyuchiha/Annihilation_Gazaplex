@@ -11,6 +11,7 @@ import com.hyuchiha.Annihilation.Manager.MapManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Manager.VotingManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
+import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Protocol.PacketManager;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
 import com.hyuchiha.Annihilation.Utils.MenuUtils;
@@ -132,6 +133,7 @@ public class PlayerListener implements Listener {
   @EventHandler
   public void LobbyBlockBreak(BlockBreakEvent e) {
     if (e.getPlayer().getGameMode() != GameMode.CREATIVE && e.getPlayer().getWorld().getName().equalsIgnoreCase("lobby")) {
+      Output.log("Lobby Block Break");
       e.setCancelled(true);
     }
   }
@@ -176,7 +178,7 @@ public class PlayerListener implements Listener {
                 MenuUtils.showMapSelector(player);
                 break;
               }
-              player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("ERRORS.NOT_VOTE_PHASE"));
+              player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getColoredString("ERRORS.NOT_VOTE_PHASE"));
             }
             break;
 

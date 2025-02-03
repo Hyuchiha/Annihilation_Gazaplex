@@ -206,18 +206,18 @@ public class Game {
     GamePlayer gamePlayer = PlayerManager.getGamePlayer(player);
 
     if (gamePlayer.getTeam() != GameTeam.NONE && !PermissionUtils.hasPermission(player, "annihilation.bypass.switch_team")) {
-      player.sendMessage(Translator.getPrefix() + ChatColor.GRAY + Translator.getString("ERROR.PLAYER_NOSWITCHTEAM"));
+      player.sendMessage(Translator.getPrefix() + ChatColor.GRAY + Translator.getColoredString("ERROR.PLAYER_NOSWITCHTEAM"));
     } else {
       GameTeam toJoin = (GameTeam) Enums.getIfPresent(GameTeam.class, team.toUpperCase()).orNull();
 
       if (toJoin == null) {
-        player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("ERRORS.GAME_INVALIDTEAM"));
+        player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getColoredString("ERRORS.GAME_INVALIDTEAM"));
         TeamUtils.listTeams(player);
 
         return;
       }
       if (TeamUtils.getTeamAllowEnter(toJoin) && !PermissionUtils.hasPermission(player, "annihilation.bypass.team_limit")) {
-        player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getString("ERRORS.GAME_TEAMFULL"));
+        player.sendMessage(Translator.getPrefix() + ChatColor.RED + Translator.getColoredString("ERRORS.GAME_TEAMFULL"));
 
         return;
       }

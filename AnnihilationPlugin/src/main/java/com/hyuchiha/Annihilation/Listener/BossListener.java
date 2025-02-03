@@ -8,6 +8,7 @@ import com.hyuchiha.Annihilation.Manager.BossManager;
 import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
+import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.FireworkUtils;
 import com.hyuchiha.Annihilation.Utils.ItemSelectorUtils;
 import org.bukkit.*;
@@ -77,6 +78,7 @@ public class BossListener implements Listener {
 
       if (bossWorld != null && Objects.equals(event.getBlock().getWorld().getName(), bossWorld.getName())) {
         if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
+          Output.log("Boss Map Break");
           event.setCancelled(true);
         }
       }

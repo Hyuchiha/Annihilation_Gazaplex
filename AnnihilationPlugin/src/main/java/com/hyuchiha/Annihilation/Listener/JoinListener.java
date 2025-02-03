@@ -120,7 +120,7 @@ public class JoinListener implements Listener {
         return;
       }
 
-      event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Translator.getPrefix() + ChatColor.RED + Translator.getString("ERRORS.GAME_STARTED"));
+      event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Translator.getPrefix() + ChatColor.RED + Translator.getColoredString("ERRORS.GAME_STARTED"));
     }
   }
 

@@ -53,7 +53,7 @@ public class AnnihilationCommand implements CommandExecutor {
               sender.sendMessage(prefix + green + Translator.getColoredString("INFO.GAME_START"));
             }
           } else {
-            sender.sendMessage(prefix + red + Translator.getString("ERRORS.COMMAND_NOT_PERMITTED"));
+            sender.sendMessage(prefix + red + Translator.getColoredString("ERRORS.COMMAND_NOT_PERMITTED"));
           }
           break;
         case "stop":
@@ -66,7 +66,7 @@ public class AnnihilationCommand implements CommandExecutor {
               sender.sendMessage(prefix + green + Translator.getColoredString("ERRORS.NO_GAME_FOUND"));
             }
           } else {
-            sender.sendMessage(prefix + red + Translator.getString("ERRORS.COMMAND_NOT_PERMITTED"));
+            sender.sendMessage(prefix + red + Translator.getColoredString("ERRORS.COMMAND_NOT_PERMITTED"));
           }
           break;
       }
