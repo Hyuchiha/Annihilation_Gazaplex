@@ -8,6 +8,7 @@ import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
+import com.hyuchiha.Annihilation.Output.Output;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -228,11 +229,10 @@ public class GameUtils {
     if (meta instanceof Damageable) {
       Damageable damageable = (Damageable) meta;
 
-      int currentDamage = damageable.getDamage(); // Get the current damage
-      if (currentDamage > 0) {
-        damageable.setDamage(currentDamage + 2); // Reduce damage by 1 point
-        item.setItemMeta(meta); // Apply the changes to the item
-      }
+      int nextDamage = damageable.getDamage() + damage;
+      int maxDuration = item.getType().getMaxDurability();
+      damageable.setDamage(Math.min(nextDamage, maxDuration)); // Reduce damage by 1 point
+      item.setItemMeta(meta); // Apply the changes to the item
     }
   }
 

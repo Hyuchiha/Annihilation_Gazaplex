@@ -42,11 +42,6 @@ public class BlockListener implements Listener {
               PermissionUtils.hasPermission(e.getPlayer(), "annihilation.bypass.construction")) {
         e.setCancelled(true);
         e.getPlayer().sendMessage(Translator.getColoredString("ERRORS.TOO_CLOSE_NEXUS"));
-
-        return;
-      }
-      if (e.getBlock().getType() == Material.COBBLESTONE || e.getBlock().getType() == Material.CLAY) {
-        e.setCancelled(true);
       }
     } else if (!PermissionUtils.hasPermission(e.getPlayer(), "annihilation.bypass.construction")) {
       e.setCancelled(true);

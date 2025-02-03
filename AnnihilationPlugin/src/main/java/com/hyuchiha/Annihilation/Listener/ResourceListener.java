@@ -67,10 +67,12 @@ public class ResourceListener implements Listener {
         && e.getBlock().getType() != XMaterial.STRIPPED_SPRUCE_LOG.get()) {
       e.setCancelled(true);
 
-      ItemStack itemInHand = e.getPlayer().getItemInUse();
+      ItemStack itemInHand = e.getPlayer().getInventory().getItemInMainHand();
+
+      Output.log("Item in hand: " + itemInHand);
 
       if (itemInHand != null) {
-        GameUtils.damageItem(itemInHand, 2);
+        GameUtils.damageItem(itemInHand, 4);
 
         e.getPlayer().updateInventory(); // Update the inventory to reflect changes
       }
@@ -83,10 +85,10 @@ public class ResourceListener implements Listener {
       breakResource(e.getPlayer(), e.getBlock());
       e.getBlock().getWorld().playEffect(e.getBlock().getLocation(), Effect.STEP_SOUND, e.getBlock().getType(), 10);
 
-      ItemStack itemInHand = e.getPlayer().getItemInUse();
+      ItemStack itemInHand = e.getPlayer().getInventory().getItemInMainHand();
 
       if (itemInHand != null) {
-        GameUtils.damageItem(itemInHand, 2);
+        GameUtils.damageItem(itemInHand, 4);
 
         e.getPlayer().updateInventory(); // Update the inventory to reflect changes
       }
