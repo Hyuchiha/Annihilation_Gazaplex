@@ -103,7 +103,7 @@ public class Builder extends BaseKit {
     List<Block> playerBlocks = delayBlocks.get(recipient.getUniqueId());
     if (playerBlocks != null) {
       for (Block block : playerBlocks) {
-        block.setType(Material.STONE);
+        block.setType(Material.AIR);
       }
 
       delayBlocks.remove(recipient.getUniqueId());
@@ -192,49 +192,46 @@ public class Builder extends BaseKit {
 
     // Get all players with builder class
     for (UUID uuid : delayBlocks.keySet()) {
+      // Get the list of block from player
+      List<Block> blocks = delayBlocks.get(uuid);
+
       Player blockPlayer = Bukkit.getPlayer(uuid);
       GamePlayer gpBlock = PlayerManager.getGamePlayer(blockPlayer);
 
-      // Here store a delaying block if near to one
-      Block blockFound = null;
-
-      // Get the list of block from player
-      List<Block> blocks = delayBlocks.get(uuid);
       // Iterate over the player blocks
-      for (Block playerBlock : blocks) {
-        // Check if the block destroyed is near to a player block
-        if (GameUtils.blockNearBlock(block, playerBlock, 5)) {
-          blockFound = playerBlock;
-          break;
-        }
+      Block blockFound = blocks.stream()
+              .filter(playerBlock -> GameUtils.blockNearBlock(block, playerBlock, 5))
+              .findFirst()
+              .orElse(null);
+
+      if (blockFound == null) {
+        continue;
       }
 
-      // After iterate if the variable has some value we check other things
-      if (blockFound != null) {
-        // Check if the breaker and the block owner are from same team
-        if (gpBlock.getTeam() == gPlayer.getTeam()) {
+      boolean isSeaLantern = block.getType() == Material.SEA_LANTERN;
 
-          if (LocationUtils.isSameBlock(blockFound, block)) {
-            // if the breaker is different from the owner of the block, the event is cancelled
-            if (player.getUniqueId() != uuid) {
-              event.setCancelled(true);
-            } else {
-              event.setCancelled(true);
-              block.setType(Material.AIR);
+      if (gpBlock.getTeam() == gPlayer.getTeam()) {
+        if (player.getUniqueId().equals(uuid)) {
 
-              blocks.remove(blockFound);
-            }
+          if (isSeaLantern && LocationUtils.isSameBlock(blockFound, block)) {
+            event.setCancelled(true);
+            block.setType(Material.AIR);
 
+            blocks.remove(blockFound);
           }
-
-        } else {
-          // if is from other team, we play the delaying block effect
-          playDelayingBlockEffect(player);
+        } else if (isSeaLantern && LocationUtils.isSameBlock(blockFound, block)) {
+          event.setCancelled(true);
         }
+      } else {
+        // Si lo rompe alguien del equipo enemigo
+        playDelayingBlockEffect(player);
 
-        break;
+        if (isSeaLantern && LocationUtils.isSameBlock(blockFound, block)) {
+          blocks.remove(blockFound);
+        }
       }
 
+      break;
     }
 
   }
