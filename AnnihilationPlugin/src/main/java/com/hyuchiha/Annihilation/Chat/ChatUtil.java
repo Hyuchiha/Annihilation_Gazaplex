@@ -177,7 +177,7 @@ public class ChatUtil {
       message = arr[0];
     }
 
-    return message.replace("was slain by", Translator.getColoredString("DEATHS.SLAIN_BY"));
+    return message.replace("was slain by", Translator.getColoredString("DEATHS.SLAIN_BY") + ChatColor.LIGHT_PURPLE);
   }
 
 
