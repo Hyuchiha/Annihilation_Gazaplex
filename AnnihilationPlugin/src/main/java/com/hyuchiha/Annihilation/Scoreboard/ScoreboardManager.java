@@ -4,6 +4,7 @@ import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.VotingManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
+import com.hyuchiha.Annihilation.Utils.BaseUtils;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -50,8 +51,9 @@ public class ScoreboardManager {
   public static void resetTeams() {
     teams.clear();
 
-    teamObjective = scoreboardBase.registerNewObjective("teams", "dummy");
-    teamObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
+    // Commented, this should remove the 0 teams above players head
+    //teamObjective = scoreboardBase.registerNewObjective("teams", "dummy");
+    //teamObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
 
     for (GameTeam team : GameTeam.teams()) {
       setTeam(team);
@@ -175,7 +177,7 @@ public class ScoreboardManager {
     //sbt.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
     sbt.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OTHER_TEAMS);
     // Set the color for tab list names
-    sbt.setColor(team.getChatColor());
+    BaseUtils.safeSetTeamColor(sbt, team.getChatColor());
   }
 
 

@@ -1,5 +1,6 @@
 package com.hyuchiha.Annihilation.Kits.Implementations;
 
+import com.cryptomorin.xseries.XAttribute;
 import com.cryptomorin.xseries.XMaterial;
 import com.hyuchiha.Annihilation.Arena.Nexus;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
@@ -141,7 +142,7 @@ public class Defender extends BaseKit {
       int health = nexus.getHealth();
       double additionalHealth = Math.ceil((75 - health) / 10.0);
 
-      AttributeInstance attribute = player.getAttribute(Attribute.MAX_HEALTH);
+      AttributeInstance attribute = player.getAttribute(XAttribute.MAX_HEALTH.get());
       attribute.setBaseValue(20 + additionalHealth);
 
       player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 3, 1));

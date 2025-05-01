@@ -1,5 +1,6 @@
 package com.hyuchiha.Annihilation.Kits.Implementations;
 
+import com.cryptomorin.xseries.XAttribute;
 import com.cryptomorin.xseries.XMaterial;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.Kit;
@@ -148,7 +149,7 @@ public class Bloodmage extends BaseKit {
     List<Integer> delays = delaysHearts.get(targetId);
 
     if (delays.size() < 2) {
-      AttributeInstance attribute = target.getAttribute(Attribute.MAX_HEALTH);
+      AttributeInstance attribute = target.getAttribute(XAttribute.MAX_HEALTH.get());
       double newHealth = Math.max(2.0, target.getHealth() - 2.0);
 
       attribute.setBaseValue(attribute.getBaseValue() - 2.0);
@@ -175,7 +176,7 @@ public class Bloodmage extends BaseKit {
 
   private int scheduleHeartRestorer(Player target) {
     return Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> {
-      AttributeInstance attribute = target.getAttribute(Attribute.MAX_HEALTH);
+      AttributeInstance attribute = target.getAttribute(XAttribute.MAX_HEALTH.get());
 
       double maxHealth = attribute.getValue();
       double health = target.getHealth();

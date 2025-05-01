@@ -1,5 +1,6 @@
 package com.hyuchiha.Annihilation.Manager;
 
+import com.cryptomorin.xseries.XAttribute;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Mobs.MobCreator;
 import com.hyuchiha.Annihilation.Mobs.v1_10_R1.MobCreator_v1_10_R1;
@@ -97,7 +98,7 @@ public class ZombieManager {
       zombie = world.spawn(player.getLocation(), Zombie.class);
     }
 
-    AttributeInstance attribute = zombie.getAttribute(Attribute.MAX_HEALTH);
+    AttributeInstance attribute = zombie.getAttribute(XAttribute.MAX_HEALTH.get());
     attribute.setBaseValue(40);
     zombie.setBaby(false);
     zombie.setCanPickupItems(false);

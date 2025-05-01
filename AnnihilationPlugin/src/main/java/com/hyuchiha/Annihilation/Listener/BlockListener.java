@@ -71,7 +71,7 @@ public class BlockListener implements Listener {
           event.setCancelled(true);
 
           if (team.getNexus().isAlive() && FastBreakProtect.LastBreakTimeIsCorrect(event.getPlayer())) {
-            ItemStack itemInHand = event.getPlayer().getItemInUse();
+            ItemStack itemInHand = event.getPlayer().getInventory().getItemInMainHand();
 
             if (itemInHand != null) {
               GameUtils.damageItem(itemInHand, 2);

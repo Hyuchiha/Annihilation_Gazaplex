@@ -6,6 +6,7 @@ import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
+import com.hyuchiha.Annihilation.Utils.PotionUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -28,10 +29,7 @@ public class Warrior extends BaseKit {
     spawnItems.add(XMaterial.WOODEN_PICKAXE.parseItem());
     spawnItems.add(XMaterial.WOODEN_AXE.parseItem());
 
-    ItemStack potion = new ItemStack(Material.POTION, 1);
-    PotionMeta meta = (PotionMeta) potion.getItemMeta();
-    meta.setBasePotionType(XPotion.INSTANT_HEALTH.getPotionType());
-    potion.setItemMeta(meta);
+    ItemStack potion = PotionUtils.getBasePotionType(XPotion.INSTANT_HEALTH.getPotionType(), 1);
     spawnItems.add(potion);
   }
 

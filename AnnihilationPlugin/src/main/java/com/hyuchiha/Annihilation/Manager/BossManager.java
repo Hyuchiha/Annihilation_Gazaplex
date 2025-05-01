@@ -1,5 +1,6 @@
 package com.hyuchiha.Annihilation.Manager;
 
+import com.cryptomorin.xseries.XAttribute;
 import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XPotion;
 import com.cryptomorin.xseries.XSound;
@@ -315,7 +316,7 @@ public class BossManager {
 
       Output.log("Location: " + spawn.toString());
 
-      AttributeInstance attribute = witherBoss.getAttribute(Attribute.MAX_HEALTH);
+      AttributeInstance attribute = witherBoss.getAttribute(XAttribute.MAX_HEALTH.get());
       attribute.setBaseValue(boss.getHealth());
       witherBoss.setHealth(boss.getHealth());
       witherBoss.setCanPickupItems(false);

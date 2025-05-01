@@ -1,5 +1,6 @@
 package com.hyuchiha.Annihilation.Kits.Implementations;
 
+import com.cryptomorin.xseries.XAttribute;
 import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XPotion;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
@@ -7,6 +8,7 @@ import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
 import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
+import com.hyuchiha.Annihilation.Utils.PotionUtils;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -30,10 +32,7 @@ public class Berserker extends BaseKit {
     spawnItems.add(XMaterial.WOODEN_PICKAXE.parseItem());
     spawnItems.add(XMaterial.WOODEN_AXE.parseItem());
 
-    ItemStack potion = new ItemStack(Material.POTION, 1);
-    PotionMeta meta = (PotionMeta) potion.getItemMeta();
-    meta.setBasePotionType(XPotion.INSTANT_HEALTH.getPotionType());
-    potion.setItemMeta(meta);
+    ItemStack potion = PotionUtils.getBasePotionType(XPotion.INSTANT_HEALTH.getPotionType(), 1);
     spawnItems.add(potion);
   }
 
@@ -46,7 +45,7 @@ public class Berserker extends BaseKit {
   protected void giveExtraHearts(Player recipient) {
     // Finally, this is needed
 
-    AttributeInstance attribute = recipient.getAttribute(Attribute.MAX_HEALTH);
+    AttributeInstance attribute = recipient.getAttribute(XAttribute.MAX_HEALTH.get());
     attribute.setBaseValue(14.0D);
     recipient.setHealth(14.0D);
   }
@@ -78,7 +77,7 @@ public class Berserker extends BaseKit {
         double currentMaxHealth = killer.getMaxHealth();
 
         if (currentMaxHealth < 40.0D) {
-          AttributeInstance attribute = killer.getAttribute(Attribute.MAX_HEALTH);
+          AttributeInstance attribute = killer.getAttribute(XAttribute.MAX_HEALTH.get());
           attribute.setBaseValue(currentMaxHealth + 2.0D);
           killer.setHealth(currentMaxHealth + 2.0D);
         }
@@ -96,8 +95,8 @@ public class Berserker extends BaseKit {
       GamePlayer gpDamager = PlayerManager.getGamePlayer(damager);
 
       if (gpDamager.getKit() == Kit.BERSERKER) {
-        double armorEntity = entity.getAttribute(Attribute.ARMOR).getValue();
-        double armorDamager = damager.getAttribute(Attribute.ARMOR).getValue();
+        double armorEntity = entity.getAttribute(XAttribute.ARMOR.get()).getValue();
+        double armorDamager = damager.getAttribute(XAttribute.ARMOR.get()).getValue();
 
         if (armorEntity > armorDamager) {
           double extraDamage = (armorEntity - armorDamager) / 2.5;

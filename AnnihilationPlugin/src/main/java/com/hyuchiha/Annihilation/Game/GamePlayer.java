@@ -1,5 +1,6 @@
 package com.hyuchiha.Annihilation.Game;
 
+import com.cryptomorin.xseries.XAttribute;
 import com.cryptomorin.xseries.XSound;
 import com.hyuchiha.Annihilation.BossBar.BossBarAPI;
 import com.hyuchiha.Annihilation.Main;
@@ -68,7 +69,7 @@ public class GamePlayer {
   private void setupPlayerData() {
     Player player = getPlayer();
 
-    AttributeInstance attribute = player.getAttribute(Attribute.MAX_HEALTH);
+    AttributeInstance attribute = player.getAttribute(XAttribute.MAX_HEALTH.get());
     attribute.setBaseValue(20.0D);
 
     player.setHealth(20.0D);

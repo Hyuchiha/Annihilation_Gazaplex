@@ -1,5 +1,6 @@
 package com.hyuchiha.Annihilation.Manager;
 
+import com.cryptomorin.xseries.XAttribute;
 import com.hyuchiha.Annihilation.Game.GameWitch;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Output.Output;
@@ -56,7 +57,7 @@ public class WitchManager {
 
       Witch witch = (Witch) spawn.getWorld().spawnEntity(spawn, EntityType.WITCH);
 
-      AttributeInstance attribute = witch.getAttribute(Attribute.MAX_HEALTH);
+      AttributeInstance attribute = witch.getAttribute(XAttribute.MAX_HEALTH.get());
       attribute.setBaseValue(gWitch.getHealth());
       witch.setHealth(gWitch.getHealth());
       witch.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 5));

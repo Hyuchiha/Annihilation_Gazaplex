@@ -10,6 +10,7 @@ import com.hyuchiha.Annihilation.Listener.SoulboundListener;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Utils.KitUtils;
+import com.hyuchiha.Annihilation.Utils.PotionUtils;
 import com.hyuchiha.Annihilation.Utils.TimersUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -58,10 +59,7 @@ public class Archer extends BaseKit {
 
     spawnItems.add(new ItemStack(Material.ARROW, 16));
 
-    ItemStack potion = new ItemStack(Material.POTION, 1);
-    PotionMeta meta = (PotionMeta) potion.getItemMeta();
-    meta.setBasePotionType(XPotion.INSTANT_HEALTH.getPotionType());
-    potion.setItemMeta(meta);
+    ItemStack potion = PotionUtils.getBasePotionType(XPotion.INSTANT_HEALTH.getPotionType(), 1);
     spawnItems.add(potion);
 
     ItemStack book = new ItemStack(Material.BOOK, 1);

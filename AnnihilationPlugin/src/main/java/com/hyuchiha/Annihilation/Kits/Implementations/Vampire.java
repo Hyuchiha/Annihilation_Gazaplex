@@ -8,6 +8,7 @@ import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
+import com.hyuchiha.Annihilation.Utils.PotionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -49,10 +50,7 @@ public class Vampire extends BaseKit {
     spawnItems.add(XMaterial.WOODEN_PICKAXE.parseItem());
     spawnItems.add(XMaterial.STONE_SWORD.parseItem());
 
-    ItemStack potion = new ItemStack(Material.POTION, 1);
-    PotionMeta meta = (PotionMeta) potion.getItemMeta();
-    meta.setBasePotionType(XPotion.NIGHT_VISION.getPotionType());
-    potion.setItemMeta(meta);
+    ItemStack potion = PotionUtils.getBasePotionType(XPotion.NIGHT_VISION.getPotionType(), 1);
     spawnItems.add(potion);
   }
 
