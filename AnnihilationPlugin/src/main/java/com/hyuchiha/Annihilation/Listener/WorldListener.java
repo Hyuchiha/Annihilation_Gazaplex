@@ -131,10 +131,12 @@ public class WorldListener implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onSpawn(CreatureSpawnEvent e) {
-    Output.log("Spawn Entity Event: " + e.getEntityType().toString());
+    //Output.log("Spawn Entity Event: " + e.getEntityType().toString());
     if (isHostile(e.getEntityType())) {
-      Output.log("Spawn Reason: " + e.getSpawnReason().toString());
+      //Output.log("Spawn Reason: " + e.getSpawnReason().toString());
+      //Output.log("Result: " + (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.CUSTOM));
       if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.CUSTOM) {
+        // Output.log("Spawned Mob");
         return;
       }
       e.setCancelled(true);
