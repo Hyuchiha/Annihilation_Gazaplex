@@ -7,6 +7,7 @@ import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
 import com.hyuchiha.Annihilation.Listener.SoulboundListener;
+import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Utils.KitUtils;
@@ -14,6 +15,7 @@ import com.hyuchiha.Annihilation.Utils.PotionUtils;
 import com.hyuchiha.Annihilation.Utils.TimersUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -39,7 +41,8 @@ public class Archer extends BaseKit {
   public Archer(String name, ItemStack icon, ConfigurationSection section) {
     super(name, icon, section);
 
-    ShapedRecipe arrowRecipe = new ShapedRecipe(new ItemStack(Material.ARROW, 3));
+    NamespacedKey key = new NamespacedKey(Main.getInstance(), "Arrows");
+    ShapedRecipe arrowRecipe = new ShapedRecipe(key, new ItemStack(Material.ARROW, 3));
     arrowRecipe.shape("F", "S");
     arrowRecipe.setIngredient('F', Material.FLINT);
     arrowRecipe.setIngredient('S', Material.STICK);

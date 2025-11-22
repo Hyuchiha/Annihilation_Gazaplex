@@ -23,7 +23,8 @@ public class MySQLDB extends SQLDB {
     try {
       Class.forName("com.mysql.jdbc.Driver");
 
-      String url = "jdbc:mysql://" + config.getString("host") + ":" + config.getString("port") + "/" + config.getString("name");
+      String url = "jdbc:mysql://" + config.getString("host") + ":" + config.getString("port") + "/" + config.getString("name")
+          + "?useSSL=false&autoReconnect=true&allowPublicKeyRetrieval=true";
 
       return DriverManager.getConnection(url, config.getString("user"), config.getString("pass"));
     } catch (Exception e) {

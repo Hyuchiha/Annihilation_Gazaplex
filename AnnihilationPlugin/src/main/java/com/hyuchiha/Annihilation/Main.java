@@ -21,6 +21,7 @@ import com.hyuchiha.Annihilation.Utils.GameUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
@@ -102,8 +103,9 @@ public class Main extends JavaPlugin {
   private void easterEgg() {
     // byHyuchiha Head
     ItemStack byHyuchihaHead = GameUtils.getPlayerHead("byHyuchiha");
+    NamespacedKey key = new NamespacedKey(this, "byhyuchiha_head");
 
-    ShapedRecipe byHyuchihaRecipe = new ShapedRecipe(byHyuchihaHead);
+    ShapedRecipe byHyuchihaRecipe = new ShapedRecipe(key, byHyuchihaHead);
     byHyuchihaRecipe.shape("PIB", "DRE", " G ");
     byHyuchihaRecipe.setIngredient('P', GameUtils.getDyeColor(DyeColor.PINK).getData());
     byHyuchihaRecipe.setIngredient('I', Material.IRON_INGOT);

@@ -2,6 +2,7 @@ package com.hyuchiha.Annihilation.Manager;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.hyuchiha.Annihilation.Game.Resource;
+import com.hyuchiha.Annihilation.Output.Output;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
@@ -78,6 +79,10 @@ public class ResourceManager {
 
 
   private static Material getDropMaterial(Material type) {
+    if (type == null) {
+      return null;
+    }
+    Output.log("Material: " + type.toString());
     XMaterial parsedMaterialType = XMaterial.matchXMaterial(type);
     switch (parsedMaterialType) {
       case COAL_ORE:
