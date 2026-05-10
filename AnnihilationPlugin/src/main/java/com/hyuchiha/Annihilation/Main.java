@@ -12,6 +12,8 @@ import com.hyuchiha.Annihilation.Hooks.AnnihilationExpansion;
 import com.hyuchiha.Annihilation.Hooks.VaultHooks;
 import com.hyuchiha.Annihilation.Listener.*;
 import com.hyuchiha.Annihilation.Manager.*;
+import com.hyuchiha.Annihilation.Mobs.CustomMobManager;
+import com.hyuchiha.Annihilation.Mobs.MobListener;
 import com.hyuchiha.Annihilation.Maps.MapLoader;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import com.hyuchiha.Annihilation.Output.Output;
@@ -68,6 +70,7 @@ public class Main extends JavaPlugin {
 
     PlayerManager.fetchRespawner();
     BossBarAPI.init(this);
+    CustomMobManager.init(this);
 
     PlayerSerializer.restartDataOfPlayers();
 
@@ -90,6 +93,8 @@ public class Main extends JavaPlugin {
 
   public void onDisable() {
     GameManager.forceStopGame();
+
+    CustomMobManager.shutdown();
 
     EnderBrewingManager.disableBrewingManager();
     EnderFurnaceManager.disableFurnaceManager();
@@ -167,6 +172,7 @@ public class Main extends JavaPlugin {
     pm.registerEvents(new WitchListener(this), this);
     pm.registerEvents(new ZombieListener(), this);
     pm.registerEvents(new InteractListener(), this);
+    pm.registerEvents(new MobListener(), this);
   }
 
   private void registerCommands() {
