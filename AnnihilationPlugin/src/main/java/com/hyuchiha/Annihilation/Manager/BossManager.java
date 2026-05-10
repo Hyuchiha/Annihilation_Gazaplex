@@ -10,6 +10,10 @@ import com.hyuchiha.Annihilation.Game.GameBoss;
 import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Maps.MapLoader;
+import com.hyuchiha.Annihilation.Mobs.CustomMob;
+import com.hyuchiha.Annihilation.Mobs.CustomMobManager;
+import com.hyuchiha.Annihilation.Mobs.Implementations.WardenBoss;
+import com.hyuchiha.Annihilation.Mobs.Implementations.WitherBoss;
 import com.hyuchiha.Annihilation.Mobs.MobCreator;
 import com.hyuchiha.Annihilation.Mobs.v1_10_R1.MobCreator_v1_10_R1;
 import com.hyuchiha.Annihilation.Mobs.v1_11_R1.MobCreator_v1_11_R1;
@@ -38,7 +42,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Wither;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -57,6 +63,10 @@ public class BossManager {
   private static GameBoss boss;
   private static BossRespawnTask task;
   private static int chunkKeepTaskId = -1;
+  /** Counts how many times the boss has spawned in the current game.
+   *  Even index → Wither (default). Odd index → Warden (if MC ≥ 1.19, else Wither again).
+   *  Reset to 0 in {@link #clearBossData()}. */
+  private static int spawnCounter = 0;
   private static HashMap<GameTeam, Location> bossTeamSpawnLocations = new HashMap<>();
   private static List<Location> teleportLocations = new ArrayList<>();
   private static List<BossStarItem> bossStarItems = new ArrayList<>();
@@ -359,27 +369,21 @@ public class BossManager {
     world.loadChunk(chunk);
     helper.forceChunkLoad(world, chunk);
 
-    Wither witherBoss;
-
-    if (creator != null) {
-      witherBoss = (Wither) creator.getMob("CUSTOM_WITHER").spawnEntity(spawn);
-    } else {
-      witherBoss = (Wither) world.spawnEntity(spawn, EntityType.WITHER);
-    }
-
     Output.log("Location: " + spawn.toString());
 
-    AttributeInstance attribute = witherBoss.getAttribute(XAttribute.MAX_HEALTH.get());
-    attribute.setBaseValue(boss.getHealth());
-    witherBoss.setHealth(boss.getHealth());
-    witherBoss.setCanPickupItems(false);
-    witherBoss.setRemoveWhenFarAway(false);
-    witherBoss.setCustomNameVisible(true);
-    witherBoss.setCustomName(
-        ChatColor.translateAlternateColorCodes('&', boss
-            .getBossName() + " &8» &a" + boss.getHealth() + " HP"));
+    // Variant rotation: spawn #0 = Wither, spawn #1 = Warden (if ≥1.19), spawn #2 = Wither, etc.
+    boolean wardenTurn = (spawnCounter % 2 == 1);
+    boolean wardenAvailable = !Minecraft.Version.getVersion().olderThan(Minecraft.Version.v1_19_R1);
 
-    Output.log("Boss: " + witherBoss.toString());
+    LivingEntity bossEntity = (wardenTurn && wardenAvailable)
+        ? spawnWardenVariant(spawn)
+        : spawnWitherVariant(spawn);
+    spawnCounter++;
+
+    bossEntity.setCanPickupItems(false);
+    bossEntity.setRemoveWhenFarAway(false);
+
+    Output.log("Boss: " + bossEntity.toString());
 
     FireworkUtils.spawnFirework(spawn);
     FireworkUtils.spawnFirework(spawn);
@@ -401,7 +405,106 @@ public class BossManager {
         200L, 400L); // first run after 10s, then every 20s
   }
 
-  public static void update(Wither g) {
+  /**
+   * Wither variant (default). Uses the NMS creator path on legacy versions where the
+   * plugin still ships one, otherwise standard {@code spawnEntity}. HP and name come from
+   * the per-arena {@link GameBoss} config.
+   */
+  private static LivingEntity spawnWitherVariant(Location spawn) {
+    LivingEntity witherEntity;
+    if (creator != null) {
+      witherEntity = (LivingEntity) creator.getMob("CUSTOM_WITHER").spawnEntity(spawn);
+    } else {
+      witherEntity = (LivingEntity) spawn.getWorld().spawnEntity(spawn, EntityType.WITHER);
+    }
+
+    final int hp = boss.getHealth();
+    final String displayName = ChatColor.translateAlternateColorCodes('&',
+        boss.getBossName() + " &8» &a" + hp + " HP");
+
+    // Anonymous override injects per-arena HP/name; onDeath is intentionally a no-op
+    // so BossListener.onDeath keeps owning loot chest + rewards + respawn task.
+    CustomMob wrapped = CustomMobManager.spawn(witherEntity, entity ->
+        new WitherBoss(entity) {
+          @Override
+          protected double getMaxHealth() { return hp; }
+
+          @Override
+          protected String getDisplayName() { return displayName; }
+
+          @Override
+          public void onDeath(EntityDeathEvent event) { /* BossListener owns death flow */ }
+        });
+
+    if (wrapped == null) {
+      // MC < 1.18: CustomMobManager disabled — apply legacy setup manually.
+      applyManualBossSetup(witherEntity, hp, displayName);
+    }
+    Output.log("Boss spawned (Wither variant, HP " + hp + ").");
+    return witherEntity;
+  }
+
+  /**
+   * Warden variant — second spawn onward on MC ≥ 1.19. HP is doubled relative to the
+   * configured boss HP, simulating the boss "leveling up" after its first death.
+   */
+  private static LivingEntity spawnWardenVariant(Location spawn) {
+    EntityType wardenType;
+    try {
+      wardenType = EntityType.valueOf("WARDEN");
+    } catch (IllegalArgumentException ex) {
+      // Safety net — caller already checked the version, but if the enum lookup fails
+      // for any reason fall back to Wither so the game keeps moving.
+      Output.logError("Warden EntityType missing despite ≥1.19 detection; falling back to Wither.");
+      return spawnWitherVariant(spawn);
+    }
+
+    LivingEntity wardenEntity = (LivingEntity) spawn.getWorld().spawnEntity(spawn, wardenType);
+
+    final int hp = boss.getHealth() * 2;
+    final String displayName = ChatColor.translateAlternateColorCodes('&',
+        boss.getBossName() + " &8» &a" + hp + " HP");
+
+    // Warden is gated to ≥1.19 which is above the CustomMobManager threshold, so spawn()
+    // will not return null here. We still null-check defensively.
+    CustomMob wrapped = CustomMobManager.spawn(wardenEntity, entity ->
+        new WardenBoss(entity) {
+          @Override
+          protected double getMaxHealth() { return hp; }
+
+          @Override
+          protected String getDisplayName() { return displayName; }
+
+          @Override
+          public void onDeath(EntityDeathEvent event) { /* BossListener owns death flow */ }
+        });
+
+    if (wrapped == null) {
+      applyManualBossSetup(wardenEntity, hp, displayName);
+    }
+    Output.log("Boss spawned (Warden variant, HP " + hp + " — 2x of normal).");
+    return wardenEntity;
+  }
+
+  /** Legacy attribute/name setup for the < 1.18 path where CustomMobManager is disabled. */
+  private static void applyManualBossSetup(LivingEntity entity, int hp, String displayName) {
+    AttributeInstance attribute = entity.getAttribute(XAttribute.MAX_HEALTH.get());
+    if (attribute != null) {
+      attribute.setBaseValue(hp);
+    }
+    entity.setHealth(hp);
+    entity.setCustomNameVisible(true);
+    entity.setCustomName(displayName);
+  }
+
+  /** Returns true for any entity that represents the current boss (Wither or Warden). */
+  public static boolean isBossEntity(Entity entity) {
+    if (!(entity instanceof LivingEntity)) return false;
+    EntityType type = entity.getType();
+    return type == EntityType.WITHER || "WARDEN".equals(type.name());
+  }
+
+  public static void update(LivingEntity g) {
     int health = (int) g.getHealth();
     g.setCustomName(ChatColor.translateAlternateColorCodes('&', boss.getBossName() + " &8» &a" + health + " HP"));
   }
@@ -454,11 +557,13 @@ public class BossManager {
 
   public static void clearBossData() {
     World bossWorld = getBossSpawnWorld();
+    spawnCounter = 0; // next game starts with the Wither variant again
 
     if (bossWorld != null) {
       for (Entity entity : bossWorld.getEntities()) {
-        if (entity.getType() == EntityType.WITHER) {
-          Output.log("Removing wither");
+        if (isBossEntity(entity)) {
+          Output.log("Removing boss entity: " + entity.getType().name());
+          CustomMobManager.unregister(entity.getUniqueId());
           entity.remove();
         }
       }

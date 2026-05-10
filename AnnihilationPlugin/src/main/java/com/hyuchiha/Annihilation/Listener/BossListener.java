@@ -46,8 +46,8 @@ public class BossListener implements Listener {
 
   @EventHandler
   public void onHit(EntityDamageEvent event) {
-    if (event.getEntity() instanceof Wither) {
-      final Wither g = (Wither) event.getEntity();
+    if (BossManager.isBossEntity(event.getEntity())) {
+      final LivingEntity g = (LivingEntity) event.getEntity();
       if (g.getCustomName() == null) {
         return;
       }
@@ -66,7 +66,7 @@ public class BossListener implements Listener {
 
   @EventHandler
   public void onBossPortal(EntityPortalEvent event) {
-    if (event.getEntity() instanceof Wither) {
+    if (BossManager.isBossEntity(event.getEntity())) {
       event.setCancelled(true);
     }
   }
@@ -119,12 +119,12 @@ public class BossListener implements Listener {
 
   @EventHandler
   public void onHit(EntityDamageByEntityEvent event) {
-    if (event.getEntity() instanceof Wither) {
+    if (BossManager.isBossEntity(event.getEntity())) {
       if (!(event.getDamager() instanceof Player) && !(event.getDamager() instanceof Arrow)) {
         event.setCancelled(true);
       }
 
-      final Wither g = (Wither) event.getEntity();
+      final LivingEntity g = (LivingEntity) event.getEntity();
       if (g.getCustomName() == null) {
         return;
       }
@@ -194,8 +194,8 @@ public class BossListener implements Listener {
 
   @EventHandler
   public void onDeath(EntityDeathEvent event) {
-    if (event.getEntity() instanceof Wither) {
-      Wither wither = (Wither) event.getEntity();
+    if (BossManager.isBossEntity(event.getEntity())) {
+      LivingEntity wither = (LivingEntity) event.getEntity();
       if (wither.getCustomName() == null) {
         return;
       }
@@ -245,8 +245,8 @@ public class BossListener implements Listener {
 
   @EventHandler
   public void onExplosionWither(EntityChangeBlockEvent event) {
-    EntityType type = event.getEntity().getType();
-    if (type == EntityType.WITHER) {
+    // Protect the boss arena from terrain damage caused by either boss variant.
+    if (BossManager.isBossEntity(event.getEntity())) {
       event.setCancelled(true);
     }
   }

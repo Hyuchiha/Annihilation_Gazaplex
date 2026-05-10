@@ -2,6 +2,8 @@ package com.hyuchiha.Annihilation.Manager;
 
 import com.cryptomorin.xseries.XAttribute;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
+import com.hyuchiha.Annihilation.Mobs.CustomMobManager;
+import com.hyuchiha.Annihilation.Mobs.Implementations.DisconnectZombie;
 import com.hyuchiha.Annihilation.Mobs.MobCreator;
 import com.hyuchiha.Annihilation.Mobs.v1_10_R1.MobCreator_v1_10_R1;
 import com.hyuchiha.Annihilation.Mobs.v1_11_R1.MobCreator_v1_11_R1;
@@ -112,6 +114,10 @@ public class ZombieManager {
     String uuid = player.getUniqueId().toString();
     if (!zombies.containsKey(uuid)) {
       zombies.put(uuid, zombie);
+      // Wrap with CustomMob (decorator pattern — configure() is no-op so the equipment
+      // we just copied stays intact). Adds ChargeAbility for sprint-chase behavior.
+      // Returns null on MC < 1.18; in that case the zombie keeps its vanilla AI which is fine.
+      CustomMobManager.spawn(zombie, DisconnectZombie::new);
     }
 
   }

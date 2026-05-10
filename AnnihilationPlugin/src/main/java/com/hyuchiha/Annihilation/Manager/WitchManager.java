@@ -3,6 +3,9 @@ package com.hyuchiha.Annihilation.Manager;
 import com.cryptomorin.xseries.XAttribute;
 import com.hyuchiha.Annihilation.Game.GameWitch;
 import com.hyuchiha.Annihilation.Main;
+import com.hyuchiha.Annihilation.Mobs.CustomMob;
+import com.hyuchiha.Annihilation.Mobs.CustomMobManager;
+import com.hyuchiha.Annihilation.Mobs.Implementations.CustomWitch;
 import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.LocationUtils;
 import org.bukkit.Bukkit;
@@ -14,7 +17,9 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Witch;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
@@ -51,24 +56,42 @@ public class WitchManager {
 
   public static void spawnWitch(GameWitch gWitch) {
     Location spawn = gWitch.getSpawn();
+    if (spawn == null || spawn.getWorld() == null) {
+      return;
+    }
 
-    if (spawn != null && spawn.getWorld() != null) {
-      Bukkit.getWorld(spawn.getWorld().getName()).loadChunk(spawn.getChunk());
+    Bukkit.getWorld(spawn.getWorld().getName()).loadChunk(spawn.getChunk());
 
-      Witch witch = (Witch) spawn.getWorld().spawnEntity(spawn, EntityType.WITCH);
+    Witch witch = (Witch) spawn.getWorld().spawnEntity(spawn, EntityType.WITCH);
 
+    // Settings that are not part of CustomWitch's configure (preserved from the legacy setup):
+    // - permanent SPEED V so the witch keeps up with kited players
+    // - no item pickup, no despawn when no players nearby
+    witch.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 5));
+    witch.setCanPickupItems(false);
+    witch.setRemoveWhenFarAway(false);
+
+    final int hp = gWitch.getHealth();
+    final String displayName = ChatColor.translateAlternateColorCodes('&',
+        gWitch.getName() + " &8» &a" + hp + " HP");
+
+    // CustomWitch adds: HP, knockback resistance, 4-potion barrage every 3s, 40% damage reduction.
+    // Anonymous subclass injects per-arena HP/name AND skips onDeath so WitchListener.onDeath
+    // keeps owning the death/respawn flow (no duplicate drops).
+    CustomMob wrapped = CustomMobManager.spawn(witch, entity ->
+        new CustomWitch(entity) {
+          @Override protected double getMaxHealth() { return hp; }
+          @Override protected String getDisplayName() { return displayName; }
+          @Override public void onDeath(EntityDeathEvent event) { /* WitchListener owns this */ }
+        });
+
+    if (wrapped == null) {
+      // Fallback for MC < 1.18 where CustomMobManager is disabled: apply the legacy setup manually.
       AttributeInstance attribute = witch.getAttribute(XAttribute.MAX_HEALTH.get());
-      attribute.setBaseValue(gWitch.getHealth());
-      witch.setHealth(gWitch.getHealth());
-      witch.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 5));
-      witch.setCanPickupItems(false);
-      witch.setRemoveWhenFarAway(false);
+      attribute.setBaseValue(hp);
+      witch.setHealth(hp);
       witch.setCustomNameVisible(true);
-
-      String name = ChatColor.translateAlternateColorCodes('&',
-          gWitch.getName() + " &8» &a" + gWitch.getHealth() + " HP"
-      );
-      witch.setCustomName(name);
+      witch.setCustomName(displayName);
     }
   }
 
