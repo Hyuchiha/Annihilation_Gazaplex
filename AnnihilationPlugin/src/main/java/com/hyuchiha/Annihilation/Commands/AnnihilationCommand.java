@@ -37,6 +37,7 @@ public class AnnihilationCommand implements CommandExecutor {
       sender.sendMessage(prefix + gray + "/anni " + dgray + "-" + white + " Shows plugin information.");
       sender.sendMessage(prefix + gray + "/anni start " + dgray + "-" + white + " Starts a game.");
       sender.sendMessage(prefix + gray + "/anni stop " + dgray + "-" + white + " Stops the current game.");
+      sender.sendMessage(prefix + gray + "/anni reload " + dgray + "-" + white + " Reloads YAML config files.");
     }
 
     if (args.length == 1) {
@@ -44,7 +45,7 @@ public class AnnihilationCommand implements CommandExecutor {
 
       switch (args[0]) {
         case "start":
-          if (PermissionUtils.hasPermission((Player) sender, "annihilation.command.start")) {
+          if (hasCommandPermission(sender, "annihilation.command.start")) {
             if (GameManager.getCurrentGame().isInGame()) {
               sender.sendMessage(prefix + red + Translator.getColoredString("ERRORS.GAME_STARTED"));
             } else {
@@ -57,7 +58,7 @@ public class AnnihilationCommand implements CommandExecutor {
           }
           break;
         case "stop":
-          if (PermissionUtils.hasPermission((Player) sender, "annihilation.command.stop")) {
+          if (hasCommandPermission(sender, "annihilation.command.stop")) {
             if (GameManager.getCurrentGame().isInGame()) {
               GameManager.endCurrentGame();
 
@@ -69,9 +70,28 @@ public class AnnihilationCommand implements CommandExecutor {
             sender.sendMessage(prefix + red + Translator.getColoredString("ERRORS.COMMAND_NOT_PERMITTED"));
           }
           break;
+        case "reload":
+          if (hasCommandPermission(sender, "annihilation.command.reload")) {
+            this.plugin.reloadAllConfigs();
+            sender.sendMessage(prefix + green + Translator.getColoredString("INFO.PLUGIN_RELOADED"));
+            if (GameManager.getCurrentGame() != null && GameManager.getCurrentGame().isInGame()) {
+              sender.sendMessage(prefix + yellow + Translator.getColoredString("INFO.RELOAD_GAME_RUNNING"));
+            }
+          } else {
+            sender.sendMessage(prefix + red + Translator.getColoredString("ERRORS.COMMAND_NOT_PERMITTED"));
+          }
+          break;
       }
     }
 
     return false;
+  }
+
+  /** Console always has implicit access; players go through the plugin's permission util. */
+  private static boolean hasCommandPermission(CommandSender sender, String node) {
+    if (!(sender instanceof Player)) {
+      return true;
+    }
+    return PermissionUtils.hasPermission((Player) sender, node);
   }
 }

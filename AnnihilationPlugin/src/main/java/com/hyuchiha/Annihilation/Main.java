@@ -8,6 +8,7 @@ import com.hyuchiha.Annihilation.Database.Base.Database;
 import com.hyuchiha.Annihilation.Database.Databases.MongoDB;
 import com.hyuchiha.Annihilation.Database.Databases.MySQLDB;
 import com.hyuchiha.Annihilation.Database.Databases.SQLiteDB;
+import com.hyuchiha.Annihilation.Hooks.AnnihilationExpansion;
 import com.hyuchiha.Annihilation.Hooks.VaultHooks;
 import com.hyuchiha.Annihilation.Listener.*;
 import com.hyuchiha.Annihilation.Manager.*;
@@ -75,6 +76,7 @@ public class Main extends JavaPlugin {
 
     hookVault();
     hookBungeeCord();
+    hookPlaceholderAPI();
 
     initDatabase();
 
@@ -124,6 +126,23 @@ public class Main extends JavaPlugin {
     return configManager.getConfig(config);
   }
 
+  /**
+   * Reloads all YAML config files and the systems that hold cached config-derived state.
+   * Called by /anni reload. Notes:
+   *  - Game timing values cached at construction in {@link com.hyuchiha.Annihilation.Game.Game}
+   *    only take effect on the next game (next {@code Game} instance).
+   *  - Map definitions in maps.yml are NOT re-applied to the running map; they take effect
+   *    on the next round when {@code MapManager}/{@code VotingManager} pick a new arena.
+   *  - Kit definitions in kits.yml are loaded into the {@code Kit} enum at class-init time;
+   *    a full reload of kits would require re-walking the enum, which is non-trivial. Skipped.
+   */
+  public void reloadAllConfigs() {
+    configManager.reloadAll();
+    Translator.reload();
+    ShopManager.clearShops();
+    ShopManager.initShops();
+  }
+
 
   private void registerListeners() {
     PluginManager pm = getServer().getPluginManager();
@@ -171,6 +190,19 @@ public class Main extends JavaPlugin {
 
     if (enableBungee) {
       Bukkit.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+    }
+  }
+
+  private void hookPlaceholderAPI() {
+    if (getServer().getPluginManager().getPlugin("PlaceholderAPI") == null) {
+      return;
+    }
+    try {
+      new AnnihilationExpansion(this).register();
+      getLogger().info("PlaceholderAPI hook registered.");
+    } catch (Throwable t) {
+      // PAPI present but registration failed (e.g. incompatible API version).
+      getLogger().warning("Could not register PlaceholderAPI expansion: " + t.getMessage());
     }
   }
 

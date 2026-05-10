@@ -93,6 +93,12 @@ public class ConfigManager {
     }
   }
 
+  public void reloadAll() {
+    for (String filename : configs.keySet()) {
+      reload(filename);
+    }
+  }
+
 
   public YamlConfiguration getConfig(String filename) {
     if (configs.containsKey(filename)) {

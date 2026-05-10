@@ -13,7 +13,7 @@ public class AnnihilationTabCompletion implements TabCompleter {
     public List<String> onTabComplete(CommandSender commandSender, Command command, String alias, String[] args) {
         // If no arguments are entered, suggest team names
         if (args.length == 1) {
-            return Arrays.asList("start", "stop");
+            return Arrays.asList("start", "stop", "reload");
         }
 
         return new ArrayList<>();

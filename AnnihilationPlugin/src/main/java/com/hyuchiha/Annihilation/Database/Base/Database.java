@@ -132,6 +132,11 @@ public abstract class Database {
     return (removed != null);
   }
 
+  /** Cache-only lookup. Returns {@code null} without hitting the DB. */
+  public Account getCachedAccount(String uuid) {
+    return this.cachedAccounts.get(uuid);
+  }
+
   private Account createAndAddAccount(String uuid, String name) {
     Account account = new Account(uuid, name);
 

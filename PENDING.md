@@ -10,6 +10,7 @@ Análisis orientado a un servidor con 80–100 jugadores simultáneos. Los items
 >   - SCALE-1: `memberCount()` podía contar UUIDs huérfanos por crash sin handleDisconnect → agregado `onlineMemberCount()` para signs.
 >   - SCALE-6: async save en `handleDisconnect` arriesgaba pérdida de datos en shutdown del plugin → revertido a sync; solo `canEndGame` (80 saves al cerrar partida) permanece async donde el ahorro real está.
 > **Iteración 4 de fixes:** 2026-05-09 — QUALITY-1, QUALITY-2b (resto), QUALITY-5, QUALITY-6, QUALITY-8, QUALITY-9, QUALITY-10, QUALITY-12, QUALITY-13, SCALE-7.
+> **Iteración 5 de fixes:** 2026-05-10 — FEATURE-1 (`/anni reload`) y FEATURE-2 (PlaceholderAPI hook).
 > **Iteración 4 (double-check):** 2026-05-09 — review encontró 1 fix menor (comentario obsoleto en `QuitListener.handleDisconnect` que mencionaba el lock de SQLDB ya removido; actualizado para describir la nueva realidad con Hikari). Confirmado:
 >   - `QUALITY-1`: defaults son sensatos; el único cambio de comportamiento para servers mal-configurados es `build` (radio anti-construcción) que pasa de 0→30. Sensato como default.
 >   - `QUALITY-8`: reordenamiento de `endGame` correcto. La ventana breve con scoreboard vacía existe igual que antes (entre resetScoreboard y `VotingManager.start`).
@@ -276,11 +277,23 @@ Guards agregados: cast `instanceof Player` + null check de `GameManager.getCurre
 
 ## Nivel 5 — Features pendientes / ideas documentadas
 
-### [FEATURE-1] Recarga de configuración en caliente
-No hay `/anni reload`. Cualquier cambio en `config.yml` o `maps.yml` requiere reiniciar el servidor.
+### ~~[FEATURE-1] Recarga de configuración en caliente~~ ✅ FIXED
+**Archivos:** `Commands/AnnihilationCommand.java`, `Commands/AnnihilationTabCompletion.java`, `Config/ConfigManager.java`, `Messages/Translator.java`, `Main.java`, `plugin.yml`, `messages.yml`
+- `/anni reload` recarga todos los YAML del cache de `ConfigManager` (`reloadAll()`).
+- `Translator.reload()` limpia y re-lee `messages.yml`.
+- `ShopManager.clearShops() + initShops()` re-leen `shops.yml`.
+- Permiso `annihilation.command.reload` (default: op).
+- El comando es runnable desde la consola (helper `hasCommandPermission` evita CCE en sender no-Player).
+- **Limitaciones documentadas (visibles vía `INFO.RELOAD_GAME_RUNNING`):** los timings de `Game` se cachean en el constructor — los cambios en `config.yml` (`start-delay`, `phase-period`, `restart-delay`, `Force-end.*`) sólo aplican al siguiente `Game` (próxima ronda). `maps.yml` se re-cachea en memoria pero la `MapManager` no re-carga el arena en juego — los cambios aplican al siguiente sorteo. `kits.yml` está atado al class-init del enum `Kit`; un reload completo requeriría re-walk del enum, fuera de scope.
 
-### [FEATURE-2] Placeholder API (PAPI) para stats en scoreboards externos
-Los stats de kills/wins/etc. no están expuestos a PlaceholderAPI.
+### ~~[FEATURE-2] Placeholder API (PAPI) para stats en scoreboards externos~~ ✅ FIXED
+**Archivos:** `Hooks/AnnihilationExpansion.java` (nuevo), `Main.java`, `Database/Base/Database.java`, `Game/GameTimer.java`, `pom.xml`, `plugin.yml`
+- Soft-depend `PlaceholderAPI` añadido en `plugin.yml` y dependencia `me.clip:placeholderapi:2.11.6` (provided) en `pom.xml`.
+- `AnnihilationExpansion` extiende `PlaceholderExpansion`. Se registra en `hookPlaceholderAPI()` solo si PAPI está cargado; falla silenciosa si la API no es compatible.
+- **Player placeholders:** `team`, `team_raw`, `team_color`, `kit`, `alive`, `kills`, `deaths`, `wins`, `losses`, `nexus_damage`, `kdr`.
+- **Game placeholders:** `phase`, `state`, `in_game`, `map`, `time_left`, `team_<color>_count`, `team_<color>_alive_count`, `team_<color>_alive`, `team_<color>_nexus_hp`.
+- Las stats usan `Database.getCachedAccount(uuid)` (nuevo método cache-only) — **no dispara IO** desde el render de PAPI; si el account no está cacheado retorna "0".
+- `GameTimer.getRemainingTime()` se hizo público para soportar `time_left`.
 
 ### [FEATURE-3] Soporte a múltiples mundos de boss por arena
 Un solo boss/boss-world por arena.

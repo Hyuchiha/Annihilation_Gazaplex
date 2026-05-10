@@ -141,7 +141,7 @@ public class GameTimer {
   }
 
 
-  private long getRemainingTime() {
+  public long getRemainingTime() {
     if (this.state == GameState.PHASE_5) {
       return 1L;
     }

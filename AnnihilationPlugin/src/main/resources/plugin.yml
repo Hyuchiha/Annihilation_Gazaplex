@@ -7,7 +7,7 @@ api-version: 1.13
 # Plugin Data
 main: com.hyuchiha.Annihilation.Main
 load: POSTWORLD
-softdepend: [Vault, Multiverse-Core, ProtocolLib]
+softdepend: [Vault, Multiverse-Core, ProtocolLib, PlaceholderAPI]
 
 # Commands
 commands:
@@ -48,6 +48,7 @@ permissions:
       annihilation.command.start: true
       annihilation.command.stop: true
       annihilation.command.switch_kit: true
+      annihilation.command.reload: true
   annihilation.command.start:
     description: Can start a game
     default: op
@@ -56,6 +57,9 @@ permissions:
     default: op
   annihilation.command.switch_kit:
     description: Can switch kits using the command
+    default: op
+  annihilation.command.reload:
+    description: Can reload YAML configs without restarting the server
     default: op
   annihilation.bypass.*:
     description: Grants full access to all ByPass validations

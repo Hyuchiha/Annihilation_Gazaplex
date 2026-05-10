@@ -21,6 +21,12 @@ public class Translator {
     loadMessages("", section);
   }
 
+  public static void reload() {
+    messages.clear();
+    listMessages.clear();
+    InitMessages();
+  }
+
   private static void loadMessages(String prefix, ConfigurationSection section) {
     for (String key: section.getKeys(false)) {
       String fullKey = prefix.isEmpty() ? key : prefix + "." + key;

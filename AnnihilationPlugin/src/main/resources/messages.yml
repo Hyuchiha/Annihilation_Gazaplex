@@ -170,6 +170,8 @@ INFO:
   ARENA_WAS_CHOSEN: "&e%ARENA% &awas chosen!"
   GAME_START: "&aThe battle begins!"
   GAME_ENDED: "&cThe game has ended!"
+  PLUGIN_RELOADED: "&aPlugin configs reloaded."
+  RELOAD_GAME_RUNNING: "&eGame is running: timing/map values apply on next round."
   COMMAND_VOTING_ENDED: "&cVoting is already closed!"
   COMMAND_VOTING_INVALID: "&cInvalid vote selection!"
   COMMAND_VOTING_MAPS: "&6Maps available for voting:"
