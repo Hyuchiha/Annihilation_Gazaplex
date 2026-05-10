@@ -55,6 +55,7 @@ public class BossManager {
 
   private static GameBoss boss;
   private static BossRespawnTask task;
+  private static int chunkKeepTaskId = -1;
   private static HashMap<GameTeam, Location> bossTeamSpawnLocations = new HashMap<>();
   private static List<Location> teleportLocations = new ArrayList<>();
   private static List<BossStarItem> bossStarItems = new ArrayList<>();
@@ -295,11 +296,24 @@ public class BossManager {
 
     String bossMap = config.getString("world_spawn");
     String envValue = config.getString("world_env", "THE_END");
-
     World.Environment environment = World.Environment.valueOf(envValue);
-    MapLoader.loadMap(bossMap, environment);
 
+    // Try to load from the maps/ folder first; if absent, fall back to any already-loaded world
+    boolean loaded = MapLoader.loadMap(bossMap, environment);
     World bossWorld = Bukkit.getWorld(bossMap);
+
+    if (bossWorld == null) {
+      if (!loaded) {
+        Output.logError("Boss world '" + bossMap + "' is not in the maps/ folder and is not currently loaded. "
+            + "Either copy the world folder to plugins/Annihilation/maps/ or ensure it is loaded before the game starts.");
+      } else {
+        Output.logError("Boss world '" + bossMap + "' failed to load despite map file being present.");
+      }
+      return;
+    }
+
+    // Apply settings that ensure the boss world behaves correctly
+    configureBossWorld(bossWorld);
 
     for (String teleport : config.getStringList("teleports")) {
       teleportLocations.add(LocationUtils.parseLocation(originalWorld, teleport));
@@ -324,47 +338,79 @@ public class BossManager {
     Output.log("Boss loaded");
   }
 
+  @SuppressWarnings("deprecation")
+  private static void configureBossWorld(World world) {
+    // Disable natural mob spawning — the boss is spawned manually
+    world.setGameRuleValue("doMobSpawning", "false");
+    // Prevent fire spread in the boss arena
+    world.setGameRuleValue("doFireTick", "false");
+    // Disable weather — avoids lightning strikes interfering with the boss
+    world.setGameRuleValue("doWeatherCycle", "false");
+    // Make sure the world actually allows entity spawning at the API level
+    world.setSpawnFlags(true, false);
+    Output.log("Boss world '" + world.getName() + "' configured.");
+  }
+
   public static void spawnBoss() {
+    if (boss == null) {
+      Output.logError("Boss config not loaded, cannot spawn boss.");
+      return;
+    }
+
     Location spawn = boss.getBossSpawn();
 
-    if (spawn != null && spawn.getWorld() != null) {
-      Chunk chunk = spawn.getChunk();
-      World world = spawn.getWorld();
-
-      Bukkit.getWorld(world.getName()).loadChunk(chunk);
-
-      helper.forceChunkLoad(world, chunk);
-
-      Wither witherBoss;
-
-      if (creator != null) {
-        witherBoss = (Wither) creator.getMob("CUSTOM_WITHER").spawnEntity(spawn);
-      } else {
-        witherBoss = (Wither) spawn.getWorld().spawnEntity(spawn, EntityType.WITHER);
-      }
-
-      Output.log("Location: " + spawn.toString());
-
-      AttributeInstance attribute = witherBoss.getAttribute(XAttribute.MAX_HEALTH.get());
-      attribute.setBaseValue(boss.getHealth());
-      witherBoss.setHealth(boss.getHealth());
-      witherBoss.setCanPickupItems(false);
-      witherBoss.setRemoveWhenFarAway(false);
-      witherBoss.setCustomNameVisible(true);
-      witherBoss.setCustomName(
-          ChatColor.translateAlternateColorCodes('&', boss
-              .getBossName() + " &8» &a" + boss.getHealth() + " HP"));
-
-      Output.log("Boss: " + witherBoss.toString());
-
-      FireworkUtils.spawnFirework(boss.getBossSpawn());
-      FireworkUtils.spawnFirework(boss.getBossSpawn());
-      FireworkUtils.spawnFirework(boss.getBossSpawn());
-
-      XSound.ENTITY_WITHER_SPAWN.play(boss.getBossSpawn(), 1.0F, 0.1F);
-    } else {
-      Output.logError("Boss spawn location is null, not spawning the Boss");
+    if (spawn == null || spawn.getWorld() == null) {
+      Output.logError("Boss spawn location or world is null — check that the boss world is listed correctly in maps.yml (world_spawn key) and the world folder exists in plugins/Annihilation/maps/");
+      return;
     }
+
+    Chunk chunk = spawn.getChunk();
+    World world = spawn.getWorld();
+
+    // Ensure the chunk is loaded before spawning
+    world.loadChunk(chunk);
+    helper.forceChunkLoad(world, chunk);
+
+    Wither witherBoss;
+
+    if (creator != null) {
+      witherBoss = (Wither) creator.getMob("CUSTOM_WITHER").spawnEntity(spawn);
+    } else {
+      witherBoss = (Wither) world.spawnEntity(spawn, EntityType.WITHER);
+    }
+
+    Output.log("Location: " + spawn.toString());
+
+    AttributeInstance attribute = witherBoss.getAttribute(XAttribute.MAX_HEALTH.get());
+    attribute.setBaseValue(boss.getHealth());
+    witherBoss.setHealth(boss.getHealth());
+    witherBoss.setCanPickupItems(false);
+    witherBoss.setRemoveWhenFarAway(false);
+    witherBoss.setCustomNameVisible(true);
+    witherBoss.setCustomName(
+        ChatColor.translateAlternateColorCodes('&', boss
+            .getBossName() + " &8» &a" + boss.getHealth() + " HP"));
+
+    Output.log("Boss: " + witherBoss.toString());
+
+    FireworkUtils.spawnFirework(spawn);
+    FireworkUtils.spawnFirework(spawn);
+    FireworkUtils.spawnFirework(spawn);
+
+    XSound.ENTITY_WITHER_SPAWN.play(spawn, 1.0F, 0.1F);
+
+    // Keep the boss chunk loaded even when no players are nearby.
+    // The ChunkUnloadEvent handler is the primary guard; this task is a backup
+    // that re-loads the chunk every 20 seconds in case it slips through.
+    cancelChunkKeepTask();
+    chunkKeepTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(
+        Main.getInstance(),
+        () -> {
+          if (boss != null && boss.getBossSpawn() != null && boss.getBossSpawn().getWorld() != null) {
+            boss.getBossSpawn().getChunk().load(false);
+          }
+        },
+        200L, 400L); // first run after 10s, then every 20s
   }
 
   public static void update(Wither g) {
@@ -411,6 +457,13 @@ public class BossManager {
     }
   }
 
+  private static void cancelChunkKeepTask() {
+    if (chunkKeepTaskId != -1) {
+      Bukkit.getScheduler().cancelTask(chunkKeepTaskId);
+      chunkKeepTaskId = -1;
+    }
+  }
+
   public static void clearBossData() {
     World bossWorld = getBossSpawnWorld();
 
@@ -426,6 +479,7 @@ public class BossManager {
     }
 
     cancelRespawnTask();
+    cancelChunkKeepTask();
 
     boss = null;
     bossTeamSpawnLocations.clear();

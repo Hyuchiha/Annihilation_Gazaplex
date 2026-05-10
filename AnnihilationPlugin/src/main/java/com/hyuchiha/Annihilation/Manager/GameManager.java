@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 
 public class GameManager {
-  private static Game currentGame = null;
+  private static volatile Game currentGame = null;
 
   public static boolean canStartGame() {
     int requiredToStart = Main.getInstance().getConfig("config.yml").getInt("requiredToStart");

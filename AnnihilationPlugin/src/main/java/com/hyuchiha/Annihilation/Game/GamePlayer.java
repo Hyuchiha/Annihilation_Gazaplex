@@ -18,8 +18,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 
-import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 public class GamePlayer {
@@ -51,11 +51,7 @@ public class GamePlayer {
   }
 
   public void setTeam(GameTeam t) {
-    if (this.team != null) {
-      this.team = t;
-    } else {
-      this.team = GameTeam.NONE;
-    }
+    this.team = (t != null) ? t : GameTeam.NONE;
   }
 
   public boolean isAlive() {
@@ -81,8 +77,10 @@ public class GamePlayer {
   }
 
   public void addXp(int exp) {
-    getPlayer().giveExp(exp);
-    XSound.ENTITY_EXPERIENCE_ORB_PICKUP.play(getPlayer(), 1.0F, 1.0F);
+    Player player = getPlayer();
+    if (player == null) return;
+    player.giveExp(exp);
+    XSound.ENTITY_EXPERIENCE_ORB_PICKUP.play(player, 1.0F, 1.0F);
   }
 
   public void prepareLobbyPlayer() {
@@ -147,18 +145,21 @@ public class GamePlayer {
 
   public void giveOreXP(int xp) {
     if (xp > 0) {
+      Player player = getPlayer();
+      if (player == null) return;
       int xpMultiplier = getKit().getKit().getXpMultiplier();
-
-      getPlayer().giveExp(xp * xpMultiplier);
-      float pitch = new Random().nextFloat() * 0.2F + 0.9F;
-      XSound.ENTITY_EXPERIENCE_ORB_PICKUP.play(getPlayer(), 1.0F, pitch);
+      player.giveExp(xp * xpMultiplier);
+      float pitch = ThreadLocalRandom.current().nextFloat() * 0.2F + 0.9F;
+      XSound.ENTITY_EXPERIENCE_ORB_PICKUP.play(player, 1.0F, pitch);
     }
   }
 
   public void giveOreDrops(ItemStack[] drops) {
+    Player player = getPlayer();
+    if (player == null) return;
     for (ItemStack stack : drops) {
       if (stack.getAmount() > 0) {
-        getPlayer().getInventory().addItem(stack);
+        player.getInventory().addItem(stack);
       }
     }
   }

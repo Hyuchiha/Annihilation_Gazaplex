@@ -73,4 +73,8 @@ public class TimersUtils {
     HashMap<Kit, Long> playerDelays = kitDelays.get(player.getUniqueId().toString());
     return playerDelays != null && playerDelays.get(type) != null;
   }
+
+  public static void clearPlayer(Player player) {
+    kitDelays.remove(player.getUniqueId().toString());
+  }
 }

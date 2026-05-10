@@ -153,7 +153,7 @@ public enum GameTeam {
   }
 
   public boolean isTeamAlive() {
-    return getNexus().isAlive();
+    return nexus != null && nexus.isAlive();
   }
 
   public Color getColor() {

@@ -4,7 +4,9 @@ import com.cryptomorin.xseries.XSound;
 import com.cryptomorin.xseries.messages.Titles;
 import com.hyuchiha.Annihilation.BossBar.BossBarAPI;
 import com.hyuchiha.Annihilation.Event.StartGameEvent;
+import com.hyuchiha.Annihilation.Game.Game;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
+import com.hyuchiha.Annihilation.Game.GameTeam;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
@@ -99,9 +101,10 @@ public class JoinListener implements Listener {
     p.updateInventory();
 
     Output.log("Checking for zombie: " + p.getName());
-    if (ZombieManager.getZombies().containsKey(p.getName())) {
+    String uuid = p.getUniqueId().toString();
+    if (ZombieManager.getZombies().containsKey(uuid)) {
       Bukkit.getScheduler().runTask(plugin, () -> {
-        Zombie zombie = (Zombie) ZombieManager.getZombies().get(p.getName());
+        Zombie zombie = (Zombie) ZombieManager.getZombies().get(uuid);
         zombie.setHealth(0);
         zombie.remove();
 
@@ -109,7 +112,7 @@ public class JoinListener implements Listener {
           Output.log("Zombie successfully removed!");
         }
 
-        ZombieManager.getZombies().remove(p.getName());
+        ZombieManager.getZombies().remove(uuid);
       });
     }
   }
@@ -117,17 +120,27 @@ public class JoinListener implements Listener {
 
   @EventHandler
   public void onPlayerPreJoin(AsyncPlayerPreLoginEvent event) {
-    if (GameManager.getCurrentGame() != null
-        && GameManager.getCurrentGame().getTimer().isGameStarted()
-        && GameManager.getCurrentGame().getPhase() > this.plugin.getConfig("config.yml").getInt("lastJoinPhase")
-    ) {
-      GamePlayer gPlayer = PlayerManager.getGamePlayerByUUID(event.getUniqueId().toString());
-      if (gPlayer != null && gPlayer.getTeam().isTeamAlive() && gPlayer.isAlive()) {
-        return;
-      }
-
-      event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Translator.getPrefix() + ChatColor.RED + Translator.getColoredString("ERRORS.GAME_STARTED"));
+    // Snapshot volatile state once to reduce async inconsistency window
+    Game game = GameManager.getCurrentGame();
+    if (game == null || !game.getTimer().isGameStarted()) {
+      return;
     }
+
+    int phase = game.getPhase();
+    int lastJoinPhase = this.plugin.getConfig("config.yml").getInt("lastJoinPhase", 3);
+    if (phase <= lastJoinPhase) {
+      return;
+    }
+
+    // Allow reconnect if the player already has a live slot
+    GamePlayer gPlayer = PlayerManager.getGamePlayerByUUID(event.getUniqueId().toString());
+    if (gPlayer != null && gPlayer.getTeam() != GameTeam.NONE
+        && gPlayer.getTeam().isTeamAlive() && gPlayer.isAlive()) {
+      return;
+    }
+
+    event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER,
+        Translator.getPrefix() + ChatColor.RED + Translator.getColoredString("ERRORS.GAME_STARTED"));
   }
 
 

@@ -261,16 +261,12 @@ public class BossListener implements Listener {
 
   @EventHandler()
   private void onChunkUnload(ChunkUnloadEvent event) {
-    World chunkWorld = event.getWorld();
+    if (!BossManager.hasBossConfig()) return;
 
-    if (BossManager.hasBossConfig()) {
-      World bossWorld = BossManager.getBoss().getBossSpawn().getWorld();
-
-      if (bossWorld.getName().equals(chunkWorld.getName())) {
-        BossManager.getChunkHelper().cancelChunkUnload(event);
-      }
+    World bossWorld = BossManager.getBoss().getBossSpawn().getWorld();
+    if (bossWorld != null && bossWorld.getName().equals(event.getWorld().getName())) {
+      BossManager.getChunkHelper().cancelChunkUnload(event);
     }
-
   }
 
 

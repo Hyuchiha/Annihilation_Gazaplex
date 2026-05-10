@@ -1,5 +1,6 @@
 package com.hyuchiha.Annihilation.Listener;
 
+import com.hyuchiha.Annihilation.Anticheat.FastBreakProtect;
 import com.hyuchiha.Annihilation.Database.Base.Account;
 import com.hyuchiha.Annihilation.Database.Base.Database;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
@@ -11,6 +12,7 @@ import com.hyuchiha.Annihilation.Manager.SignManager;
 import com.hyuchiha.Annihilation.Manager.ZombieManager;
 import com.hyuchiha.Annihilation.Serializers.PlayerSerializer;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
+import com.hyuchiha.Annihilation.Utils.TimersUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -46,22 +48,29 @@ public class QuitListener implements Listener {
       database.removeCachedAccount(account);
     }
 
+    // Kit cooldown cache and anticheat — safe to clear immediately
+    TimersUtils.clearPlayer(player);
+    FastBreakProtect.clearPlayer(player);
+
     if (gamePlayer.getTeam() == GameTeam.NONE) {
       PlayerSerializer.delete(playerName);
-
+      PlayerManager.removePlayer(player);
       return;
     }
     if (player.getLocation().getY() <= 0.0D || GameUtils.isFallingToVoid(player)) {
       PlayerSerializer.removeItems(playerName);
-
+      PlayerManager.removePlayer(player);
       return;
     }
 
     PlayerSerializer.SerializePlayer(player);
 
     if (GameManager.getCurrentGame() != null && GameManager.getCurrentGame().getPhase() > 0 && gamePlayer.getTeam() != GameTeam.NONE) {
+      // createZombiePlayer reads the GamePlayer internally, so remove AFTER zombie creation
       ZombieManager.createZombiePlayer(player);
     }
+
+    PlayerManager.removePlayer(player);
   }
 
 

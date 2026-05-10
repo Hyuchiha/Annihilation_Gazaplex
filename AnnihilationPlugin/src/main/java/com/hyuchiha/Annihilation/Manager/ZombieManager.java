@@ -109,8 +109,9 @@ public class ZombieManager {
     zombie.getEquipment().setArmorContents(armors);
     zombie.setRemoveWhenFarAway(false);
 
-    if (!zombies.containsKey(player.getName())) {
-      zombies.put(player.getName(), zombie);
+    String uuid = player.getUniqueId().toString();
+    if (!zombies.containsKey(uuid)) {
+      zombies.put(uuid, zombie);
     }
 
   }

@@ -4,7 +4,7 @@ import com.hyuchiha.Annihilation.Database.StatType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -109,6 +109,7 @@ public abstract class Database {
 
     if (loadedAccount != null) {
       loadedAccount.setName(name);
+      cachedAccounts.put(loadedAccount.getUUID(), loadedAccount);
       return loadedAccount;
     }
 
@@ -155,9 +156,6 @@ public abstract class Database {
   }
 
   public void close() {
-    Collection<Account> collection = this.cachedAccounts.values();
-
-    for (Account account : collection)
-      saveAccount(account);
+    new ArrayList<>(this.cachedAccounts.values()).forEach(this::saveAccount);
   }
 }
