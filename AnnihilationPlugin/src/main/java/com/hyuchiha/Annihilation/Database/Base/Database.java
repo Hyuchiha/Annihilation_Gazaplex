@@ -5,18 +5,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class Database {
-  protected final HashMap<String, Account> cachedAccounts;
+  protected final ConcurrentHashMap<String, Account> cachedAccounts;
   private final Plugin plugin;
 
   public Database(Plugin plugin) {
     this.plugin = plugin;
 
-    this.cachedAccounts = new HashMap<>();
+    this.cachedAccounts = new ConcurrentHashMap<>();
   }
 
   public boolean init() {

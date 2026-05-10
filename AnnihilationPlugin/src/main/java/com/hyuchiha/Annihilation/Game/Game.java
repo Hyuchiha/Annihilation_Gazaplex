@@ -96,6 +96,7 @@ public class Game {
 
     for (GameTeam team: GameTeam.teams()) {
       team.restartSpawns();
+      team.restartMembers();
     }
 
     for (Kit kit : Kit.values()) {
@@ -222,11 +223,15 @@ public class Game {
         return;
       }
       player.sendMessage(Translator.getPrefix() + ChatColor.DARK_AQUA + Translator.getColoredString("GAME.JOINED_TEAM").replace("%TEAM%", toJoin.coloredName()));
+      GameTeam oldTeam = gamePlayer.getTeam();
       gamePlayer.setTeam(toJoin);
 
       ScoreboardManager.getTeams().get(team.toUpperCase()).addEntry(player.getName());
 
-      SignManager.updateSigns();
+      if (oldTeam != toJoin && oldTeam != GameTeam.NONE) {
+        SignManager.updateIndividualSign(oldTeam);
+      }
+      SignManager.updateIndividualSign(toJoin);
 
       if (isInGame()) {
         gamePlayer.preparePlayerForGame();

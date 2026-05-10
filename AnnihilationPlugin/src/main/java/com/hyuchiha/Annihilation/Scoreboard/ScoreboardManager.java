@@ -156,6 +156,12 @@ public class ScoreboardManager {
     }
   }
 
+  public static void updatePlayerScoreboard(Player player) {
+    if (player != null && scoreboardBase != null) {
+      player.setScoreboard(scoreboardBase);
+    }
+  }
+
   public static void setTeam(GameTeam team) {
     teams.put(team.name(), scoreboardBase.registerNewTeam(team.name()));
     Team sbt = teams.get(team.name());

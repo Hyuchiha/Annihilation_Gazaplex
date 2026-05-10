@@ -47,20 +47,29 @@ public class GameManager {
     if (currentGame.canEndGame()) {
       currentGame.restartingTime();
 
-      for (Player player : Bukkit.getOnlinePlayers()) {
-        if (PlayerManager.getGamePlayer(player).getTeam() == currentGame.getWinner()) {
-          Account winnerData = Main.getInstance().getMainDatabase().getAccount(player.getUniqueId().toString(), player.getName());
-          winnerData.increaseWins();
+      Main main = Main.getInstance();
+      GameTeam winner = currentGame.getWinner();
 
-          Main.getInstance().getMainDatabase().saveAccount(winnerData);
+      for (Player player : Bukkit.getOnlinePlayers()) {
+        Account account;
+        if (PlayerManager.getGamePlayer(player).getTeam() == winner) {
+          account = main.getMainDatabase().getAccount(player.getUniqueId().toString(), player.getName());
+          if (account != null) {
+            account.increaseWins();
+          }
         } else {
-          Account looserAccount = Main.getInstance().getMainDatabase().getAccount(player.getUniqueId().toString(), player.getName());
-          Main.getInstance().getMainDatabase().saveAccount(looserAccount);
+          account = main.getMainDatabase().getAccount(player.getUniqueId().toString(), player.getName());
+        }
+
+        if (account != null) {
+          final Account toSave = account;
+          // Push DB write off the main thread; the account object stays usable post-cache-eviction.
+          Bukkit.getScheduler().runTaskAsynchronously(main, () -> main.getMainDatabase().saveAccount(toSave));
         }
       }
 
 
-      ChatUtil.winMessage(currentGame.getWinner());
+      ChatUtil.winMessage(winner);
     }
   }
 

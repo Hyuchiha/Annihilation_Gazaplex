@@ -109,7 +109,8 @@ public class GameListener implements Listener {
             .callEvent(new NexusDestroyEvent(breaker, victim));
       }
 
-      SignManager.updateSigns();
+      // Only the victim's nexus health line changed; other teams stay the same.
+      SignManager.updateIndividualSign(victim);
     }
   }
 

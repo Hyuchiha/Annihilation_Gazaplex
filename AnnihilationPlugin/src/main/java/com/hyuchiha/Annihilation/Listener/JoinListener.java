@@ -59,6 +59,9 @@ public class JoinListener implements Listener {
 
     if (GameManager.getCurrentGame().getPhase() == 0) {
       BossBarAPI.setMessage(player, Translator.getColoredString("BOSSBAR.WELCOME_TO_ANNIHILATION"), 1.0F);
+    } else if (GameManager.getCurrentGame().getTimer() != null) {
+      // Force next tick to rebroadcast so the new player gets the active phase BossBar.
+      GameManager.getCurrentGame().getTimer().invalidateBossBarCache();
     }
 
     gamePlayer.prepareLobbyPlayer();
@@ -96,7 +99,7 @@ public class JoinListener implements Listener {
     p.sendMessage(Translator.getPrefix() + Translator.getColoredString("INFO.NPC_JOIN_RESUMED"));
     XSound.ENTITY_PLAYER_LEVELUP.play(p.getLocation(), 1.0F, 1.0F);
     SignManager.updateIndividualSign(meta.getTeam());
-    ScoreboardManager.updatePlayerScoreboard();
+    ScoreboardManager.updatePlayerScoreboard(p);
     p.setGameMode(GameMode.SURVIVAL);
     p.updateInventory();
 

@@ -32,6 +32,10 @@ public class GameTimer {
   private boolean isRunning;
   private boolean gameStarted;
 
+  // Cache last broadcast values to skip re-broadcasting unchanged BossBar state.
+  private String lastBroadcastText = null;
+  private float lastBroadcastPercent = -1.0F;
+
   private Main plugin;
   private GameState state;
 
@@ -90,9 +94,21 @@ public class GameTimer {
     if (this.isRunning) {
       this.isRunning = false;
       this.time = -this.startTime;
+      this.lastBroadcastText = null;
+      this.lastBroadcastPercent = -1.0F;
       Bukkit.getServer().getScheduler().cancelTask(this.taskID);
       Bukkit.getServer().getScheduler().cancelTask(this.fwID);
     }
+  }
+
+  /**
+   * Force the next tick to re-broadcast the BossBar to every player.
+   * Use this when a player joins so the new player receives the current state
+   * even if the cached text/percent did not change.
+   */
+  public void invalidateBossBarCache() {
+    this.lastBroadcastText = null;
+    this.lastBroadcastPercent = -1.0F;
   }
 
   public void startResetTime(GameState state) {
@@ -213,8 +229,6 @@ public class GameTimer {
     }
 
 
-    SignManager.updateSigns();
-
     sendRemainingTime(text, percent);
   }
 
@@ -250,6 +264,11 @@ public class GameTimer {
 
 
   private void sendRemainingTime(String message, float percent) {
+    if (message != null && message.equals(this.lastBroadcastText) && percent == this.lastBroadcastPercent) {
+      return;
+    }
+    this.lastBroadcastText = message;
+    this.lastBroadcastPercent = percent;
     for (Player p : Bukkit.getOnlinePlayers()) {
       BossBarAPI.setMessage(p, message, percent);
     }

@@ -27,13 +27,18 @@ public abstract class SQLDB extends Database {
 
     this.plugin = plugin;
 
+    // The JDBC Connection is shared between this ping task and any other thread that
+    // calls saveAccount/loadAccount; synchronize on `this` so a single thread uses it
+    // at a time. Without this, async saves race with the ping and corrupt the stream.
     plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
-      try {
-        if (connection != null && !connection.isClosed()) {
-          connection.createStatement().execute("/* ping */ SELECT 1");
+      synchronized (this) {
+        try {
+          if (connection != null && !connection.isClosed()) {
+            connection.createStatement().execute("/* ping */ SELECT 1");
+          }
+        } catch (SQLException e) {
+          connection = getNewConnection();
         }
-      } catch (SQLException e) {
-        connection = getNewConnection();
       }
     }, 60 * 20, 60 * 20);
   }
@@ -42,7 +47,7 @@ public abstract class SQLDB extends Database {
     return checkConnection();
   }
 
-  public boolean checkConnection() {
+  public synchronized boolean checkConnection() {
     try {
       if (connection == null || connection.isClosed()) {
         connection = getNewConnection();
@@ -74,11 +79,11 @@ public abstract class SQLDB extends Database {
 
   protected abstract Connection getNewConnection();
 
-  public boolean query(String sql) throws SQLException {
+  public synchronized boolean query(String sql) throws SQLException {
     return connection.createStatement().execute(sql);
   }
 
-  public void close() {
+  public synchronized void close() {
     super.close();
 
     try {
@@ -105,7 +110,7 @@ public abstract class SQLDB extends Database {
     }
   }
 
-  protected List<Account> loadTopAccountsByStatType(StatType type, int size) {
+  protected synchronized List<Account> loadTopAccountsByStatType(StatType type, int size) {
     checkConnection();
 
     String sql = "SELECT * FROM " + ACCOUNTS_TABLE + " ORDER BY " + type.name().toLowerCase() + " DESC limit " + size;
@@ -135,7 +140,7 @@ public abstract class SQLDB extends Database {
     return topAccounts;
   }
 
-  protected void createAccountAndAddToDatabase(Account account) {
+  protected synchronized void createAccountAndAddToDatabase(Account account) {
     checkConnection();
 
     try {
@@ -153,7 +158,7 @@ public abstract class SQLDB extends Database {
     }
   }
 
-  protected Account loadAccount(String uuid) {
+  protected synchronized Account loadAccount(String uuid) {
     checkConnection();
 
     Output.log("Loading account with uuid: " + uuid);
@@ -198,7 +203,7 @@ public abstract class SQLDB extends Database {
     }
   }
 
-  public void saveAccount(Account account) {
+  public synchronized void saveAccount(Account account) {
     checkConnection();
 
 
@@ -216,7 +221,7 @@ public abstract class SQLDB extends Database {
   }
 
   @Override
-  public void addUnlockedKit(String uuid, String kit) {
+  public synchronized void addUnlockedKit(String uuid, String kit) {
     checkConnection();
 
     try {
@@ -250,7 +255,7 @@ public abstract class SQLDB extends Database {
     }
   }
 
-  private int getIdOfElement(String name) {
+  private synchronized int getIdOfElement(String name) {
     checkConnection();
 
     try {
@@ -275,7 +280,7 @@ public abstract class SQLDB extends Database {
     return -1;
   }
 
-  private List<Kit> getKitsFromAccount(String uuid) {
+  private synchronized List<Kit> getKitsFromAccount(String uuid) {
     checkConnection();
 
     List<Kit> kits = new ArrayList<>();

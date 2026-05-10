@@ -39,7 +39,7 @@ public class BlockListener implements Listener {
         return;
       }
       if (GameUtils.tooClose(e.getBlock().getLocation()) &&
-              PermissionUtils.hasPermission(e.getPlayer(), "annihilation.bypass.construction")) {
+              !PermissionUtils.hasPermission(e.getPlayer(), "annihilation.bypass.construction")) {
         e.setCancelled(true);
         e.getPlayer().sendMessage(Translator.getColoredString("ERRORS.TOO_CLOSE_NEXUS"));
       }

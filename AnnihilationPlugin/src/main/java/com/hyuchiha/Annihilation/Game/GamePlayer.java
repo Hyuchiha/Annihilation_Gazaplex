@@ -51,7 +51,12 @@ public class GamePlayer {
   }
 
   public void setTeam(GameTeam t) {
-    this.team = (t != null) ? t : GameTeam.NONE;
+    GameTeam newTeam = (t != null) ? t : GameTeam.NONE;
+    if (this.team != null && this.team != newTeam) {
+      this.team.removeMember(this.playerUUID);
+    }
+    this.team = newTeam;
+    newTeam.addMember(this.playerUUID);
   }
 
   public boolean isAlive() {
@@ -100,7 +105,7 @@ public class GamePlayer {
 
     this.state = PlayerState.LOBBY_GAME;
 
-    ScoreboardManager.updatePlayerScoreboard();
+    ScoreboardManager.updatePlayerScoreboard(player);
 
     player.setGameMode(GameMode.SURVIVAL);
 

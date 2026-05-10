@@ -50,15 +50,17 @@ public class QuitListener implements Listener {
   }
 
   private void handleDisconnect(Player player) {
-    SignManager.updateSigns();
-
     GamePlayer gamePlayer = PlayerManager.getGamePlayer(player);
     String playerName = player.getName();
+    GameTeam playerTeam = gamePlayer.getTeam();
 
     Database database = this.plugin.getMainDatabase();
     Account account = database.getAccount(player.getUniqueId().toString(), playerName);
 
     if (account != null) {
+      // Sync save here so the data is persisted before plugin shutdown can cancel async tasks.
+      // The SQLDB lock makes concurrent saves serial anyway, so async dispatch wouldn't help much
+      // with a single per-disconnect save.
       database.saveAccount(account);
       database.removeCachedAccount(account);
     }
@@ -67,24 +69,29 @@ public class QuitListener implements Listener {
     TimersUtils.clearPlayer(player);
     FastBreakProtect.clearPlayer(player);
 
-    if (gamePlayer.getTeam() == GameTeam.NONE) {
+    if (playerTeam == GameTeam.NONE) {
       PlayerSerializer.delete(playerName);
       PlayerManager.removePlayer(player);
+      SignManager.updateIndividualSign(playerTeam);
       return;
     }
     if (player.getLocation().getY() <= 0.0D || GameUtils.isFallingToVoid(player)) {
       PlayerSerializer.removeItems(playerName);
+      playerTeam.removeMember(player.getUniqueId());
       PlayerManager.removePlayer(player);
+      SignManager.updateIndividualSign(playerTeam);
       return;
     }
 
     PlayerSerializer.SerializePlayer(player);
 
-    if (GameManager.getCurrentGame() != null && GameManager.getCurrentGame().getPhase() > 0 && gamePlayer.getTeam() != GameTeam.NONE) {
+    if (GameManager.getCurrentGame() != null && GameManager.getCurrentGame().getPhase() > 0 && playerTeam != GameTeam.NONE) {
       // createZombiePlayer reads the GamePlayer internally, so remove AFTER zombie creation
       ZombieManager.createZombiePlayer(player);
     }
 
+    playerTeam.removeMember(player.getUniqueId());
     PlayerManager.removePlayer(player);
+    SignManager.updateIndividualSign(playerTeam);
   }
 }

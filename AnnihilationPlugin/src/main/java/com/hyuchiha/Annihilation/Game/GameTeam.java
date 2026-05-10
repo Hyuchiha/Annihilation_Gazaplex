@@ -10,6 +10,9 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public enum GameTeam {
@@ -20,6 +23,7 @@ public enum GameTeam {
   private Nexus nexus;
 
   private List<Location> spawns;
+  private final Set<UUID> members = ConcurrentHashMap.newKeySet();
 
   GameTeam() {
     switch (name()) {
@@ -131,9 +135,13 @@ public enum GameTeam {
   }
 
   public List<Player> getPlayers() {
-    List<Player> players = new ArrayList<>();
-    for (Player p : Bukkit.getOnlinePlayers()) {
-      if (PlayerManager.getGamePlayer(p).getTeam() == this && this != NONE) {
+    if (this == NONE) {
+      return Collections.emptyList();
+    }
+    List<Player> players = new ArrayList<>(this.members.size());
+    for (UUID uuid : this.members) {
+      Player p = Bukkit.getPlayer(uuid);
+      if (p != null) {
         players.add(p);
       }
     }
@@ -141,15 +149,55 @@ public enum GameTeam {
   }
 
   public int getPlayersAlive() {
-    List<Player> players = new ArrayList<>();
-    for (Player player : getPlayers()) {
-      GamePlayer gm = PlayerManager.getGamePlayer(player);
+    if (this == NONE) {
+      return 0;
+    }
+    int count = 0;
+    for (UUID uuid : this.members) {
+      Player p = Bukkit.getPlayer(uuid);
+      if (p == null) continue;
+      GamePlayer gm = PlayerManager.getGamePlayer(p);
       if (gm.isAlive()) {
-        players.add(player);
+        count++;
       }
     }
+    return count;
+  }
 
-    return players.size();
+  public void addMember(UUID uuid) {
+    if (this == NONE || uuid == null) {
+      return;
+    }
+    this.members.add(uuid);
+  }
+
+  public void removeMember(UUID uuid) {
+    if (uuid == null) {
+      return;
+    }
+    this.members.remove(uuid);
+  }
+
+  public void restartMembers() {
+    this.members.clear();
+  }
+
+  public int memberCount() {
+    return this.members.size();
+  }
+
+  /** Count members that currently have an online {@link Player}. O(team_size). */
+  public int onlineMemberCount() {
+    if (this == NONE) {
+      return 0;
+    }
+    int count = 0;
+    for (UUID uuid : this.members) {
+      if (Bukkit.getPlayer(uuid) != null) {
+        count++;
+      }
+    }
+    return count;
   }
 
   public boolean isTeamAlive() {
