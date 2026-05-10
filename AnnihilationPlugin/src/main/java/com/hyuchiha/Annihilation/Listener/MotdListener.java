@@ -57,7 +57,7 @@ public class MotdListener implements Listener {
           e.setMotd(ChatColor.translateAlternateColorCodes('&', motdlobby));
           return;
         }
-        if (GameManager.getCurrentGame().getPhase() < this.plugin.getConfig().getInt("lastJoinPhase") + 1 && GameManager.getCurrentGame().getPhase() != 0) {
+        if (GameManager.getCurrentGame().getPhase() < this.plugin.getConfig().getInt("lastJoinPhase", 3) + 1 && GameManager.getCurrentGame().getPhase() != 0) {
           motdstart = motdstart.replaceAll("%PHASE%", String.valueOf(GameManager.getCurrentGame().getPhase()));
           e.setMotd(ChatColor.translateAlternateColorCodes('&', motdstart));
           return;

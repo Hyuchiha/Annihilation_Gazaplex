@@ -33,13 +33,13 @@ public class Game {
     Configuration config = plugin.getConfig("config.yml");
     boolean forceEnd = config.getBoolean("ForceGameEnding", false);
 
-    int startDelay = config.getInt("start-delay");
-    int phasePeriod = config.getInt("phase-period");
-    int restartDelay = config.getInt("restart-delay");
+    int startDelay = config.getInt("start-delay", 120);
+    int phasePeriod = config.getInt("phase-period", 600);
+    int restartDelay = config.getInt("restart-delay", 30);
 
     if (forceEnd) {
-      int hours = config.getInt("Force-end.hours");
-      int minutes = config.getInt("Force-end.minutes");
+      int hours = config.getInt("Force-end.hours", 1);
+      int minutes = config.getInt("Force-end.minutes", 0);
       this.timer = new GameTimer(plugin, startDelay, phasePeriod, restartDelay, hours, minutes);
     } else {
       this.timer = new GameTimer(plugin, startDelay, phasePeriod, restartDelay);
@@ -89,6 +89,11 @@ public class Game {
   public void endGame() {
     Output.log("Ending game for map: " + MapManager.getCurrentMap().getName());
 
+    // Reset the scoreboard FIRST so each prepareLobbyPlayer binds the player to the
+    // fresh lobby scoreboardBase via its per-player setScoreboard. Doing it after the
+    // loop would mean we bind to the old in-game scoreboard then re-bind, doubling work.
+    ScoreboardManager.resetScoreboard(Translator.getColoredString("SCOREBOARDS.SB_LOBBY_TITLE"));
+
     for (Player player : Bukkit.getOnlinePlayers()) {
       GamePlayer gp = PlayerManager.getGamePlayer(player);
       gp.prepareLobbyPlayer();
@@ -102,9 +107,6 @@ public class Game {
     for (Kit kit : Kit.values()) {
       kit.resetKit();
     }
-
-    ScoreboardManager.resetScoreboard(Translator.getColoredString("SCOREBOARDS.SB_LOBBY_TITLE"));
-    ScoreboardManager.updatePlayerScoreboard();
 
     this.timer.stop();
 
@@ -151,21 +153,22 @@ public class Game {
     int rnex = 0, bnex = 0, gnex = 0, ynex = 0;
 
     for (GameTeam g : GameTeam.teams()) {
+      // A nexus may not be loaded if the map was switched mid-game or a force-stop fires
+      // before phase 1; treat absent nexus as 0 HP so the comparisons still pick a winner.
+      int hp = (g.getNexus() != null) ? g.getNexus().getHealth() : 0;
 
       switch (g) {
         case BLUE:
-          bnex = g.getNexus().getHealth();
+          bnex = hp;
           break;
         case GREEN:
-          gnex = g.getNexus().getHealth();
+          gnex = hp;
           break;
-
         case RED:
-          rnex = g.getNexus().getHealth();
+          rnex = hp;
           break;
-
         case YELLOW:
-          ynex = g.getNexus().getHealth();
+          ynex = hp;
           break;
       }
     }

@@ -58,9 +58,9 @@ public class QuitListener implements Listener {
     Account account = database.getAccount(player.getUniqueId().toString(), playerName);
 
     if (account != null) {
-      // Sync save here so the data is persisted before plugin shutdown can cancel async tasks.
-      // The SQLDB lock makes concurrent saves serial anyway, so async dispatch wouldn't help much
-      // with a single per-disconnect save.
+      // Sync save: a single per-disconnect save is cheap on the Hikari pool, and keeping
+      // it synchronous guarantees the data is persisted before Bukkit cancels any pending
+      // async tasks during plugin shutdown.
       database.saveAccount(account);
       database.removeCachedAccount(account);
     }

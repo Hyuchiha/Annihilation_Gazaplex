@@ -67,6 +67,9 @@ public class BlockListener implements Listener {
   public void onBreakBlockNexus(BlockBreakEvent event) {
     if (GameManager.getCurrentGame().isInGame() && GameManager.getCurrentGame().getPhase() > 0) {
       for (GameTeam team : GameTeam.teams()) {
+        if (team.getNexus() == null) {
+          continue;
+        }
         if (team.getNexus().getLocation().equals(event.getBlock().getLocation())) {
           event.setCancelled(true);
 

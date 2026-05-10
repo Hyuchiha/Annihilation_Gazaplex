@@ -77,7 +77,7 @@ public class PlayerListener implements Listener {
     if (GameManager.getCurrentGame().isInGame()) {
       GamePlayer gm = PlayerManager.getGamePlayer(player);
 
-      if (gm.getTeam() != GameTeam.NONE && !gm.getTeam().getNexus().isAlive()) {
+      if (gm.getTeam() != GameTeam.NONE && !gm.getTeam().isTeamAlive()) {
         gm.setAlive(false);
       }
 
@@ -90,12 +90,14 @@ public class PlayerListener implements Listener {
         Player killer = player.getKiller();
 
         GamePlayer gpKiller = PlayerManager.getGamePlayer(killer);
-        gpKiller.addXp(this.config.getInt("Exp-player-kill"));
+        gpKiller.addXp(this.config.getInt("Exp-player-kill", 100));
 
         Account data = this.plugin.getMainDatabase().getAccount(killer.getUniqueId().toString(), killer.getName());
-        data.increaseKills();
+        if (data != null) {
+          data.increaseKills();
+        }
 
-        double money = this.config.getDouble("Money-player-kill");
+        double money = this.config.getDouble("Money-player-kill", 5.0);
         double vipMoney = PlayerManager.calculateVipMoneyGive(killer, money);
         PlayerManager.addMoney(killer, vipMoney);
 

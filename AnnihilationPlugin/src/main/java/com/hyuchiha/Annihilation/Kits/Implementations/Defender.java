@@ -122,6 +122,9 @@ public class Defender extends BaseKit {
 
         if (TimersUtils.hasExpired(player, Kit.DEFENDER)) {
           Nexus nexus = gPlayer.getTeam().getNexus();
+          if (nexus == null) {
+            return;
+          }
           Location nexusLocation = nexus.getLocation().clone();
           nexusLocation.add(1, 0, 1);
           player.teleport(nexusLocation);
@@ -137,6 +140,9 @@ public class Defender extends BaseKit {
   private void applyHearts(Player player) {
     GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
     Nexus nexus = gPlayer.getTeam().getNexus();
+    if (nexus == null) {
+      return;
+    }
 
     if (GameUtils.nearLocation(nexus.getLocation(), player.getLocation(), 50)) {
       int health = nexus.getHealth();

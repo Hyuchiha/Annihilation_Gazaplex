@@ -14,7 +14,7 @@ public class GameManager {
   private static volatile Game currentGame = null;
 
   public static boolean canStartGame() {
-    int requiredToStart = Main.getInstance().getConfig("config.yml").getInt("requiredToStart");
+    int requiredToStart = Main.getInstance().getConfig("config.yml").getInt("requiredToStart", 4);
 
     if (currentGame != null && currentGame.isInGame()) {
       return false;
@@ -50,24 +50,27 @@ public class GameManager {
       Main main = Main.getInstance();
       GameTeam winner = currentGame.getWinner();
 
-      for (Player player : Bukkit.getOnlinePlayers()) {
-        Account account;
-        if (PlayerManager.getGamePlayer(player).getTeam() == winner) {
-          account = main.getMainDatabase().getAccount(player.getUniqueId().toString(), player.getName());
-          if (account != null) {
-            account.increaseWins();
-          }
-        } else {
-          account = main.getMainDatabase().getAccount(player.getUniqueId().toString(), player.getName());
-        }
-
-        if (account != null) {
-          final Account toSave = account;
-          // Push DB write off the main thread; the account object stays usable post-cache-eviction.
-          Bukkit.getScheduler().runTaskAsynchronously(main, () -> main.getMainDatabase().saveAccount(toSave));
-        }
+      // If somehow every team's nexus died simultaneously there is no winner; skip the
+      // win/loss bookkeeping so we don't NPE inside increaseWins/saveAccount.
+      if (winner == null || winner == GameTeam.NONE) {
+        Output.log("canEndGame: no winning team detected, skipping win/loss saves.");
+        return;
       }
 
+      for (Player player : Bukkit.getOnlinePlayers()) {
+        Account account = main.getMainDatabase().getAccount(player.getUniqueId().toString(), player.getName());
+        if (account == null) {
+          continue;
+        }
+
+        if (PlayerManager.getGamePlayer(player).getTeam() == winner) {
+          account.increaseWins();
+        }
+
+        final Account toSave = account;
+        // Push DB write off the main thread; the account object stays usable post-cache-eviction.
+        Bukkit.getScheduler().runTaskAsynchronously(main, () -> main.getMainDatabase().saveAccount(toSave));
+      }
 
       ChatUtil.winMessage(winner);
     }
@@ -77,12 +80,20 @@ public class GameManager {
   public static void forceStopGame() {
     Output.log("Force stop game");
     if (currentGame != null && currentGame.getPhase() > 0) {
+      Main main = Main.getInstance();
       GameTeam winner = currentGame.getForcedWinner();
-      if (winner != GameTeam.NONE) {
+
+      if (winner != null && winner != GameTeam.NONE) {
         for (Player player : Bukkit.getOnlinePlayers()) {
           if (PlayerManager.getGamePlayer(player).getTeam() == winner) {
-            Account winnerData = Main.getInstance().getMainDatabase().getAccount(player.getUniqueId().toString(), player.getName());
+            Account winnerData = main.getMainDatabase().getAccount(player.getUniqueId().toString(), player.getName());
+            if (winnerData == null) {
+              continue;
+            }
+            // Preserve the historical behavior of crediting nexus_damage on forced wins.
             winnerData.increaseNexusDamage();
+            final Account toSave = winnerData;
+            Bukkit.getScheduler().runTaskAsynchronously(main, () -> main.getMainDatabase().saveAccount(toSave));
           }
         }
       }

@@ -67,21 +67,30 @@ public class GameListener implements Listener {
   @EventHandler
   public void onNexusDamage(NexusDamageEvent event) {
     GamePlayer breaker = event.getBreaker();
+    Player breakerPlayer = breaker.getPlayer();
+    if (breakerPlayer == null) {
+      return; // Breaker disconnected between block break and event dispatch.
+    }
 
     GameTeam victim = event.getTeam();
     GameTeam attacker = breaker.getTeam();
     if (victim == attacker) {
-      breaker.getPlayer().sendMessage(Translator.getPrefix() + Translator.getColoredString("ERRORS.DAMAGE_OWN_NEXUS"));
+      breakerPlayer.sendMessage(Translator.getPrefix() + Translator.getColoredString("ERRORS.DAMAGE_OWN_NEXUS"));
     } else if (GameManager.getCurrentGame().getPhase() < 2) {
-      breaker.getPlayer().sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.NO_DAMAGE_PHASE"));
+      breakerPlayer.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.NO_DAMAGE_PHASE"));
     } else {
+      if (victim.getNexus() == null) {
+        return; // Defensive: nexus should always exist past phase 1, but skip if not.
+      }
       int damage = (GameManager.getCurrentGame().getPhase() == 5) ? 2 : 1;
       victim.getNexus().damage(damage);
 
-      Account data = this.plugin.getMainDatabase().getAccount(breaker.getPlayer().getUniqueId().toString(), breaker.getPlayer().getName());
-      data.increaseNexusDamage();
+      Account data = this.plugin.getMainDatabase().getAccount(breakerPlayer.getUniqueId().toString(), breakerPlayer.getName());
+      if (data != null) {
+        data.increaseNexusDamage();
+      }
 
-      String msg = ChatUtil.nexusBreakMessage(breaker.getPlayer(), attacker, victim);
+      String msg = ChatUtil.nexusBreakMessage(breakerPlayer, attacker, victim);
       // ChatUtil.broadcast(msg); Old broadcast
       for (Player player : Bukkit.getOnlinePlayers()) {
         ActionBar.sendActionBar(player, msg);
@@ -100,9 +109,9 @@ public class GameListener implements Listener {
       nexus.add(0.5D, 0.0D, 0.5D);
       ParticleManager.createNexusBreakParticle(nexus);
 
-      double money = this.plugin.getConfig("config.yml").getDouble("Money-nexus-hit");
-      double vipMoney = PlayerManager.calculateVipMoneyGive(breaker.getPlayer(), money);
-      PlayerManager.addMoney(breaker.getPlayer(), vipMoney);
+      double money = this.plugin.getConfig("config.yml").getDouble("Money-nexus-hit", 1.0);
+      double vipMoney = PlayerManager.calculateVipMoneyGive(breakerPlayer, money);
+      PlayerManager.addMoney(breakerPlayer, vipMoney);
 
       if (victim.getNexus().getHealth() <= 0) {
         Bukkit.getServer().getPluginManager()
@@ -117,29 +126,35 @@ public class GameListener implements Listener {
   @EventHandler
   public void onNexusDestroy(NexusDestroyEvent event) {
     GamePlayer breaker = event.getBreaker();
+    Player breakerPlayer = breaker.getPlayer();
 
     final GameTeam victim = event.getVictim();
     final GameTeam attacker = breaker.getTeam();
 
+    if (victim.getNexus() == null) {
+      return; // Defensive: a destroy event without a loaded nexus is malformed; abort.
+    }
     Location nexusLocation = victim.getNexus().getLocation();
     ParticleManager.createParticleNexusDestroy(nexusLocation);
 
-    // Account data = this.plugin.getMainDatabase().getAccount(breaker.getPlayer().getUniqueId().toString(), breaker.getPlayer().getName());
+    if (breakerPlayer != null) {
+      double money = this.plugin.getConfig("config.yml").getDouble("Money-nexus-kill", 50.0);
+      double vipMoney = PlayerManager.calculateVipMoneyGive(breakerPlayer, money);
+      PlayerManager.addMoney(breakerPlayer, vipMoney);
 
-    double money = this.plugin.getConfig("config.yml").getDouble("Money-nexus-kill");
-    double vipMoney = PlayerManager.calculateVipMoneyGive(breaker.getPlayer(), money);
-    PlayerManager.addMoney(breaker.getPlayer(), vipMoney);
+      ChatUtil.nexusDestroyed(attacker, victim, breakerPlayer);
+    }
 
     ScoreboardManager.removeTeamScoreboard(victim);
-
-    ChatUtil.nexusDestroyed(attacker, victim, breaker.getPlayer());
 
     GameManager.canEndGame();
 
     for (Player player : Bukkit.getOnlinePlayers()) {
       if (PlayerManager.getGamePlayer(player).getTeam() == victim) {
         Account victimData = this.plugin.getMainDatabase().getAccount(player.getUniqueId().toString(), player.getName());
-        victimData.increaseLosses();
+        if (victimData != null) {
+          victimData.increaseLosses();
+        }
       }
       XSound.ENTITY_GENERIC_EXPLODE.play(player, 1.0F, 1.25F);
     }

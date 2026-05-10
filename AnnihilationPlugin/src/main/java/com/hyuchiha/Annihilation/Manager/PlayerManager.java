@@ -161,7 +161,7 @@ public class PlayerManager {
       }
     }
 
-    if (Main.getInstance().getConfig("config.yml").getBoolean("showMoneyEarn")) {
+    if (Main.getInstance().getConfig("config.yml").getBoolean("showMoneyEarn", false)) {
       player.sendMessage(Translator.getPrefix() + Translator.getColoredString("GAME.PLAYER_MONEY_GRANT")
               .replace("%MONEY%", Double.toString(moneyToGive)));
     }

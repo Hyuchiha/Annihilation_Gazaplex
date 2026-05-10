@@ -201,9 +201,6 @@ public class BossManager {
   private static ItemStack loadItem(ConfigurationSection config, String itemName) {
     try {
       String material = config.getString(itemName + ".type");
-
-      Output.log("Material:" + material + "-ToFound");
-
       Material type = XMaterial.matchXMaterial(material).get().get();
 
       ItemStack item = null;
@@ -214,42 +211,29 @@ public class BossManager {
         boolean splash = config.getBoolean(itemName + ".splash");
         boolean extended = config.getBoolean(itemName + ".extended");
 
-        // Obtén el XPotion del nombre base.
         XPotion xPotion = XPotion.of(potionType).orElse(null);
 
         if (xPotion != null) {
-          // Obtén el PotionEffectType.
           PotionEffectType effectType = xPotion.getPotionEffectType();
 
-          // Ajusta la duración y el amplificador según si es extendida o no.
-          int duration = 0;
+          int duration;
           int amplifier = potionEffectNum;
 
           if (extended) {
-            // Asigna la duración de una poción extendida
-            // XPotion.parseEffect() usa 2400 ticks (2 minutos). Debes definir la tuya.
-            // Una poción extendida suele durar el doble o más. Usamos una base de ejemplo.
-            duration = 9600; // Por ejemplo, 8 minutos (9600 ticks) para una poción normal. Ajusta según tus necesidades.
-
-            // Las pociones extendidas no pueden tener un amplificador alto, generalmente 0.
+            // Extended potion: longer duration, amplifier capped at 0 (vanilla constraint).
+            duration = 9600; // 8 minutes
             amplifier = 0;
           } else {
-            // Asigna la duración normal de una poción.
-            // La duración estándar es de 180 segundos (3600 ticks). Ajusta según tu lógica.
-            duration = 3600;
+            duration = 3600; // 3 minutes
           }
 
-          // Crea el ItemStack y el PotionMeta.
           ItemStack newPotionItemStack = splash ? XMaterial.SPLASH_POTION.parseItem() : XMaterial.POTION.parseItem();
           PotionMeta newPotionMeta = (PotionMeta) newPotionItemStack.getItemMeta();
 
-          // Crea el PotionEffect con la duración y el amplificador correctos.
           PotionEffect newEffect = new PotionEffect(effectType, duration, amplifier - 1);
 
-          // Agrega el efecto al PotionMeta.
           newPotionMeta.addCustomEffect(newEffect, true);
 
-          // Aplica el meta y asigna el item.
           newPotionItemStack.setItemMeta(newPotionMeta);
           item = newPotionItemStack;
         }
@@ -277,11 +261,14 @@ public class BossManager {
 
       if (config.getBoolean(itemName + ".hasMeta")) {
         ItemMeta meta = item.getItemMeta();
-        String displayName = config.getString(itemName + ".displayName");
-        List<String> lore = config.getStringList(itemName + ".lore");
+        if (meta != null) {
+          String displayName = config.getString(itemName + ".displayName");
+          List<String> lore = config.getStringList(itemName + ".lore");
 
-        meta.setDisplayName(displayName);
-        meta.setLore(lore);
+          meta.setDisplayName(displayName);
+          meta.setLore(lore);
+          item.setItemMeta(meta);
+        }
       }
 
       return item;

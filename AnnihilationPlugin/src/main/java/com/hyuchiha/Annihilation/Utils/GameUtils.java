@@ -39,6 +39,9 @@ public class GameUtils {
     double z = loc.getZ();
 
     for (GameTeam team : GameTeam.teams()) {
+      if (team.getNexus() == null) {
+        continue;
+      }
       Location nexusLoc = team.getNexus().getLocation();
       double nX = nexusLoc.getX();
       double nZ = nexusLoc.getZ();
@@ -182,7 +185,7 @@ public class GameUtils {
   }
 
   private static int getBuildDistance() {
-    return Main.getInstance().getConfig("config.yml").getInt("build");
+    return Main.getInstance().getConfig("config.yml").getInt("build", 30);
   }
 
   public static ItemStack getDyeColor(DyeColor color) {

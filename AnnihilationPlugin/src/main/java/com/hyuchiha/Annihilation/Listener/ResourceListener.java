@@ -7,7 +7,6 @@ import com.hyuchiha.Annihilation.Game.Resource;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Manager.ResourceManager;
-import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Utils.GameUtils;
 import org.bukkit.Effect;
 import org.bukkit.GameMode;
@@ -69,8 +68,6 @@ public class ResourceListener implements Listener {
       e.setCancelled(true);
 
       ItemStack itemInHand = e.getPlayer().getInventory().getItemInMainHand();
-
-      Output.log("Item in hand: " + itemInHand);
 
       if (itemInHand != null) {
         GameUtils.damageItem(itemInHand, 4);

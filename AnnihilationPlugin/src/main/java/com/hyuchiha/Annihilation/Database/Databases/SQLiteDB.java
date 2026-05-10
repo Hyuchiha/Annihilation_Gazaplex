@@ -4,13 +4,11 @@ import com.hyuchiha.Annihilation.Database.Base.Account;
 import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Output.Output;
+import com.zaxxer.hikari.HikariConfig;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 public class SQLiteDB extends SQLDB {
 
@@ -18,12 +16,11 @@ public class SQLiteDB extends SQLDB {
 
   public SQLiteDB(Main plugin) {
     super(plugin);
-
     this.plugin = plugin;
   }
 
   @Override
-  protected Connection getNewConnection() {
+  protected HikariConfig buildHikariConfig() {
     File dataFolder = new File(plugin.getDataFolder(), "database.db");
 
     if (!dataFolder.exists()) {
@@ -34,18 +31,16 @@ public class SQLiteDB extends SQLDB {
       }
     }
 
-    try {
-      Class.forName("org.sqlite.JDBC");
-
-      return DriverManager.getConnection("jdbc:sqlite:" + dataFolder);
-    } catch (SQLException ex) {
-      Output.logError("SQLite exception on initialize");
-      ex.printStackTrace();
-    } catch (ClassNotFoundException ex) {
-      Output.logError("You need the SQLite JBDC library. Google it. Put it in /lib folder.");
-    }
-
-    return null;
+    HikariConfig hc = new HikariConfig();
+    hc.setJdbcUrl("jdbc:sqlite:" + dataFolder.getAbsolutePath());
+    hc.setDriverClassName("org.sqlite.JDBC");
+    hc.setPoolName("Annihilation-SQLite");
+    // SQLite serializes writes at the file level. Pool size 1 keeps things simple
+    // and avoids "database is locked" errors under contention.
+    hc.setMaximumPoolSize(1);
+    hc.setMinimumIdle(1);
+    hc.setConnectionTimeout(10_000);
+    return hc;
   }
 
   @Override

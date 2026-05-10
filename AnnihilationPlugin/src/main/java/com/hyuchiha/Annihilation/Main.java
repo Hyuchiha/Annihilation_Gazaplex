@@ -97,7 +97,9 @@ public class Main extends JavaPlugin {
 
     ShopManager.clearShops();
 
-    this.database.close();
+    if (this.database != null) {
+      this.database.close();
+    }
   }
 
   private void easterEgg() {
@@ -205,7 +207,8 @@ public class Main extends JavaPlugin {
   public void initDatabase() {
     Configuration configValues = getConfig("config.yml");
 
-    switch (configValues.getString("Database.type")) {
+    String dbType = configValues.getString("Database.type", "SQLite");
+    switch (dbType) {
       case "MySQL":
         this.database = new MySQLDB(this);
         break;
@@ -214,6 +217,10 @@ public class Main extends JavaPlugin {
         break;
       case "MongoDB":
         this.database = new MongoDB(this);
+        break;
+      default:
+        Output.logError("Unknown Database.type '" + dbType + "', falling back to SQLite.");
+        this.database = new SQLiteDB(this);
         break;
     }
 

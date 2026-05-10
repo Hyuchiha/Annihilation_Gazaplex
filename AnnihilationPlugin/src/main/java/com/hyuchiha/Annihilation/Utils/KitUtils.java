@@ -58,7 +58,7 @@ public class KitUtils {
   }
 
   public static void showKitItemDelay(Player player, Kit kit) {
-    String remainingTime = TimersUtils.geDelayRemaining(player, kit);
+    String remainingTime = TimersUtils.getDelayRemaining(player, kit);
     String message = Translator.getColoredString("GAME.DELAY").replace("%TIME%", remainingTime);
     //player.sendMessage(message);
     ActionBar.sendActionBar(player, message);

@@ -3,11 +3,9 @@ package com.hyuchiha.Annihilation.Database.Databases;
 import com.hyuchiha.Annihilation.Database.Base.Account;
 import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Main;
+import com.zaxxer.hikari.HikariConfig;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
 
 public class MySQLDB extends SQLDB {
   private final Plugin plugin;
@@ -17,20 +15,28 @@ public class MySQLDB extends SQLDB {
     this.plugin = plugin;
   }
 
-  protected Connection getNewConnection() {
+  @Override
+  protected HikariConfig buildHikariConfig() {
     ConfigurationSection config = getConfigSection();
 
-    try {
-      Class.forName("com.mysql.jdbc.Driver");
+    HikariConfig hc = new HikariConfig();
+    String url = "jdbc:mysql://" + config.getString("host") + ":" + config.getString("port") + "/"
+        + config.getString("name")
+        + "?useSSL=false&autoReconnect=true&allowPublicKeyRetrieval=true";
 
-      String url = "jdbc:mysql://" + config.getString("host") + ":" + config.getString("port") + "/" + config.getString("name")
-          + "?useSSL=false&autoReconnect=true&allowPublicKeyRetrieval=true";
-
-      return DriverManager.getConnection(url, config.getString("user"), config.getString("pass"));
-    } catch (Exception e) {
-      e.printStackTrace();
-      return null;
-    }
+    hc.setJdbcUrl(url);
+    hc.setUsername(config.getString("user"));
+    hc.setPassword(config.getString("pass"));
+    hc.setDriverClassName("com.mysql.jdbc.Driver");
+    hc.setPoolName("Annihilation-MySQL");
+    // Bounded pool sized for a Spigot server: a handful of concurrent saves at game-end
+    // is the realistic peak; tune via config if needed.
+    hc.setMaximumPoolSize(config.getInt("pool-size", 10));
+    hc.setMinimumIdle(2);
+    hc.setConnectionTimeout(10_000);
+    hc.setIdleTimeout(600_000);
+    hc.setMaxLifetime(1_800_000);
+    return hc;
   }
 
   @Override

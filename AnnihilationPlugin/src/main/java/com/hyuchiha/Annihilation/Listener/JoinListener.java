@@ -13,7 +13,6 @@ import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Manager.SignManager;
 import com.hyuchiha.Annihilation.Manager.ZombieManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
-import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Scoreboard.ScoreboardManager;
 import com.hyuchiha.Annihilation.Serializers.PlayerSerializer;
 import com.hyuchiha.Annihilation.Utils.PermissionUtils;
@@ -103,18 +102,12 @@ public class JoinListener implements Listener {
     p.setGameMode(GameMode.SURVIVAL);
     p.updateInventory();
 
-    Output.log("Checking for zombie: " + p.getName());
     String uuid = p.getUniqueId().toString();
     if (ZombieManager.getZombies().containsKey(uuid)) {
       Bukkit.getScheduler().runTask(plugin, () -> {
         Zombie zombie = (Zombie) ZombieManager.getZombies().get(uuid);
         zombie.setHealth(0);
         zombie.remove();
-
-        if (zombie.isDead() || !zombie.isValid()) {
-          Output.log("Zombie successfully removed!");
-        }
-
         ZombieManager.getZombies().remove(uuid);
       });
     }
@@ -156,7 +149,7 @@ public class JoinListener implements Listener {
     Player p = event.getPlayer();
 
     if (!PlayerSerializer.playerPlayed(p) &&
-        GameManager.getCurrentGame().getPhase() > this.plugin.getConfig("config.yml").getInt("lastJoinPhase") && (
+        GameManager.getCurrentGame().getPhase() > this.plugin.getConfig("config.yml").getInt("lastJoinPhase", 3) && (
         !p.isOp() || !p.getName().equals("byHyuchiha")) &&
         p.isOnline() && !PermissionUtils.hasPermission(p, "annihilation.vip.pass")) {
       event.disallow(PlayerLoginEvent.Result.KICK_OTHER, Translator.getColoredString("ERRORS.NO_JOIN_PHASE"));

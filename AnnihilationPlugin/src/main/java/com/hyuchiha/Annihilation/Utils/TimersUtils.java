@@ -30,7 +30,7 @@ public class TimersUtils {
     return System.currentTimeMillis() > x;
   }
 
-  public static String geDelayRemaining(Player player, Kit type) {
+  public static String getDelayRemaining(Player player, Kit type) {
     HashMap<Kit, Long> delays = kitDelays.get(player.getUniqueId().toString());
     if (delays == null) {
       return "0";

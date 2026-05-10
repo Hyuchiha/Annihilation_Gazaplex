@@ -39,8 +39,10 @@ public enum Kit {
 
     ItemStack icon = new ItemStack(m);
     ItemMeta meta = icon.getItemMeta();
-    meta.setDisplayName(name.substring(0, 1) + name.substring(1).toLowerCase());
-    icon.setItemMeta(meta);
+    if (meta != null) {
+      meta.setDisplayName(name.substring(0, 1) + name.substring(1).toLowerCase());
+      icon.setItemMeta(meta);
+    }
 
     Configuration configuration = Main.getInstance().getConfig("kits.yml");
 

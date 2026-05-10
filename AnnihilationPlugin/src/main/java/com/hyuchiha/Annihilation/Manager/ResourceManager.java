@@ -82,7 +82,6 @@ public class ResourceManager {
     if (type == null) {
       return null;
     }
-    Output.log("Material: " + type.toString());
     XMaterial parsedMaterialType = XMaterial.matchXMaterial(type);
     switch (parsedMaterialType) {
       case COAL_ORE:

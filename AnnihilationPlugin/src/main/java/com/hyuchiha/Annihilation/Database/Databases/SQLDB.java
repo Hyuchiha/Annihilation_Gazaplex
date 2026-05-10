@@ -6,103 +6,82 @@ import com.hyuchiha.Annihilation.Database.StatType;
 import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Output.Output;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * SQL backend backed by a HikariCP connection pool.
+ *
+ * <p>Concrete subclasses (MySQLDB / SQLiteDB) provide a {@link HikariConfig} via
+ * {@link #buildHikariConfig()} plus the dialect-specific DDL/DML query strings.
+ *
+ * <p>The pool replaces the previous single shared {@link Connection} model: each
+ * DB op acquires a connection from the pool, uses it inside a try-with-resources,
+ * and releases it back. HikariCP handles keep-alive, validation and concurrency,
+ * so we no longer synchronize methods or run a manual ping task.
+ */
 public abstract class SQLDB extends Database {
   protected static final String ACCOUNTS_TABLE = "annihilation_accounts";
   protected static final String KITS_TABLE = "annihilation_kits";
   protected static final String KITS_UNLOCKED_TABLE = "annihilation_kits_unlocked";
 
-  private Main plugin;
-  private Connection connection;
+  private HikariDataSource dataSource;
 
   public SQLDB(Main plugin) {
     super(plugin);
-
-    this.plugin = plugin;
-
-    // The JDBC Connection is shared between this ping task and any other thread that
-    // calls saveAccount/loadAccount; synchronize on `this` so a single thread uses it
-    // at a time. Without this, async saves race with the ping and corrupt the stream.
-    plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
-      synchronized (this) {
-        try {
-          if (connection != null && !connection.isClosed()) {
-            connection.createStatement().execute("/* ping */ SELECT 1");
-          }
-        } catch (SQLException e) {
-          connection = getNewConnection();
-        }
-      }
-    }, 60 * 20, 60 * 20);
   }
 
+  @Override
   public boolean init() {
-    return checkConnection();
-  }
-
-  public synchronized boolean checkConnection() {
     try {
-      if (connection == null || connection.isClosed()) {
-        connection = getNewConnection();
-
-        if (connection == null || connection.isClosed()) {
-          return false;
-        }
-
-        String ACCOUNTS_QUERY = getDatabaseQuery();
-        query(ACCOUNTS_QUERY);
-
-        String KITS_QUERY = getDatabaseKitsQuery();
-        query(KITS_QUERY);
-
-        String KITS_UNLOCKED_QUERY = getDatabaseKitsUnlockedQuery();
-        query(KITS_UNLOCKED_QUERY);
-
-        insertMissingKits();
-      }
-
-    } catch (SQLException e) {
-      e.printStackTrace();
-
+      this.dataSource = new HikariDataSource(buildHikariConfig());
+    } catch (RuntimeException e) {
+      Output.logError("Failed to initialize Hikari pool: " + e.getMessage());
       return false;
     }
 
+    try (Connection conn = dataSource.getConnection();
+         Statement stmt = conn.createStatement()) {
+      stmt.execute(getDatabaseQuery());
+      stmt.execute(getDatabaseKitsQuery());
+      stmt.execute(getDatabaseKitsUnlockedQuery());
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+
+    insertMissingKits();
     return true;
   }
 
-  protected abstract Connection getNewConnection();
+  /** Subclasses build a Hikari config tailored to their JDBC driver. */
+  protected abstract HikariConfig buildHikariConfig();
 
-  public synchronized boolean query(String sql) throws SQLException {
-    return connection.createStatement().execute(sql);
-  }
-
-  public synchronized void close() {
-    super.close();
-
-    try {
-      if (this.connection != null)
-        this.connection.close();
-    } catch (SQLException e) {
-      e.printStackTrace();
+  @Override
+  public void close() {
+    super.close(); // flushes cached accounts via saveAccount
+    if (this.dataSource != null && !this.dataSource.isClosed()) {
+      this.dataSource.close();
     }
   }
 
   private void insertMissingKits() {
     for (Kit kit : Kit.values()) {
-      try {
-        int id = getIdOfElement(kit.name());
+      try (Connection conn = dataSource.getConnection()) {
+        int id = getIdOfElement(conn, kit.name());
 
         if (id < 0) {
-          String query = getInsertKitQuery(kit);
-
-          query(query);
+          try (Statement stmt = conn.createStatement()) {
+            stmt.execute(getInsertKitQuery(kit));
+          }
         }
       } catch (SQLException e) {
         Output.logError(e.getMessage());
@@ -110,28 +89,27 @@ public abstract class SQLDB extends Database {
     }
   }
 
-  protected synchronized List<Account> loadTopAccountsByStatType(StatType type, int size) {
-    checkConnection();
+  @Override
+  protected List<Account> loadTopAccountsByStatType(StatType type, int size) {
+    String sql = "SELECT * FROM " + ACCOUNTS_TABLE + " ORDER BY " + type.name().toLowerCase() + " DESC LIMIT ?";
 
-    String sql = "SELECT * FROM " + ACCOUNTS_TABLE + " ORDER BY " + type.name().toLowerCase() + " DESC limit " + size;
+    List<Account> topAccounts = new ArrayList<>();
 
-    List<Account> topAccounts = new ArrayList<Account>();
-
-    try {
-      ResultSet set = connection.createStatement().executeQuery(sql);
-
-      while (set.next()) {
-        Account account = new Account(
-            set.getString("uuid"),
-            set.getString("username"),
-            set.getInt("kills"),
-            set.getInt("deaths"),
-            set.getInt("wins"),
-            set.getInt("losses"),
-            set.getInt("nexus_damage")
-        );
-
-        topAccounts.add(account);
+    try (Connection conn = dataSource.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+      ps.setInt(1, size);
+      try (ResultSet set = ps.executeQuery()) {
+        while (set.next()) {
+          topAccounts.add(new Account(
+              set.getString("uuid"),
+              set.getString("username"),
+              set.getInt("kills"),
+              set.getInt("deaths"),
+              set.getInt("wins"),
+              set.getInt("losses"),
+              set.getInt("nexus_damage")
+          ));
+        }
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -140,171 +118,115 @@ public abstract class SQLDB extends Database {
     return topAccounts;
   }
 
-  protected synchronized void createAccountAndAddToDatabase(Account account) {
-    checkConnection();
-
-    try {
-      String query = getCreateAccountQuery(account);
-
-      PreparedStatement statement = connection.prepareStatement(query);
-
-      if (statement.execute()) {
-        statement.close();
-      }
-
+  @Override
+  protected void createAccountAndAddToDatabase(Account account) {
+    try (Connection conn = dataSource.getConnection();
+         PreparedStatement ps = conn.prepareStatement(getCreateAccountQuery(account))) {
+      ps.execute();
       cachedAccounts.put(account.getUUID(), account);
     } catch (SQLException e) {
       e.printStackTrace();
     }
   }
 
-  protected synchronized Account loadAccount(String uuid) {
-    checkConnection();
+  @Override
+  protected Account loadAccount(String uuid) {
+    String query = "SELECT * FROM " + ACCOUNTS_TABLE + " WHERE UPPER(uuid) LIKE UPPER(?)";
 
-    Output.log("Loading account with uuid: " + uuid);
-
-    try {
-      String query = "SELECT * FROM " + ACCOUNTS_TABLE + " WHERE UPPER(uuid) LIKE UPPER(?)";
-
-      PreparedStatement statement = this.connection.prepareStatement(query);
-
-      statement.setString(1, uuid);
-
-      ResultSet set = statement.executeQuery();
+    try (Connection conn = dataSource.getConnection();
+         PreparedStatement ps = conn.prepareStatement(query)) {
+      ps.setString(1, uuid);
 
       Account account = null;
-
-      while (set.next()) {
-        account = new Account(
-            set.getString("uuid"),
-            set.getString("username"),
-            set.getInt("kills"),
-            set.getInt("deaths"),
-            set.getInt("wins"),
-            set.getInt("losses"),
-            set.getInt("nexus_damage")
-        );
+      try (ResultSet set = ps.executeQuery()) {
+        if (set.next()) {
+          account = new Account(
+              set.getString("uuid"),
+              set.getString("username"),
+              set.getInt("kills"),
+              set.getInt("deaths"),
+              set.getInt("wins"),
+              set.getInt("losses"),
+              set.getInt("nexus_damage")
+          );
+        }
       }
-
-      set.close();
 
       if (account != null) {
-        List<Kit> kits = getKitsFromAccount(uuid);
-        account.setKits(kits);
+        account.setKits(getKitsFromAccount(conn, uuid));
+        cachedAccounts.put(uuid, account);
       }
-
-      this.cachedAccounts.put(uuid, account);
-
       return account;
     } catch (SQLException e) {
       e.printStackTrace();
-
       return null;
     }
   }
 
-  public synchronized void saveAccount(Account account) {
-    checkConnection();
-
-
-    try {
-      String query = getUpdateAccountQuery(account);
-
-      PreparedStatement statement = this.connection.prepareStatement(query);
-
-      if (statement.execute()) {
-        statement.close();
-      }
+  @Override
+  public void saveAccount(Account account) {
+    try (Connection conn = dataSource.getConnection();
+         PreparedStatement ps = conn.prepareStatement(getUpdateAccountQuery(account))) {
+      ps.execute();
     } catch (SQLException e) {
       e.printStackTrace();
     }
   }
 
   @Override
-  public synchronized void addUnlockedKit(String uuid, String kit) {
-    checkConnection();
-
-    try {
-      int idKit = getIdOfElement(kit);
+  public void addUnlockedKit(String uuid, String kit) {
+    try (Connection conn = dataSource.getConnection()) {
+      int idKit = getIdOfElement(conn, kit);
 
       String query = "INSERT INTO `" + KITS_UNLOCKED_TABLE + "`(`clv_kit`,`player`) VALUES (?, ?);";
-
-      PreparedStatement statement = connection.prepareStatement(query);
-      statement.setInt(1, idKit);
-      statement.setString(2, uuid);
-
-      statement.execute();
-      statement.close();
-
-      Account account = null;
-
-      for (Account cache : cachedAccounts.values()) {
-        if (cache.getUUID().equalsIgnoreCase(uuid)) {
-          account = cache;
-        }
+      try (PreparedStatement ps = conn.prepareStatement(query)) {
+        ps.setInt(1, idKit);
+        ps.setString(2, uuid);
+        ps.execute();
       }
 
-      if (account != null) {
-        account.getKits().add(Kit.valueOf(kit.toUpperCase()));
-
-        cachedAccounts.put(uuid, account);
+      Account cached = cachedAccounts.get(uuid);
+      if (cached != null) {
+        cached.getKits().add(Kit.valueOf(kit.toUpperCase()));
       }
-
     } catch (SQLException e) {
       e.printStackTrace();
     }
   }
 
-  private synchronized int getIdOfElement(String name) {
-    checkConnection();
+  /**
+   * Looks up the integer id of a kit by name. Reuses the caller's connection so the
+   * insert/update can stay on the same physical connection if needed.
+   */
+  private int getIdOfElement(Connection conn, String name) throws SQLException {
+    String query = "SELECT clv_kit FROM " + KITS_TABLE + " WHERE `name` = ?";
 
-    try {
-      String query = "SELECT * FROM " + KITS_TABLE + " WHERE `name` = ?";
-
-      PreparedStatement statement = connection.prepareStatement(query);
-      statement.setString(1, name);
-
-      ResultSet set = statement.executeQuery();
-
-      int id = -1;
-
-      while (set.next()) {
-        id = set.getInt("clv_kit");
+    try (PreparedStatement ps = conn.prepareStatement(query)) {
+      ps.setString(1, name);
+      try (ResultSet set = ps.executeQuery()) {
+        if (set.next()) {
+          return set.getInt("clv_kit");
+        }
       }
-
-      return id;
-
-    } catch (SQLException ex) {
-      ex.printStackTrace();
     }
     return -1;
   }
 
-  private synchronized List<Kit> getKitsFromAccount(String uuid) {
-    checkConnection();
-
+  private List<Kit> getKitsFromAccount(Connection conn, String uuid) throws SQLException {
     List<Kit> kits = new ArrayList<>();
 
-    try {
-      String query = "SELECT " + KITS_TABLE + ".name FROM " + KITS_UNLOCKED_TABLE
-          + " JOIN " + KITS_TABLE + " ON " + KITS_TABLE + ".clv_kit = " + KITS_UNLOCKED_TABLE + ".clv_kit "
-          + "WHERE player = ?;";
+    String query = "SELECT " + KITS_TABLE + ".name FROM " + KITS_UNLOCKED_TABLE
+        + " JOIN " + KITS_TABLE + " ON " + KITS_TABLE + ".clv_kit = " + KITS_UNLOCKED_TABLE + ".clv_kit "
+        + "WHERE player = ?;";
 
-      PreparedStatement statement = connection.prepareStatement(query);
-      statement.setString(1, uuid);
-
-      ResultSet set = statement.executeQuery();
-
-      while (set.next()) {
-        String kitName = set.getString("name");
-
-        kits.add(Kit.valueOf(kitName));
+    try (PreparedStatement ps = conn.prepareStatement(query)) {
+      ps.setString(1, uuid);
+      try (ResultSet set = ps.executeQuery()) {
+        while (set.next()) {
+          kits.add(Kit.valueOf(set.getString("name")));
+        }
       }
-
-    } catch (SQLException ex) {
-      ex.printStackTrace();
     }
-
     return kits;
   }
 

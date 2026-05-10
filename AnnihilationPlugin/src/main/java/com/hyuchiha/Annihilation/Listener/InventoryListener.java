@@ -31,6 +31,12 @@ public class InventoryListener implements Listener {
   @EventHandler
   public void onInvClose(InventoryCloseEvent event) {
     HumanEntity player = event.getPlayer();
+    if (!(player instanceof Player)) {
+      return;
+    }
+    if (GameManager.getCurrentGame() == null) {
+      return;
+    }
     Player p = (Player) player;
     GameManager.getCurrentGame().getCrafting().remove(p.getName());
   }

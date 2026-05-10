@@ -102,7 +102,8 @@ public class ScoreboardManager {
       scores.put(t.name(), scoreObjective.getScore(
           WordUtils.capitalize(t.color().toString() + Translator.getColoredString("COMMONS.TEAM") + " " + t.getName())));
 
-      scores.get(t.name()).setScore(t.getNexus().getHealth());
+      int initialHealth = (t.getNexus() != null) ? t.getNexus().getHealth() : 0;
+      scores.get(t.name()).setScore(initialHealth);
 
       Team sbt = scoreboardBase.registerNewTeam(t.name() + "SB");
       sbt.addEntry(
@@ -112,7 +113,7 @@ public class ScoreboardManager {
       sbt.setPrefix(t.color().toString());
 
       Configuration config = Main.getInstance().getConfig("config.yml");
-      if (config.getBoolean("useTeamPrefix")) {
+      if (config.getBoolean("useTeamPrefix", false)) {
         String prefix = Translator.getColoredString("TEAMS_PREFIX." + t.name().toUpperCase());
         sbt.setPrefix(t.color().toString() + prefix + " ");
       }
@@ -128,16 +129,17 @@ public class ScoreboardManager {
     sbt.setPrefix(ChatColor.RESET + "");
 
     Configuration config = Main.getInstance().getConfig("config.yml");
-    if (config.getBoolean("useTeamPrefix")) {
+    if (config.getBoolean("useTeamPrefix", false)) {
       String prefix = Translator.getColoredString("TEAMS_PREFIX." + victim.name().toUpperCase());
       sbt.setPrefix(ChatColor.RESET + prefix + " ");
     }
 
-    scores.get(victim.name()).setScore(victim.getNexus().getHealth());
+    int health = (victim.getNexus() != null) ? victim.getNexus().getHealth() : 0;
+    scores.get(victim.name()).setScore(health);
     Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
       sbt.setPrefix(victim.color().toString());
 
-      if (config.getBoolean("useTeamPrefix")) {
+      if (config.getBoolean("useTeamPrefix", false)) {
         String prefix = Translator.getColoredString("TEAMS_PREFIX." + victim.name().toUpperCase());
         sbt.setPrefix(victim.color().toString() + prefix + " ");
       }
@@ -173,7 +175,7 @@ public class ScoreboardManager {
     Configuration config = Main.getInstance().getConfig("config.yml");
     String prefix = team.color().toString(); // Team color
 
-    if (config.getBoolean("useTeamPrefix")) {
+    if (config.getBoolean("useTeamPrefix", false)) {
       prefix += Translator.getColoredString("TEAMS_PREFIX." + team.name().toUpperCase());
     }
 

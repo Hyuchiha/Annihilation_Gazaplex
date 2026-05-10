@@ -49,7 +49,7 @@ public class ZombieListener implements Listener {
           return;
         }
 
-        if (GameTeam.getTeamChar(z.getCustomName()).equals(meta.getTeam().getNexus().getTeam())) {
+        if (GameTeam.getTeamChar(z.getCustomName()).equals(meta.getTeam())) {
           p.sendMessage(Translator.getPrefix() + Translator.getColoredString("ERRORS.DAMAGE_TEAM"));
           event.setCancelled(true);
         }
@@ -80,7 +80,7 @@ public class ZombieListener implements Listener {
           return;
         }
 
-        if (GameTeam.getTeamChar(z.getCustomName()).equals(meta.getTeam().getNexus().getTeam())) {
+        if (GameTeam.getTeamChar(z.getCustomName()).equals(meta.getTeam())) {
           p.sendMessage(Translator.getPrefix() + Translator.getColoredString("ERRORS.DAMAGE_TEAM"));
           event.setCancelled(true);
         }
@@ -163,7 +163,7 @@ public class ZombieListener implements Listener {
           z.remove();
           return;
         }
-        if (GameTeam.getTeamChar(z.getCustomName()).equals(meta.getTeam().getNexus().getTeam())) {
+        if (GameTeam.getTeamChar(z.getCustomName()).equals(meta.getTeam())) {
           e.setCancelled(true);
         }
       }

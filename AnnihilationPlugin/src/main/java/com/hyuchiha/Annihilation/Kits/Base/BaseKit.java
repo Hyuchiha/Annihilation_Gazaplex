@@ -93,7 +93,9 @@ public abstract class BaseKit implements Listener {
     SoulboundListener.soulbind(compass);
 
     inv.addItem(compass);
-    recipient.setCompassTarget(team.getNexus().getLocation());
+    if (team.getNexus() != null) {
+      recipient.setCompassTarget(team.getNexus().getLocation());
+    }
 
     ItemStack[] armor = armorItems.clone();
     colorizeArmor(team.getColor(), armor);
