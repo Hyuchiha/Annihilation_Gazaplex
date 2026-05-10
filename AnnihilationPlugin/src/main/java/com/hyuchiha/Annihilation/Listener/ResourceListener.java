@@ -27,6 +27,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashSet;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ResourceListener implements Listener {
   private final HashSet<Location> queue;
@@ -135,7 +136,7 @@ public class ResourceListener implements Listener {
         int qty = getDropQuantity(type);
         int dropMultiplier = isOre ? gamePlayer.getKit().getKit().getMaterialDropMultiplier() : 1;
 
-        if (isOre && itemInHand.containsEnchantment(XEnchantment.LOOTING.get())) {
+        if (isOre && itemInHand != null && itemInHand.containsEnchantment(XEnchantment.LOOTING.get())) {
           qty = quantityDroppedWithBonus(type, itemInHand);
         }
 
@@ -150,16 +151,18 @@ public class ResourceListener implements Listener {
 
 
     // Restore item durability after breaking the block
-    ItemMeta meta = itemInHand.getItemMeta();
+    if (itemInHand != null) {
+      ItemMeta meta = itemInHand.getItemMeta();
 
-    if (meta instanceof Damageable) { // Check if the item is damageable
-      Damageable damageable = (Damageable) meta;
+      if (meta instanceof Damageable) { // Check if the item is damageable
+        Damageable damageable = (Damageable) meta;
 
-      int currentDamage = damageable.getDamage(); // Get the current damage
-      if (currentDamage > 0) {
-        damageable.setDamage(currentDamage - 1); // Reduce damage by 1 point
-        itemInHand.setItemMeta(meta); // Apply the changes to the item
-        player.updateInventory(); // Update the inventory to reflect changes
+        int currentDamage = damageable.getDamage(); // Get the current damage
+        if (currentDamage > 0) {
+          damageable.setDamage(currentDamage - 1); // Reduce damage by 1 point
+          itemInHand.setItemMeta(meta); // Apply the changes to the item
+          player.updateInventory(); // Update the inventory to reflect changes
+        }
       }
     }
 
@@ -231,13 +234,12 @@ public class ResourceListener implements Listener {
 
   private int quantityDroppedWithBonus(Material type, ItemStack itemInHand) {
     int fortune = itemInHand.getEnchantmentLevel(XEnchantment.LOOTING.get());
-    Random random = new Random();
 
     if (fortune < 1) {
       return getDropQuantity(type);
     }
 
-    int i = random.nextInt(fortune + 2) - 1;
+    int i = ThreadLocalRandom.current().nextInt(fortune + 2) - 1;
     if (i < 0) {
       i = 0;
     }

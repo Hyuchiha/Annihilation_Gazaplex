@@ -222,14 +222,14 @@ public abstract class SQLDB extends Database {
     try {
       int idKit = getIdOfElement(kit);
 
-      String query = "INSERT INTO `" + KITS_UNLOCKED_TABLE + "`(`clv_kit`,`player`)  VALUES "
-          + "('" + idKit + "', '" + uuid + "');";
+      String query = "INSERT INTO `" + KITS_UNLOCKED_TABLE + "`(`clv_kit`,`player`) VALUES (?, ?);";
 
       PreparedStatement statement = connection.prepareStatement(query);
+      statement.setInt(1, idKit);
+      statement.setString(2, uuid);
 
-      if (statement.execute()) {
-        statement.close();
-      }
+      statement.execute();
+      statement.close();
 
       Account account = null;
 
@@ -254,9 +254,10 @@ public abstract class SQLDB extends Database {
     checkConnection();
 
     try {
-      String query = "SELECT * FROM " + KITS_TABLE + " WHERE `name` = '" + name + "'";
+      String query = "SELECT * FROM " + KITS_TABLE + " WHERE `name` = ?";
 
       PreparedStatement statement = connection.prepareStatement(query);
+      statement.setString(1, name);
 
       ResultSet set = statement.executeQuery();
 
@@ -280,11 +281,14 @@ public abstract class SQLDB extends Database {
     List<Kit> kits = new ArrayList<>();
 
     try {
-      String query = "SELECT " + KITS_TABLE + ".name from " + KITS_UNLOCKED_TABLE
-          + " JOIN " + KITS_TABLE + " where " + KITS_TABLE + ".clv_kit = " + KITS_UNLOCKED_TABLE + ".clv_kit " +
-          "AND player = '" + uuid + "';";
+      String query = "SELECT " + KITS_TABLE + ".name FROM " + KITS_UNLOCKED_TABLE
+          + " JOIN " + KITS_TABLE + " ON " + KITS_TABLE + ".clv_kit = " + KITS_UNLOCKED_TABLE + ".clv_kit "
+          + "WHERE player = ?;";
 
-      ResultSet set = connection.createStatement().executeQuery(query);
+      PreparedStatement statement = connection.prepareStatement(query);
+      statement.setString(1, uuid);
+
+      ResultSet set = statement.executeQuery();
 
       while (set.next()) {
         String kitName = set.getString("name");

@@ -34,14 +34,29 @@ public class QuitListener implements Listener {
       return;
     }
 
+    e.setQuitMessage("");
+    handleDisconnect(player);
+  }
+
+
+  @EventHandler
+  public void onKick(PlayerKickEvent e) {
+    Player player = e.getPlayer();
+    if (player == null) {
+      return;
+    }
+
+    handleDisconnect(player);
+  }
+
+  private void handleDisconnect(Player player) {
     SignManager.updateSigns();
 
     GamePlayer gamePlayer = PlayerManager.getGamePlayer(player);
     String playerName = player.getName();
-    e.setQuitMessage("");
 
     Database database = this.plugin.getMainDatabase();
-    Account account = database.getAccount(player.getUniqueId().toString(), player.getName());
+    Account account = database.getAccount(player.getUniqueId().toString(), playerName);
 
     if (account != null) {
       database.saveAccount(account);
@@ -71,20 +86,5 @@ public class QuitListener implements Listener {
     }
 
     PlayerManager.removePlayer(player);
-  }
-
-
-  @EventHandler
-  public void onKick(PlayerKickEvent e) {
-    Player player = e.getPlayer();
-
-
-    Database database = this.plugin.getMainDatabase();
-    Account account = database.getAccount(player.getUniqueId().toString(), player.getName());
-
-    if (account != null) {
-      database.saveAccount(account);
-      database.removeCachedAccount(account);
-    }
   }
 }

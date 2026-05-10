@@ -124,7 +124,7 @@ public class Account {
   }
 
 
-  public void increateLosses() {
+  public void increaseLosses() {
     this.losses++;
   }
 

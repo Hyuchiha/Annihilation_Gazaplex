@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public enum GameTeam {
   RED, YELLOW, GREEN, BLUE, NONE;
@@ -119,7 +119,7 @@ public enum GameTeam {
 
   public Location getRandomSpawn() {
     if (!this.spawns.isEmpty() && this != NONE) {
-      Location l = this.spawns.get((new Random()).nextInt(this.spawns.size()));
+      Location l = this.spawns.get(ThreadLocalRandom.current().nextInt(this.spawns.size()));
       return new Location(MapManager.getCurrentMap().getWorld(), l.getX(), l.getY(), l.getZ());
     }
 

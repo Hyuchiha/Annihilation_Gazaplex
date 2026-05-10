@@ -48,6 +48,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.inventivetalent.reflection.minecraft.Minecraft;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class BossManager {
   private static MobCreator creator;
@@ -502,7 +503,7 @@ public class BossManager {
     Chest c = (Chest) chest.getBlock().getState();
     Inventory inv = c.getBlockInventory();
 
-    Random r = new Random();
+    ThreadLocalRandom r = ThreadLocalRandom.current();
     for (int i = 0; i < 5; i++) {
       ItemStack randomItem = getRandomItem();
       inv.setItem(r.nextInt(inv.getSize()), randomItem);
@@ -523,7 +524,7 @@ public class BossManager {
   }
 
   public static ItemStack getRandomItem() {
-    int randomIndex = new Random().nextInt(rItems().size());
+    int randomIndex = ThreadLocalRandom.current().nextInt(rItems().size());
     return (ItemStack) rItems().toArray()[randomIndex];
   }
 

@@ -137,8 +137,8 @@ public class GameListener implements Listener {
 
     for (Player player : Bukkit.getOnlinePlayers()) {
       if (PlayerManager.getGamePlayer(player).getTeam() == victim) {
-        Account victimData = this.plugin.getMainDatabase().getAccount(breaker.getPlayer().getUniqueId().toString(), breaker.getPlayer().getName());
-        victimData.increateLosses();
+        Account victimData = this.plugin.getMainDatabase().getAccount(player.getUniqueId().toString(), player.getName());
+        victimData.increaseLosses();
       }
       XSound.ENTITY_GENERIC_EXPLODE.play(player, 1.0F, 1.25F);
     }

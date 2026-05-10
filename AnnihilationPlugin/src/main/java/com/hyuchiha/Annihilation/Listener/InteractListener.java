@@ -49,7 +49,7 @@ public class InteractListener implements Listener {
             boolean setCompass = false;
             boolean setToNext = false;
             int count = 0;
-            while (!setCompass || count > 6) {
+            while (!setCompass && count < 6) {
               if (!handItem.getItemMeta().hasDisplayName() || player.getWorld().getName().equals("lobby")) {
                 setCompass = true;
               } else {
@@ -59,13 +59,18 @@ public class InteractListener implements Listener {
                     ItemMeta meta = handItem.getItemMeta();
                     meta.setDisplayName(team.color() + Translator.getColoredString("GAME.COMPASS_FOCUS").replace("%TEAM%", team.coloredName()));
                     handItem.setItemMeta(meta);
-                    player.setCompassTarget(team.getNexus().getLocation());
+                    if (team.getNexus() != null) {
+                      player.setCompassTarget(team.getNexus().getLocation());
+                    }
                     setCompass = true;
                     break;
                   }
                   if (handItem.getItemMeta().getDisplayName().contains(team.toString())) {
                     setToNext = true;
                   }
+                }
+                if (!setToNext) {
+                  setToNext = true;
                 }
               }
             }

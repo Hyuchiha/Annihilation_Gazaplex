@@ -89,15 +89,15 @@ public class PlayerListener implements Listener {
       if (player.getKiller() != null && !player.getKiller().equals(player)) {
         Player killer = player.getKiller();
 
-        GamePlayer gpKiller = PlayerManager.getGamePlayer(player);
+        GamePlayer gpKiller = PlayerManager.getGamePlayer(killer);
         gpKiller.addXp(this.config.getInt("Exp-player-kill"));
 
         Account data = this.plugin.getMainDatabase().getAccount(killer.getUniqueId().toString(), killer.getName());
         data.increaseKills();
 
         double money = this.config.getDouble("Money-player-kill");
-        double vipMoney = PlayerManager.calculateVipMoneyGive(player, money);
-        PlayerManager.addMoney(player, vipMoney);
+        double vipMoney = PlayerManager.calculateVipMoneyGive(killer, money);
+        PlayerManager.addMoney(killer, vipMoney);
 
 
         String message = ChatUtil.formatDeathMessage(player, killer, e.getDeathMessage());

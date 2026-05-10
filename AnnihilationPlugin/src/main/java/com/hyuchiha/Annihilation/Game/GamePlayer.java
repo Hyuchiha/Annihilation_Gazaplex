@@ -64,6 +64,7 @@ public class GamePlayer {
 
   private void setupPlayerData() {
     Player player = getPlayer();
+    if (player == null) return;
 
     AttributeInstance attribute = player.getAttribute(XAttribute.MAX_HEALTH.get());
     attribute.setBaseValue(20.0D);
@@ -85,11 +86,14 @@ public class GamePlayer {
 
   public void prepareLobbyPlayer() {
     final Player player = getPlayer();
+    if (player == null) return;
     player.teleport(MapManager.getLobbySpawn());
 
     Bukkit.getScheduler().runTaskLater(Main.getInstance(), new Runnable() {
       public void run() {
-        BossBarAPI.setMessage(player, Translator.getColoredString("BOSSBAR.WELCOME_TO_ANNIHILATION"), 1.0F);
+        if (player.isOnline()) {
+          BossBarAPI.setMessage(player, Translator.getColoredString("BOSSBAR.WELCOME_TO_ANNIHILATION"), 1.0F);
+        }
       }
     }, 20L);
 
@@ -126,21 +130,25 @@ public class GamePlayer {
 
 
   public void preparePlayerForGame() {
-    getPlayer().getInventory().clear();
-    getPlayer().setGameMode(GameMode.SURVIVAL);
+    Player player = getPlayer();
+    if (player == null) return;
+    player.getInventory().clear();
+    player.setGameMode(GameMode.SURVIVAL);
     setAlive(true);
     setupPlayerData();
-    getPlayer().teleport(getTeam().getRandomSpawn());
-    getKit().getKit().giveKitItems(getPlayer());
+    player.teleport(getTeam().getRandomSpawn());
+    getKit().getKit().giveKitItems(player);
 
     this.state = PlayerState.IN_GAME;
   }
 
   public void regamePlayer() {
-    getPlayer().setGameMode(GameMode.SURVIVAL);
+    Player player = getPlayer();
+    if (player == null) return;
+    player.setGameMode(GameMode.SURVIVAL);
     setupPlayerData();
-    getPlayer().teleport(getTeam().getRandomSpawn());
-    getKit().getKit().giveKitItems(getPlayer());
+    player.teleport(getTeam().getRandomSpawn());
+    getKit().getKit().giveKitItems(player);
   }
 
   public void giveOreXP(int xp) {
