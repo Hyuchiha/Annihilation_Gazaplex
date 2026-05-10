@@ -155,6 +155,7 @@ public class Archer extends BaseKit {
         if (TimersUtils.hasExpired(player, Kit.ARCHER)) {
           getAdditionalArrows(player);
           TimersUtils.addDelay(player, Kit.ARCHER, 45, TimeUnit.SECONDS);
+          KitUtils.applyKitCooldown(player, handItem.getType(), 45);
         } else {
           KitUtils.showKitItemDelay(player, gPlayer.getKit());
         }

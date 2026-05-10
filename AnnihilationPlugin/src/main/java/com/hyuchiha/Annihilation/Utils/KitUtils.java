@@ -11,6 +11,7 @@ import com.hyuchiha.Annihilation.Output.Output;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -18,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.util.BlockIterator;
+import org.inventivetalent.reflection.minecraft.Minecraft;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +65,29 @@ public class KitUtils {
     //player.sendMessage(message);
     ActionBar.sendActionBar(player, message);
     XSound.ENTITY_WOLF_GROWL.play(player, 2.0F, 1.0F);
+  }
+
+  /**
+   * Triggers Minecraft's native item-cooldown overlay (the animated grey shade on a hotbar
+   * slot) for the given material on this player. The client renders the countdown without
+   * any per-tick task on the server side.
+   *
+   * <p>{@code Player.setCooldown(Material, int)} was added in CraftBukkit 1.11; on 1.9 and
+   * 1.10 this is a silent no-op so the kit ability still functions, just without the
+   * visual indicator.
+   *
+   * @param player  target player
+   * @param material item type whose cooldown overlay should be shown
+   * @param seconds  cooldown duration; the call is converted to ticks (×20)
+   */
+  public static void applyKitCooldown(Player player, Material material, int seconds) {
+    if (player == null || material == null || seconds <= 0) {
+      return;
+    }
+    if (Minecraft.Version.getVersion().olderThan(Minecraft.Version.v1_11_R1)) {
+      return;
+    }
+    player.setCooldown(material, seconds * 20);
   }
 
   public static void setBlockOwner(Block block, UUID idenfitier) {

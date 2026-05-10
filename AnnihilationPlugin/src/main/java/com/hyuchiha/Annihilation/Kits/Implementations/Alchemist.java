@@ -246,6 +246,7 @@ public class Alchemist extends BaseKit {
         if (TimersUtils.hasExpired(player, Kit.ALCHEMIST)) {
           giveRandomDrop(player);
           TimersUtils.addDelay(player, Kit.ALCHEMIST, 90, TimeUnit.SECONDS);
+          KitUtils.applyKitCooldown(player, handItem.getType(), 90);
         } else {
           KitUtils.showKitItemDelay(player, gPlayer.getKit());
         }

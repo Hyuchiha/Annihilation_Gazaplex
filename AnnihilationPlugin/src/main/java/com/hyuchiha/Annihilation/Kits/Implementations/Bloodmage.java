@@ -129,12 +129,13 @@ public class Bloodmage extends BaseKit {
     }
 
     ItemStack handItem = player.getInventory().getItemInMainHand();
-    if (handItem == null || KitUtils.isKitItem(handItem, "KITS.BLOODMAGE.ITEM")) {
+    if (handItem == null || !KitUtils.isKitItem(handItem, "KITS.BLOODMAGE.ITEM")) {
       return;
     }
 
     if (!TimersUtils.hasExpired(player, Kit.BLOODMAGE)) {
       KitUtils.showKitItemDelay(player, gPlayer.getKit());
+      return;
     }
 
     Player target = KitUtils.getTarget(player, 10, true);
@@ -160,6 +161,7 @@ public class Bloodmage extends BaseKit {
     }
 
     TimersUtils.addDelay(player, Kit.BLOODMAGE, 60, TimeUnit.SECONDS);
+    KitUtils.applyKitCooldown(player, handItem.getType(), 60);
   }
 
   @EventHandler()

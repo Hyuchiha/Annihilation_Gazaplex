@@ -137,6 +137,7 @@ public class Pyro extends BaseKit {
           }
 
           TimersUtils.addDelay(player, Kit.PYRO, 40, TimeUnit.SECONDS);
+          KitUtils.applyKitCooldown(player, handItem.getType(), 40);
         } else {
           KitUtils.showKitItemDelay(player, gPlayer.getKit());
         }

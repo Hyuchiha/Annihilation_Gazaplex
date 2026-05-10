@@ -144,6 +144,7 @@ public class Builder extends BaseKit {
           createInventoryMenu(player, drops);
 
           TimersUtils.addDelay(player, Kit.BUILDER, 90, TimeUnit.SECONDS);
+          KitUtils.applyKitCooldown(player, handItem.getType(), 90);
         } else {
           KitUtils.showKitItemDelay(player, gPlayer.getKit());
         }

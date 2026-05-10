@@ -137,7 +137,13 @@ public class Acrobat extends BaseKit {
         if (!player.getAllowFlight()) {
           GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
           if (gPlayer.getKit() == Kit.ACROBAT) {
-            if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR && !TimersUtils.hasExpired(player, Kit.ACROBAT)) {
+            // Re-enable flight only after the cooldown has elapsed AND the player is on
+            // solid ground — that's when the next double-jump cycle should be available.
+            // The previous condition `!hasExpired` re-enabled flight while the cooldown
+            // was still active, causing wither-sound spam every PlayerMoveEvent and
+            // letting the player tap-tap into a brief levitation that the toggle handler
+            // then forced back down.
+            if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR && TimersUtils.hasExpired(player, Kit.ACROBAT)) {
               player.setAllowFlight(true);
               XSound.ENTITY_WITHER_SHOOT.play(player, 1.0F, 2.0F);
             }

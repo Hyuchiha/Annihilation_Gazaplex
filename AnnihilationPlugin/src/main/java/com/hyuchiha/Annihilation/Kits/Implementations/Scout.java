@@ -7,6 +7,7 @@ import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Kits.Base.BaseKit;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
+import com.hyuchiha.Annihilation.Utils.KitUtils;
 import com.hyuchiha.Annihilation.Utils.TimersUtils;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
@@ -87,6 +88,9 @@ public class Scout extends BaseKit {
 
             if (TimersUtils.hasExpired(player, Kit.SCOUT)) {
                 TimersUtils.addDelay(player, Kit.SCOUT, 1, TimeUnit.SECONDS);
+                if (itemInHand != null) {
+                    KitUtils.applyKitCooldown(player, itemInHand.getType(), 1);
+                }
                 Location hookLoc = event.getHook().getLocation();
                 Location playerLoc = player.getLocation();
 
