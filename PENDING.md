@@ -51,9 +51,6 @@ Snapshot de `Game game = GameManager.getCurrentGame()` al inicio + `volatile Gam
 
 ---
 
-### [BUG-6] Whitelist de desarrollador hardcodeada en producción — easter egg, NO FIX
-**Archivo:** `Listener/JoinListener.java:157`
-Permanece intencional (declarado easter egg). Se mantiene en la lista solo como nota; no acción requerida.
 
 ---
 
@@ -257,9 +254,9 @@ Ambos loops ahora dispatchan `saveAccount` con `runTaskAsynchronously`. Los `get
 
 ---
 
-### **[QUALITY-11] `Game.joinTeam` recibe nombre localizado** ⏳ (sin tocar)
-**Archivo:** `Game/Game.java:78` y `:211`
-Esta sigue pendiente para una futura iteración.
+### ~~[QUALITY-11] `Game.joinTeam` recibe nombre localizado~~ ✅ FIXED
+**Archivo:** `Game/Game.java:78`
+Corregido a `team.name()` — ahora usa el enum name (RED, YELLOW, GREEN, BLUE) en lugar del nombre localizado. Los nombres traducidos en `messages.yml` son solo para display (UI), no para lógica interna.
 
 ---
 
@@ -317,13 +314,20 @@ Implementado vía el item-cooldown nativo de Minecraft (`Player.setCooldown(Mate
 
 3. **`Acrobat.java:140` re-habilitar flight durante cooldown.** `&& !hasExpired` (cooldown ACTIVO) re-habilitaba flight + sonido de wither en cada PlayerMoveEvent durante los 10s del cooldown. Resultado: spam de sonido + UX rota (tap-tap brevemente flota y se cae). Corregido a `&& hasExpired` — flight solo se re-habilita una vez el cooldown haya terminado, así el cooldown sí bloquea el doble-salto.
 
-### **[FEATURE-6] Versiones NMS soportadas inconsistentes** 🆕
-**Archivos:** `Manager/PlayerManager.java:20-100`, `Manager/ZombieManager.java:39-88`, `Manager/BossManager.java:64-167`
-- `PlayerManager.fetchRespawner()` soporta hasta `v1_21_R3`.
-- `ZombieManager.init()` solo hasta `v1_18_R1` — versiones más recientes caen en default y dejan `creator = null`.
-- `BossManager.init()` soporta hasta `v1_21_R3` pero sin MobCreator (solo helper).
+### ~~[FEATURE-6] Versiones NMS soportadas inconsistentes~~ ✅ RESUELTO con CustomMob API
+**Archivos:** `Mobs/CustomMobManager.java`, `Manager/ZombieManager.java:117-120`, `Manager/WitchManager.java:81-89`, `Manager/BossManager.java:427`
 
-Resultado: en 1.18+ los zombies se crean con la API estándar (probablemente OK), pero la asimetría confunde y el `default` sólo loguea `"Version not supported"` sin desactivar el plugin.
+**Estado actual (post-CustomMob):**
+- **1.9–1.17:** Usa NMS `MobCreator` para spawning custom (equipment, AI, stats). Soporte completo en los 3 managers.
+- **1.18+:** `CustomMobManager` (API moderna con PDC/Attributes) reemplaza `MobCreator`. Todos los mobs pasan por `CustomMobManager.spawn()` que aplica abilities, HP custom, identificación PDC, y death rewards de forma unificada.
+
+**Cobertura por manager:**
+- `PlayerManager.fetchRespawner()` → 1.9–1.21.3 (23 versiones) ✅
+- `ZombieManager` → 1.9–1.18.1 con NMS; 1.18+ usa `CustomMobManager.spawn()` + fallback a API Bukkit estándar si CustomMobManager está deshabilitado ✅
+- `WitchManager` → 1.18+ usa `CustomMobManager.spawn()` + fallback manual pre-1.18 ✅
+- `BossManager` → 1.9–1.21.3 helpers (ChunkHelper); 1.9–1.17 con `MobCreator`; 1.18+ usa `CustomMobManager.spawn()` para wither/warden ✅
+
+**Resultado:** La asimetría original se resolvió con la nueva arquitectura. CustomMob unifica la lógica de mobs complejos en 1.18+ (ver `.claude/docs/custom_mobs.md`). Versiones antiguas (1.9–1.17) mantienen NMS directo. No requiere acción adicional.
 
 ---
 
@@ -336,7 +340,6 @@ Resultado: en 1.18+ los zombies se crean con la API estándar (probablemente OK)
 | BUG-3  | ✅ | 🔴 Crítico | Bajo | getAccount() ahora cachea |
 | BUG-4  | ✅ | 🟠 Alto | Medio | snapshot + volatile aplicado |
 | BUG-5  | ✅ | 🟠 Alto | Bajo | setTeam corregido |
-| BUG-6  | — easter egg | 🟠 Alto | — | byHyuchiha hardcoded; no acción |
 | BUG-7  | ✅ | 🔴 Crítico | Bajo | XP/dinero ahora al killer |
 | BUG-8  | ✅ | 🟠 Alto | Bajo | losses ahora a la víctima + typo renombrado |
 | BUG-9  | ✅ | 🔴 Crítico | Bajo | Loop con `&& count < 6` + safety rotate |
@@ -357,7 +360,7 @@ Resultado: en 1.18+ los zombies se crean con la API estándar (probablemente OK)
 | QUALITY-8  | ✅ | 🟡 Medio | Bajo | Reset scoreboard antes del loop en endGame |
 | QUALITY-9  | ✅ | 🟡 Medio | Bajo | Null guards en breaker.getPlayer() y meta |
 | QUALITY-10 | ✅ | 🟠 Alto | Medio | Saves async + null guards en canEndGame/forceStopGame |
-| QUALITY-11 | ⏳ | 🟠 Alto | Bajo | joinTeam recibe nombre localizado (pendiente) |
+| QUALITY-11 | ✅ | 🟠 Alto | Bajo | joinTeam ahora usa enum name en lugar de localizado |
 | QUALITY-12 | ✅ | 🟡 Medio | Bajo | canEndGame guard si winner es NONE |
 | QUALITY-13 | ✅ | 🟢 Bajo | Bajo | onInvClose con guards |
 | BOSS    | ✅ | 🟠 Alto | Medio | Boss world fallback, gamerules, chunk keep-alive |
@@ -368,10 +371,9 @@ Resultado: en 1.18+ los zombies se crean con la API estándar (probablemente OK)
 | SCALE-5 | ✅ | 🟡 Medio | Bajo | ThreadLocalRandom en hot paths |
 | SCALE-6 | ✅ | 🟠 Alto | Medio | Async saves + Hikari pool sin sync |
 | SCALE-7 | ✅ | 🟡 Medio | Alto | HikariCP pool reemplaza connection única; synchronized eliminados |
-| FEATURE-6 | ⏳ | 🟢 Bajo | Bajo | Versiones NMS asimétricas entre managers |
+| FEATURE-6 | ✅ | 🟢 Bajo | — | Resuelto con CustomMob API (1.18+) + NMS legacy (1.9-1.17) |
 
 ### Próximos a atacar (impacto/esfuerzo)
-1. **QUALITY-11** — `joinTeam` recibiendo nombre localizado: cambiar `team.getName()` por `team.name()`.
-2. **FEATURE-6** — alinear `MobCreator` registrations entre PlayerManager/ZombieManager/BossManager hasta v1_21_R3.
-3. **FEATURE-1..5** — features nuevas (reload caliente, PAPI, multi-boss, kit unlock visibility, cooldown UI).
-4. **BUG-12 (extra)** — el resto de queries en SQLDB que aún hacen string-concat (createAccountAndAddToDatabase, saveAccount Update queries) — están dentro de los strings devueltos por `getCreateAccountQuery`/`getUpdateAccountQuery` en MySQLDB/SQLiteDB. Migrar a PreparedStatement con bind.
+1. **BUG-12 (extendido)** — el resto de queries en SQLDB que aún hacen string-concat (createAccountAndAddToDatabase, saveAccount Update queries) — están dentro de los strings devueltos por `getCreateAccountQuery`/`getUpdateAccountQuery` en MySQLDB/SQLiteDB. Migrar a PreparedStatement con bind.
+2. **FEATURE-3** — soporte a múltiples boss-worlds por arena (actualmente uno solo).
+3. **FEATURE-4** — verificar persistencia de kits desbloqueables entre sesiones (`Kit.resetKit()` está vacío).

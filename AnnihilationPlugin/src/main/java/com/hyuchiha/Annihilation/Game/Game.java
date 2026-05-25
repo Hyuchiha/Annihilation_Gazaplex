@@ -75,7 +75,7 @@ public class Game {
         continue;
       }
       GameTeam team = TeamUtils.getLowerTeam();
-      joinTeam(player, team.getName());
+      joinTeam(player, team.name());
       gp.preparePlayerForGame();
     }
   }
