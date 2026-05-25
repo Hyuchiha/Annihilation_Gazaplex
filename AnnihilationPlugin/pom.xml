@@ -3,12 +3,15 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.hyuchiha</groupId>
+
+    <parent>
+        <groupId>com.hyuchiha</groupId>
+        <artifactId>Annihilation-parent</artifactId>
+        <version>parent</version>
+    </parent>
+
     <artifactId>AnnihilationPlugin</artifactId>
     <packaging>jar</packaging>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
     <version>1.6.0</version>
 
     <repositories>
@@ -182,6 +185,7 @@
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
             <version>5.3.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>xyz.xenondevs</groupId>
@@ -204,6 +208,12 @@
             <artifactId>placeholderapi</artifactId>
             <version>2.11.6</version>
             <scope>provided</scope>
+        </dependency>
+        <!-- ReflectionHelper - compiled locally from updated source -->
+        <dependency>
+            <groupId>org.inventivetalent</groupId>
+            <artifactId>reflectionhelper</artifactId>
+            <version>1.21.4-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

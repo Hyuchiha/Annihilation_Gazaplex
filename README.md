@@ -446,12 +446,40 @@ Set `Database.type: "MongoDB"` and fill in host/port/name/user/pass.
 
 ## Building from Source
 
-```bash
-# Full build (all 26 modules)
-mvn clean package -DskipTests
+### Prerequisites
 
-# Output JAR
-AnnihilationPlugin/target/Annihilation_v1.5.3.jar
+1. **Maven 3.6+** and **Java 8+**
+2. **Spigot NMS dependencies** installed in your local Maven repository via BuildTools (for NMS modules)
+3. **ReflectionHelper** — compiled locally from updated source
+
+### Installing ReflectionHelper (required before first build)
+
+This project uses an updated version of ReflectionHelper (1.21.4-SNAPSHOT) compiled locally:
+
+```bash
+# Clone and build ReflectionHelper
+git clone https://github.com/InventivetalentDev/ReflectionHelper.git
+cd ReflectionHelper
+mvn clean install -DskipTests
 ```
 
-Requires Maven 3.6+ and Java 8. NMS modules use SpecialSource remapping — ensure Spigot jars are installed in your local Maven repository via BuildTools.
+This installs ReflectionHelper to your local Maven repository (`~/.m2/repository/`). The Annihilation build will find it automatically.
+
+> **Note for teams:** Each developer needs to run this once on their machine before building Annihilation.
+
+### Building Annihilation
+
+```bash
+# Full build (all 26 modules + final shaded JAR)
+mvn clean package -DskipTests
+
+# Output JAR location
+AnnihilationPlugin/target/Annihilation_v1.6.0.jar
+```
+
+### Quick rebuild (after making code changes)
+
+```bash
+# Build only the main plugin module (faster, assumes NMS modules already installed)
+mvn package -pl AnnihilationPlugin -DskipTests
+```
