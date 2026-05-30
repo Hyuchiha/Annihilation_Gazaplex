@@ -203,6 +203,18 @@
             <artifactId>HikariCP</artifactId>
             <version>4.0.3</version>
         </dependency>
+        <!-- SLF4J API (required by HikariCP) -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.36</version>
+        </dependency>
+        <!-- SLF4J Simple implementation (lightweight logger) -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.36</version>
+        </dependency>
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
@@ -250,6 +262,10 @@
                             <pattern>com.zaxxer.hikari</pattern>
                             <shadedPattern>com.hyuchiha.hikari</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>org.slf4j</pattern>
+                            <shadedPattern>com.hyuchiha.slf4j</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>
@@ -293,6 +309,8 @@
                                     <include>xyz.xenondevs:particle</include>
                                     <include>com.github.cryptomorin:XSeries</include>
                                     <include>com.zaxxer:HikariCP</include>
+                                    <include>org.slf4j:slf4j-api</include>
+                                    <include>org.slf4j:slf4j-simple</include>
                                 </includes>
                             </artifactSet>
                         </configuration>

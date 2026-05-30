@@ -26,11 +26,15 @@ import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.inventivetalent.reflection.minecraft.MinecraftVersion;
+
+import java.io.File;
+import java.util.Set;
 
 public class Main extends JavaPlugin {
   private static Main instance;
@@ -49,6 +53,11 @@ public class Main extends JavaPlugin {
 
     configManager = new ConfigManager(this);
     configManager.loadConfigFiles("config.yml", "maps.yml", "messages.yml", "shops.yml", "games.yml", "kits.yml");
+
+    // Validate maps configuration before proceeding
+    if (!validateMapsConfiguration()) {
+      return; // Server will shutdown, no need to continue initialization
+    }
 
     String version = MinecraftVersion.getVersion().packageName();
     Output.log("Using minecraft version: " + version);
@@ -272,5 +281,164 @@ public class Main extends JavaPlugin {
 
   public Database getMainDatabase() {
     return this.database;
+  }
+
+  /**
+   * Validates the maps.yml configuration and map files existence.
+   * Requirements:
+   * 1. At least one map must be configured (besides 'lobby')
+   * 2. Maps cannot use default coordinates (0,0,0)
+   * 3. Physical map files must exist in plugins/Annihilation/maps/ folder
+   *
+   * Shuts down the server if validation fails.
+   *
+   * @return true if validation passes, false otherwise (server will shutdown)
+   */
+  private boolean validateMapsConfiguration() {
+    Configuration mapsConfig = getConfig("maps.yml");
+
+    if (mapsConfig == null) {
+      Output.logError("==================== CRITICAL ERROR ====================");
+      Output.logError("maps.yml file could not be loaded!");
+      Output.logError("Please ensure maps.yml exists and is valid YAML format.");
+      Output.logError("Server will shutdown in 5 seconds...");
+      Output.logError("========================================================");
+      shutdownServer();
+      return false;
+    }
+
+    Set<String> mapKeys = mapsConfig.getKeys(false);
+
+    // Remove lobby from validation (it's not a game map)
+    mapKeys.remove("lobby");
+
+    // Check if at least one map exists
+    if (mapKeys.isEmpty()) {
+      Output.logError("==================== CRITICAL ERROR ====================");
+      Output.logError("No maps configured in maps.yml!");
+      Output.logError("At least one map must be configured (besides 'lobby').");
+      Output.logError("Server will shutdown in 5 seconds...");
+      Output.logError("========================================================");
+      shutdownServer();
+      return false;
+    }
+
+    Output.log("Validating " + mapKeys.size() + " configured map(s)...");
+
+    File mapsFolder = new File(getDataFolder(), "maps");
+    boolean hasErrors = false;
+
+    for (String mapName : mapKeys) {
+      Output.log("Validating map: " + mapName);
+
+      ConfigurationSection mapSection = mapsConfig.getConfigurationSection(mapName);
+      if (mapSection == null) {
+        Output.logError("  [ERROR] Map '" + mapName + "' has no configuration section!");
+        hasErrors = true;
+        continue;
+      }
+
+      // Validate spawns (check for default values)
+      ConfigurationSection spawns = mapSection.getConfigurationSection("spawns");
+      if (spawns == null || spawns.getKeys(false).isEmpty()) {
+        Output.logError("  [ERROR] Map '" + mapName + "' has no spawn points configured!");
+        hasErrors = true;
+      } else {
+        // Check if any spawn has default coordinates
+        for (String team : spawns.getKeys(false)) {
+          if (spawns.isList(team)) {
+            for (String spawnStr : spawns.getStringList(team)) {
+              if (isDefaultCoordinate(spawnStr)) {
+                Output.logError("  [ERROR] Map '" + mapName + "' has default coordinates (0,0,0) in " + team + " spawns!");
+                Output.logError("          Please configure proper spawn coordinates.");
+                hasErrors = true;
+                break;
+              }
+            }
+          }
+        }
+      }
+
+      // Validate nexuses (check for default values)
+      ConfigurationSection nexuses = mapSection.getConfigurationSection("nexuses");
+      if (nexuses == null || nexuses.getKeys(false).isEmpty()) {
+        Output.logError("  [ERROR] Map '" + mapName + "' has no nexus locations configured!");
+        hasErrors = true;
+      } else {
+        for (String team : nexuses.getKeys(false)) {
+          String nexusStr = nexuses.getString(team);
+          if (isDefaultCoordinate(nexusStr)) {
+            Output.logError("  [ERROR] Map '" + mapName + "' has default coordinates in " + team + " nexus!");
+            Output.logError("          Please configure proper nexus coordinates.");
+            hasErrors = true;
+          }
+        }
+      }
+
+      // Check if physical map folder exists
+      File mapFolder = new File(mapsFolder, mapName);
+      if (!mapFolder.exists() || !mapFolder.isDirectory()) {
+        Output.logError("  [ERROR] Map folder not found: " + mapFolder.getAbsolutePath());
+        Output.logError("          Please place the map world folder in plugins/Annihilation/maps/" + mapName + "/");
+        hasErrors = true;
+      } else {
+        // Check for region folder (basic world structure validation)
+        File regionFolder = new File(mapFolder, "region");
+        if (!regionFolder.exists() || !regionFolder.isDirectory()) {
+          Output.logError("  [WARNING] Map '" + mapName + "' exists but has no 'region' folder.");
+          Output.logError("            This might indicate an incomplete or corrupted world.");
+        } else {
+          Output.log("  [OK] Map '" + mapName + "' validation passed.");
+        }
+      }
+    }
+
+    if (hasErrors) {
+      Output.logError("==================== CRITICAL ERROR ====================");
+      Output.logError("Map configuration validation FAILED!");
+      Output.logError("Please fix the errors above before starting the server.");
+      Output.logError("Server will shutdown in 5 seconds...");
+      Output.logError("========================================================");
+      shutdownServer();
+      return false;
+    }
+
+    Output.log("All maps validated successfully!");
+    return true;
+  }
+
+  /**
+   * Checks if a coordinate string represents default/unset coordinates.
+   * Detects patterns like "0,0,0" or "0,0,0,0,0"
+   */
+  private boolean isDefaultCoordinate(String coordStr) {
+    if (coordStr == null || coordStr.trim().isEmpty()) {
+      return true;
+    }
+
+    String[] parts = coordStr.split(",");
+    if (parts.length < 3) {
+      return true; // Invalid format
+    }
+
+    // Check if x, y, z are all 0
+    try {
+      double x = Double.parseDouble(parts[0].trim());
+      double y = Double.parseDouble(parts[1].trim());
+      double z = Double.parseDouble(parts[2].trim());
+
+      return x == 0.0 && y == 0.0 && z == 0.0;
+    } catch (NumberFormatException e) {
+      return true; // Invalid number format
+    }
+  }
+
+  /**
+   * Schedules server shutdown after a 5 second delay.
+   */
+  private void shutdownServer() {
+    Bukkit.getScheduler().runTaskLater(this, () -> {
+      Bukkit.shutdown();
+    }, 100L); // 5 seconds (20 ticks per second * 5 = 100 ticks)
   }
 }
