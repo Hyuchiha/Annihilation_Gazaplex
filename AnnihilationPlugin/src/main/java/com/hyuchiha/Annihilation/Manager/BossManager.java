@@ -160,6 +160,10 @@ public class BossManager {
         // No creator
         helper = new ChunkHelper_v1_20_R3();
         break;
+      case v1_20_R4:
+        // No creator
+        helper = new ChunkHelper_v1_20_R4();
+        break;
       case v1_21_R1:
         // No Creator
         helper = new ChunkHelper_v1_21_R1();

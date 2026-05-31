@@ -84,6 +84,9 @@ public class PlayerManager {
       case v1_20_R3:
         respawner = new Respawner_v1_20_R3();
         break;
+      case v1_20_R4:
+        respawner = new Respawner_v1_20_R4();
+        break;
       case v1_21_R1:
         respawner = new Respawner_v1_21_R1();
         break;
