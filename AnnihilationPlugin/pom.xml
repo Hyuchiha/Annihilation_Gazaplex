@@ -230,7 +230,7 @@
         <dependency>
             <groupId>org.inventivetalent</groupId>
             <artifactId>reflectionhelper</artifactId>
-            <version>1.21.11-SNAPSHOT</version>
+            <!-- version managed by parent dependencyManagement -->
         </dependency>
     </dependencies>
 

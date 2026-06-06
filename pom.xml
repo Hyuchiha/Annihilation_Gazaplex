@@ -17,7 +17,18 @@
         <maven-jar-plugin.version>3.4.1</maven-jar-plugin.version>
         <maven-shade-plugin.version>3.5.2</maven-shade-plugin.version>
         <special-source-plugin.version>2.0.3</special-source-plugin.version>
+        <reflectionhelper.version>1.21.11-SNAPSHOT</reflectionhelper.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.inventivetalent</groupId>
+                <artifactId>reflectionhelper</artifactId>
+                <version>${reflectionhelper.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <modules>
         <module>Base</module>

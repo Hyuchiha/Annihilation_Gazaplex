@@ -42,7 +42,7 @@
         <dependency>
             <groupId>org.inventivetalent</groupId>
             <artifactId>reflectionhelper</artifactId>
-            <version>1.21.4-SNAPSHOT</version>
+            <!-- version managed by parent dependencyManagement -->
         </dependency>
         <dependency>
             <groupId>com.onarandombox.multiversecore</groupId>
