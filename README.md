@@ -4,7 +4,9 @@ Inspired by the classic **Annihilation** minigame from ShowBow. Originally built
 
 Four teams (Red, Blue, Green, Yellow) compete to destroy each other's Nexus. The last team with a standing Nexus wins.
 
-**Supported versions:** 1.9 – 1.21 | **Author:** Hyuchiha
+**Supported versions:** 1.9 – 1.21.11 (Spigot) | **Author:** Hyuchiha
+
+> **Server software:** built for **Spigot**. Runs on **Paper/Purpur ≤ 1.20.4** identically. On **Paper/Purpur 1.20.5+** the core game works but NMS-backed features degrade — see [Server Compatibility](#server-compatibility).
 
 ---
 
@@ -17,7 +19,9 @@ Four teams (Red, Blue, Green, Yellow) compete to destroy each other's Nexus. The
 - Phase-based progression (5 phases, Phase 5 = double nexus damage)
 - Zombie player replacement when players disconnect mid-game
 - Virtual ender furnaces, brewing stands, and ender chests per team
-- Custom Wither boss and Witches per arena
+- **Custom mob framework** (MC 1.18+, opt-in on 1.14–1.17): bosses, witches, guardians and zombies with scripted abilities — charge, potion barrage, fireball, sonic beam, wither-skull volleys, AoE stomp (see [Custom Mobs](#custom-mobs))
+- Two-stage arena boss: **Wither** on first spawn, **Warden** (2× HP) on respawn for MC ≥ 1.19
+- Visual kit-ability cooldowns via Minecraft's native item-cooldown overlay (MC 1.11+)
 - In-game shop via sign interaction
 - Statistics system (kills, deaths, wins, losses, nexus damage)
 - Leaderboard commands
@@ -26,7 +30,7 @@ Four teams (Red, Blue, Green, Yellow) compete to destroy each other's Nexus. The
 - Custom MOTD with game state placeholders
 - Anti-nuker protection near nexuses
 - VIP perks (extra ender chest slots, late-join pass)
-- Database: MySQL, SQLite, MongoDB
+- Database: MySQL, SQLite, MongoDB — **HikariCP connection pooling** for SQL backends (see [Database Setup](#database-setup))
 - Hot reload of YAML configs via `/anni reload` (no server restart)
 - PlaceholderAPI integration — exposes player stats and live game state to scoreboards/chat plugins
 
@@ -38,7 +42,7 @@ No external plugin is **strictly** required — the plugin runs on a vanilla Spi
 
 | Dependency | Type | Notes |
 |---|---|---|
-| Spigot / Paper / Purpur | Required | 1.9 – 1.21 |
+| Spigot (recommended) | Required | 1.9 – 1.21.11. Paper/Purpur work too — read [Server Compatibility](#server-compatibility) |
 | Java 8+ | Required | Plugin compiled for Java 8 |
 | MySQL server / SQLite driver / MongoDB server | Required | At least one database backend. SQLite is zero-config (uses the driver bundled with Spigot/CraftBukkit). |
 | Vault | Soft | Money rewards; disabled if absent |
@@ -46,6 +50,26 @@ No external plugin is **strictly** required — the plugin runs on a vanilla Spi
 | ProtocolLib | Soft | Team-colored helmets via packets |
 | Multiverse-Core | Soft | Recommended for multi-world arena management |
 | PlaceholderAPI | Soft | Enables `%annihilation_*%` placeholders for external plugins |
+
+---
+
+## Server Compatibility
+
+The plugin is built for **Spigot's versioned NMS scheme** — every `net.minecraft` / `CraftBukkit` call lives in a version module (`v1_9_R1` … `v1_21_R7`) and the right one is picked at runtime by reading the server's CraftBukkit package name (`org.bukkit.craftbukkit.v1_21_R3` → `v1_21_R3`).
+
+| Server | Result |
+|---|---|
+| **Spigot** (any 1.9 – 1.21.11) | ✅ Full support — every feature works. This is the target platform. |
+| **Paper / Purpur ≤ 1.20.4** | ✅ Full support — package is still versioned, so detection succeeds (Paper's plugin-remapper deobfuscates the NMS bytecode at load). |
+| **Paper / Purpur ≥ 1.20.5** | ⚠️ **Loads and the core game runs, but NMS-backed features silently disable.** |
+
+**Why 1.20.5+ degrades on Paper/Purpur:** since 1.20.5 Paper [removed the versioned CraftBukkit package relocation](https://papermc.io/news/important-dev-psa-future-removal-of-cb-package-relocation/) — the package is now plain `org.bukkit.craftbukkit` with no `vX_Y_RZ` suffix. Runtime version detection (`Minecraft.Version.getVersion()`) parses that package name, so on Paper 1.20.5+ it resolves to `UNKNOWN`. Paper's plugin-remapper fixes obfuscated *symbols* but not this *string-based version parse*, so it can't rescue it.
+
+**What still works on Paper/Purpur 1.20.5+:** team/arena/nexus logic, phases, scoreboards, kits, shop, voting, stats, database, PlaceholderAPI, BungeeCord, MOTD, ProtocolLib team helmets, and player respawn (falls back to `player.spigot().respawn()`).
+
+**What disables (no-ops) on Paper/Purpur 1.20.5+:** the custom mob framework + legacy NMS mobs (so no charge/potion/skull abilities), the two-stage Wither/Warden boss spawn, the virtual Ender furnace and brewing stand, and the disconnect zombie-player.
+
+> **Recommendation:** run on **Spigot** for full feature coverage on modern versions. If you require Paper/Purpur on 1.20.5+, expect the degraded set above until version detection is migrated off CraftBukkit package-name parsing (e.g. to `Bukkit.getMinecraftVersion()`).
 
 ---
 
@@ -84,6 +108,11 @@ bossRespawnDelay: 10
 # Witch respawn delay (minutes) after being killed
 witchRespawnDelay: 5
 
+# Custom mob behaviors are always ON for MC 1.18+. On 1.14–1.17 the legacy NMS mobs
+# are used by default; set this true to enable the custom mob framework there too
+# (requires MC 1.14+; below 1.14 it stays off regardless). See "Custom Mobs".
+enable-custom-mobs-legacy: false
+
 # Players can join a team up to this phase number (0 = lobby only)
 lastJoinPhase: 3
 
@@ -115,6 +144,7 @@ Database:
   name: "anni"
   user: "root"
   pass: "root"
+  pool-size: 10          # Max HikariCP connections (MySQL only). See Database Setup.
 #Database:
 #  type: "SQLite"
 #Database:
@@ -310,6 +340,40 @@ All permissions default to `op`.
 
 ---
 
+## Custom Mobs
+
+Arena bosses, witches, the nexus guardian and disconnect-zombies run on a **pure-Bukkit custom mob framework** (no per-version NMS for the behavior itself — abilities use the stable PersistentDataContainer + Attribute APIs).
+
+### Version gate
+
+| MC version | Behavior |
+|---|---|
+| **≥ 1.18** | Always enabled. |
+| **1.14 – 1.17** | Opt-in via `enable-custom-mobs-legacy: true` in `config.yml`. Default = legacy NMS mobs. |
+| **< 1.14** | Always disabled (the framework identifies mobs via PersistentDataContainer, added in 1.14). |
+
+When the framework is **active it fully replaces** the legacy NMS mob path (no double-spawn). When disabled, the plugin falls back to the legacy NMS creators / manual setup, so mobs still appear with basic behavior.
+
+> Note: mob types that need an entity from a newer version still require that version — e.g. the **Warden** boss only spawns on MC ≥ 1.19. Where the entity doesn't exist, that specific mob is skipped (the Wither boss is used instead).
+
+### Abilities
+
+| Ability | Effect |
+|---|---|
+| Charge | Sprint-chase toward the target (disconnect zombie) |
+| Potion Barrage | Throws a staggered volley of splash potions |
+| Fireball | Launches small fireballs at range |
+| Sonic Beam | Warden-style ranged beam damage |
+| Wither Skull | Single homing wither skull |
+| Wither Skull Barrage | Multi-skull volley |
+| AoE Stomp | Area knockback + damage around the mob |
+
+### Mob types
+
+`WitherBoss`, `WardenBoss` (≥1.19, 2× HP second-stage boss), `CustomWitch`, `NexusGuardian`, `ArmoredZombie`, `DisconnectZombie`. HP and display names come from the per-arena `maps.yml` (`boss`/`witch` blocks). All custom mobs are wiped on game end and plugin disable.
+
+---
+
 ## Game Flow
 
 ```
@@ -421,15 +485,46 @@ The PlaceholderAPI integration is **decoupled from Minecraft version**. It only 
 
 ## Database Setup
 
-### MySQL (recommended for production)
-Create the schema first: `CREATE DATABASE anni;`  
-Then configure `Database.type: "MySQL"` in `config.yml`.
+The plugin caches every account in memory and only touches the DB on join (load), disconnect (save), and game end (bulk win/loss saves). SQL backends (MySQL, SQLite) use a **HikariCP connection pool** — no shared single connection, no manual locking — so the ~80–100 saves at game end run concurrently instead of serializing.
+
+### MySQL (recommended for production / 80–100 players)
+1. Create the schema first: `CREATE DATABASE anni;`
+2. Set `Database.type: "MySQL"` and fill host/port/name/user/pass in `config.yml`.
+
+Tables are created automatically with the right indexes (`PRIMARY KEY (uuid)` on accounts, FK-joined unlocked-kits table).
 
 ### SQLite (zero-config, single server)
-No setup needed. Set `Database.type: "SQLite"`. File is saved to the plugin data folder.
+No setup needed. Set `Database.type: "SQLite"`. File is saved to the plugin data folder. The pool is **fixed at size 1** — SQLite serializes writes at the file level, and a larger pool would just produce `database is locked` errors. Fine for a single server; use MySQL if you run multiple instances or expect heavy concurrency.
 
 ### MongoDB
 Set `Database.type: "MongoDB"` and fill in host/port/name/user/pass.
+
+### Connection pool tuning & recommendations
+
+For SQL backends, HikariCP is configured with sensible defaults; the only knob exposed in `config.yml` is `pool-size` (MySQL only):
+
+```yaml
+Database:
+  type: "MySQL"
+  ...
+  pool-size: 10     # max connections in the pool (default 10)
+```
+
+| Setting | Value | Notes |
+|---|---|---|
+| `pool-size` (max pool) | 10 (default) | Raise toward 15–20 for 100+ players **only if** your MySQL `max_connections` allows it and you see saves queueing at game end. More is not better — past the DB's CPU/core count it adds contention. |
+| min idle | 2 | Fixed |
+| connection timeout | 10 s | Fixed |
+| idle timeout | 10 min | Fixed |
+| max lifetime | 30 min | Fixed — keep below your MySQL `wait_timeout` |
+
+**Recommendations for an optimized setup:**
+
+- **Co-locate** the MySQL server with the Minecraft server (same host / LAN). A save is a single round-trip; latency dominates, so a remote DB across the internet hurts most.
+- Keep MySQL's `max_connections` comfortably above `pool-size × (number of Annihilation servers)`.
+- Use **InnoDB** (the auto-created tables already do) for row-level locking under concurrent saves.
+- **Runtime requirement — SLF4J:** HikariCP needs `slf4j-api` on the classpath. Spigot 1.19.4+ and modern Paper/Purpur bundle it. On older servers, drop `slf4j-api.jar` into `plugins/lib/` (or the server's `lib/`) or you'll see a `NoClassDefFoundError` from Hikari at startup.
+- HikariCP is shaded and relocated to `com.hyuchiha.hikari` so it won't clash with other plugins that bundle their own copy.
 
 ---
 
@@ -452,9 +547,23 @@ Set `Database.type: "MongoDB"` and fill in host/port/name/user/pass.
 2. **Spigot NMS dependencies** installed in your local Maven repository via BuildTools (for NMS modules)
 3. **ReflectionHelper** — compiled locally from updated source
 
+### Spigot NMS jars (BuildTools)
+
+Each version module compiles against the `remapped-mojang` Spigot artifact for its Minecraft version, produced by BuildTools with `--remapped`. Install every version you want to support into your local `~/.m2`:
+
+```bash
+# one per supported revision — example for the newest four added in 1.6.0
+java -jar BuildTools.jar --rev 1.21.5  --remapped   # → v1_21_R4
+java -jar BuildTools.jar --rev 1.21.8  --remapped   # → v1_21_R5
+java -jar BuildTools.jar --rev 1.21.10 --remapped   # → v1_21_R6
+java -jar BuildTools.jar --rev 1.21.11 --remapped   # → v1_21_R7
+```
+
+Building 1.20.5+ requires **JDK 21**. A revision whose jar is missing from `~/.m2` will fail the reactor at that module.
+
 ### Installing ReflectionHelper (required before first build)
 
-This project uses an updated version of ReflectionHelper (1.21.4-SNAPSHOT) compiled locally:
+This project uses an updated build of ReflectionHelper (**1.21.11-SNAPSHOT**, pinned in the parent `pom.xml`) compiled locally — its `Minecraft.Version` enum must include the `v1_21_R4`…`v1_21_R7` constants:
 
 ```bash
 # Clone and build ReflectionHelper
@@ -470,8 +579,10 @@ This installs ReflectionHelper to your local Maven repository (`~/.m2/repository
 ### Building Annihilation
 
 ```bash
-# Full build (all 26 modules + final shaded JAR)
+# Full build (all 31 modules + final shaded JAR)
 mvn clean package -DskipTests
+# If a forked compiler/remap JVM crashes on low heap, bump it:
+#   MAVEN_OPTS="-Xmx2g" mvn clean package -DskipTests
 
 # Output JAR location
 AnnihilationPlugin/target/Annihilation_v1.6.0.jar
