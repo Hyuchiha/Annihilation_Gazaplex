@@ -6,6 +6,7 @@ import com.hyuchiha.Annihilation.Event.PhaseChangeEvent;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.*;
 import com.hyuchiha.Annihilation.Messages.Translator;
+import com.hyuchiha.Annihilation.Mobs.CustomMobManager;
 import com.hyuchiha.Annihilation.Object.DamageControl;
 import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Scoreboard.ScoreboardManager;
@@ -118,6 +119,7 @@ public class Game {
     FastBreakProtect.clearData();
     PlayerSerializer.restartDataOfPlayers();
     ZombieManager.clearZombiesData();
+    CustomMobManager.removeAll();
     ParticleManager.endGameParticles();
     MapManager.resetMap();
     VotingManager.start();
