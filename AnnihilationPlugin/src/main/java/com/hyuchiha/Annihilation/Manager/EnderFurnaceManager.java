@@ -95,6 +95,18 @@ public class EnderFurnaceManager {
       case v1_21_R3:
         furnaceManager = new FurnaceManager_v1_21_R3(main);
         break;
+      case v1_21_R4:
+        furnaceManager = new FurnaceManager_v1_21_R4(main);
+        break;
+      case v1_21_R5:
+        furnaceManager = new FurnaceManager_v1_21_R5(main);
+        break;
+      case v1_21_R6:
+        furnaceManager = new FurnaceManager_v1_21_R6(main);
+        break;
+      case v1_21_R7:
+        furnaceManager = new FurnaceManager_v1_21_R7(main);
+        break;
       default:
         Output.log("Version not supported");
         Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());

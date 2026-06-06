@@ -180,6 +180,26 @@
             <artifactId>v1_21_R3</artifactId>
             <version>v1_0</version>
         </dependency>
+        <dependency>
+            <groupId>com.hyuchiha</groupId>
+            <artifactId>v1_21_R4</artifactId>
+            <version>v1_0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.hyuchiha</groupId>
+            <artifactId>v1_21_R5</artifactId>
+            <version>v1_0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.hyuchiha</groupId>
+            <artifactId>v1_21_R6</artifactId>
+            <version>v1_0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.hyuchiha</groupId>
+            <artifactId>v1_21_R7</artifactId>
+            <version>v1_0</version>
+        </dependency>
 
         <dependency>
             <groupId>org.mongodb</groupId>
@@ -305,9 +325,14 @@
                                     <include>com.hyuchiha:v1_20_R1**</include>
                                     <include>com.hyuchiha:v1_20_R2**</include>
                                     <include>com.hyuchiha:v1_20_R3**</include>
+                                    <include>com.hyuchiha:v1_20_R4**</include>
                                     <include>com.hyuchiha:v1_21_R1**</include>
                                     <include>com.hyuchiha:v1_21_R2**</include>
                                     <include>com.hyuchiha:v1_21_R3**</include>
+                                    <include>com.hyuchiha:v1_21_R4**</include>
+                                    <include>com.hyuchiha:v1_21_R5**</include>
+                                    <include>com.hyuchiha:v1_21_R6**</include>
+                                    <include>com.hyuchiha:v1_21_R7**</include>
                                     <include>org.mongodb:mongodb-driver</include>
                                     <include>org.mongodb:bson</include>
                                     <include>org.mongodb:mongodb-driver-core</include>

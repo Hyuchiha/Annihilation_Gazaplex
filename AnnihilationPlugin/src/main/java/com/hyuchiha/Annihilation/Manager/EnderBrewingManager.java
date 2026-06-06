@@ -95,6 +95,18 @@ public class EnderBrewingManager {
       case v1_21_R3:
         brewingManager = new BrewingManager_v1_21_R3(main);
         break;
+      case v1_21_R4:
+        brewingManager = new BrewingManager_v1_21_R4(main);
+        break;
+      case v1_21_R5:
+        brewingManager = new BrewingManager_v1_21_R5(main);
+        break;
+      case v1_21_R6:
+        brewingManager = new BrewingManager_v1_21_R6(main);
+        break;
+      case v1_21_R7:
+        brewingManager = new BrewingManager_v1_21_R7(main);
+        break;
       default:
         Output.logError("Version not supported");
         Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
