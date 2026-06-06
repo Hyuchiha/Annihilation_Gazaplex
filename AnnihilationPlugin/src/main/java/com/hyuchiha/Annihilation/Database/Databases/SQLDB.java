@@ -50,9 +50,29 @@ public abstract class SQLDB extends Database {
 
     try (Connection conn = dataSource.getConnection();
          Statement stmt = conn.createStatement()) {
+      // Schema setup, all in one startup step: create the tables, then create the
+      // secondary indexes that back the hot lookup paths (account load, kit
+      // ownership, kit id resolution and leaderboards).
       stmt.execute(getDatabaseQuery());
       stmt.execute(getDatabaseKitsQuery());
       stmt.execute(getDatabaseKitsUnlockedQuery());
+
+      // SQLite can't declare secondary indexes inside CREATE TABLE, and
+      // CREATE TABLE IF NOT EXISTS skips already-existing tables on running
+      // servers, so indexes are issued as their own CREATE INDEX statements
+      // right here. Each runs isolated so an "already exists" failure on one
+      // never aborts the table setup.
+      for (String ddl : getIndexQueries()) {
+        try {
+          stmt.execute(ddl);
+        } catch (SQLException e) {
+          // MySQL has no CREATE INDEX IF NOT EXISTS; 1061 = duplicate key name,
+          // i.e. the index already exists. That case is expected and silent.
+          if (e.getErrorCode() != 1061) {
+            Output.logError("Failed to create index: " + e.getMessage());
+          }
+        }
+      }
     } catch (SQLException e) {
       e.printStackTrace();
       return false;
@@ -133,7 +153,10 @@ public abstract class SQLDB extends Database {
 
   @Override
   protected Account loadAccount(String uuid) {
-    String query = "SELECT * FROM " + ACCOUNTS_TABLE + " WHERE UPPER(uuid) LIKE UPPER(?)";
+    // Bukkit UUIDs are always canonical lowercase, so an exact match hits the
+    // PRIMARY KEY index directly. The old UPPER(uuid) LIKE UPPER(?) form wrapped
+    // the column in a function, which disabled the index and forced a full scan.
+    String query = "SELECT * FROM " + ACCOUNTS_TABLE + " WHERE uuid = ?";
 
     try (Connection conn = dataSource.getConnection();
          PreparedStatement ps = conn.prepareStatement(query)) {
@@ -246,6 +269,13 @@ public abstract class SQLDB extends Database {
   protected abstract String getDatabaseKitsUnlockedQuery();
 
   protected abstract String getInsertKitQuery(Kit kit);
+
+  /**
+   * Dialect-specific {@code CREATE INDEX} statements for the secondary indexes.
+   * Executed during {@link #init()} right after the tables are created; each runs
+   * isolated so an "already exists" failure is non-fatal.
+   */
+  protected abstract List<String> getIndexQueries();
 
   /**
    * Parameterized INSERT template for a new account. Placeholders, in order:

@@ -61,7 +61,7 @@ public abstract class Database {
   }
 
   public List<Account> getTopLossesAccounts(int size) {
-    List<Account> topAccounts = loadTopAccountsByStatType(StatType.DEATHS, size * 2);
+    List<Account> topAccounts = loadTopAccountsByStatType(StatType.LOSSES, size * 2);
 
     topAccounts.sort((account1, account2) -> account2.getLosses() - account1.getLosses());
 

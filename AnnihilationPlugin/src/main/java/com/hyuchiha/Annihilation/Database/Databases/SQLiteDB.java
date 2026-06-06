@@ -8,6 +8,8 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class SQLiteDB extends SQLDB {
 
@@ -77,6 +79,24 @@ public class SQLiteDB extends SQLDB {
   protected String getInsertKitQuery(Kit kit) {
     return "INSERT OR IGNORE INTO `" + KITS_TABLE + "`(`name`)  VALUES "
         + "('" + kit.name().toUpperCase() + "');";
+  }
+
+  @Override
+  protected List<String> getIndexQueries() {
+    // SQLite supports CREATE INDEX IF NOT EXISTS, so these are naturally idempotent.
+    return Arrays.asList(
+        // Account ownership lookup: getKitsFromAccount filters WHERE player = ?
+        // (the composite PK (clv_kit, player) can't serve a player-only filter).
+        "CREATE INDEX IF NOT EXISTS `idx_ku_player` ON `" + KITS_UNLOCKED_TABLE + "` (`player`)",
+        // getIdOfElement filters WHERE name = ?; also enforces kit-name uniqueness.
+        "CREATE UNIQUE INDEX IF NOT EXISTS `idx_kits_name` ON `" + KITS_TABLE + "` (`name`)",
+        // Leaderboards: ORDER BY <stat> DESC LIMIT n.
+        "CREATE INDEX IF NOT EXISTS `idx_acc_kills` ON `" + ACCOUNTS_TABLE + "` (`kills`)",
+        "CREATE INDEX IF NOT EXISTS `idx_acc_deaths` ON `" + ACCOUNTS_TABLE + "` (`deaths`)",
+        "CREATE INDEX IF NOT EXISTS `idx_acc_wins` ON `" + ACCOUNTS_TABLE + "` (`wins`)",
+        "CREATE INDEX IF NOT EXISTS `idx_acc_losses` ON `" + ACCOUNTS_TABLE + "` (`losses`)",
+        "CREATE INDEX IF NOT EXISTS `idx_acc_nexus_damage` ON `" + ACCOUNTS_TABLE + "` (`nexus_damage`)"
+    );
   }
 
   @Override

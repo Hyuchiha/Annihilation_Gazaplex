@@ -12,6 +12,8 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.IndexOptions;
+import com.mongodb.client.model.Indexes;
 import com.mongodb.client.model.Sorts;
 import org.bson.Document;
 import org.bukkit.configuration.ConfigurationSection;
@@ -58,7 +60,31 @@ public class MongoDB extends Database {
             getConfigSection().getInt("port")
         ), credential, options.build());
 
-    return getDatabase() != null;
+    if (getDatabase() == null) {
+      return false;
+    }
+
+    createIndexes();
+    return true;
+  }
+
+  /**
+   * Creates the secondary indexes that back account lookup and leaderboards.
+   * {@code createIndex} is idempotent, so this is safe to run on every startup.
+   */
+  private void createIndexes() {
+    MongoCollection<Document> collection = getDatabase().getCollection(ACCOUNTS_COLLECTION);
+
+    // Hot path: loadAccount / saveAccount / addUnlockedKit all query by uuid.
+    // Without this index every one of those is a full collection scan.
+    collection.createIndex(Indexes.ascending("uuid"), new IndexOptions().unique(true));
+
+    // Leaderboards: find().sort(descending(<stat>)).limit(n).
+    collection.createIndex(Indexes.descending("kills"));
+    collection.createIndex(Indexes.descending("deaths"));
+    collection.createIndex(Indexes.descending("wins"));
+    collection.createIndex(Indexes.descending("losses"));
+    collection.createIndex(Indexes.descending("nexus_damage"));
   }
 
 
