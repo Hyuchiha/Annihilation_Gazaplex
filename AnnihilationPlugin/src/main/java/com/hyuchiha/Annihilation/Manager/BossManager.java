@@ -432,7 +432,10 @@ public class BossManager {
    */
   private static LivingEntity spawnWitherVariant(Location spawn) {
     LivingEntity witherEntity;
-    if (creator != null) {
+    // When the CustomMob framework is active, WitherBoss fully owns the boss (attributes +
+    // abilities), so spawn a plain Bukkit wither and skip the legacy NMS creator to avoid
+    // doubling up. The NMS creator path runs only when CustomMobManager is disabled.
+    if (creator != null && !CustomMobManager.isEnabled()) {
       witherEntity = (LivingEntity) creator.getMob("CUSTOM_WITHER").spawnEntity(spawn);
     } else {
       witherEntity = (LivingEntity) spawn.getWorld().spawnEntity(spawn, EntityType.WITHER);

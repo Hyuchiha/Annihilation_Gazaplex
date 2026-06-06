@@ -19,6 +19,12 @@ bossRespawnDelay: 10
 # Delay in minutes to respawn the witches after death
 witchRespawnDelay: 5
 #
+# Custom mob behaviors (charge, potion barrage, wither skulls, etc.) are always ON for
+# MC 1.18+. On older servers (1.14 - 1.17) the legacy NMS mobs are used by default.
+# Set this to true to also enable the custom mob framework on those older versions where
+# supported (requires MC 1.14+; below 1.14 it stays off regardless of this flag).
+enable-custom-mobs-legacy: false
+#
 # The last phase players can join a team
 lastJoinPhase: 3
 #

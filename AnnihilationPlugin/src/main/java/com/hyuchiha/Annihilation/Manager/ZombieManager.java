@@ -94,7 +94,11 @@ public class ZombieManager {
     GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
     Zombie zombie;
 
-    if (creator != null) {
+    // When the CustomMob framework is active it fully owns this mob (AI + abilities via
+    // the DisconnectZombie wrapper below), so we spawn a plain Bukkit zombie and skip the
+    // legacy NMS creator — otherwise both would apply and double up. The NMS creator is
+    // only used when CustomMobManager is disabled (legacy versions without the opt-in).
+    if (creator != null && !CustomMobManager.isEnabled()) {
       zombie = (Zombie) creator.getMob("CUSTOM_ZOMBIE").spawnEntity(player.getLocation());
     } else {
       zombie = world.spawn(player.getLocation(), Zombie.class);
@@ -116,7 +120,8 @@ public class ZombieManager {
       zombies.put(uuid, zombie);
       // Wrap with CustomMob (decorator pattern — configure() is no-op so the equipment
       // we just copied stays intact). Adds ChargeAbility for sprint-chase behavior.
-      // Returns null on MC < 1.18; in that case the zombie keeps its vanilla AI which is fine.
+      // Returns null when CustomMobManager is disabled (MC < 1.14, or 1.14–1.17 without the
+      // enable-custom-mobs-legacy opt-in); in that case the zombie keeps the legacy AI.
       CustomMobManager.spawn(zombie, DisconnectZombie::new);
     }
 

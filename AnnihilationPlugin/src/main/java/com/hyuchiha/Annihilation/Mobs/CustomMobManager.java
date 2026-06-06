@@ -16,10 +16,12 @@ import java.util.function.Function;
 /**
  * Registry and global ticker for {@link CustomMob} instances.
  *
- * <p><b>Version gate:</b> disabled silently on MC &lt; 1.18. Older NMS coverage in this
- * plugin is partial (see PENDING FEATURE-6) and the modern attribute / PDC APIs used by
- * the framework are stable from 1.18 onwards. All public methods become no-ops on older
- * servers; callers do not need to version-check themselves.
+ * <p><b>Version gate:</b> always enabled on MC &gt;= 1.18 (modern attribute / PDC APIs are
+ * stable there). On MC 1.14 - 1.17 it is opt-in via the {@code enable-custom-mobs-legacy}
+ * flag in config.yml (legacy NMS mobs are the default on those versions). Below MC 1.14 it
+ * is always disabled — the framework identifies mobs via PersistentDataContainer, which
+ * does not exist before 1.14. When disabled all public methods are no-ops; callers do not
+ * need to version-check themselves (spawn() returns null and they fall back to legacy).
  *
  * <p><b>Performance:</b> a single global {@link BukkitRunnable} fires every
  * {@link #TICK_INTERVAL} ticks (default: 10 ticks = 0.5s) and iterates the registry.
@@ -38,10 +40,27 @@ public class CustomMobManager {
   private static BukkitRunnable tickTask;
 
   public static void init(Main plugin) {
-    if (Minecraft.Version.getVersion().olderThan(Minecraft.Version.v1_18_R1)) {
-      Output.log("CustomMobManager: disabled (requires MC >= 1.18).");
+    Minecraft.Version version = Minecraft.Version.getVersion();
+
+    // Hard floor: the framework tags/identifies mobs via PersistentDataContainer, which
+    // only exists from MC 1.14. Below that it cannot run regardless of config.
+    if (version.olderThan(Minecraft.Version.v1_14_R1)) {
+      Output.log("CustomMobManager: disabled (requires MC >= 1.14).");
       return;
     }
+
+    // 1.14 - 1.17: legacy NMS mobs are the default; the custom framework is opt-in via
+    // config. 1.18+: always enabled (modern attribute / PDC APIs are stable there).
+    if (version.olderThan(Minecraft.Version.v1_18_R1)) {
+      boolean legacyOptIn = plugin.getConfig("config.yml").getBoolean("enable-custom-mobs-legacy", false);
+      if (!legacyOptIn) {
+        Output.log("CustomMobManager: disabled on legacy MC (" + version + "). "
+            + "Set enable-custom-mobs-legacy: true in config.yml to enable.");
+        return;
+      }
+      Output.log("CustomMobManager: enabled on legacy MC (" + version + ") via config opt-in.");
+    }
+
     typeKey = new NamespacedKey(plugin, "mob_type");
     enabled = true;
     startTicker(plugin);
