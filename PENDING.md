@@ -11,6 +11,7 @@ Análisis orientado a un servidor con 80–100 jugadores simultáneos. Los items
 >   - SCALE-6: async save en `handleDisconnect` arriesgaba pérdida de datos en shutdown del plugin → revertido a sync; solo `canEndGame` (80 saves al cerrar partida) permanece async donde el ahorro real está.
 > **Iteración 4 de fixes:** 2026-05-09 — QUALITY-1, QUALITY-2b (resto), QUALITY-5, QUALITY-6, QUALITY-8, QUALITY-9, QUALITY-10, QUALITY-12, QUALITY-13, SCALE-7.
 > **Iteración 5 de fixes:** 2026-05-10 — FEATURE-1 (`/anni reload`) y FEATURE-2 (PlaceholderAPI hook).
+> **Iteración 6 de fixes:** 2026-06-06 — BUG-12 (extendido): create/update account queries a PreparedStatement con bind. FEATURE-4: verificada persistencia de kits desbloqueables (SQL + Mongo) y eliminado `Kit.resetKit()` (código muerto). FEATURE-3 queda en pausa.
 > **Iteración 4 (double-check):** 2026-05-09 — review encontró 1 fix menor (comentario obsoleto en `QuitListener.handleDisconnect` que mencionaba el lock de SQLDB ya removido; actualizado para describir la nueva realidad con Hikari). Confirmado:
 >   - `QUALITY-1`: defaults son sensatos; el único cambio de comportamiento para servers mal-configurados es `build` (radio anti-construcción) que pasa de 0→30. Sensato como default.
 >   - `QUALITY-8`: reordenamiento de `endGame` correcto. La ventana breve con scoreboard vacía existe igual que antes (entre resetScoreboard y `VotingManager.start`).
@@ -177,7 +178,7 @@ Reemplazado el modelo de `Connection` única + `synchronized` por un pool de **H
 
 **Requisito de runtime:** SLF4J-api en classpath. Spigot 1.19.4+ y Paper modernos lo proveen. Servers más antiguos pueden necesitar agregar `slf4j-api.jar` a `plugins/lib/` o `lib/`.
 
-**Pendiente (BUG-12 extendido):** `getCreateAccountQuery` y `getUpdateAccountQuery` en `MySQLDB`/`SQLiteDB` siguen construyendo SQL con string-concat (vulnerable si en el futuro un username contiene un quote). Migrar a PreparedStatement con bind requiere cambiar el contrato del método abstracto.
+**~~Pendiente (BUG-12 extendido)~~ ✅ FIXED (2026-06-06):** `getCreateAccountQuery` y `getUpdateAccountQuery` en `MySQLDB`/`SQLiteDB` ya no construyen SQL con string-concat. El contrato del método abstracto se cambió a devolver un **template parametrizado** (placeholders `?`, sin recibir `Account`); el bind se hace en `SQLDB.createAccountAndAddToDatabase` (uuid, username) y `SQLDB.saveAccount` (username, kills, deaths, wins, losses, nexus_damage, uuid). Eliminado el import `Account` ahora sin uso en ambas subclases. Con esto, ninguna query de `SQLDB` arma SQL por concatenación de datos.
 
 ---
 
@@ -295,8 +296,13 @@ Guards agregados: cast `instanceof Player` + null check de `GameManager.getCurre
 ### [FEATURE-3] Soporte a múltiples mundos de boss por arena
 Un solo boss/boss-world por arena.
 
-### [FEATURE-4] Registro de kits desbloqueables persistido en DB
-El sistema de "kit unlocking" existe (`addUnlockedKit()` en Database) pero el método `Kit.resetKit()` está vacío (`Kit.java:121-123`) — verificar persistencia entre sesiones.
+### ~~[FEATURE-4] Registro de kits desbloqueables persistido en DB~~ ✅ VERIFICADO + LIMPIEZA (2026-06-06)
+**Verificación de persistencia — SÍ se almacena entre sesiones, en los 3 backends:**
+- **SQL (MySQL/SQLite):** `addUnlockedKit` inserta en `annihilation_kits_unlocked` (FK a `annihilation_kits` + `annihilation_accounts`) y refresca la cache. Al cargar, `loadAccount` → `getKitsFromAccount` (JOIN con `annihilation_kits`) reconstruye la lista. `Account.hasKit()` la consulta desde `Kit.isOwnedBy()`.
+- **Mongo:** `getDocument` serializa el array `kits` (nombres de enum); `getAccountFromDocument` lo deserializa. `addUnlockedKit` hace `replaceOne` + actualiza cache.
+- **Flujo de compra:** `InventoryListener.onConfirmUnlock` (línea ~220) cobra el dinero y llama `addUnlockedKit`. Correcto.
+
+**Limpieza de código muerto:** `Kit.resetKit()` estaba vacío y solo se invocaba en un loop no-op dentro de `Game.endGame()` (`for (Kit kit : Kit.values()) kit.resetKit();`). Era código viejo sin efecto. Eliminados tanto el método como el loop.
 
 ### ~~[FEATURE-5] Cooldown visible para habilidades de kit~~ ✅ FIXED
 **Archivos:** `Utils/KitUtils.java`, 8 kits en `Kits/Implementations/`
@@ -374,6 +380,4 @@ Implementado vía el item-cooldown nativo de Minecraft (`Player.setCooldown(Mate
 | FEATURE-6 | ✅ | 🟢 Bajo | — | Resuelto con CustomMob API (1.18+) + NMS legacy (1.9-1.17) |
 
 ### Próximos a atacar (impacto/esfuerzo)
-1. **BUG-12 (extendido)** — el resto de queries en SQLDB que aún hacen string-concat (createAccountAndAddToDatabase, saveAccount Update queries) — están dentro de los strings devueltos por `getCreateAccountQuery`/`getUpdateAccountQuery` en MySQLDB/SQLiteDB. Migrar a PreparedStatement con bind.
-2. **FEATURE-3** — soporte a múltiples boss-worlds por arena (actualmente uno solo).
-3. **FEATURE-4** — verificar persistencia de kits desbloqueables entre sesiones (`Kit.resetKit()` está vacío).
+1. **FEATURE-3** — soporte a múltiples boss-worlds por arena (actualmente uno solo). *(En pausa — no se trabaja por ahora.)*

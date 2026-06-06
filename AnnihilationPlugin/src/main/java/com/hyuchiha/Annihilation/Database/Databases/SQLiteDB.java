@@ -1,6 +1,5 @@
 package com.hyuchiha.Annihilation.Database.Databases;
 
-import com.hyuchiha.Annihilation.Database.Base.Account;
 import com.hyuchiha.Annihilation.Game.Kit;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Output.Output;
@@ -81,24 +80,20 @@ public class SQLiteDB extends SQLDB {
   }
 
   @Override
-  protected String getCreateAccountQuery(Account account) {
+  protected String getCreateAccountQuery() {
     return "INSERT OR IGNORE INTO `" + ACCOUNTS_TABLE + "` (`uuid`, `username`, `kills`, "
-        + "`deaths`, `wins`, `losses`, `nexus_damage`) VALUES "
-        + "('"
-        + account.getUUID() + "', '"
-        + account.getName()
-        + "', '0', '0', '0', '0', '0');";
+        + "`deaths`, `wins`, `losses`, `nexus_damage`) VALUES (?, ?, 0, 0, 0, 0, 0);";
   }
 
   @Override
-  protected String getUpdateAccountQuery(Account account) {
+  protected String getUpdateAccountQuery() {
     return "UPDATE `" + ACCOUNTS_TABLE + "` SET "
-        + "`username`= '" + account.getName() + "',"
-        + "`kills`= '" + account.getKills() + "',"
-        + "`deaths`='" + account.getDeaths() + "',"
-        + "`wins`='" + account.getWins() + "',"
-        + "`losses`='" + account.getLosses() + "',"
-        + "`nexus_damage`='" + account.getNexus_damage() + "' "
-        + "WHERE `uuid`='" + account.getUUID() + "';";
+        + "`username`=?, "
+        + "`kills`=?, "
+        + "`deaths`=?, "
+        + "`wins`=?, "
+        + "`losses`=?, "
+        + "`nexus_damage`=? "
+        + "WHERE `uuid`=?;";
   }
 }

@@ -121,7 +121,9 @@ public abstract class SQLDB extends Database {
   @Override
   protected void createAccountAndAddToDatabase(Account account) {
     try (Connection conn = dataSource.getConnection();
-         PreparedStatement ps = conn.prepareStatement(getCreateAccountQuery(account))) {
+         PreparedStatement ps = conn.prepareStatement(getCreateAccountQuery())) {
+      ps.setString(1, account.getUUID());
+      ps.setString(2, account.getName());
       ps.execute();
       cachedAccounts.put(account.getUUID(), account);
     } catch (SQLException e) {
@@ -166,7 +168,14 @@ public abstract class SQLDB extends Database {
   @Override
   public void saveAccount(Account account) {
     try (Connection conn = dataSource.getConnection();
-         PreparedStatement ps = conn.prepareStatement(getUpdateAccountQuery(account))) {
+         PreparedStatement ps = conn.prepareStatement(getUpdateAccountQuery())) {
+      ps.setString(1, account.getName());
+      ps.setInt(2, account.getKills());
+      ps.setInt(3, account.getDeaths());
+      ps.setInt(4, account.getWins());
+      ps.setInt(5, account.getLosses());
+      ps.setInt(6, account.getNexus_damage());
+      ps.setString(7, account.getUUID());
       ps.execute();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -238,7 +247,16 @@ public abstract class SQLDB extends Database {
 
   protected abstract String getInsertKitQuery(Kit kit);
 
-  protected abstract String getCreateAccountQuery(Account account);
+  /**
+   * Parameterized INSERT template for a new account. Placeholders, in order:
+   * {@code 1 = uuid}, {@code 2 = username}. Stat columns default to 0.
+   */
+  protected abstract String getCreateAccountQuery();
 
-  protected abstract String getUpdateAccountQuery(Account account);
+  /**
+   * Parameterized UPDATE template for an existing account. Placeholders, in order:
+   * {@code 1 = username, 2 = kills, 3 = deaths, 4 = wins, 5 = losses,
+   * 6 = nexus_damage, 7 = uuid (WHERE)}.
+   */
+  protected abstract String getUpdateAccountQuery();
 }

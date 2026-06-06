@@ -119,8 +119,4 @@ public enum Kit {
         || PermissionUtils.hasPermission(p, "annihilation.class." + getName().toLowerCase())
         || (account != null && account.hasKit(this));
   }
-
-  public void resetKit() {
-
-  }
 }

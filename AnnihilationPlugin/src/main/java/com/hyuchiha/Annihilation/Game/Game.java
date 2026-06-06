@@ -104,10 +104,6 @@ public class Game {
       team.restartMembers();
     }
 
-    for (Kit kit : Kit.values()) {
-      kit.resetKit();
-    }
-
     this.timer.stop();
 
     getNpcPlayers().clear();
