@@ -25,11 +25,10 @@ public class TopCommand implements CommandExecutor {
     if (sender instanceof Player) {
       if (args.length > 0) {
 
-        StatType stat = StatType.valueOf(args[0].toUpperCase());
-
-        if (stat != null) {
+        try {
+          StatType stat = StatType.valueOf(args[0].toUpperCase());
           listTopStat((Player) sender, stat);
-        } else {
+        } catch (IllegalArgumentException e) {
           sender.sendMessage(ChatColor.RED + Translator.getColoredString("ERRORS.STAT_NOT_FOUND"));
         }
       } else {

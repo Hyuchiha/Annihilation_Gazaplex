@@ -109,7 +109,7 @@ public class WitchListener implements Listener {
   }
 
   private ItemStack getLoot() {
-    switch (new Random().nextInt(10)) {
+    switch (1 + new Random().nextInt(10)) {
       case 1:
         return new ItemStack(Material.GLOWSTONE_DUST, 2);
       case 2:

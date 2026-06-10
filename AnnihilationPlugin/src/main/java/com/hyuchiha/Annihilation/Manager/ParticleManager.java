@@ -70,7 +70,8 @@ public class ParticleManager {
             .offset(1F, 1F, 1F)
             .withCount(50)
             .withExtra(0)
-            .forceSpawn(true);
+            .forceSpawn(true)
+            .spawn();
 
     //ParticleEffect.EXPLOSION_LARGE.display(nexus, 1F, 1F, 1F, 1F, 20, null, Bukkit.getOnlinePlayers());
   }

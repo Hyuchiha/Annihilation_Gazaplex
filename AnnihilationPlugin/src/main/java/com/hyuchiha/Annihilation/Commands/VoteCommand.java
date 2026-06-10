@@ -13,6 +13,10 @@ public class VoteCommand implements CommandExecutor {
 
   @Override
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    if (!(sender instanceof Player)) {
+      sender.sendMessage(ChatColor.RED + Translator.getColoredString("ERRORS.CONSOLE_PLAYER_COMMAND"));
+      return true;
+    }
     Player player = (Player) sender;
     if (!VotingManager.isRunning()) {
       player.sendMessage(Translator.getPrefix() + ChatColor.RED +

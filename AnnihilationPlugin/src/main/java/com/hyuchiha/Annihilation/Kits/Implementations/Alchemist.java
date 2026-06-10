@@ -282,12 +282,12 @@ public class Alchemist extends BaseKit {
   }
 
   private void giveRandomDrop(Player player) {
-    int position = random.nextInt(99);
+    int position = random.nextInt(probs.size());
 
     int probability = probs.get(position);
 
     List<ItemStack> percentDrops = drops.get(probability);
-    int dropPosition = random.nextInt(percentDrops.size() - 1);
+    int dropPosition = random.nextInt(percentDrops.size());
     player.getInventory().addItem(percentDrops.get(dropPosition));
   }
 

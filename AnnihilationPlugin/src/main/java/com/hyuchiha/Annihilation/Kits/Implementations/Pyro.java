@@ -164,6 +164,9 @@ public class Pyro extends BaseKit {
 
   @EventHandler
   public void onArrowDamageByPyro(EntityShootBowEvent e) {
+    if (!(e.getEntity() instanceof Player)) {
+      return;
+    }
     Player player = (Player) e.getEntity();
     GamePlayer gPlayer = PlayerManager.getGamePlayer(player);
     if (gPlayer.getKit() == Kit.PYRO) {
