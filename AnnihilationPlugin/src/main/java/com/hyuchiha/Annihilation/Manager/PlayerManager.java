@@ -21,18 +21,6 @@ public class PlayerManager {
     Output.log("Getting respawner for the server version");
 
     switch (Minecraft.Version.getVersion()) {
-      case v1_9_R1:
-        respawner = new Respawner_v1_9_R1();
-        return;
-      case v1_9_R2:
-        respawner = new Respawner_v1_9_R2();
-        return;
-      case v1_10_R1:
-        respawner = new Respawner_v1_10_R1();
-        return;
-      case v1_11_R1:
-        respawner = new Respawner_v1_11_R1();
-        return;
       case v1_12_R1:
         respawner = new Respawner_v1_12_R1();
         return;

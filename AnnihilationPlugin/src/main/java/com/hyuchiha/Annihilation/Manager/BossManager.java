@@ -15,8 +15,6 @@ import com.hyuchiha.Annihilation.Mobs.CustomMobManager;
 import com.hyuchiha.Annihilation.Mobs.Implementations.WardenBoss;
 import com.hyuchiha.Annihilation.Mobs.Implementations.WitherBoss;
 import com.hyuchiha.Annihilation.Mobs.MobCreator;
-import com.hyuchiha.Annihilation.Mobs.v1_10_R1.MobCreator_v1_10_R1;
-import com.hyuchiha.Annihilation.Mobs.v1_11_R1.MobCreator_v1_11_R1;
 import com.hyuchiha.Annihilation.Mobs.v1_12_R1.MobCreator_v1_12_R1;
 import com.hyuchiha.Annihilation.Mobs.v1_13_R1.MobCreator_v1_13_R1;
 import com.hyuchiha.Annihilation.Mobs.v1_13_R2.MobCreator_v1_13_R2;
@@ -26,8 +24,6 @@ import com.hyuchiha.Annihilation.Mobs.v1_16_R1.MobCreator_v1_16_R1;
 import com.hyuchiha.Annihilation.Mobs.v1_16_R2.MobCreator_v1_16_R2;
 import com.hyuchiha.Annihilation.Mobs.v1_16_R3.MobCreator_v1_16_R3;
 import com.hyuchiha.Annihilation.Mobs.v1_17_R1.MobCreator_v1_17_R1;
-import com.hyuchiha.Annihilation.Mobs.v1_9_R1.MobCreator_v1_9_R1;
-import com.hyuchiha.Annihilation.Mobs.v1_9_R2.MobCreator_v1_9_R2;
 import com.hyuchiha.Annihilation.Output.Output;
 import com.hyuchiha.Annihilation.Tasks.BossRespawnTask;
 import com.hyuchiha.Annihilation.Utils.ChestUtils;
@@ -76,22 +72,6 @@ public class BossManager {
     Output.log("Initializing boss instance generator");
 
     switch (Minecraft.Version.getVersion()) {
-      case v1_9_R1:
-        creator = new MobCreator_v1_9_R1();
-        helper = new ChunkHelper_v1_9_R1();
-        break;
-      case v1_9_R2:
-        creator = new MobCreator_v1_9_R2();
-        helper = new ChunkHelper_v1_9_R2();
-        break;
-      case v1_10_R1:
-        creator = new MobCreator_v1_10_R1();
-        helper = new ChunkHelper_v1_10_R1();
-        break;
-      case v1_11_R1:
-        creator = new MobCreator_v1_11_R1();
-        helper = new ChunkHelper_v1_11_R1();
-        break;
       case v1_12_R1:
         creator = new MobCreator_v1_12_R1();
         helper = new ChunkHelper_v1_12_R1();
