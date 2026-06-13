@@ -30,6 +30,10 @@
             <id>OnARandomBox</id>
             <url>https://repo.onarandombox.com/content/groups/public</url>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -48,6 +52,17 @@
             <groupId>com.onarandombox.multiversecore</groupId>
             <artifactId>multiverse-core</artifactId>
             <version>4.3.14</version> <!-- This too -->
+            <scope>provided</scope>
+        </dependency>
+        <!-- XSeries: cross-version particles for the shared Particles library.
+             Scope provided: the main plugin (AnnihilationPlugin) is the module
+             that shades + relocates XSeries (com.cryptomorin.xseries ->
+             com.hyuchiha). Base only needs it on the compile classpath; the
+             shade pass relocates Base's references to XSeries along with it. -->
+        <dependency>
+            <groupId>com.github.cryptomorin</groupId>
+            <artifactId>XSeries</artifactId>
+            <version>13.8.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

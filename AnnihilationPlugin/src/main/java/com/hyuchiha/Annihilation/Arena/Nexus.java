@@ -9,11 +9,13 @@ import org.bukkit.block.Block;
 public class Nexus {
   private final GameTeam team;
   private final Location location;
+  private final int maxHealth;
   private int health;
 
   public Nexus(GameTeam team, Location location, int health) {
     this.team = team;
     this.location = location;
+    this.maxHealth = health;
     this.health = health;
 
     location.getBlock().setType(XMaterial.END_STONE.get());
@@ -31,6 +33,17 @@ public class Nexus {
 
   public int getHealth() {
     return this.health;
+  }
+
+
+  public int getMaxHealth() {
+    return this.maxHealth;
+  }
+
+
+  /** True once the nexus has dropped below half of its starting health. */
+  public boolean isBelowHalf() {
+    return this.health > 0 && this.health * 2 < this.maxHealth;
   }
 
 

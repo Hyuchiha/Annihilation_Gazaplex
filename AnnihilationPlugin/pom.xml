@@ -213,14 +213,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>xyz.xenondevs</groupId>
-            <artifactId>particle</artifactId>
-            <version>1.8.4</version>
-        </dependency>
-        <dependency>
             <groupId>com.github.cryptomorin</groupId>
             <artifactId>XSeries</artifactId>
-            <version>12.1.0</version>
+            <version>13.8.0</version>
         </dependency>
         <!-- HikariCP 4.x is the last line that supports Java 8 -->
         <dependency>
@@ -336,7 +331,6 @@
                                     <include>org.mongodb:mongodb-driver</include>
                                     <include>org.mongodb:bson</include>
                                     <include>org.mongodb:mongodb-driver-core</include>
-                                    <include>xyz.xenondevs:particle</include>
                                     <include>com.github.cryptomorin:XSeries</include>
                                     <include>com.zaxxer:HikariCP</include>
                                     <include>org.slf4j:slf4j-api</include>
