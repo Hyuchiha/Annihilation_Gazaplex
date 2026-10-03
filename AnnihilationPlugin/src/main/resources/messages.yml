@@ -38,6 +38,7 @@ GAME:
   CLICK_TO_VOTE_MAP: "&6Click to vote for a map!"
   CLICK_TO_CHOOSE_TEAM: "&5Click to select your team!"
   CLICK_TO_RETURN_LOBBY: "&5Return to the lobby"
+  SENDING_TO_SERVER: "&7Sending you to &e%SERVER%&7..."
   CLICK_TO_CHOOSE_KIT: "&5Select your kit!"
   CLICK_TO_UNLOCK_KIT: "&eUnlock new kits!"
   CLASS_SELECT_INV_TITLE: "&6Select your kit"
@@ -205,7 +206,6 @@ ERRORS:
   CANNOT_DO_ACTION: "&cYou can't do that!"
   DONT_OWN_BREWING: "&cThis Brewing Stand does not belong to you!"
   PORTAL_NEXUS: "&cYou can't place a portal near a Nexus!"
-  COULD_NOT_CONNECT_SERVER: "&cFailed to connect to &e%SERVER%!"
 # Scoreboard messages
 SCOREBOARDS:
   SB_LOBBY_TITLE: "&6Annihilation"

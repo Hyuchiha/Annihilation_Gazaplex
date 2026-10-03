@@ -25,7 +25,7 @@ Four teams (Red, Blue, Green, Yellow) compete to destroy each other's Nexus. The
 - In-game shop via sign interaction
 - Statistics system (kills, deaths, wins, losses, nexus damage)
 - Leaderboard commands
-- BungeeCord support (return to hub on game end)
+- BungeeCord / Velocity support (return-to-lobby item, everyone sent to the lobby server on game end)
 - Vault economy integration (money rewards per action)
 - Custom MOTD with game state placeholders
 - Anti-nuker protection near nexuses
@@ -130,11 +130,12 @@ userCommandsOnFinish: false
 commands:
   - "give %player% diamond 1"
 
-# Send players to another BungeeCord server on game end
-enableBungeeCommunication: false
-Bungee:
-  server: "lobby"
-  item: "RED_BED"         # Item in inventory players click to return
+# Network mode (BungeeCord/Waterfall/Velocity)
+proxy:
+  enabled: false          # Master switch: return-to-lobby item + any send at all
+  lobby-server: lobby     # Server name as written in the proxy config
+  send-on-end: true       # Also send everyone there automatically when a game ends
+  item: RED_BED           # Material of the return-to-lobby item
 
 # Database — uncomment ONE block
 Database:
@@ -386,7 +387,11 @@ Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 5 (no time limit)
   Phase 5 = double nexus damage
     ↓  last nexus standing (or ForceGameEnding timer)
 Winner announced → restart-delay countdown → game resets
+    ↓  proxy.enabled + proxy.send-on-end
+Everyone is sent to proxy.lobby-server (also after a ForceGameEnding time limit)
 ```
+
+**Proxy lobby:** with `proxy.enabled: true` players get a return-to-lobby item (`proxy.item`) that sends them to `proxy.lobby-server`; with `proxy.send-on-end: true` as well, every player is sent there when a game ends (natural end or `ForceGameEnding`; not on `/anni stop` nor on server shutdown). Upgrading from the old keys: while `proxy.enabled` is absent from your `config.yml`, `enableBungeeCommunication` + `Bungee.server` are still read and nothing is sent automatically (same as before); `Bungee.item` is still read while `proxy.item` is absent. Both proxies use the same `BungeeCord` plugin channel: BungeeCord/Waterfall need nothing, Velocity needs `bungee-plugin-message-channel = true` in `velocity.toml` (its default). Players are put back on this server's lobby first, so a lobby server that is down or misnamed just leaves them here. With `userCommandsOnFinish`, the finish commands run one second after an automatic send (immediately when nothing was sent) so a `restart` command doesn't cut it off.
 
 **Nexus:** A block each team must protect. Enemies can attack it in-game. Destroying an enemy nexus eliminates that team. The team with the last standing nexus wins.
 

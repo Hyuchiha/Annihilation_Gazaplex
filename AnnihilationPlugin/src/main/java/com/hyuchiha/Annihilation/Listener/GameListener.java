@@ -7,6 +7,7 @@ import com.hyuchiha.Annihilation.Database.Base.Account;
 import com.hyuchiha.Annihilation.Event.*;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.GameTeam;
+import com.hyuchiha.Annihilation.Hooks.ProxyHooks;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.*;
 import com.hyuchiha.Annihilation.Messages.Translator;
@@ -18,7 +19,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -51,15 +51,23 @@ public class GameListener implements Listener {
   @EventHandler
   public void onGameEnd(EndGameEvent event) {
     Output.log("Ending game");
+    // Players are back on the lobby spawn with a lobby inventory before the proxy is asked
+    // to move them: if the lobby server is down they simply stay here.
     GameManager.endCurrentGame();
+    boolean sent = ProxyHooks.autoSendToLobby(plugin, Bukkit.getOnlinePlayers());
 
     if (config.getBoolean("userCommandsOnFinish", false)) {
       List<String> commands = config.getStringList("commands");
-
-      for (String command: commands) {
-        CommandSender sender = Bukkit.getConsoleSender();
-
-        Bukkit.dispatchCommand(sender, command);
+      Runnable dispatch = () -> {
+        for (String command : commands) {
+          Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+        }
+      };
+      // A finish command may be "restart"/"stop": give the Connect messages a second to go out.
+      if (sent) {
+        Bukkit.getScheduler().runTaskLater(plugin, dispatch, 20L);
+      } else {
+        dispatch.run();
       }
     }
   }

@@ -6,6 +6,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.TreeMap;
 
 public class ConfigManager {
@@ -65,6 +66,7 @@ public class ConfigManager {
 
         Configuration config = new Configuration(configFile);
         config.load();
+        applyJarDefaults(config.getConfig(), filename);
         configs.put(filename, config);
       } catch (IOException | InvalidConfigurationException e) {
         Output.logError("Error in the configuration");
@@ -105,6 +107,28 @@ public class ConfigManager {
       return configs.get(filename).getConfig();
     }
     return null;
+  }
+
+  /**
+   * Backs the admin's file with the copy shipped in the jar, so a key missing from the file
+   * reads the shipped value. Read-only: copyDefaults stays off, nothing is written to the file.
+   * Applied once: reload() re-loads the same YamlConfiguration, which keeps its defaults.
+   * Not for maps.yml: the shipped one is a sample, and its lobby signs/spawns would leak into
+   * the admin's maps.
+   */
+  private void applyJarDefaults(YamlConfiguration config, String filename) {
+    if ("maps.yml".equalsIgnoreCase(filename)) {
+      return;
+    }
+    InputStream in = this.plugin.getResource(filename);
+    if (in == null) {
+      return;
+    }
+    try (Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
+      config.setDefaults(YamlConfiguration.loadConfiguration(reader));
+    } catch (IOException e) {
+      printException(e, filename);
+    }
   }
 
   private void printException(Exception e, String filename) {

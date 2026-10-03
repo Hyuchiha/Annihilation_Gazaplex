@@ -4,6 +4,7 @@ import com.hyuchiha.Annihilation.BossBar.BossBarAPI;
 import com.hyuchiha.Annihilation.Chat.ChatUtil;
 import com.hyuchiha.Annihilation.Event.EndGameEvent;
 import com.hyuchiha.Annihilation.Event.PhaseChangeEvent;
+import com.hyuchiha.Annihilation.Hooks.ProxyHooks;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.MapManager;
@@ -163,7 +164,10 @@ public class GameTimer {
       long minutes = (time - hours * 3600L) / 60L;
 
       if ((hours >= this.forceHours) && (minutes >= this.forceMinutes)) {
-        GameManager.forceStopGame();
+        // Not in forceStopGame itself: onDisable calls it too, and a disabled plugin can't send.
+        if (GameManager.forceStopGame()) {
+          ProxyHooks.autoSendToLobby(plugin, Bukkit.getOnlinePlayers());
+        }
         return;
       }
     }

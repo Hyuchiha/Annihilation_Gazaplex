@@ -50,7 +50,12 @@ public class Translator {
   }
 
   public static List<String> getMultiMessage(String id) {
-    return listMessages.getOrDefault(id, Collections.emptyList())
+    List<String> lines = listMessages.get(id);
+    if (lines == null) {
+      // Not in the admin's file: shipped value from the jar defaults (see findMessageWithId).
+      lines = plugin.getConfig("messages.yml").getStringList(id);
+    }
+    return lines
             .stream()
             .map(line -> ChatColor.translateAlternateColorCodes('&', line))
             .collect(Collectors.toList());
@@ -62,6 +67,13 @@ public class Translator {
 
 
   private static String findMessageWithId(String id) {
-    return messages.getOrDefault(id, id);
+    String message = messages.get(id);
+    if (message != null) {
+      return message;
+    }
+    // The cache is built from getKeys(), which skips jar defaults (copyDefaults is off), so a
+    // key missing from the admin's file is looked up here; isString/getString see the defaults.
+    ConfigurationSection config = plugin.getConfig("messages.yml");
+    return config.isString(id) ? config.getString(id) : id;
   }
 }

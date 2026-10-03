@@ -9,6 +9,7 @@ import com.hyuchiha.Annihilation.Database.Databases.MongoDB;
 import com.hyuchiha.Annihilation.Database.Databases.MySQLDB;
 import com.hyuchiha.Annihilation.Database.Databases.SQLiteDB;
 import com.hyuchiha.Annihilation.Hooks.AnnihilationExpansion;
+import com.hyuchiha.Annihilation.Hooks.ProxyHooks;
 import com.hyuchiha.Annihilation.Hooks.VaultHooks;
 import com.hyuchiha.Annihilation.Listener.*;
 import com.hyuchiha.Annihilation.Manager.*;
@@ -87,7 +88,7 @@ public class Main extends JavaPlugin {
     registerCommands();
 
     hookVault();
-    hookBungeeCord();
+    ProxyHooks.register(this);
     hookPlaceholderAPI();
 
     initDatabase();
@@ -198,15 +199,6 @@ public class Main extends JavaPlugin {
     getCommand("star").setExecutor(new StarCommand());
   }
 
-
-  private void hookBungeeCord() {
-    Configuration config = getConfig("config.yml");
-    boolean enableBungee = config.getBoolean("enableBungeeCommunication", false);
-
-    if (enableBungee) {
-      Bukkit.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-    }
-  }
 
   private void hookPlaceholderAPI() {
     if (getServer().getPluginManager().getPlugin("PlaceholderAPI") == null) {

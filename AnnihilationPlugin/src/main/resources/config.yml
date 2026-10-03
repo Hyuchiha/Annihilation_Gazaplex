@@ -44,12 +44,27 @@ userCommandsOnFinish: false
 commands:
   - "Your command"
 #
-# Bungee config
-# With this you can set a custom Item and send the player to a custom server using Bungee
-enableBungeeCommunication: false
-Bungee:
-  server: "lobby"
-  item: "RED_BED"
+# Network mode (BungeeCord / Waterfall / Velocity).
+#   BungeeCord / Waterfall: nothing to set on the proxy.
+#   Velocity: needs bungee-plugin-message-channel = true in velocity.toml (its default).
+# Players are put back in this server's lobby first: if lobby-server is down or
+# misnamed, the proxy leaves them here and nothing is lost.
+# Read on every send: /anni reload applies changes.
+# Old keys: enableBungeeCommunication + Bungee.server are still honoured while
+# proxy.enabled is absent from this file (and then nothing is sent automatically);
+# Bungee.item is still honoured while proxy.item is absent.
+proxy:
+  # Master switch. Off = nothing is ever sent to the proxy and the "return to
+  # lobby" item is not handed out.
+  enabled: false
+  # Server name exactly as written in the proxy's config.
+  lobby-server: lobby
+  # With enabled: true, also send everyone to lobby-server automatically when the
+  # game ends (winner decided, or the ForceGameEnding time limit). false = only the
+  # manual "return to lobby" item does it.
+  send-on-end: true
+  # Material of the "return to lobby" item.
+  item: RED_BED
 #
 # The DB usage is mandatory
 # The available types are MySQL, SQLite, MongoDB

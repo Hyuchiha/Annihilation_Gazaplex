@@ -2,12 +2,12 @@ package com.hyuchiha.Annihilation.Utils;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
+import com.hyuchiha.Annihilation.Hooks.ProxyHooks;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.PlayerManager;
 import com.hyuchiha.Annihilation.Messages.Translator;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -31,11 +31,9 @@ public class ItemSelectorUtils {
   }
 
   public static void giveLobbyReturnItem(Player player) {
-    Configuration config = Main.getInstance().getConfig("config.yml");
-    boolean enableBungee = config.getBoolean("enableBungeeCommunication", false);
-
-    if (enableBungee) {
-      String type = config.getString("Bungee.item", "RED_BED");
+    Main plugin = Main.getInstance();
+    if (ProxyHooks.isEnabled(plugin)) {
+      String type = ProxyHooks.lobbyItem(plugin);
 
       ItemStack lobbySelector = XMaterial.valueOf(type).parseItem();
       ItemMeta itemMeta = lobbySelector.getItemMeta();

@@ -77,7 +77,8 @@ public class GameManager {
   }
 
 
-  public static void forceStopGame() {
+  /** @return true if a running game was stopped. */
+  public static boolean forceStopGame() {
     Output.log("Force stop game");
     if (currentGame != null && currentGame.getPhase() > 0) {
       Main main = Main.getInstance();
@@ -101,7 +102,9 @@ public class GameManager {
       ChatUtil.winMessage(currentGame.getWinner());
 
       endCurrentGame();
+      return true;
     }
+    return false;
   }
 
   public static Game getCurrentGame() {

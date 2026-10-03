@@ -5,6 +5,7 @@ import com.hyuchiha.Annihilation.Chat.ChatUtil;
 import com.hyuchiha.Annihilation.Database.Base.Account;
 import com.hyuchiha.Annihilation.Game.GamePlayer;
 import com.hyuchiha.Annihilation.Game.GameTeam;
+import com.hyuchiha.Annihilation.Hooks.ProxyHooks;
 import com.hyuchiha.Annihilation.Main;
 import com.hyuchiha.Annihilation.Manager.GameManager;
 import com.hyuchiha.Annihilation.Manager.MapManager;
@@ -41,8 +42,6 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 
 public class PlayerListener implements Listener {
   private Main plugin;
@@ -167,6 +166,14 @@ public class PlayerListener implements Listener {
     if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
       ItemStack handItem = player.getInventory().getItemInMainHand();
       if (handItem != null) {
+        // Matched by name, not by material: proxy.item lets the server pick the material.
+        if (handItem.hasItemMeta() && handItem.getItemMeta().hasDisplayName() &&
+            handItem.getItemMeta().getDisplayName().contains(Translator.getColoredString("GAME.CLICK_TO_RETURN_LOBBY"))) {
+          e.setCancelled(true);
+          ProxyHooks.sendToLobby(plugin, player);
+          return;
+        }
+
         XMaterial type = XMaterial.matchXMaterial(handItem);
 
         switch (type) {
@@ -190,28 +197,6 @@ public class PlayerListener implements Listener {
               e.setCancelled(true);
 
               MenuUtils.showTeamSelector(player);
-            }
-            break;
-
-          case RED_BED:
-            if (handItem.getItemMeta().hasDisplayName() &&
-                handItem.getItemMeta().getDisplayName().contains(Translator.getColoredString("GAME.CLICK_TO_RETURN_LOBBY"))) {
-              e.setCancelled(true);
-
-              final String ServerExit = plugin.getConfig().getString("Bungee.server");
-              try {
-                final ByteArrayOutputStream b = new ByteArrayOutputStream();
-                final DataOutputStream out = new DataOutputStream(b);
-                out.writeUTF("Connect");
-                out.writeUTF(ServerExit);
-                player.sendPluginMessage(this.plugin, "BungeeCord", b.toByteArray());
-                b.close();
-                out.close();
-              } catch (Exception error) {
-                String message = Translator.getColoredString("ERRORS.COULD_NOT_CONNECT_SERVER").replace("%SERVER%", ServerExit);
-                player.sendMessage(Translator.getPrefix() + ChatColor.RED + message);
-              }
-
             }
             break;
         }
